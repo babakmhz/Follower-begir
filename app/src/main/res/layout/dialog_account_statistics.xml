@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:fillViewport="true"
+        android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/lightGrey"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgProfileImage"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:src="@drawable/image_profile_test"
+                    app:civ_border_color="#c3c3c3"
+                    app:civ_border_width="1dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/imvArrowLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_arrow_left" />
+
+                <TextView
+                    android:id="@+id/imvFilters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="آمار اکانت"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/llFirstRight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_grey"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+                <TextView
+                    style="@style/statisticsTextStyle"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="5234" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/ic_arrow_left"
+                    android:drawableRight="@drawable/ic_arrow_left"
+                    android:gravity="center_vertical"
+                    android:text="من را فالو نکرده اند"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llFirstLeft"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_grey"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="1"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+                <TextView
+                    style="@style/statisticsTextStyle"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="5234" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/ic_arrow_left"
+                    android:drawableRight="@drawable/ic_arrow_left"
+                    android:gravity="center_vertical"
+                    android:text="من فالو تکرده ام"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llSecondRight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/llFirstRight">
+
+                <TextView
+                    style="@style/statisticsTextStyle"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="5234" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/ic_arrow_left"
+                    android:drawableRight="@drawable/ic_arrow_left"
+                    android:gravity="center_vertical"
+                    android:text="مجموع لایک ها"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llSecondLeft"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="1"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llFirstLeft">
+
+                <TextView
+                    style="@style/statisticsTextStyle"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="5234" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/ic_arrow_left"
+                    android:drawableRight="@drawable/ic_arrow_left"
+                    android:gravity="center_vertical"
+                    android:text="میانگین لایک برای هر پست"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llThirdRight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_grey"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/llSecondRight">
+
+                <TextView
+                    style="@style/statisticsTextStyle"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="5234" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/ic_arrow_left"
+                    android:drawableRight="@drawable/ic_arrow_left"
+                    android:gravity="center_vertical"
+                    android:text="مجموع کامنت های عکس"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llThirdLeft"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_grey"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="1"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llSecondLeft">
+
+                <TextView
+                    style="@style/statisticsTextStyle"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:text="5234" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/ic_arrow_left"
+                    android:drawableRight="@drawable/ic_arrow_left"
+                    android:gravity="center_vertical"
+                    android:text="میانگین لایک برای هر پست"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+
+
+            <ImageView
+                android:id="@+id/imvMostLiked"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/llThirdRight" />
+
+            <LinearLayout
+                android:id="@+id/llMostLiked"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_grey"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/imvMostLiked">
+
+                <TextView
+                    style="@style/statisticsTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5234" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/ic_arrow_left"
+                    android:drawableRight="@drawable/ic_arrow_left"
+                    android:gravity="center_vertical"
+                    android:text="پر لایک ترین پست"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imvLeastLiked"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llThirdRight" />
+
+            <LinearLayout
+                android:id="@+id/llLeastLiked"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_grey"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="1"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imvLeastLiked">
+
+                <TextView
+                    style="@style/statisticsTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5234" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/ic_arrow_left"
+                    android:drawableRight="@drawable/ic_arrow_left"
+                    android:gravity="center_vertical"
+                    android:text="پر لایک ترین پست"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imvMostComment"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/llMostLiked" />
+
+            <LinearLayout
+                android:id="@+id/llMostComment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_grey"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/imvMostComment">
+
+                <TextView
+                    style="@style/statisticsTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5234" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/ic_arrow_left"
+                    android:drawableRight="@drawable/ic_arrow_left"
+                    android:gravity="center_vertical"
+                    android:text="پر لایک ترین پست"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imvLeastComment"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llLeastLiked" />
+
+            <LinearLayout
+                android:id="@+id/llLeastComment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_grey"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="1"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imvLeastComment">
+
+                <TextView
+                    style="@style/statisticsTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5234" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/ic_arrow_left"
+                    android:drawableRight="@drawable/ic_arrow_left"
+                    android:gravity="center_vertical"
+                    android:text="پر لایک ترین پست"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="1.5dp"
+                android:layout_height="0dp"
+                android:background="@color/grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/llLeastComment"
+                app:layout_constraintTop_toBottomOf="@id/llFirstLeft" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideLine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</layout>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ff8a00</color>
+    <color name="colorPrimaryDark">#b76300</color>
+    <color name="colorAccent">#ff8a00</color>
+    <color name="splashOrangeColor">#ff8a00</color>
+    <color name="white">#fff</color>
+    <color name="black">#000</color>
+    <color name="orangeTextColor">#ff9000</color>
+    <color name="grey">#ababab</color>
+    <color name="darkerGrey">#4B4B4B</color>
+    <color name="lightGrey">#dfdfdf</color>
+    <color name="darkGrey">#414141</color>
+    <color name="transparent">#00f9f9f9</color>
+    <color name="roundPurple">#6f5ab3</color>
+    <color name="roundPurpleInner">#9579ef</color>
+    <color name="lightPink">#ffedd3</color>
+    <color name="red">#c83030</color>
+
+
+</resources>

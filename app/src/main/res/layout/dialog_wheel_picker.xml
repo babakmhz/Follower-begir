@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:LuckyWheel="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/purchase_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.bluehomestudio.luckywheel.LuckyWheel
+        android:id="@+id/lwv"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_centerInParent="true"
+        LuckyWheel:background_color="@color/roundPurpleInner" />
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:text="start" />
+
+</RelativeLayout>

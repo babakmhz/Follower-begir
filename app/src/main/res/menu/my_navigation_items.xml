@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/action_home"
+        android:title="صفحه اصلی"
+        android:enabled="true"
+        android:icon="@drawable/ic_home" />
+    <item android:id="@+id/action_purchase"
+        android:title="ثبت سفارش"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu" />
+    <item android:id="@+id/action_navigation"
+    android:title="سکه بگیر"
+        android:enabled="true"
+    android:icon="@drawable/ic_dollar" />
+    <item android:id="@+id/action_shopping"
+        android:title="فروشگاه"
+        android:enabled="true"
+        android:icon="@drawable/ic_shopping" />
+    <item android:id="@+id/action_advertise"
+        android:title="تبلیغات"
+        android:enabled="true"
+        android:icon="@drawable/ic_advertise" />
+</menu>
