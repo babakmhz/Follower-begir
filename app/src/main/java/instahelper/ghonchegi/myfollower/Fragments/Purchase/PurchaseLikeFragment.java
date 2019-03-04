@@ -106,6 +106,8 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
             Toast.makeText(getContext(), "تعداد سفارش را مشخص کنید", Toast.LENGTH_SHORT).show();
         } else {
 
+            
+
         }
     }
 }
