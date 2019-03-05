@@ -2,12 +2,14 @@ package instahelper.ghonchegi.myfollower.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -15,6 +17,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import instahelper.ghonchegi.myfollower.Dialog.AccountActionsDialog;
+import instahelper.ghonchegi.myfollower.Dialog.InstagramAutenticationDialog;
 import instahelper.ghonchegi.myfollower.Models.User;
 import instahelper.ghonchegi.myfollower.R;
 
@@ -24,9 +28,10 @@ public class AccountsListAdapter extends android.support.v7.widget.RecyclerView.
 
     private ArrayList<User> usersList;
     private Context context;
-
-    public AccountsListAdapter(ArrayList<User> usersList) {
+    FragmentManager childFragmentManager;
+    public AccountsListAdapter(ArrayList<User> usersList, FragmentManager childFragmentManager) {
         this.usersList = usersList;
+        this.childFragmentManager=childFragmentManager;
     }
 
     @NonNull
@@ -43,11 +48,21 @@ public class AccountsListAdapter extends android.support.v7.widget.RecyclerView.
         try {
             holder.tvUserName.setText(usersList.get(position).getUserName());
             holder.tvNumber.setText(position + 1 + "");
+
             if (usersList.get(position).getIsActive()==1) {
                 holder.profilePic.setBorderColor(context.getResources().getColor(R.color.orangeTextColor));
-                holder.profilePic.setBorderWidth(1);
+                holder.profilePic.setBorderWidth(3);
             }
             Picasso.get().load(usersList.get(position).getProfilePicture()).into(holder.profilePic);
+
+            holder.root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AccountActionsDialog dialog=new AccountActionsDialog();
+                    dialog.setCancelable(true);
+                    dialog.show(childFragmentManager, "");
+                }
+            });
 
 
         } catch (Exception e) {
@@ -66,6 +81,7 @@ public class AccountsListAdapter extends android.support.v7.widget.RecyclerView.
         private TextView tvNumber, tvUserName;
         private CircleImageView profilePic;
         private AppCompatImageView imvLogOut;
+        private LinearLayout root;
 
         public Item(@NonNull View itemView) {
             super(itemView);
@@ -73,6 +89,7 @@ public class AccountsListAdapter extends android.support.v7.widget.RecyclerView.
             tvUserName = itemView.findViewById(R.id.tvUserName);
             profilePic = itemView.findViewById(R.id.imgProfileImage);
             imvLogOut = itemView.findViewById(R.id.imvLogOut);
+            root = itemView.findViewById(R.id.layout);
         }
     }
 }

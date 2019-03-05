@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,16 +24,18 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import instahelper.ghonchegi.myfollower.Activities.MainActivity;
-import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.DialogAuthenticateBinding;
 import instahelper.ghonchegi.myfollower.instaAPI.InstagramApi;
 
 import static android.content.Context.MODE_PRIVATE;
+import static instahelper.ghonchegi.myfollower.App.TAG;
 
 public class InstagramAutenticationDialog extends DialogFragment {
 
@@ -95,6 +97,14 @@ public class InstagramAutenticationDialog extends DialogFragment {
         api.Login(username, password, new InstagramApi.ResponseHandler() {
             @Override
             public void OnSuccess(JSONObject response) {
+                Log.i(TAG, "OnSuccess: " + response);
+                try {
+                    JSONObject jsonRootObject = new JSONObject(String.valueOf(response));
+                    JSONObject newObj=jsonRootObject.getJSONObject("logged_in_user");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 getActivity().startActivity(intent);
                 dismiss();

@@ -35,7 +35,8 @@ public class ManageAccountsDialog extends DialogFragment {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         //endregion
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
-        AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers());
+        AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(),getChildFragmentManager());
+
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
