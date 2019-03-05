@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 import instahelper.ghonchegi.myfollower.Models.User;
 import instahelper.ghonchegi.myfollower.data.InstagramUser;
@@ -100,20 +101,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public long insetUser(InstagramUser user) {
-        // get writable database as we want to write data
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-
-        values.put("userName", user.getUserName());
-        values.put("password", user.getPassword());
-        values.put("profilePic", user.getProfilePicture());
-        values.put("isActive", true);
-        long id = db.insert("userInfo", null, values);
-        db.close();
-        return id;
-    }
 
     public boolean checkkUser(InstagramUser user) {
         boolean isExist = false;
@@ -130,4 +117,79 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return isExist;
     }
 
+    public ArrayList<User> getAllUsers() {
+        ArrayList<User> users = new ArrayList<>();
+        openDatabase();
+        Cursor cursor = myDataBase.rawQuery("SELECT * FROM userInfo", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            User user = new User();
+            user.setUserId(String.valueOf(cursor.getInt(5)));
+            user.setProfilePicture(cursor.getString(1));
+            user.setUserName(cursor.getString(2));
+            user.setPassword(cursor.getString(3));
+            if (cursor.getInt(4)==1) {
+                user.setIsActive(1);
+            } else user.setIsActive(0);
+            users.add(user);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        myDataBase.close();
+        return users;
+    }
+
+    public long addUser(User user) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("profilePic", user.getProfilePicture());
+        contentValues.put("userName", user.getUserName());
+        contentValues.put("password", user.getPassword());
+        contentValues.put("isActive", 1);
+        contentValues.put("userId",( user.getUserId()));
+        openDatabase();
+        long returnValue = myDataBase.insert("userInfo", null, contentValues);
+        myDataBase.close();
+        return returnValue;
+    }
+
+    public long addUser(InstagramUser user) {
+        try {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("profilePic", user.getProfilePicture());
+            contentValues.put("userName", user.getUserName());
+            contentValues.put("password", user.getPassword());
+            contentValues.put("isActive", true);
+            contentValues.put("userId", user.getUserId());
+            openDatabase();
+            long returnValue = myDataBase.insert("userInfo", null, contentValues);
+            myDataBase.close();
+            return returnValue;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1L;
+
+        }
+
+    }
+
+    public boolean removeAllData() {
+        try {
+            openDatabase();
+            int result= myDataBase.delete("userInfo", null,null);
+            myDataBase.close();
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+
+    }
+
+    public boolean deleteUserById(String userId) {
+        openDatabase();
+        int result = myDataBase.delete("userInfo", "userId =?", new String[]{userId});
+        myDataBase.close();
+        return result != 0;
+    }
 }

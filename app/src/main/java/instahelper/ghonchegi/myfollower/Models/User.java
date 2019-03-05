@@ -18,6 +18,7 @@ public class User {
     boolean isPrivate;
     boolean isRequested;
     boolean isCheckedRelationBefore = false;
+    Integer isActive;
 
     public User() {
     }
@@ -156,5 +157,14 @@ public class User {
 
     public void setCheckedRelationBefore(boolean checkedRelationBefore) {
         isCheckedRelationBefore = checkedRelationBefore;
+    }
+
+
+    public Integer getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Integer isActive) {
+        this.isActive = isActive;
     }
 }

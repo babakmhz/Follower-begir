@@ -15,7 +15,7 @@
         android:background="@color/lightGrey"
         android:gravity="center|left"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@id/imvLogOut"
+        app:layout_constraintEnd_toStartOf="@id/guideLine"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -54,16 +54,23 @@
     <android.support.v7.widget.AppCompatImageView
 
         android:id="@+id/imvLogOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_margin="10dp"
         android:background="@color/orangeTextColor"
         android:padding="10dp"
+        app:srcCompat="@drawable/ic_logout"
         app:layout_constraintBottom_toBottomOf="@+id/layout"
-
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/layout"
-        app:srcCompat="@drawable/ic_logout" />
+        app:layout_constraintStart_toStartOf="@id/guideLine"
+        app:layout_constraintTop_toTopOf="@+id/layout" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
 
 
 </android.support.constraint.ConstraintLayout>
