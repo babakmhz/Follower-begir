@@ -105,17 +105,17 @@ public class InstagramAutenticationDialog extends DialogFragment {
             public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
                 binding.prg.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
-//                try {
-//                    Toast.makeText(getActivity(), "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
-//                    String errorMessage = "";
-//                    try {
-//                        errorMessage = errorResponse.getString("message");
-//                    } catch (NullPointerException e) {
-//                        e.printStackTrace();
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    Toast.makeText(getActivity(), "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
+                    String errorMessage = "";
+                    try {
+                        errorMessage = errorResponse.getString("message");
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

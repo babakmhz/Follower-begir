@@ -24,10 +24,13 @@ import java.util.Map;
 
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.AccountStatisticsDialog;
+import instahelper.ghonchegi.myfollower.Dialog.ManageAccountsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ReviewOrdersDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TransferCoinDialog;
+import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
+import instahelper.ghonchegi.myfollower.Models.User;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.data.InstagramUser;
 import instahelper.ghonchegi.myfollower.data.UserData;
@@ -76,6 +79,14 @@ public class HomeFragment extends Fragment {
 
         });
 
+        binding.tvManageAccounts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ManageAccountsDialog dialog = new ManageAccountsDialog();
+                dialog.show(getChildFragmentManager(), "");
+            }
+        });
+
 
         return view;
 
@@ -88,13 +99,28 @@ public class HomeFragment extends Fragment {
             api.GetSelfUsernameInfo(new InstagramApi.ResponseHandler() {
                 @Override
                 public void OnSuccess(JSONObject response) {
+                    DataBaseHelper dbelper = new DataBaseHelper(getActivity());
+
                     final InstagramUser user = new UserParser().parsUser(response, false);
                     user.setToken(userData.getSelf_user().getToken());
                     user.setPassword(userData.getSelf_user().getPassword());
                     userData.setSelf_user(user);
+
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            User _user = new User();
+                            _user.setIsActive(1);
+                            _user.setPassword(user.getPassword());
+                            _user.setUserName(user.getUserName());
+                            _user.setProfilePicture(user.getProfilePicture());
+                            _user.setUserId(user.getUserId());
+
+
+                            if (dbelper.checkkUser(user)) {
+                                Toast.makeText(getActivity(), "exists", Toast.LENGTH_SHORT).show();
+                            } else
+                                dbelper.addUser(_user);
                             Picasso.get().load(user.getProfilePicture()).error(R.drawable.app_logo).into(binding.profileImage);
                             Picasso.get().load(user.getProfilePicture()).error(R.drawable.app_logo).into(binding.imageView2);
                             binding.tvMediaCount.setText(user.getMediaCount());
