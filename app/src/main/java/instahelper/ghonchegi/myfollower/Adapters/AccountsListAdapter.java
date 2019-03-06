@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import instahelper.ghonchegi.myfollower.Dialog.AccountActionsDialog;
-import instahelper.ghonchegi.myfollower.Dialog.InstagramAutenticationDialog;
 import instahelper.ghonchegi.myfollower.Models.User;
 import instahelper.ghonchegi.myfollower.R;
 
@@ -26,12 +25,13 @@ import static instahelper.ghonchegi.myfollower.App.TAG;
 
 public class AccountsListAdapter extends android.support.v7.widget.RecyclerView.Adapter<AccountsListAdapter.Item> {
 
+    FragmentManager childFragmentManager;
     private ArrayList<User> usersList;
     private Context context;
-    FragmentManager childFragmentManager;
+
     public AccountsListAdapter(ArrayList<User> usersList, FragmentManager childFragmentManager) {
         this.usersList = usersList;
-        this.childFragmentManager=childFragmentManager;
+        this.childFragmentManager = childFragmentManager;
     }
 
     @NonNull
@@ -49,7 +49,7 @@ public class AccountsListAdapter extends android.support.v7.widget.RecyclerView.
             holder.tvUserName.setText(usersList.get(position).getUserName());
             holder.tvNumber.setText(position + 1 + "");
 
-            if (usersList.get(position).getIsActive()==1) {
+            if (usersList.get(position).getIsActive() == 1) {
                 holder.profilePic.setBorderColor(context.getResources().getColor(R.color.orangeTextColor));
                 holder.profilePic.setBorderWidth(3);
             }
@@ -58,7 +58,7 @@ public class AccountsListAdapter extends android.support.v7.widget.RecyclerView.
             holder.root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AccountActionsDialog dialog=new AccountActionsDialog();
+                    AccountActionsDialog dialog = new AccountActionsDialog(usersList.get(position).getProfilePicture(), usersList.get(position).getUserName(),usersList.get(position).getIsActive());
                     dialog.setCancelable(true);
                     dialog.show(childFragmentManager, "");
                 }

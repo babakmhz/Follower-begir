@@ -192,4 +192,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         myDataBase.close();
         return result != 0;
     }
+
+    public Long setAllValueNotActive()
+    {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("isActive", 0);
+        openDatabase();
+        openDatabase();
+        long returnValue = myDataBase.update("userInfo", contentValues,null, null);
+        myDataBase.close();
+        return returnValue;
+    }
 }

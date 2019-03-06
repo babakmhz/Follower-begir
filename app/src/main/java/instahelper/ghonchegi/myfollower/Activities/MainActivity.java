@@ -23,8 +23,9 @@ import instahelper.ghonchegi.myfollower.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private FragmentManager fm;
-    private HomeFragment homeFragment;
-    private PurchaseFragment purchaseFragment;
+    private HomeFragment homeFragment=new HomeFragment();
+    private PurchaseFragment purchaseFragment=new PurchaseFragment();
+    private GetCoinFragment getCoinFragment=new GetCoinFragment();
     private int currentItemId;
     private ActivityMainBinding binding;
 
@@ -36,31 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setVariables();
         fm.beginTransaction().replace(R.id.fragmentHolder, homeFragment, "shopFragment").commit();
         currentItemId = R.id.action_home;
-        //TODO remove
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
-        dataBaseHelper.removeAllData();
-//        User user = new User();
-//        user.setActive(true);
-//        user.setPassword("passsword");
-//        user.setUserName("username");
-//        user.setProfilePicture("picture");
-//        user.setUserId("userId");
-//        InstagramUser user1 = new InstagramUser();
-//        user1.setPassword("passsword");
-//        user1.setUserName("username");
-//        user1.setProfilePicture("picture");
-//        user1.setUserId("userId");
-//        if (dataBaseHelper.checkkUser(user1)) {
-//            Toast.makeText(this, "exists", Toast.LENGTH_SHORT).show();
-//        } else
-//            dataBaseHelper.addUser(user);
-//
-//        Log.d(App.TAG, "onCreate: " + dataBaseHelper.getAllUsers().size() + "");
-//        for (User u :dataBaseHelper.getAllUsers())
-//        {
-//            Log.d(App.TAG, "onCreate: " + u.getUserId() + "");
-//        }
-//        Toast.makeText(this, dataBaseHelper.getAllUsers().get(0).getUserName(), Toast.LENGTH_SHORT).show();
+
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -73,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case R.id.action_navigation:
                             currentItemId = R.id.action_navigation;
-                            fm.beginTransaction().replace(R.id.fragmentHolder, new GetCoinFragment(), "shopFragment").commit();
+                            fm.beginTransaction().replace(R.id.fragmentHolder, getCoinFragment, "shopFragment").commit();
 
                             break;
                         case R.id.action_home:
@@ -99,8 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setVariables() {
         fm = getSupportFragmentManager();
-        homeFragment = new HomeFragment();
-        purchaseFragment = new PurchaseFragment();
+
     }
 
 }

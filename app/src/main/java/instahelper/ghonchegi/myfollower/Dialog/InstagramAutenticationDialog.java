@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -30,8 +31,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import instahelper.ghonchegi.myfollower.Activities.MainActivity;
+import instahelper.ghonchegi.myfollower.App;
+import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.DialogAuthenticateBinding;
+import instahelper.ghonchegi.myfollower.instaAPI.InstaApiException;
 import instahelper.ghonchegi.myfollower.instaAPI.InstagramApi;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -45,6 +49,10 @@ public class InstagramAutenticationDialog extends DialogFragment {
     private WebView loginWebView;
     private SharedPreferences shared;
     private SharedPreferences.Editor editor;
+    private SQLiteDatabase db;
+    private DataBaseHelper dbHeplper;
+
+
 
     public static void clearCookies(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -69,6 +77,7 @@ public class InstagramAutenticationDialog extends DialogFragment {
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //dialog.setContentView(R.layout.dialog_authenticate);
+        dbHeplper=new DataBaseHelper(getContext());
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_authenticate, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
@@ -78,6 +87,7 @@ public class InstagramAutenticationDialog extends DialogFragment {
         loginWebView = binding.webViewAuthenticate;
         LoginWebClient client = new LoginWebClient();
         shared = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        editor = shared.edit();
         loginWebView.getSettings().setJavaScriptEnabled(true);
         loginWebView.addJavascriptInterface(new MyJavaScriptInterface(), "MYOBJECT");
         loginWebView.setWebViewClient(client);
@@ -86,6 +96,7 @@ public class InstagramAutenticationDialog extends DialogFragment {
         loginWebView.getSettings().setSaveFormData(false);
         clearCookies(getContext());
         loginWebView.loadUrl("https://www.instagram.com/accounts/login/?force_classic_login");
+        db= dbHeplper.getWritableDatabase();
 
 
         return dialog;
@@ -104,6 +115,7 @@ public class InstagramAutenticationDialog extends DialogFragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
 
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 getActivity().startActivity(intent);
@@ -207,6 +219,45 @@ public class InstagramAutenticationDialog extends DialogFragment {
                     OnCredentialsEntered(username, password_final);
                 }
             });
+        }
+    }
+
+    public void logOut()
+    {
+        try {
+            api.Logout(new InstagramApi.ResponseHandler() {
+                @Override
+                public void OnSuccess(JSONObject response) {
+                    db.execSQL("DELETE FROM posts");
+                    db.execSQL("DELETE FROM followers");
+                    db.execSQL("DELETE FROM followings");
+                    db.execSQL("DELETE FROM first_followers");
+                    db.execSQL("DELETE FROM first_followings");
+                    editor.putString("username", "");
+                    editor.putString("profile_pic_url", "");
+                    editor.putString("full_name", "");
+                    editor.putBoolean("is_first_reload", true);
+                    editor.putBoolean("is_get_posts", false);
+                    editor.putLong("first_reload_time", 0);
+                    editor.putLong("last_reload_time", 0);
+                    editor.putBoolean("auto_unfollow_is_active", false);
+                    editor.apply();
+
+                    App.followCoin=0;
+                    App.Api_Token=null;
+                    App.UUID=null;
+                    App.likeCoin=0;
+
+
+                }
+
+                @Override
+                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+                }
+            });
+        } catch (InstaApiException e) {
+            e.printStackTrace();
         }
     }
 

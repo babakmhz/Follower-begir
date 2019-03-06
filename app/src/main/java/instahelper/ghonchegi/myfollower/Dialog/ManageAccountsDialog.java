@@ -35,7 +35,7 @@ public class ManageAccountsDialog extends DialogFragment {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         //endregion
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
-        AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(),getChildFragmentManager());
+        AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager());
 
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -60,8 +60,26 @@ public class ManageAccountsDialog extends DialogFragment {
             }
         });
 
+
+        binding.imvAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataBaseHelper dataBaseHelper1 = new DataBaseHelper(getActivity());
+                dataBaseHelper.setAllValueNotActive();
+                authenticate();
+            }
+        });
+
         return dialog;
     }
 
+    private void authenticate() {
+        // startActivity(new Intent(this,ActivityLoginWebview.class));
+        InstagramAutenticationDialog dialog = new InstagramAutenticationDialog();
+        dialog.setCancelable(true);
+        dialog.show(getFragmentManager(), ":");
+
+
+    }
 
 }

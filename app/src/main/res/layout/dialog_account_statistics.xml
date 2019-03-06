@@ -136,6 +136,7 @@
                 app:layout_constraintTop_toBottomOf="@id/llFirstRight">
 
                 <TextView
+                    android:id="@+id/tvLikeCounts"
                     style="@style/statisticsTextStyle"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -167,6 +168,7 @@
                 app:layout_constraintTop_toBottomOf="@id/llFirstLeft">
 
                 <TextView
+                    android:id="@+id/tvAverageLike"
                     style="@style/statisticsTextStyle"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -199,6 +201,7 @@
                 app:layout_constraintTop_toBottomOf="@id/llSecondRight">
 
                 <TextView
+                    android:id="@+id/tvCommentCounts"
                     style="@style/statisticsTextStyle"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -231,6 +234,7 @@
                 app:layout_constraintTop_toBottomOf="@id/llSecondLeft">
 
                 <TextView
+                    android:id="@+id/tvAverageComment"
                     style="@style/statisticsTextStyle"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
