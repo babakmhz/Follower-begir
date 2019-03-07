@@ -6,25 +6,31 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
 import com.squareup.picasso.Picasso;
 
+import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.DialogAccountActionBinding;
 
 @SuppressLint("ValidFragment")
 public class AccountActionsDialog extends DialogFragment {
     private final int isActive;
+    private final AccountChangerInterface callBakck;
+    private final String password;
     private DialogAccountActionBinding binding;
     private String profilePic, userName;
 
     @SuppressLint("ValidFragment")
-    public AccountActionsDialog(String profilePicture, String userName,int isActive) {
+    public AccountActionsDialog(String profilePicture, String userName, int isActive, AccountChangerInterface callBack,String password) {
         this.userName = userName;
         this.profilePic = profilePicture;
         this.isActive=isActive;
+        this.callBakck= callBack;
+        this.password = password;
     }
 
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
@@ -42,6 +48,19 @@ public class AccountActionsDialog extends DialogFragment {
         Picasso.get().load(profilePic).fit().into(binding.imgProfileImage);
         binding.tvUserName.setText(userName);
         if (isActive==1){binding.btnActivateAccount.setEnabled(false);}
+
+        binding.btnActivateAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callBakck.selectToChange(userName,password);
+                dismiss();
+            }
+        });
+        binding.btnRemoveAccount.setOnClickListener( v->{
+            callBakck.selectToChange(userName,password);
+            dismiss();
+        });
+
         return dialog;
     }
 

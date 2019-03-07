@@ -10,6 +10,7 @@
     <color name="grey">#ababab</color>
     <color name="darkerGrey">#4B4B4B</color>
     <color name="lightGrey">#dfdfdf</color>
+    <color name="veryLightGrey">#EEECEC</color>
     <color name="darkGrey">#414141</color>
     <color name="transparent">#00f9f9f9</color>
     <color name="roundPurple">#6f5ab3</color>

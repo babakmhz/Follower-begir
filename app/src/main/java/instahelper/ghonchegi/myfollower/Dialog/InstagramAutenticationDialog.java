@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,8 +26,6 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
-
-import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,6 +41,7 @@ import instahelper.ghonchegi.myfollower.instaAPI.InstagramApi;
 import static android.content.Context.MODE_PRIVATE;
 import static instahelper.ghonchegi.myfollower.App.TAG;
 
+@SuppressLint("ValidFragment")
 public class InstagramAutenticationDialog extends DialogFragment {
 
     DialogAuthenticateBinding binding;
@@ -52,7 +53,12 @@ public class InstagramAutenticationDialog extends DialogFragment {
     private SQLiteDatabase db;
     private DataBaseHelper dbHeplper;
 
-
+    public InstagramAutenticationDialog(boolean isRedirect, @Nullable String userName, @NonNull String password) {
+        if (isRedirect) {
+            logOut();
+            OnCredentialsEntered(userName, password);
+        }
+    }
 
     public static void clearCookies(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -77,7 +83,7 @@ public class InstagramAutenticationDialog extends DialogFragment {
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //dialog.setContentView(R.layout.dialog_authenticate);
-        dbHeplper=new DataBaseHelper(getContext());
+        dbHeplper = new DataBaseHelper(getContext());
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_authenticate, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
@@ -96,7 +102,7 @@ public class InstagramAutenticationDialog extends DialogFragment {
         loginWebView.getSettings().setSaveFormData(false);
         clearCookies(getContext());
         loginWebView.loadUrl("https://www.instagram.com/accounts/login/?force_classic_login");
-        db= dbHeplper.getWritableDatabase();
+        db = dbHeplper.getWritableDatabase();
 
 
         return dialog;
@@ -111,7 +117,7 @@ public class InstagramAutenticationDialog extends DialogFragment {
                 Log.i(TAG, "OnSuccess: " + response);
                 try {
                     JSONObject jsonRootObject = new JSONObject(String.valueOf(response));
-                    JSONObject newObj=jsonRootObject.getJSONObject("logged_in_user");
+                    JSONObject newObj = jsonRootObject.getJSONObject("logged_in_user");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -140,6 +146,44 @@ public class InstagramAutenticationDialog extends DialogFragment {
                 }
             }
         });
+    }
+
+    public void logOut() {
+        try {
+            api.Logout(new InstagramApi.ResponseHandler() {
+                @Override
+                public void OnSuccess(JSONObject response) {
+                    db.execSQL("DELETE FROM posts");
+                    db.execSQL("DELETE FROM followers");
+                    db.execSQL("DELETE FROM followings");
+                    db.execSQL("DELETE FROM first_followers");
+                    db.execSQL("DELETE FROM first_followings");
+                    editor.putString("username", "");
+                    editor.putString("profile_pic_url", "");
+                    editor.putString("full_name", "");
+                    editor.putBoolean("is_first_reload", true);
+                    editor.putBoolean("is_get_posts", false);
+                    editor.putLong("first_reload_time", 0);
+                    editor.putLong("last_reload_time", 0);
+                    editor.putBoolean("auto_unfollow_is_active", false);
+                    editor.apply();
+
+                    App.followCoin = 0;
+                    App.Api_Token = null;
+                    App.UUID = null;
+                    App.likeCoin = 0;
+
+
+                }
+
+                @Override
+                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+                }
+            });
+        } catch (InstaApiException e) {
+            e.printStackTrace();
+        }
     }
 
     private class LoginWebClient extends WebViewClient {
@@ -219,45 +263,6 @@ public class InstagramAutenticationDialog extends DialogFragment {
                     OnCredentialsEntered(username, password_final);
                 }
             });
-        }
-    }
-
-    public void logOut()
-    {
-        try {
-            api.Logout(new InstagramApi.ResponseHandler() {
-                @Override
-                public void OnSuccess(JSONObject response) {
-                    db.execSQL("DELETE FROM posts");
-                    db.execSQL("DELETE FROM followers");
-                    db.execSQL("DELETE FROM followings");
-                    db.execSQL("DELETE FROM first_followers");
-                    db.execSQL("DELETE FROM first_followings");
-                    editor.putString("username", "");
-                    editor.putString("profile_pic_url", "");
-                    editor.putString("full_name", "");
-                    editor.putBoolean("is_first_reload", true);
-                    editor.putBoolean("is_get_posts", false);
-                    editor.putLong("first_reload_time", 0);
-                    editor.putLong("last_reload_time", 0);
-                    editor.putBoolean("auto_unfollow_is_active", false);
-                    editor.apply();
-
-                    App.followCoin=0;
-                    App.Api_Token=null;
-                    App.UUID=null;
-                    App.likeCoin=0;
-
-
-                }
-
-                @Override
-                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-
-                }
-            });
-        } catch (InstaApiException e) {
-            e.printStackTrace();
         }
     }
 

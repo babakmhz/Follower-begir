@@ -45,4 +45,21 @@ public class JsonManager {
         return jsonBody.toString();
 
     }
+
+    public static String exchangeCoins(String value, int type) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("value",value);
+            jsonBody.put("type", type);
+            jsonBody.put("api_token", App.Api_Token);
+            jsonBody.put("uuid", App.UUID);
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        return jsonBody.toString();
+
+
+    }
 }

@@ -1,5 +1,6 @@
 package instahelper.ghonchegi.myfollower.Dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -14,13 +15,20 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 
 import instahelper.ghonchegi.myfollower.Adapters.AccountsListAdapter;
+import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.DialogManageAccountsBinding;
 
-public class ManageAccountsDialog extends DialogFragment {
+@SuppressLint("ValidFragment")
+public class ManageAccountsDialog extends DialogFragment implements AccountChangerInterface {
 
     DialogManageAccountsBinding binding;
+    private AccountChangerInterface callBack;
+
+    public ManageAccountsDialog(AccountChangerInterface callBack) {
+        this.callBack = callBack;
+    }
 
 
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
@@ -34,8 +42,9 @@ public class ManageAccountsDialog extends DialogFragment {
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         //endregion
+        callBack=this;
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
-        AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager());
+        AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager(), callBack);
 
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -75,11 +84,17 @@ public class ManageAccountsDialog extends DialogFragment {
 
     private void authenticate() {
         // startActivity(new Intent(this,ActivityLoginWebview.class));
-        InstagramAutenticationDialog dialog = new InstagramAutenticationDialog();
+        InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(false, null, null);
         dialog.setCancelable(true);
         dialog.show(getFragmentManager(), ":");
 
 
     }
 
+    @Override
+    public void selectToChange(String userName, String pass) {
+        callBack.selectToChange(userName,pass);
+        dismiss();
+
+    }
 }

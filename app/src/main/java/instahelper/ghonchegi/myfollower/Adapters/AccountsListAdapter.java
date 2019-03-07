@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import instahelper.ghonchegi.myfollower.Dialog.AccountActionsDialog;
+import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
 import instahelper.ghonchegi.myfollower.Models.User;
 import instahelper.ghonchegi.myfollower.R;
 
@@ -25,13 +26,15 @@ import static instahelper.ghonchegi.myfollower.App.TAG;
 
 public class AccountsListAdapter extends android.support.v7.widget.RecyclerView.Adapter<AccountsListAdapter.Item> {
 
+    private final AccountChangerInterface callBack;
     FragmentManager childFragmentManager;
     private ArrayList<User> usersList;
     private Context context;
 
-    public AccountsListAdapter(ArrayList<User> usersList, FragmentManager childFragmentManager) {
+    public AccountsListAdapter(ArrayList<User> usersList, FragmentManager childFragmentManager, AccountChangerInterface callBack) {
         this.usersList = usersList;
         this.childFragmentManager = childFragmentManager;
+        this.callBack = callBack;
     }
 
     @NonNull
@@ -58,7 +61,8 @@ public class AccountsListAdapter extends android.support.v7.widget.RecyclerView.
             holder.root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AccountActionsDialog dialog = new AccountActionsDialog(usersList.get(position).getProfilePicture(), usersList.get(position).getUserName(),usersList.get(position).getIsActive());
+                    AccountActionsDialog dialog = new AccountActionsDialog(usersList.get(position).getProfilePicture(), usersList.get(position).getUserName()
+                            ,usersList.get(position).getIsActive(),callBack,usersList.get(position).getPassword());
                     dialog.setCancelable(true);
                     dialog.show(childFragmentManager, "");
                 }

@@ -12,7 +12,6 @@
             android:layout_height="0dp"
             android:alpha="0.4"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher_round"
             app:layout_constraintBottom_toBottomOf="@id/topContainer"
             app:layout_constraintTop_toTopOf="parent" />
 

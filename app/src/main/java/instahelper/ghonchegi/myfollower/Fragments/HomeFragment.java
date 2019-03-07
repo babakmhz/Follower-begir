@@ -31,9 +31,11 @@ import java.util.Map;
 
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.AccountStatisticsDialog;
+import instahelper.ghonchegi.myfollower.Dialog.InstagramAutenticationDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ManageAccountsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ReviewOrdersDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TransferCoinDialog;
+import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
@@ -50,7 +52,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements AccountChangerInterface {
 
 
     private View view;
@@ -63,6 +65,8 @@ public class HomeFragment extends Fragment {
     private android.content.SharedPreferences shared;
     private android.content.SharedPreferences.Editor editor;
     private String next_max_id;
+    private String profilePicURL;
+    private AccountChangerInterface callBack;
 
     public HomeFragment() {
     }
@@ -77,7 +81,7 @@ public class HomeFragment extends Fragment {
         dbHeplper = new DataBaseHelper(App.context);
         shared = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
         editor = shared.edit();
-
+        callBack = this;
 
         try {
             dbHeplper.createDatabase();
@@ -106,7 +110,7 @@ public class HomeFragment extends Fragment {
 
         binding.tvAccountInfo.setOnClickListener(v -> {
 
-            AccountStatisticsDialog accountStatisticsDialog = new AccountStatisticsDialog();
+            AccountStatisticsDialog accountStatisticsDialog = new AccountStatisticsDialog(profilePicURL);
             accountStatisticsDialog.show(getChildFragmentManager(), "");
 
 
@@ -115,7 +119,7 @@ public class HomeFragment extends Fragment {
         binding.tvManageAccounts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ManageAccountsDialog dialog = new ManageAccountsDialog();
+                ManageAccountsDialog dialog = new ManageAccountsDialog(callBack);
                 dialog.show(getChildFragmentManager(), "");
             }
         });
@@ -151,11 +155,12 @@ public class HomeFragment extends Fragment {
 
 
                             if (dbelper.checkkUser(user)) {
-                                Toast.makeText(getActivity(), "exists", Toast.LENGTH_SHORT).show();
                             } else
                                 dbelper.addUser(_user);
                             Picasso.get().load(user.getProfilePicture()).error(R.drawable.app_logo).into(binding.profileImage);
                             Picasso.get().load(user.getProfilePicture()).error(R.drawable.app_logo).into(binding.imageView2);
+                            profilePicURL = user.getProfilePicture();
+                            App.profilePicURl = user.getProfilePicture();
                             binding.tvMediaCount.setText(user.getMediaCount());
                             binding.tvFollowerCount.setText(user.getFollowByCount());
                             binding.tvFollowingCount.setText(user.getFollowsCount());
@@ -588,6 +593,13 @@ public class HomeFragment extends Fragment {
 //            txtBlockedByYouD.setText("افرادی که در " + diffFirstReloadInHours + " ساعت گذشته آنها را بلاک کرده اید .");
 //        }
 //    }
+    }
+
+    @Override
+    public void selectToChange(String userName, String pass) {
+        InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(true,userName,pass);
+        dialog.setCancelable(true);
+        dialog.show(getChildFragmentManager(), ":");
     }
 }
 
