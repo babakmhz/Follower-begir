@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import instahelper.ghonchegi.myfollower.Dialog.AccountActionsDialog;
 import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
+import instahelper.ghonchegi.myfollower.Interface.AccountOptionChooserInterface;
 import instahelper.ghonchegi.myfollower.Models.User;
 import instahelper.ghonchegi.myfollower.R;
 
@@ -26,12 +27,12 @@ import static instahelper.ghonchegi.myfollower.App.TAG;
 
 public class AccountsListAdapter extends android.support.v7.widget.RecyclerView.Adapter<AccountsListAdapter.Item> {
 
-    private final AccountChangerInterface callBack;
+    private final AccountOptionChooserInterface callBack;
     FragmentManager childFragmentManager;
     private ArrayList<User> usersList;
     private Context context;
 
-    public AccountsListAdapter(ArrayList<User> usersList, FragmentManager childFragmentManager, AccountChangerInterface callBack) {
+    public AccountsListAdapter(ArrayList<User> usersList, FragmentManager childFragmentManager, AccountOptionChooserInterface callBack) {
         this.usersList = usersList;
         this.childFragmentManager = childFragmentManager;
         this.callBack = callBack;

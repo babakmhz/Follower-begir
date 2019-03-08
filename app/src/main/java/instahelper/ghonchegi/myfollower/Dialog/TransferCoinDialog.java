@@ -33,6 +33,7 @@ import static instahelper.ghonchegi.myfollower.App.requestQueue;
 public class TransferCoinDialog extends DialogFragment {
 
     private FragmentTransferCoinBinding binding;
+    private String receiverUUID = null;
 
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
@@ -166,6 +167,10 @@ public class TransferCoinDialog extends DialogFragment {
         request.setTag(this);
         requestQueue.add(request);
 
+    }
+
+    public void transferCoin() {
+        
     }
 }
 

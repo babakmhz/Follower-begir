@@ -16,18 +16,20 @@ import android.view.Window;
 
 import instahelper.ghonchegi.myfollower.Adapters.AccountsListAdapter;
 import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
+import instahelper.ghonchegi.myfollower.Interface.AccountOptionChooserInterface;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.DialogManageAccountsBinding;
 
 @SuppressLint("ValidFragment")
-public class ManageAccountsDialog extends DialogFragment implements AccountChangerInterface {
+public class ManageAccountsDialog extends DialogFragment implements AccountOptionChooserInterface {
 
     DialogManageAccountsBinding binding;
-    private AccountChangerInterface callBack;
+    private AccountChangerInterface externalCallBack;
+    private AccountOptionChooserInterface internalCallback;
 
     public ManageAccountsDialog(AccountChangerInterface callBack) {
-        this.callBack = callBack;
+        this.externalCallBack = callBack;
     }
 
 
@@ -42,9 +44,9 @@ public class ManageAccountsDialog extends DialogFragment implements AccountChang
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         //endregion
-        callBack=this;
+        internalCallback=this;
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
-        AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager(), callBack);
+        AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager(), internalCallback);
 
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -91,10 +93,10 @@ public class ManageAccountsDialog extends DialogFragment implements AccountChang
 
     }
 
-    @Override
-    public void selectToChange(String userName, String pass) {
-        callBack.selectToChange(userName,pass);
-        dismiss();
 
+    @Override
+    public void changedInfo(String username, String password) {
+        externalCallBack.selectToChange(username,password);
+        dismiss();
     }
 }

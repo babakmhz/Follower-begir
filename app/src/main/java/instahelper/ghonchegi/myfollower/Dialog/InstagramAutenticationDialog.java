@@ -45,19 +45,21 @@ import static instahelper.ghonchegi.myfollower.App.TAG;
 public class InstagramAutenticationDialog extends DialogFragment {
 
     DialogAuthenticateBinding binding;
-    private InstagramApi api;
+    private InstagramApi api = InstagramApi.getInstance();
     private Handler handler;
     private WebView loginWebView;
     private SharedPreferences shared;
     private SharedPreferences.Editor editor;
     private SQLiteDatabase db;
     private DataBaseHelper dbHeplper;
+    private boolean isRedirectd = false;
+    private String userName, password;
 
     public InstagramAutenticationDialog(boolean isRedirect, @Nullable String userName, @NonNull String password) {
-        if (isRedirect) {
-            logOut();
-            OnCredentialsEntered(userName, password);
-        }
+        this.isRedirectd = isRedirect;
+        this.password = password;
+        this.userName = userName;
+
     }
 
     public static void clearCookies(Context context) {
@@ -101,7 +103,11 @@ public class InstagramAutenticationDialog extends DialogFragment {
         loginWebView.clearHistory();
         loginWebView.getSettings().setSaveFormData(false);
         clearCookies(getContext());
-        loginWebView.loadUrl("https://www.instagram.com/accounts/login/?force_classic_login");
+        if (isRedirectd) {
+            logOut();
+            OnCredentialsEntered(userName, password);
+        } else
+            loginWebView.loadUrl("https://www.instagram.com/accounts/login/?force_classic_login");
         db = dbHeplper.getWritableDatabase();
 
 

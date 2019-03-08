@@ -2,36 +2,20 @@ package instahelper.ghonchegi.myfollower.Models;
 
 public class Orders {
     private int id;
-    private String TrackingCode;
+    private int TrackingCode;
     private String picUrl;
-    private String numberOfReceived;
+    private int numberOfReceived;
     private String DateTime;
     private int ordered;
-    private String type;
+    private int type;
 
-    public Orders(int id, String trackingCode, String picUrl, String numberOfReceived, String dateTime, int ordered, String type) {
+    public Orders(int id, int trackingCode, String picUrl, int numberOfReceived, String dateTime, int ordered, int type) {
         this.id = id;
         TrackingCode = trackingCode;
         this.picUrl = picUrl;
         this.numberOfReceived = numberOfReceived;
         DateTime = dateTime;
         this.ordered = ordered;
-        this.type = type;
-    }
-
-    public int getOrdered() {
-        return ordered;
-    }
-
-    public void setOrdered(int ordered) {
-        this.ordered = ordered;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
         this.type = type;
     }
 
@@ -43,11 +27,11 @@ public class Orders {
         this.id = id;
     }
 
-    public String getTrackingCode() {
+    public int getTrackingCode() {
         return TrackingCode;
     }
 
-    public void setTrackingCode(String trackingCode) {
+    public void setTrackingCode(int trackingCode) {
         TrackingCode = trackingCode;
     }
 
@@ -59,11 +43,11 @@ public class Orders {
         this.picUrl = picUrl;
     }
 
-    public String getNumberOfReceived() {
+    public int getNumberOfReceived() {
         return numberOfReceived;
     }
 
-    public void setNumberOfReceived(String numberOfReceived) {
+    public void setNumberOfReceived(int numberOfReceived) {
         this.numberOfReceived = numberOfReceived;
     }
 
@@ -73,5 +57,21 @@ public class Orders {
 
     public void setDateTime(String dateTime) {
         DateTime = dateTime;
+    }
+
+    public int getOrdered() {
+        return ordered;
+    }
+
+    public void setOrdered(int ordered) {
+        this.ordered = ordered;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

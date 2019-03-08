@@ -251,7 +251,9 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
 
 
             }
-        }, error -> Log.i("volley", "onErrorResponse: " + error.toString())) {
+        }, error -> {
+            Log.i("volley", "onErrorResponse: " + error.toString());
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();

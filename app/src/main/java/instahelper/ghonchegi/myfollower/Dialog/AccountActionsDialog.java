@@ -13,19 +13,20 @@ import android.view.Window;
 import com.squareup.picasso.Picasso;
 
 import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
+import instahelper.ghonchegi.myfollower.Interface.AccountOptionChooserInterface;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.DialogAccountActionBinding;
 
 @SuppressLint("ValidFragment")
 public class AccountActionsDialog extends DialogFragment {
     private final int isActive;
-    private final AccountChangerInterface callBakck;
+    private final AccountOptionChooserInterface callBakck;
     private final String password;
     private DialogAccountActionBinding binding;
     private String profilePic, userName;
 
     @SuppressLint("ValidFragment")
-    public AccountActionsDialog(String profilePicture, String userName, int isActive, AccountChangerInterface callBack,String password) {
+    public AccountActionsDialog(String profilePicture, String userName, int isActive, AccountOptionChooserInterface callBack,String password) {
         this.userName = userName;
         this.profilePic = profilePicture;
         this.isActive=isActive;
@@ -52,12 +53,12 @@ public class AccountActionsDialog extends DialogFragment {
         binding.btnActivateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callBakck.selectToChange(userName,password);
+                callBakck.changedInfo(userName,password);
                 dismiss();
             }
         });
         binding.btnRemoveAccount.setOnClickListener( v->{
-            callBakck.selectToChange(userName,password);
+            callBakck.changedInfo(userName,password);
             dismiss();
         });
 
