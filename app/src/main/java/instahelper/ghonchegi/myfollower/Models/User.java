@@ -19,6 +19,15 @@ public class User {
     boolean isRequested;
     boolean isCheckedRelationBefore = false;
     Integer isActive;
+    String uuid=null;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     public User() {
     }

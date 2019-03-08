@@ -63,6 +63,24 @@ public class JsonManager {
 
     }
 
+    public static String transferCoins(String value, int type, String receiverUUID) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("value", value);
+            jsonBody.put("type", type);
+            jsonBody.put("api_token", App.Api_Token);
+            jsonBody.put("uuid", App.UUID);
+            jsonBody.put("destination_uuid", receiverUUID);
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        return jsonBody.toString();
+
+
+    }
+
     public static String simpleJson() {
         JSONObject jsonBody = new JSONObject();
         try {
