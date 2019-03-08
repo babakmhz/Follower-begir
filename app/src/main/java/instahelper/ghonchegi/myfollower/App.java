@@ -30,8 +30,9 @@ public class App extends Application {
     public static Context context;
     public static String UUID = null;
     public static String Api_Token = null;
-    public static int followCoin ;
-    public static int likeCoin ;
+    public static int followCoin;
+    public static int likeCoin;
+    public static String profilePicURl;
 
 
     public static void Toast(Context context, String message) {

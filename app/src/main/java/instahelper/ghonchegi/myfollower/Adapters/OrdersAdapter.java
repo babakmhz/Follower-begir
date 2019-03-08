@@ -34,9 +34,22 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.Item> {
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull Item holder, int position) {
-        holder.tvTitle.setText("درخواست " + orders.get(position).getOrdered() + orders.get(position).getType());
-        holder.tvTrackingCode.setText(orders.get(position).getTrackingCode());
-        holder.tvDoneReport.setText("از تعداد  " + orders.get(position).getOrdered() + orders.get(position).getType() + " درخواستی ");
+        String type = "";
+        switch (orders.get(position).getType()) {
+            case 0:
+                type = "لایک";
+                break;
+            case 1:
+                type = "فالو";
+
+                break;
+            case 2:
+                type = "کامنت";
+                break;
+        }
+        holder.tvTitle.setText("درخواست " + orders.get(position).getOrdered() + type);
+        holder.tvTrackingCode.setText(orders.get(position).getTrackingCode() + "");
+        holder.tvDoneReport.setText("از تعداد  " + orders.get(position).getOrdered() + type + " درخواستی تعداد  " +orders.get(position).getNumberOfReceived()+ "باقیمانده");
         holder.tvDateTime.setText(orders.get(position).getDateTime());
 
 

@@ -1,5 +1,6 @@
 package instahelper.ghonchegi.myfollower.Dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -14,13 +15,22 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 
 import instahelper.ghonchegi.myfollower.Adapters.AccountsListAdapter;
+import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
+import instahelper.ghonchegi.myfollower.Interface.AccountOptionChooserInterface;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.DialogManageAccountsBinding;
 
-public class ManageAccountsDialog extends DialogFragment {
+@SuppressLint("ValidFragment")
+public class ManageAccountsDialog extends DialogFragment implements AccountOptionChooserInterface {
 
     DialogManageAccountsBinding binding;
+    private AccountChangerInterface externalCallBack;
+    private AccountOptionChooserInterface internalCallback;
+
+    public ManageAccountsDialog(AccountChangerInterface callBack) {
+        this.externalCallBack = callBack;
+    }
 
 
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
@@ -34,8 +44,10 @@ public class ManageAccountsDialog extends DialogFragment {
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         //endregion
+        internalCallback=this;
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
-        AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers());
+        AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager(), internalCallback);
+
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
@@ -59,8 +71,32 @@ public class ManageAccountsDialog extends DialogFragment {
             }
         });
 
+
+        binding.imvAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataBaseHelper dataBaseHelper1 = new DataBaseHelper(getActivity());
+                dataBaseHelper.setAllValueNotActive();
+                authenticate();
+            }
+        });
+
         return dialog;
     }
 
+    private void authenticate() {
+        // startActivity(new Intent(this,ActivityLoginWebview.class));
+        InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(false, null, null);
+        dialog.setCancelable(true);
+        dialog.show(getFragmentManager(), ":");
 
+
+    }
+
+
+    @Override
+    public void changedInfo(String username, String password) {
+        externalCallBack.selectToChange(username,password);
+        dismiss();
+    }
 }

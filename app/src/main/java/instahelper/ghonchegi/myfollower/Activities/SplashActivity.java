@@ -55,7 +55,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
 
     private void authenticate() {
         // startActivity(new Intent(this,ActivityLoginWebview.class));
-        InstagramAutenticationDialog dialog = new InstagramAutenticationDialog();
+        InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(false,null,null);
         dialog.setCancelable(true);
         dialog.show(getSupportFragmentManager(), ":");
 

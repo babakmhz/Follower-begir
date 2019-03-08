@@ -43,15 +43,15 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_arrow_left" />
 
-            <android.support.v7.widget.AppCompatImageView
+            <TextView
                 android:id="@+id/imvFilters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:text="پیگیری سفارش"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_filter" />
+                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
         <android.support.v7.widget.RecyclerView
@@ -64,5 +64,30 @@
 
         </android.support.v7.widget.RecyclerView>
 
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/llFirstOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_order" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/submitYourFirstOrder"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+        </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </layout>
