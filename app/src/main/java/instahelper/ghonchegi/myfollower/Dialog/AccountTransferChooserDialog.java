@@ -14,7 +14,10 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 
+import com.squareup.picasso.Picasso;
+
 import instahelper.ghonchegi.myfollower.Adapters.AccountTransferChooserAdapter;
+import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
 import instahelper.ghonchegi.myfollower.Interface.AccountOptionChooserInterface;
 import instahelper.ghonchegi.myfollower.Interface.AccountTransferInfoInterface;
@@ -83,7 +86,7 @@ public class AccountTransferChooserDialog extends DialogFragment implements Acco
                 authenticate();
             }
         });
-
+        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
         return dialog;
     }
 

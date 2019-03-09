@@ -246,8 +246,8 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
                 try {
                     JSONObject jsonRootObject = new JSONObject(response1);
                     if (jsonRootObject.optInt("status") == 1) {
-                        binding.tvLikeCoinCount.setText(jsonRootObject.optInt("follow_coin") + "");
-                        binding.tvFollowerCoinCount.setText(jsonRootObject.optInt("like_coin") + "");
+                        binding.tvFollowerCoinCount.setText(jsonRootObject.optInt("follow_coin") + "");
+                        binding.tvLikeCoinCount.setText(jsonRootObject.optInt("like_coin") + "");
                         App.followCoin = jsonRootObject.optInt("follow_coin");
                         App.likeCoin = jsonRootObject.optInt("like_coin");
 

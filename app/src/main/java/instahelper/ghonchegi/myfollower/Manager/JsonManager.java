@@ -111,4 +111,23 @@ public class JsonManager {
 
         return jsonBody.toString();
     }
+
+    public static String submitOrder(int type, String id, String picUrl, int requstedCount) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("api_token", App.Api_Token);
+            jsonBody.put("uuid", App.UUID);
+            jsonBody.put("type", type);
+            jsonBody.put("type_id", id);
+            jsonBody.put("request_count", requstedCount);
+            jsonBody.put("remaining_count", requstedCount);
+            jsonBody.put("image_path", picUrl);
+
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        return jsonBody.toString();
+    }
 }

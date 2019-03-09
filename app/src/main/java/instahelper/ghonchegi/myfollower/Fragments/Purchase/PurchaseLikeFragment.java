@@ -14,15 +14,27 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.SelectPictureDialog;
 import instahelper.ghonchegi.myfollower.Interface.ImagePickerInterface;
+import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.FragmentPurchaseLikeBinding;
 
+import static instahelper.ghonchegi.myfollower.App.Base_URL;
 import static instahelper.ghonchegi.myfollower.App.TAG;
+import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 
 public class PurchaseLikeFragment extends Fragment implements ImagePickerInterface {
@@ -30,6 +42,8 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
 
     ImagePickerInterface callback;
     FragmentPurchaseLikeBinding binding;
+    private String selectedPicURL = null;
+    private String itemId;
 
     public PurchaseLikeFragment() {
     }
@@ -50,6 +64,9 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
                 selectPictureDialog.show(getChildFragmentManager(), ":");
 
             }
+        });
+        binding.btnConfirm.setOnClickListener(v -> {
+            submitOrder();
         });
 
 
@@ -90,6 +107,8 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
         binding.imvSelectPic.setVisibility(View.INVISIBLE);
         binding.tvSelectPic.setVisibility(View.INVISIBLE);
         binding.imvPickImage.setBackgroundDrawable(getActivity().getDrawable(R.drawable.rounded_orange));
+        selectedPicURL = imageURL;
+        itemId = imageId;
         try {
             Picasso.get().load(imageURL).error(R.drawable.app_logo).into(binding.imvSelectedPic);
         } catch (Exception e) {
@@ -100,12 +119,50 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
     }
 
     private void submitOrder() {
-        if (binding.imvSelectedPic == null) {
+        if (App.likeCoin <= 0) {
+            Toast.makeText(getContext(), "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
+
+        } else if (selectedPicURL == null) {
             Toast.makeText(getContext(), "یک عکس انتخاب کنید", Toast.LENGTH_SHORT).show();
+
         } else if (binding.seekBar.getProgress() == 0) {
             Toast.makeText(getContext(), "تعداد سفارش را مشخص کنید", Toast.LENGTH_SHORT).show();
         } else {
+            final String requestBody = JsonManager.submitOrder(0, itemId, selectedPicURL, binding.seekBar.getProgress());
 
+            StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/set", response1 -> {
+                if (response1 != null) {
+                    try {
+                        JSONObject jsonRootObject = new JSONObject(response1);
+                        if (jsonRootObject.optBoolean("status")) {
+                            App.likeCoin = Integer.parseInt(jsonRootObject.getString("like_coin"));
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            }, error -> {
+                Log.i("volley", "onErrorResponse: " + error.toString());
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    return requestBody == null ? null : requestBody.getBytes();
+                }
+            };
+            request.setTag(this);
+            requestQueue.add(request);
 
 
         }
