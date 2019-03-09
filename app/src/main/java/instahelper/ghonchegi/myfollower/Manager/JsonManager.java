@@ -5,6 +5,7 @@ import android.content.Context;
 import org.json.JSONObject;
 
 import instahelper.ghonchegi.myfollower.App;
+import instahelper.ghonchegi.myfollower.WheelPiclerView.LuckyItem;
 import instahelper.ghonchegi.myfollower.data.InstagramUser;
 
 public class JsonManager {
@@ -94,5 +95,20 @@ public class JsonManager {
         return jsonBody.toString();
 
 
+    }
+
+    public static String setLuckyWheel(LuckyItem luckyItem) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("api_token", App.Api_Token);
+            jsonBody.put("uuid", App.UUID);
+            jsonBody.put("type", luckyItem.type);
+            jsonBody.put("value", luckyItem.topText);
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        return jsonBody.toString();
     }
 }

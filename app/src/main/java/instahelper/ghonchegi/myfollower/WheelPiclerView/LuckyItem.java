@@ -10,4 +10,5 @@ public class LuckyItem {
     public int secondaryTextOrientation;
     public int icon;
     public int color;
+    public int type = 0;
 }

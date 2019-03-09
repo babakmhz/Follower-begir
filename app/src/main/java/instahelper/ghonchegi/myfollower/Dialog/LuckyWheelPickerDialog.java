@@ -5,19 +5,39 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
+import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.WheelPiclerView.LuckyItem;
 import instahelper.ghonchegi.myfollower.WheelPiclerView.LuckyWheelView;
 
+import static instahelper.ghonchegi.myfollower.App.Base_URL;
+import static instahelper.ghonchegi.myfollower.App.requestQueue;
+
 public class LuckyWheelPickerDialog extends DialogFragment {
     List<LuckyItem> data = new ArrayList<>();
+    private Button btnStart;
+
 
     @NonNull
     @Override
@@ -30,11 +50,37 @@ public class LuckyWheelPickerDialog extends DialogFragment {
         dialog.getWindow().setBackgroundDrawableResource(R.color.colorAccent);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         final LuckyWheelView luckyWheelView = (LuckyWheelView) dialog.findViewById(R.id.luckyWheel);
+        btnStart = dialog.findViewById(R.id.start);
+        btnStart.setEnabled(false);
 
+        checkStatus();
         setData(luckyWheelView);
-//        setVariables(dialog);
+
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int index = getRandomIndex();
+                luckyWheelView.startLuckyWheelWithTargetIndex(index);
+            }
+        });
 
 
+        luckyWheelView.setLuckyRoundItemSelectedListener(new LuckyWheelView.LuckyRoundItemSelectedListener() {
+            @Override
+            public void LuckyRoundItemSelected(int index) {
+                String type = "";
+                switch (data.get(index).type) {
+                    case 0:
+                        type = "لایک";
+                        break;
+                    case 1:
+                        type = "فالو";
+                        break;
+                }
+                Toast.makeText(getContext(), "شما برنده " + data.get(index).topText + " سکه " + type + " شدید ", Toast.LENGTH_SHORT).show();
+                setStatus(data.get(index));
+            }
+        });
         return dialog;
 
 
@@ -42,122 +88,178 @@ public class LuckyWheelPickerDialog extends DialogFragment {
 
     private void setData(LuckyWheelView luckyWheelView) {
         LuckyItem luckyItem1 = new LuckyItem();
-        luckyItem1.topText = "100";
-        luckyItem1.icon = R.drawable.app_logo;
+        luckyItem1.topText = "4";
+        luckyItem1.icon = R.drawable.like_coin;
         luckyItem1.color = 0xffFFF3E0;
+        luckyItem1.type = 0;
         data.add(luckyItem1);
 
         LuckyItem luckyItem2 = new LuckyItem();
-        luckyItem2.topText = "200";
-        luckyItem2.icon = R.drawable.follow_coin;
+        luckyItem2.topText = "9";
+        luckyItem2.icon = R.drawable.like_coin;
         luckyItem2.color = 0xffFFE0B2;
+        luckyItem1.type = 0;
         data.add(luckyItem2);
 
         LuckyItem luckyItem3 = new LuckyItem();
-        luckyItem3.topText = "300";
+        luckyItem3.topText = "5";
         luckyItem3.icon = R.drawable.follow_coin;
         luckyItem3.color = 0xffFFCC80;
+        luckyItem1.type = 1;
         data.add(luckyItem3);
 
         //////////////////
         LuckyItem luckyItem4 = new LuckyItem();
-        luckyItem4.topText = "400";
-        luckyItem4.icon = R.drawable.follow_coin;
+        luckyItem4.topText = "15";
+        luckyItem4.icon = R.drawable.like_coin;
+        luckyItem1.type = 0;
         luckyItem4.color = 0xffFFF3E0;
         data.add(luckyItem4);
 
         LuckyItem luckyItem5 = new LuckyItem();
-        luckyItem5.topText = "500";
+        luckyItem5.topText = "0";
         luckyItem5.icon = R.drawable.follow_coin;
+        luckyItem1.type = 1;
         luckyItem5.color = 0xffFFE0B2;
         data.add(luckyItem5);
 
         LuckyItem luckyItem6 = new LuckyItem();
-        luckyItem6.topText = "600";
-        luckyItem6.icon = R.drawable.follow_coin;
+        luckyItem6.topText = "6";
+        luckyItem6.icon = R.drawable.like_coin;
+        luckyItem1.type = 0;
         luckyItem6.color = 0xffFFCC80;
         data.add(luckyItem6);
         //////////////////
 
         //////////////////////
         LuckyItem luckyItem7 = new LuckyItem();
-        luckyItem7.topText = "700";
+        luckyItem7.topText = "11";
+        luckyItem1.type = 1;
         luckyItem7.icon = R.drawable.follow_coin;
         luckyItem7.color = 0xffFFF3E0;
         data.add(luckyItem7);
 
         LuckyItem luckyItem8 = new LuckyItem();
-        luckyItem8.topText = "800";
-        luckyItem8.icon = R.drawable.follow_coin;
+        luckyItem8.topText = "5";
+        luckyItem1.type = 0;
+        luckyItem8.icon = R.drawable.like_coin;
         luckyItem8.color = 0xffFFE0B2;
         data.add(luckyItem8);
 
 
         LuckyItem luckyItem9 = new LuckyItem();
-        luckyItem9.topText = "900";
+        luckyItem9.topText = "8";
+        luckyItem1.type = 1;
         luckyItem9.icon = R.drawable.follow_coin;
         luckyItem9.color = 0xffFFCC80;
         data.add(luckyItem9);
         ////////////////////////
 
         LuckyItem luckyItem10 = new LuckyItem();
-        luckyItem10.topText = "1000";
-        luckyItem10.icon = R.drawable.follow_coin;
+        luckyItem10.topText = "0";
+        luckyItem1.type = 0;
+        luckyItem10.icon = R.drawable.like_coin;
         luckyItem10.color = 0xffFFE0B2;
         data.add(luckyItem10);
 
         LuckyItem luckyItem11 = new LuckyItem();
-        luckyItem11.topText = "2000";
-        luckyItem11.icon = R.drawable.follow_coin;
+        luckyItem11.topText = "13";
+        luckyItem1.type = 0;
+        luckyItem11.icon = R.drawable.like_coin;
         luckyItem11.color = 0xffFFE0B2;
         data.add(luckyItem11);
 
         LuckyItem luckyItem12 = new LuckyItem();
-        luckyItem12.topText = "3000";
+        luckyItem12.topText = "4";
+        luckyItem1.type = 1;
         luckyItem12.icon = R.drawable.follow_coin;
         luckyItem12.color = 0xffFFE0B2;
         data.add(luckyItem12);
         luckyWheelView.setData(data);
         luckyWheelView.setRound(5);
+
     }
 
-//    private void setVariables(Dialog dialog) {
-//
-//        List<WheelItem> wheelItems = new ArrayList<>();
-//        wheelItems.add(new WheelItem(Color.LTGRAY, BitmapFactory.decodeResource(getResources(),
-//                R.drawable.ic_action_name)));
-//        wheelItems.add(new WheelItem(Color.BLUE, BitmapFactory.decodeResource(getResources(),
-//                R.drawable.ic_action_name)));
-//        wheelItems.add(new WheelItem(Color.BLACK, BitmapFactory.decodeResource(getResources(),
-//                R.drawable.ic_action_name)));
-//        wheelItems.add(new WheelItem(Color.GRAY, BitmapFactory.decodeResource(getResources(),
-//                R.drawable.ic_action_name)));
-//        wheelItems.add(new WheelItem(Color.RED, BitmapFactory.decodeResource(getResources(),
-//                R.drawable.ic_action_name)));
-//        wheelItems.add(new WheelItem(Color.GREEN, BitmapFactory.decodeResource(getResources(),
-//                R.drawable.ic_action_name)));
-//
-//
-//        final LuckyWheel lw = (LuckyWheel) dialog.findViewById(R.id.lwv);
-//        lw.addWheelItems(wheelItems);
-//
-//        lw.rotateWheelTo(5);
-//
-//        lw.setLuckyWheelReachTheTarget(new OnLuckyWheelReachTheTarget() {
-//            @Override
-//            public void onReachTarget() {
-//                Toast.makeText(getActivity(), "Target Reached", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//
-//        Button start = dialog.findViewById(R.id.start);
-//        start.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                lw.rotateWheelTo(6);
-//            }
-//        });
-//
-//
-//    }
+
+    private void checkStatus() {
+        final String requestBody = JsonManager.simpleJson();
+
+        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "lucky_arrow/get", response1 -> {
+            if (response1 != null) {
+                try {
+                    JSONObject jsonRootObject = new JSONObject(response1);
+                    if (!jsonRootObject.optBoolean("status")) {
+                        Toast.makeText(getContext(), "استفاده از این سرویس در هر روز فقط یک بار امکان پذیر می باشد", Toast.LENGTH_LONG).show();
+                        dismiss();
+                    } else btnStart.setEnabled(true);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, error -> {
+            Log.i("volley", "onErrorResponse: " + error.toString());
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return requestBody == null ? null : requestBody.getBytes();
+            }
+        };
+        request.setTag(this);
+        requestQueue.add(request);
+    }
+
+
+    private void setStatus(LuckyItem luckyItem) {
+        final String requestBody = JsonManager.setLuckyWheel(luckyItem);
+
+        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "lucky_arrow/set", response1 -> {
+            if (response1 != null) {
+                try {
+                    JSONObject jsonRootObject = new JSONObject(response1);
+                    if (!jsonRootObject.optBoolean("status")) {
+                        Toast.makeText(getContext(), "خطا در ثبت اطلاعات", Toast.LENGTH_LONG).show();
+
+                    }
+                    else dismiss();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, error -> {
+            Log.i("volley", "onErrorResponse: " + error.toString());
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return requestBody == null ? null : requestBody.getBytes();
+            }
+        };
+        request.setTag(this);
+        requestQueue.add(request);
+    }
+
+    private int getRandomIndex() {
+        Random rand = new Random();
+        return rand.nextInt(data.size() - 1) + 0;
+    }
+
 }
