@@ -128,7 +128,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             user.setProfilePicture(cursor.getString(1));
             user.setUserName(cursor.getString(2));
             user.setPassword(cursor.getString(3));
-            if (cursor.getInt(4)==1) {
+            user.setUuid(cursor.getString(6));
+            if (cursor.getInt(4) == 1) {
                 user.setIsActive(1);
             } else user.setIsActive(0);
             users.add(user);
@@ -145,7 +146,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         contentValues.put("userName", user.getUserName());
         contentValues.put("password", user.getPassword());
         contentValues.put("isActive", 1);
-        contentValues.put("userId",( user.getUserId()));
+        contentValues.put("userId", (user.getUserId()));
+        contentValues.put("uuid","0");
+
         openDatabase();
         long returnValue = myDataBase.insert("userInfo", null, contentValues);
         myDataBase.close();
@@ -160,6 +163,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             contentValues.put("password", user.getPassword());
             contentValues.put("isActive", true);
             contentValues.put("userId", user.getUserId());
+            contentValues.put("uuid","0");
             openDatabase();
             long returnValue = myDataBase.insert("userInfo", null, contentValues);
             myDataBase.close();
@@ -175,7 +179,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public boolean removeAllData() {
         try {
             openDatabase();
-            int result= myDataBase.delete("userInfo", null,null);
+            int result = myDataBase.delete("userInfo", null, null);
             myDataBase.close();
 
             return true;
@@ -193,14 +197,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return result != 0;
     }
 
-    public Long setAllValueNotActive()
-    {
+    public Long setAllValueNotActive() {
         ContentValues contentValues = new ContentValues();
         contentValues.put("isActive", 0);
         openDatabase();
-        openDatabase();
-        long returnValue = myDataBase.update("userInfo", contentValues,null, null);
+        long returnValue = myDataBase.update("userInfo", contentValues, null, null);
         myDataBase.close();
         return returnValue;
+    }
+
+    public void insertUUID(String UUID, String userId) {
+
+        openDatabase();
+        myDataBase.execSQL("UPDATE userInfo SET uuid = '"+ UUID+"' WHERE userId= "+"'"+userId+"'");
+        myDataBase.close();
     }
 }

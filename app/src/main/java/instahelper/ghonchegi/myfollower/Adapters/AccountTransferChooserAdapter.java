@@ -1,8 +1,8 @@
 package instahelper.ghonchegi.myfollower.Adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,32 +17,32 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import instahelper.ghonchegi.myfollower.Dialog.AccountActionsDialog;
-import instahelper.ghonchegi.myfollower.Interface.AccountOptionChooserInterface;
+import instahelper.ghonchegi.myfollower.Interface.AccountTransferInfoInterface;
 import instahelper.ghonchegi.myfollower.Models.User;
 import instahelper.ghonchegi.myfollower.R;
 
 import static instahelper.ghonchegi.myfollower.App.TAG;
 
-public class AccountsListAdapter extends android.support.v7.widget.RecyclerView.Adapter<AccountsListAdapter.Item> {
+public class AccountTransferChooserAdapter extends RecyclerView.Adapter<AccountTransferChooserAdapter.Item> {
 
-    private final AccountOptionChooserInterface callBack;
-    FragmentManager childFragmentManager;
+    private final Dialog dialog;
+    AccountTransferInfoInterface callback;
     private ArrayList<User> usersList;
     private Context context;
 
-    public AccountsListAdapter(ArrayList<User> usersList, FragmentManager childFragmentManager, AccountOptionChooserInterface callBack) {
+
+    public AccountTransferChooserAdapter(ArrayList<User> usersList, AccountTransferInfoInterface callBack, Dialog dialogFragment) {
         this.usersList = usersList;
-        this.childFragmentManager = childFragmentManager;
-        this.callBack = callBack;
+        this.callback = callBack;
+        this.dialog = dialogFragment;
     }
 
     @NonNull
     @Override
     public Item onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         this.context = parent.getContext();
-        View row = LayoutInflater.from(context).inflate(R.layout.cell_account_management, parent, false);
-        return new AccountsListAdapter.Item(row);
+        View row = LayoutInflater.from(context).inflate(R.layout.cell_account_management_v2, parent, false);
+        return new AccountTransferChooserAdapter.Item(row);
 
     }
 
@@ -61,10 +61,8 @@ public class AccountsListAdapter extends android.support.v7.widget.RecyclerView.
             holder.root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AccountActionsDialog dialog = new AccountActionsDialog(usersList.get(position).getProfilePicture(), usersList.get(position).getUserName()
-                            , usersList.get(position).getIsActive(), callBack, usersList.get(position).getPassword());
-                    dialog.setCancelable(true);
-                    dialog.show(childFragmentManager, "");
+                    callback.sendUUID(usersList.get(position).getUuid(), usersList.get(position).getProfilePicture());
+                    dialog.dismiss();
                 }
             });
 

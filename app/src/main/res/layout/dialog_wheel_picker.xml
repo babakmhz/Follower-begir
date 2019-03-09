@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:LuckyWheel="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/purchase_root"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    tools:context=".Activities.MainActivity">
 
-    <com.bluehomestudio.luckywheel.LuckyWheel
-        android:id="@+id/lwv"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_centerInParent="true"
-        LuckyWheel:background_color="@color/roundPurpleInner" />
+    <instahelper.ghonchegi.myfollower.WheelPiclerView.LuckyWheelView
+        android:id="@+id/luckyWheel"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        app:lkwBackgroundColor="#FF9800"
+        app:lkwCenterImage="@drawable/wheel2"
+        app:lkwCursor="@drawable/ic_cursor"
+        app:lkwTopTextColor="#263238" />
+
 
     <Button
         android:id="@+id/start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
-        android:text="start" />
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/rounded_orange"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="250dp"
+        android:text="شروع" />
 
 </RelativeLayout>

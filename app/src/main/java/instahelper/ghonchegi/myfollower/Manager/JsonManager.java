@@ -5,6 +5,7 @@ import android.content.Context;
 import org.json.JSONObject;
 
 import instahelper.ghonchegi.myfollower.App;
+import instahelper.ghonchegi.myfollower.WheelPiclerView.LuckyItem;
 import instahelper.ghonchegi.myfollower.data.InstagramUser;
 
 public class JsonManager {
@@ -63,6 +64,24 @@ public class JsonManager {
 
     }
 
+    public static String transferCoins(String value, int type, String receiverUUID) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("value", value);
+            jsonBody.put("type", type);
+            jsonBody.put("api_token", App.Api_Token);
+            jsonBody.put("uuid", App.UUID);
+            jsonBody.put("destination_uuid", receiverUUID);
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        return jsonBody.toString();
+
+
+    }
+
     public static String simpleJson() {
         JSONObject jsonBody = new JSONObject();
         try {
@@ -76,5 +95,39 @@ public class JsonManager {
         return jsonBody.toString();
 
 
+    }
+
+    public static String setLuckyWheel(LuckyItem luckyItem) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("api_token", App.Api_Token);
+            jsonBody.put("uuid", App.UUID);
+            jsonBody.put("type", luckyItem.type);
+            jsonBody.put("value", luckyItem.topText);
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        return jsonBody.toString();
+    }
+
+    public static String submitOrder(int type, String id, String picUrl, int requstedCount) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("api_token", App.Api_Token);
+            jsonBody.put("uuid", App.UUID);
+            jsonBody.put("type", type);
+            jsonBody.put("type_id", id);
+            jsonBody.put("request_count", requstedCount);
+            jsonBody.put("remaining_count", requstedCount);
+            jsonBody.put("image_path", picUrl);
+
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        return jsonBody.toString();
     }
 }
