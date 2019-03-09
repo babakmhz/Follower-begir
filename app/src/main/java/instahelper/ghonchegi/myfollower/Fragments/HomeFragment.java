@@ -1,11 +1,8 @@
 package instahelper.ghonchegi.myfollower.Fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,7 +18,6 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,6 +28,7 @@ import java.util.Map;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.AccountStatisticsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.InstagramAutenticationDialog;
+import instahelper.ghonchegi.myfollower.Dialog.LuckyWheelPickerDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ManageAccountsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ReviewOrdersDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TransferCoinDialog;
@@ -95,9 +92,13 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
         getUserInfo();
 
 
-
-        /*SelectPictureDialog selectPictureDialog = new SelectPictureDialog();
-        selectPictureDialog.show(getChildFragmentManager(), ":");*/
+        binding.imageView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LuckyWheelPickerDialog dialog = new LuckyWheelPickerDialog();
+                dialog.show(getChildFragmentManager(),"");
+            }
+        });
         binding.tvTransferCoin.setOnClickListener(v -> {
             TransferCoinDialog transferCoinDialog = new TransferCoinDialog();
             transferCoinDialog.show(getChildFragmentManager(), "");
@@ -272,7 +273,6 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
         requestQueue.add(request);
 
     }
-
 
 
     @Override

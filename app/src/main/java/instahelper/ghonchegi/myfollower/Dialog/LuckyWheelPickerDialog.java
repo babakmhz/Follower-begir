@@ -1,12 +1,15 @@
 package instahelper.ghonchegi.myfollower.Dialog;
 
 import android.app.Dialog;
+import android.databinding.DataBindingUtil;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -14,16 +17,32 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
 import com.bluehomestudio.luckywheel.LuckyWheel;
 import com.bluehomestudio.luckywheel.OnLuckyWheelReachTheTarget;
 import com.bluehomestudio.luckywheel.WheelItem;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import instahelper.ghonchegi.myfollower.App;
+import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
+import instahelper.ghonchegi.myfollower.data.InstagramUser;
+import instahelper.ghonchegi.myfollower.databinding.DialogWheelPickerBinding;
+
+import static instahelper.ghonchegi.myfollower.App.Base_URL;
+import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 public class LuckyWheelPickerDialog extends DialogFragment {
+    private DialogWheelPickerBinding binding;
 
     @NonNull
     @Override
@@ -32,9 +51,10 @@ public class LuckyWheelPickerDialog extends DialogFragment {
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_wheel_picker);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_wheel_picker, null, false);
+        dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.colorAccent);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         setVariables(dialog);
 
@@ -66,21 +86,5 @@ public class LuckyWheelPickerDialog extends DialogFragment {
 
         lw.rotateWheelTo(5);
 
-        lw.setLuckyWheelReachTheTarget(new OnLuckyWheelReachTheTarget() {
-            @Override
-            public void onReachTarget() {
-                Toast.makeText(getActivity(), "Target Reached", Toast.LENGTH_LONG).show();
-            }
-        });
 
-        Button start = dialog.findViewById(R.id.start);
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                lw.rotateWheelTo(6);
-            }
-        });
-
-
-    }
 }
