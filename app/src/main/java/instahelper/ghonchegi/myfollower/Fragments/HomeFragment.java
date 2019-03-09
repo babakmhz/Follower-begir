@@ -32,6 +32,7 @@ import java.util.Map;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.AccountStatisticsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.InstagramAutenticationDialog;
+import instahelper.ghonchegi.myfollower.Dialog.LuckyWheelPickerDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ManageAccountsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ReviewOrdersDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TransferCoinDialog;
@@ -94,7 +95,13 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
 
         getUserInfo();
 
-
+    binding.imageView3.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            LuckyWheelPickerDialog dialog=new LuckyWheelPickerDialog();
+            dialog.show(getChildFragmentManager(),"");
+        }
+    });
 
         /*SelectPictureDialog selectPictureDialog = new SelectPictureDialog();
         selectPictureDialog.show(getChildFragmentManager(), ":");*/
