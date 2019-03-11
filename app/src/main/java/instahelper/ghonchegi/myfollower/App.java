@@ -17,10 +17,13 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 
 import instahelper.ghonchegi.myfollower.Manager.VolleyManager;
+import ir.tapsell.sdk.Tapsell;
 
 public class App extends Application {
 
     public static final String TAG = "MyFollower";
+    public static final String TapSellKey = "mfiqilecflqlrncrqjcqerkadkaepgoaamqknltdibneensaoagqqjaolitflpafjaftqd";
+    public static final String TapSelZoneId = "5c8684a78e2c780001f03fc3";
     public static String Base_URL = "http://masoudzarjani.ir/api/v1/";
     public static Activity currentActivity;
     public static LayoutInflater inflater;
@@ -33,7 +36,7 @@ public class App extends Application {
     public static int followCoin;
     public static int likeCoin;
     public static String profilePicURl;
-
+    public static boolean isAdAvailable = false;
 
     public static void Toast(Context context, String message) {
         View view = App.inflater.inflate(R.layout.toast, null);
@@ -81,6 +84,7 @@ public class App extends Application {
         inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         requestQueue = VolleyManager.getRequestQueue(getBaseContext());
         requestQueue.start();
+        Tapsell.initialize(this, TapSellKey);
         //FontsOverride.setDefaultFont(this, "MONOSPACE", "iran.ttf");
     }
 

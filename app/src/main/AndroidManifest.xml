@@ -34,6 +34,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.ActivityLoginWebview"/>
+        <activity android:name="ir.tapsell.sdk.TapsellAdActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
+        </activity>
     </application>
 
 </manifest>
