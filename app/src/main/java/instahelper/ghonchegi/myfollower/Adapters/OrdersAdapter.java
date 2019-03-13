@@ -2,15 +2,18 @@ package instahelper.ghonchegi.myfollower.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.RecyclerView;
 import instahelper.ghonchegi.myfollower.Models.Orders;
 import instahelper.ghonchegi.myfollower.R;
 
@@ -37,20 +40,21 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.Item> {
         String type = "";
         switch (orders.get(position).getType()) {
             case 0:
-                type = "لایک";
+                type = " لایک ";
                 break;
             case 1:
-                type = "فالو";
+                type = " فالو ";
 
                 break;
             case 2:
-                type = "کامنت";
+                type = " کامنت ";
                 break;
         }
         holder.tvTitle.setText("درخواست " + orders.get(position).getOrdered() + type);
         holder.tvTrackingCode.setText(orders.get(position).getTrackingCode() + "");
-        holder.tvDoneReport.setText("از تعداد  " + orders.get(position).getOrdered() + type + " درخواستی تعداد  " +orders.get(position).getNumberOfReceived()+ "باقیمانده");
+        holder.tvDoneReport.setText("از تعداد  " + orders.get(position).getOrdered() + type + " درخواستی تعداد  " + orders.get(position).getNumberOfReceived() + " انجام شده ");
         holder.tvDateTime.setText(orders.get(position).getDateTime());
+        Picasso.get().load(orders.get(position).getPicUrl()).into(holder.imvOrder);
 
 
     }
@@ -62,6 +66,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.Item> {
 
 
     public class Item extends RecyclerView.ViewHolder {
+        AppCompatImageView imvOrder;
         private TextView tvTitle, tvTrackingCode, tvDateTime, tvDoneReport;
 
         public Item(@NonNull View itemView) {
@@ -70,6 +75,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.Item> {
             tvTrackingCode = itemView.findViewById(R.id.tvTrackingCode);
             tvDateTime = itemView.findViewById(R.id.tvDateTime);
             tvDoneReport = itemView.findViewById(R.id.tvDoneReport);
+            imvOrder = itemView.findViewById(R.id.imvPic);
         }
     }
 }

@@ -130,4 +130,19 @@ public class JsonManager {
 
         return jsonBody.toString();
     }
+
+    public static String getOrders(int type) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("api_token", App.Api_Token);
+            jsonBody.put("uuid", App.UUID);
+            jsonBody.put("type", type);
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        return jsonBody.toString();
+
+    }
 }

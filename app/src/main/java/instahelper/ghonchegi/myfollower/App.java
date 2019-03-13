@@ -37,6 +37,7 @@ public class App extends Application {
     public static int likeCoin;
     public static String profilePicURl;
     public static boolean isAdAvailable = false;
+    public static boolean isPrivateAccount = false;
 
     public static void Toast(Context context, String message) {
         View view = App.inflater.inflate(R.layout.toast, null);

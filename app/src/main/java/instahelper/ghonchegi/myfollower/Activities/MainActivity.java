@@ -1,16 +1,18 @@
 package instahelper.ghonchegi.myfollower.Activities;
 
 import android.app.ProgressDialog;
-import androidx.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Fragments.GetCoin.GetCoinFragment;
 import instahelper.ghonchegi.myfollower.Fragments.HomeFragment;
@@ -21,6 +23,8 @@ import ir.tapsell.sdk.Tapsell;
 import ir.tapsell.sdk.TapsellAd;
 import ir.tapsell.sdk.TapsellAdRequestListener;
 import ir.tapsell.sdk.TapsellAdRequestOptions;
+import ir.tapsell.sdk.TapsellAdShowListener;
+import ir.tapsell.sdk.TapsellShowOptions;
 
 public class MainActivity extends AppCompatActivity {
     public static TapsellAd ad;
@@ -48,8 +52,11 @@ public class MainActivity extends AppCompatActivity {
                 if (item.getItemId() != currentItemId)
                     switch (item.getItemId()) {
                         case R.id.action_advertise:
+                            if (ad == null) {
+                                loadAd(App.TapSelZoneId, TapsellAdRequestOptions.CACHE_TYPE_CACHED);
 
-                            Toast.makeText(MainActivity.this, "1", Toast.LENGTH_SHORT).show();
+                            }
+                            shwoAds();
                             break;
                         case R.id.action_navigation:
                             currentItemId = R.id.action_navigation;
@@ -132,6 +139,48 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
+    private void shwoAds() {
+        if (MainActivity.ad != null) {
+            TapsellShowOptions showOptions = new TapsellShowOptions();
+            showOptions.setBackDisabled(false);
+            showOptions.setImmersiveMode(true);
+            showOptions.setRotationMode(TapsellShowOptions.ROTATION_UNLOCKED);
+            showOptions.setShowDialog(true);
+
+            showOptions.setWarnBackPressedDialogMessage("ویدیو را ادامه میدهید؟");
+            showOptions.setWarnBackPressedDialogMessageTextColor(Color.RED);
+//                    showOptions.setWarnBackPressedDialogAssetTypefaceFileName("IranNastaliq.ttf");
+            showOptions.setWarnBackPressedDialogPositiveButtonText("بله");
+            showOptions.setWarnBackPressedDialogNegativeButtonText("خیر");
+            showOptions.setWarnBackPressedDialogPositiveButtonBackgroundResId(R.drawable.rounded_circle_orange_border);
+            showOptions.setWarnBackPressedDialogNegativeButtonBackgroundResId(R.drawable.rounded_circle_orange_border);
+            showOptions.setWarnBackPressedDialogPositiveButtonTextColor(Color.RED);
+            showOptions.setWarnBackPressedDialogNegativeButtonTextColor(Color.GREEN);
+            showOptions.setWarnBackPressedDialogBackgroundResId(R.drawable.dialog_background);
+            showOptions.setBackDisabledToastMessage("لطفا جهت بازگشت تا انتهای پخش ویدیو صبر کنید.");
+//                    ad.show(MainActivity.this, showOptions);
+            MainActivity.ad.show(this, showOptions, new TapsellAdShowListener() {
+                @Override
+                public void onOpened(TapsellAd ad) {
+                    MainActivity.ad = null;
+                    loadAd(App.TapSelZoneId, TapsellAdRequestOptions.CACHE_TYPE_CACHED);
+
+                    Log.e("MainActivity", "on ad opened");
+                }
+
+                @Override
+                public void onClosed(TapsellAd ad) {
+                    MainActivity.ad = null;
+                    loadAd(App.TapSelZoneId, TapsellAdRequestOptions.CACHE_TYPE_CACHED);
+                    Log.e("MainActivity", "on ad closed");
+                }
+            });
+
+
+        }
+    }
+
 
 }
 

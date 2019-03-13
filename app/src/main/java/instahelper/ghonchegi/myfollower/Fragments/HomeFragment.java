@@ -146,6 +146,10 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
                     user.setToken(userData.getSelf_user().getToken());
                     user.setPassword(userData.getSelf_user().getPassword());
                     userData.setSelf_user(user);
+                    if (user.isPrivate())
+                    {
+                        App.isPrivateAccount = true;
+                    }
 
                     getActivity().runOnUiThread(new Runnable() {
                         @Override

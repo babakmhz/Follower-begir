@@ -9,15 +9,15 @@
         android:layoutDirection="ltr">
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+        <ImageView
+            android:id="@+id/imvPic"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/rounded_select_image"
+            android:background="@drawable/curved"
             app:layout_constraintBottom_toBottomOf="@id/guideLine2"
             app:layout_constraintEnd_toEndOf="@id/guideLine4"
             app:layout_constraintStart_toStartOf="@id/guideLine3"
-            app:layout_constraintTop_toTopOf="@id/guideLine" />
+            app:layout_constraintTop_toTopOf="@id/guideLine"
+            android:layout_height="0dp" />
 
         <LinearLayout
             android:id="@+id/linear"
@@ -68,6 +68,7 @@
             >
 
             <TextView
+                android:id="@+id/tvFollowerCoinCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2500"

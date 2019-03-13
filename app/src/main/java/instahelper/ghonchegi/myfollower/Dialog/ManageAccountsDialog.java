@@ -14,7 +14,10 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 
+import com.squareup.picasso.Picasso;
+
 import instahelper.ghonchegi.myfollower.Adapters.AccountsListAdapter;
+import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
 import instahelper.ghonchegi.myfollower.Interface.AccountOptionChooserInterface;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
@@ -45,6 +48,7 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         //endregion
         internalCallback=this;
+        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
         AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager(), internalCallback);
 

@@ -60,6 +60,11 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
         binding.imvPickImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (App.isPrivateAccount)
+                {
+                    Toast.makeText(getActivity(), "اکانت شما خصوصی می باشد. لطفا اکانت خود را عمومی کرده و برنامه را مجددا راه اندازی نمایید", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 SelectPictureDialog selectPictureDialog = new SelectPictureDialog(callback);
                 selectPictureDialog.show(getChildFragmentManager(), ":");
 
@@ -119,6 +124,7 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
     }
 
     private void submitOrder() {
+        
         if (App.likeCoin <= 0) {
             Toast.makeText(getContext(), "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
 
