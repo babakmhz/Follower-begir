@@ -1,84 +1,176 @@
 package instahelper.ghonchegi.myfollower.Fragments.Purchase;
 
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.widget.SeekBar;
+import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
+import com.squareup.picasso.Picasso;
 
-import instahelper.ghonchegi.myfollower.Adapters.SelectPicAdapter;
-import instahelper.ghonchegi.myfollower.Models.PictureModel;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import instahelper.ghonchegi.myfollower.App;
+import instahelper.ghonchegi.myfollower.Dialog.SelectPictureDialog;
+import instahelper.ghonchegi.myfollower.Interface.ImagePickerInterface;
+import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
+import instahelper.ghonchegi.myfollower.data.InstagramUser;
+import instahelper.ghonchegi.myfollower.databinding.FragmentPurchaseCommentBinding;
+import instahelper.ghonchegi.myfollower.instaAPI.InstagramApi;
+
+import static instahelper.ghonchegi.myfollower.App.Base_URL;
+import static instahelper.ghonchegi.myfollower.App.TAG;
+import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 
-public class PurchaseCommentFragment extends Fragment {
+public class PurchaseCommentFragment extends Fragment implements ImagePickerInterface {
+    FragmentPurchaseCommentBinding binding;
+    ImagePickerInterface callback;
     private View view;
-    private RecyclerView rcvPics;
+    private String selectedPicURL = null;
+    private String itemId;
 
     public PurchaseCommentFragment() {
     }
 
+    InstagramUser user;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_purchase_comment, container, false);
+        binding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_purchase_comment, container, false);
+        callback = this;
+        View view = binding.getRoot();
+        binding.imvPickImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (App.isPrivateAccount)
+                {
+                    Toast.makeText(getActivity(), "اکانت شما خصوصی می باشد. لطفا اکانت خود را عمومی کرده و برنامه را مجددا راه اندازی نمایید", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                SelectPictureDialog selectPictureDialog = new SelectPictureDialog(callback);
+                selectPictureDialog.show(getChildFragmentManager(), ":");
 
+            }
+        });
+        binding.btnConfirm.setOnClickListener(v -> {
+            submitOrder();
+        });
+
+
+        binding.tvLikeCoinCounts.setText(App.likeCoin + "");
+        binding.tvLikeExpenseCount.setText(0 + "");
+        binding.tvLikeOrderCount.setText("0");
+        binding.seekBar.setProgress(0);
+        binding.seekBar.setMax(App.likeCoin / 2);
+        binding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                binding.tvLikeOrderCount.setText(progress + "");
+                binding.tvLikeExpenseCount.setText(progress * 2 + "");
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
 
         return view;
 
     }
-/*
-    private void init() {
-        ArrayList<PictureModel> pictureModelArrayList = new ArrayList<>();
-        pictureModelArrayList.add(new PictureModel("0", "2500", "https://img.p30download.com/tutorial/image/2019/01/1547735632_365-days-of-creativity-tutorial-series.jpg"));
-        pictureModelArrayList.add(new PictureModel("0", "2500", "https://img.p30download.com/tutorial/image/2019/01/1547735632_365-days-of-creativity-tutorial-series.jpg"));
-        pictureModelArrayList.add(new PictureModel("0", "2500", "https://img.p30download.com/tutorial/image/2019/01/1547735632_365-days-of-creativity-tutorial-series.jpg"));
-        pictureModelArrayList.add(new PictureModel("0", "2500", "https://img.p30download.com/tutorial/image/2019/01/1547735632_365-days-of-creativity-tutorial-series.jpg"));
-        pictureModelArrayList.add(new PictureModel("0", "2500", "https://img.p30download.com/tutorial/image/2019/01/1547735632_365-days-of-creativity-tutorial-series.jpg"));
-        DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-        //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        SelectPicAdapter adapter = new SelectPicAdapter(getContext(), pictureModelArrayList);
 
-        rcvPics.setLayoutManager(layoutManager);
-        rcvPics.setItemAnimator(new DefaultItemAnimator());
-        rcvPics.setAdapter(adapter);
-        rcvPics.addItemDecoration(decoration);
-        rcvPics.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                rcvPics.getViewTreeObserver().removeOnPreDrawListener(this);
-                for (int i = 0; i < rcvPics.getChildCount(); i++) {
-                    View v = rcvPics.getChildAt(i);
-                    v.setAlpha(0.0f);
-                    v.animate().alpha(1.0f)
-                            .setDuration(300)
-                            .setStartDelay(i * 50)
-                            .start();
-                }
-                return true;
-            }
-        });
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void selectedPic(String imageId, String imageURL) {
+        binding.constraintLayout.setBackground(null);
+        binding.imvSelectPic.setVisibility(View.INVISIBLE);
+        binding.tvSelectPic.setVisibility(View.INVISIBLE);
+        binding.imvPickImage.setBackgroundDrawable(getActivity().getDrawable(R.drawable.rounded_orange));
+        selectedPicURL = imageURL;
+        itemId = imageId;
+        try {
+            Picasso.get().load(imageURL).error(R.drawable.app_logo).into(binding.imvSelectedPic);
+        } catch (Exception e) {
+            Log.i(TAG, "selectedPic: " + e);
+        }
+
 
     }
 
-    private void setVariables(View dialog) {
-        rcvPics = dialog.findViewById(R.id.rcvSelectPic);
-    }*/
+    private void submitOrder() {
+        if (App.likeCoin <= 0) {
+            Toast.makeText(getContext(), "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
+
+        } else if (selectedPicURL == null) {
+            Toast.makeText(getContext(), "یک عکس انتخاب کنید", Toast.LENGTH_SHORT).show();
+
+        } else if (binding.seekBar.getProgress() == 0) {
+            Toast.makeText(getContext(), "تعداد سفارش را مشخص کنید", Toast.LENGTH_SHORT).show();
+        } else {
+            final String requestBody = JsonManager.submitOrder(0, itemId, selectedPicURL, binding.seekBar.getProgress());
+
+            StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/set", response1 -> {
+                if (response1 != null) {
+                    try {
+                        JSONObject jsonRootObject = new JSONObject(response1);
+                        if (jsonRootObject.optBoolean("status")) {
+                            App.likeCoin = Integer.parseInt(jsonRootObject.getString("like_coin"));
+
+                        }
 
 
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            }, error -> {
+                Log.i("volley", "onErrorResponse: " + error.toString());
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    return requestBody == null ? null : requestBody.getBytes();
+                }
+            };
+            request.setTag(this);
+            requestQueue.add(request);
+
+
+        }
+    }
 }

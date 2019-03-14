@@ -1,12 +1,12 @@
 package instahelper.ghonchegi.myfollower.Fragments.Purchase;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +60,11 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
         binding.imvPickImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (App.isPrivateAccount)
+                {
+                    Toast.makeText(getActivity(), "اکانت شما خصوصی می باشد. لطفا اکانت خود را عمومی کرده و برنامه را مجددا راه اندازی نمایید", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 SelectPictureDialog selectPictureDialog = new SelectPictureDialog(callback);
                 selectPictureDialog.show(getChildFragmentManager(), ":");
 
@@ -119,6 +124,7 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
     }
 
     private void submitOrder() {
+        
         if (App.likeCoin <= 0) {
             Toast.makeText(getContext(), "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
 
