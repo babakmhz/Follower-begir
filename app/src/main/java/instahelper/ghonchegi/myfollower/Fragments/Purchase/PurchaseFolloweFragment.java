@@ -38,12 +38,11 @@ import static instahelper.ghonchegi.myfollower.App.TAG;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 
-public class PurchaseFolloweFragment extends Fragment implements ImagePickerInterface {
+public class PurchaseFolloweFragment extends Fragment  {
     private View view;
     private FragmentPurchaseFollowerBinding binding;
     private String selectedPicURL;
     private String itemId;
-    private ImagePickerInterface callback;
 
     public PurchaseFolloweFragment() {
     }
@@ -55,7 +54,6 @@ public class PurchaseFolloweFragment extends Fragment implements ImagePickerInte
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_purchase_follower, container, false);
         view = binding.getRoot();
-        callback = this;
         binding.tvFollowCoin.setText(App.followCoin + "");
 
         binding.tvLikeExpenseCount.setText(0 + "");
@@ -82,14 +80,7 @@ public class PurchaseFolloweFragment extends Fragment implements ImagePickerInte
         });
 
 
-        binding.imvPickImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SelectPictureDialog selectPictureDialog = new SelectPictureDialog(callback);
-                selectPictureDialog.show(getChildFragmentManager(), ":");
 
-            }
-        });
         binding.btnConfirm.setOnClickListener(v -> {
             submitOrder();
         });
@@ -99,35 +90,15 @@ public class PurchaseFolloweFragment extends Fragment implements ImagePickerInte
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public void selectedPic(String imageId, String imageURL) {
-        binding.constraintLayout.setBackground(null);
-        binding.imvSelectPic.setVisibility(View.INVISIBLE);
-        binding.tvSelectPic.setVisibility(View.INVISIBLE);
-        binding.imvPickImage.setBackgroundDrawable(getActivity().getDrawable(R.drawable.rounded_orange));
-        selectedPicURL = imageURL;
-        itemId = imageId;
-        try {
-            Picasso.get().load(imageURL).error(R.drawable.app_logo).into(binding.imvSelectedPic);
-        } catch (Exception e) {
-            Log.i(TAG, "selectedPic: " + e);
-        }
-
-
-    }
 
     private void submitOrder() {
         if (App.followCoin <= 0) {
             Toast.makeText(getContext(), "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
 
-        } else if (selectedPicURL == null) {
-            Toast.makeText(getContext(), "یک عکس انتخاب کنید", Toast.LENGTH_SHORT).show();
-
-        } else if (binding.seekBar.getProgress() == 0) {
+        }else if (binding.seekBar.getProgress() == 0) {
             Toast.makeText(getContext(), "تعداد سفارش را مشخص کنید", Toast.LENGTH_SHORT).show();
         } else {
-            final String requestBody = JsonManager.submitOrder(1, itemId, selectedPicURL, binding.seekBar.getProgress());
+            final String requestBody = JsonManager.submitOrder(1, App.userId, App.profilePicURl, binding.seekBar.getProgress());
 
             StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/set", response1 -> {
                 if (response1 != null) {
@@ -135,6 +106,10 @@ public class PurchaseFolloweFragment extends Fragment implements ImagePickerInte
                         JSONObject jsonRootObject = new JSONObject(response1);
                         if (jsonRootObject.optBoolean("status")) {
                             App.followCoin = Integer.parseInt(jsonRootObject.getString("follow_coin"));
+                            binding.tvFollowCoin.setText(App.followCoin + "");
+                            Toast.makeText(getContext(), "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+                            binding.seekBar.setProgress(0);
+
 
                         }
 
@@ -143,6 +118,10 @@ public class PurchaseFolloweFragment extends Fragment implements ImagePickerInte
                         e.printStackTrace();
                     }
 
+
+                }
+                else {
+                    Toast.makeText(getContext(), "خطا در ثبت سفارش", Toast.LENGTH_SHORT).show();
 
                 }
             }, error -> {

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layoutDirection="ltr">
@@ -21,72 +20,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imvSelectedPic"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/guideLine2"
-            app:layout_constraintEnd_toEndOf="@id/guideLine4"
-            app:layout_constraintStart_toStartOf="@id/guideLine3"
-            app:layout_constraintTop_toTopOf="@id/guideLine"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_follow"
+            app:layout_constraintBottom_toTopOf="@+id/guideLine2"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+            app:layout_constraintStart_toStartOf="@+id/guideLine3"
+            app:layout_constraintTop_toTopOf="@+id/guideLine" />
 
-            />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-
-            android:id="@+id/constraintLayout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/rounded_select_image"
-            app:layout_constraintBottom_toBottomOf="@id/guideLine2"
-            app:layout_constraintEnd_toEndOf="@id/guideLine4"
-            app:layout_constraintStart_toStartOf="@id/guideLine3"
-            app:layout_constraintTop_toTopOf="@id/guideLine">
-
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imvSelectPic"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_image" />
-
-            <TextView
-                android:id="@+id/tvSelectPic"
-                style="@style/globalTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:text="@string/chooseImage"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-
-                app:layout_constraintTop_toBottomOf="@id/imvSelectPic" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imvPickImage"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="20dp"
-                android:background="@drawable/rounded_circle"
-                android:padding="5dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/ic_add" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/linear"
@@ -104,6 +52,8 @@
                 android:id="@+id/tvLikeOrderCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:text="0"
                 android:textColor="@color/black"
                 android:textSize="14sp"
@@ -114,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                app:srcCompat="@drawable/ic_heart" />
+                app:srcCompat="@drawable/ic_person" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"

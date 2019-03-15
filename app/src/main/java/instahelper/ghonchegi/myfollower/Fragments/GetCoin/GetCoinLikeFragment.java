@@ -33,6 +33,7 @@ import static instahelper.ghonchegi.myfollower.App.requestQueue;
 public class GetCoinLikeFragment extends Fragment {
     FragmentGetCoinLikeBinding binding;
     private View view;
+    private String userId,
 
     public GetCoinLikeFragment() {
     }

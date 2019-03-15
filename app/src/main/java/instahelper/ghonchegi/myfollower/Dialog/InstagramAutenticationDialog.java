@@ -6,15 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import androidx.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +26,10 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import instahelper.ghonchegi.myfollower.Activities.MainActivity;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
@@ -132,13 +132,14 @@ public class InstagramAutenticationDialog extends DialogFragment {
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 getActivity().startActivity(intent);
                 dismiss();
+                getActivity().finish();
 
             }
 
             @Override
             public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
                 binding.prg.setVisibility(View.GONE);
-                Toast.makeText(getActivity(), "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
+
                 try {
                     Toast.makeText(getActivity(), "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
                     String errorMessage = "";
