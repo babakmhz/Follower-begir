@@ -1,12 +1,7 @@
 package instahelper.ghonchegi.myfollower.Fragments.Purchase;
 
-import androidx.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +20,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.SelectPictureDialog;
 import instahelper.ghonchegi.myfollower.Interface.ImagePickerInterface;
@@ -60,8 +60,7 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
         binding.imvPickImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (App.isPrivateAccount)
-                {
+                if (App.isPrivateAccount) {
                     Toast.makeText(getActivity(), "اکانت شما خصوصی می باشد. لطفا اکانت خود را عمومی کرده و برنامه را مجددا راه اندازی نمایید", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -124,7 +123,7 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
     }
 
     private void submitOrder() {
-        
+
         if (App.likeCoin <= 0) {
             Toast.makeText(getContext(), "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
 
@@ -142,6 +141,9 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
                         JSONObject jsonRootObject = new JSONObject(response1);
                         if (jsonRootObject.optBoolean("status")) {
                             App.likeCoin = Integer.parseInt(jsonRootObject.getString("like_coin"));
+                            binding.tvLikeCoinCounts.setText(App.likeCoin + "");
+                            Toast.makeText(getContext(), "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+                            binding.seekBar.setProgress(0);
 
                         }
 

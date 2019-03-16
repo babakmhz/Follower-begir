@@ -206,6 +206,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return returnValue;
     }
 
+    public  Long setActiveUser(String userId)
+    {      ContentValues contentValues = new ContentValues();
+        contentValues.put("isActive", 1);
+        openDatabase();
+        long returnValue = myDataBase.update("userInfo", contentValues, "userId =?", new String[]{userId});
+        myDataBase.close();
+        return returnValue;
+    }
+
+
     public void insertUUID(String UUID, String userId) {
 
         openDatabase();

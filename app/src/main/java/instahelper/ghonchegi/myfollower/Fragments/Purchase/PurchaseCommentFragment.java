@@ -32,7 +32,6 @@ import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.data.InstagramUser;
 import instahelper.ghonchegi.myfollower.databinding.FragmentPurchaseCommentBinding;
-import instahelper.ghonchegi.myfollower.instaAPI.InstagramApi;
 
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
 import static instahelper.ghonchegi.myfollower.App.TAG;
@@ -42,14 +41,13 @@ import static instahelper.ghonchegi.myfollower.App.requestQueue;
 public class PurchaseCommentFragment extends Fragment implements ImagePickerInterface {
     FragmentPurchaseCommentBinding binding;
     ImagePickerInterface callback;
+    InstagramUser user;
     private View view;
     private String selectedPicURL = null;
     private String itemId;
 
     public PurchaseCommentFragment() {
     }
-
-    InstagramUser user;
 
     @Nullable
     @Override
@@ -61,8 +59,7 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
         binding.imvPickImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (App.isPrivateAccount)
-                {
+                if (App.isPrivateAccount) {
                     Toast.makeText(getActivity(), "اکانت شما خصوصی می باشد. لطفا اکانت خود را عمومی کرده و برنامه را مجددا راه اندازی نمایید", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -142,6 +139,9 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
                         JSONObject jsonRootObject = new JSONObject(response1);
                         if (jsonRootObject.optBoolean("status")) {
                             App.likeCoin = Integer.parseInt(jsonRootObject.getString("like_coin"));
+                            binding.tvLikeCoinCounts.setText(App.likeCoin + "");
+                            Toast.makeText(getContext(), "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+                            binding.seekBar.setProgress(0);
 
                         }
 
