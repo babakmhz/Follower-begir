@@ -160,4 +160,28 @@ public class JsonManager {
 
         return jsonBody.toString();
     }
+
+    public static String addCoin(int i, String o) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("api_token", App.Api_Token);
+            jsonBody.put("uuid", App.UUID);
+            jsonBody.put("type", i);
+            jsonBody.put("count", AES.encryption(o));
+            jsonBody.put("coin", AES.encryption(o));
+            jsonBody.put("types", AES.encryption(o));
+            jsonBody.put("userName", AES.encryption(o));
+            byte[] data = o.getBytes("UTF-8");
+            String base64 = android.util.Base64.encodeToString(data, android.util.Base64.DEFAULT);
+            jsonBody.put("amount", base64);
+
+            jsonBody.put("status", AES.encryption(o));
+            jsonBody.put("cont", AES.encryption(o));
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        return jsonBody.toString();
+    }
 }

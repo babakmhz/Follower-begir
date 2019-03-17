@@ -1,7 +1,6 @@
 package instahelper.ghonchegi.myfollower.Fragments;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +25,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import instahelper.ghonchegi.myfollower.Activities.SplashActivity;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.AccountStatisticsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.InstagramAutenticationDialog;
@@ -67,6 +65,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
     private String next_max_id;
     private String profilePicURL;
     private AccountChangerInterface callBack;
+    private String specialBannerItemId;
 
     public HomeFragment() {
     }
@@ -135,7 +134,9 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
             topUsersDialog.show(getChildFragmentManager(), "");
         });
 
-        binding.imvLogOut.setOnClickListener(v->{signOut();});
+        binding.imvLogOut.setOnClickListener(v -> {
+            signOut();
+        });
 
 
         return view;
@@ -257,6 +258,12 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
                         binding.tvLikeCoinCount.setText(jsonRootObject.optInt("like_coin") + "");
                         App.followCoin = jsonRootObject.optInt("follow_coin");
                         App.likeCoin = jsonRootObject.optInt("like_coin");
+                        JSONObject childJson = jsonRootObject.getJSONObject("special_banner");
+                        binding.tvGoldTitle.setText(childJson.getInt("follow_coin")+" سکه فالو");
+                        binding.tvGoldSubtitle.setText(childJson.getInt("like_coin")+" سکه لایک");
+                        specialBannerItemId= childJson.getString("RSA");
+                        binding.tvSpecialBannerPrice.setText(childJson.getInt("price")+" تومان");
+
 
                     }
 
@@ -300,23 +307,19 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
         if (dbHeplper.getAllUsers().size() == 1) {
             dbHeplper.deleteUserById(App.userId);
             logOut();
-            InstagramAutenticationDialog dialog=new InstagramAutenticationDialog(false,null,null);
+            InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(false, null, null);
             dialog.setCancelable(false);
-            dialog.show(getChildFragmentManager(),"");
+            dialog.show(getChildFragmentManager(), "");
 
-        }
-        else if (dbHeplper.getAllUsers().size()>1)
-        {
-            if(!dbHeplper.getAllUsers().get(0).getUserId().equals(App.userId))
-            {
+        } else if (dbHeplper.getAllUsers().size() > 1) {
+            if (!dbHeplper.getAllUsers().get(0).getUserId().equals(App.userId)) {
                 dbHeplper.deleteUserById(App.userId);
-                InstagramAutenticationDialog dialog=new InstagramAutenticationDialog(true,dbHeplper.getAllUsers().get(0).getUserName(),dbHeplper.getAllUsers().get(0).getPassword());
-                dialog.show(getChildFragmentManager(),"");
-            }
-            else {
-                InstagramAutenticationDialog dialog=new InstagramAutenticationDialog(true,dbHeplper.getAllUsers().get(1).getUserName(),dbHeplper.getAllUsers().get(1).getPassword());
+                InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(true, dbHeplper.getAllUsers().get(0).getUserName(), dbHeplper.getAllUsers().get(0).getPassword());
+                dialog.show(getChildFragmentManager(), "");
+            } else {
+                InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(true, dbHeplper.getAllUsers().get(1).getUserName(), dbHeplper.getAllUsers().get(1).getPassword());
                 dbHeplper.deleteUserById(App.userId);
-                dialog.show(getChildFragmentManager(),"");
+                dialog.show(getChildFragmentManager(), "");
             }
         }
     }
