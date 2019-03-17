@@ -10,12 +10,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
         android:background="@color/lightGrey"
         android:gravity="center|left"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@id/layout2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -39,6 +37,7 @@
             app:civ_border_width="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,49 +51,35 @@
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
-            <TextView
-                android:id="@+id/tvCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/black"
-                android:textSize="13sp" />
-        </LinearLayout>
 
+        </LinearLayout>
 
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/layout2"
+    <TextView
+        android:id="@+id/tvCoinCount"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:background="@color/orangeTextColor"
-        android:gravity="center"
-        android:visibility="gone"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        app:layout_constraintBottom_toBottomOf="@id/layout"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imvCoin"
+        app:layout_constraintEnd_toStartOf="@+id/imvCoin"
+        app:layout_constraintTop_toTopOf="@+id/imvCoin" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imvCoin"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/layout">
-
-        <TextView
-            android:id="@+id/tvCoinCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="1200"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imvCoin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_arrow_left" />
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        app:layout_constraintTop_toTopOf="@+id/layout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

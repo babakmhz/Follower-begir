@@ -56,23 +56,27 @@ public class TopUsersDialog extends DialogFragment {
         //endregion
         getTopUsers();
 
-        binding.btnTopLikers.setOnClickListener(v->{
+        binding.btnTopLikers.setOnClickListener(v -> {
             try {
                 setAdapter(0);
+                setBackground(0);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         });
-        binding.btnTopfollowers.setOnClickListener(v->{
+        binding.btnTopfollowers.setOnClickListener(v -> {
             try {
                 setAdapter(1);
+                setBackground(1);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         });
-        binding.btnTopCommenters.setOnClickListener(v->{
+        binding.btnTopCommenters.setOnClickListener(v -> {
             try {
                 setAdapter(2);
+                setBackground(2);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -80,6 +84,28 @@ public class TopUsersDialog extends DialogFragment {
 
 
         return dialog;
+    }
+
+
+    private void setBackground(int which) {
+        binding.btnTopLikers.setBackground(getResources().getDrawable(R.drawable.border_orange));
+        binding.btnTopfollowers.setBackground(getResources().getDrawable(R.drawable.border_orange));
+        binding.btnTopCommenters.setBackground(getResources().getDrawable(R.drawable.border_orange));
+        switch (which) {
+            case 0:
+                binding.btnTopLikers.setBackground(getResources().getDrawable(R.drawable.border_orange_active_pink));
+
+                break;
+            case 1:
+                binding.btnTopfollowers.setBackground(getResources().getDrawable(R.drawable.border_orange_active_pink));
+
+                break;
+            case 2:
+                binding.btnTopCommenters.setBackground(getResources().getDrawable(R.drawable.border_orange_active_pink));
+
+                break;
+        }
+
     }
 
     private void getTopUsers() {
@@ -103,6 +129,8 @@ public class TopUsersDialog extends DialogFragment {
     }
 
     private void setAdapter(int type) throws JSONException {
+        binding.llNoItem.setVisibility(View.GONE);
+
         JSONArray jsonArray = null;
         ArrayList<TopUsers> topUserList = new ArrayList<>();
         switch (type) {
@@ -142,6 +170,10 @@ public class TopUsersDialog extends DialogFragment {
                 }
                 break;
         }
+        if (  topUserList.size()==0 )
+        {
+            binding.llNoItem.setVisibility(View.VISIBLE);
+        }
         setView(topUserList, type);
 
     }
@@ -153,7 +185,7 @@ public class TopUsersDialog extends DialogFragment {
         StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        TopUsersAdapter adapter = new TopUsersAdapter(topUsers,type);
+        TopUsersAdapter adapter = new TopUsersAdapter(topUsers, type);
         binding.rcvTopsers.setLayoutManager(mLayoutManager);
         binding.rcvTopsers.setItemAnimator(new DefaultItemAnimator());
         binding.rcvTopsers.setAdapter(adapter);
