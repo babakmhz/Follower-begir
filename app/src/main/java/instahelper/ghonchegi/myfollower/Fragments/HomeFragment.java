@@ -1,6 +1,7 @@
 package instahelper.ghonchegi.myfollower.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import instahelper.ghonchegi.myfollower.Activities.SplashActivity;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.AccountStatisticsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.InstagramAutenticationDialog;
@@ -128,10 +130,12 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
             }
         });
 
-        binding.tvTopUsers.setOnClickListener(v->{
-            TopUsersDialog topUsersDialog=new TopUsersDialog();
-            topUsersDialog.show(getChildFragmentManager(),"");
+        binding.tvTopUsers.setOnClickListener(v -> {
+            TopUsersDialog topUsersDialog = new TopUsersDialog();
+            topUsersDialog.show(getChildFragmentManager(), "");
         });
+
+        binding.imvLogOut.setOnClickListener(v->{signOut();});
 
 
         return view;
@@ -290,5 +294,72 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
         dialog.setCancelable(true);
         dialog.show(getChildFragmentManager(), ":");
     }
+
+
+    private void signOut() {
+        if (dbHeplper.getAllUsers().size() == 1) {
+            dbHeplper.deleteUserById(App.userId);
+            logOut();
+            InstagramAutenticationDialog dialog=new InstagramAutenticationDialog(false,null,null);
+            dialog.setCancelable(false);
+            dialog.show(getChildFragmentManager(),"");
+
+        }
+        else if (dbHeplper.getAllUsers().size()>1)
+        {
+            if(!dbHeplper.getAllUsers().get(0).getUserId().equals(App.userId))
+            {
+                dbHeplper.deleteUserById(App.userId);
+                InstagramAutenticationDialog dialog=new InstagramAutenticationDialog(true,dbHeplper.getAllUsers().get(0).getUserName(),dbHeplper.getAllUsers().get(0).getPassword());
+                dialog.show(getChildFragmentManager(),"");
+            }
+            else {
+                InstagramAutenticationDialog dialog=new InstagramAutenticationDialog(true,dbHeplper.getAllUsers().get(1).getUserName(),dbHeplper.getAllUsers().get(1).getPassword());
+                dbHeplper.deleteUserById(App.userId);
+                dialog.show(getChildFragmentManager(),"");
+            }
+        }
+    }
+
+    private void logOut() {
+        try {
+            api.Logout(new InstagramApi.ResponseHandler() {
+                @Override
+                public void OnSuccess(JSONObject response) {
+                    db.execSQL("DELETE FROM posts");
+                    db.execSQL("DELETE FROM followers");
+                    db.execSQL("DELETE FROM followings");
+                    db.execSQL("DELETE FROM first_followers");
+                    db.execSQL("DELETE FROM first_followings");
+                    editor.putString("username", "");
+                    editor.putString("profile_pic_url", "");
+                    editor.putString("full_name", "");
+                    editor.putBoolean("is_first_reload", true);
+                    editor.putBoolean("is_get_posts", false);
+                    editor.putLong("first_reload_time", 0);
+                    editor.putLong("last_reload_time", 0);
+                    editor.putBoolean("auto_unfollow_is_active", false);
+                    editor.apply();
+
+                    App.followCoin = 0;
+                    App.Api_Token = null;
+                    App.UUID = null;
+                    App.likeCoin = 0;
+                    App.userId = null;
+                    App.profilePicURl = null;
+
+
+                }
+
+                @Override
+                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+                }
+            });
+        } catch (InstaApiException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
