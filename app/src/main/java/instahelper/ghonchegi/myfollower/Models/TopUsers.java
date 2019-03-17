@@ -9,6 +9,10 @@ public class TopUsers {
     private String type;
     private String prizeCount;
 
+
+    public TopUsers() {
+    }
+
     public TopUsers(String userName, String picUrl, int id, String count, String type, String prizeCount) {
         this.userName = userName;
         this.picUrl = picUrl;

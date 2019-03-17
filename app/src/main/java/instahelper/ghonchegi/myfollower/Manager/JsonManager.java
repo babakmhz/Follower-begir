@@ -145,4 +145,19 @@ public class JsonManager {
         return jsonBody.toString();
 
     }
+
+    public static String setSubmit(int type, int t_id) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("api_token", App.Api_Token);
+            jsonBody.put("uuid", App.UUID);
+            jsonBody.put("type", type);
+            jsonBody.put("t_id", t_id);
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        return jsonBody.toString();
+    }
 }

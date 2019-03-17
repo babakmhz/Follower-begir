@@ -31,6 +31,7 @@ import instahelper.ghonchegi.myfollower.Dialog.InstagramAutenticationDialog;
 import instahelper.ghonchegi.myfollower.Dialog.LuckyWheelPickerDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ManageAccountsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ReviewOrdersDialog;
+import instahelper.ghonchegi.myfollower.Dialog.TopUsersDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TransferCoinDialog;
 import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
@@ -125,6 +126,11 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
                 ManageAccountsDialog dialog = new ManageAccountsDialog(callBack);
                 dialog.show(getChildFragmentManager(), "");
             }
+        });
+
+        binding.tvTopUsers.setOnClickListener(v->{
+            TopUsersDialog topUsersDialog=new TopUsersDialog();
+            topUsersDialog.show(getChildFragmentManager(),"");
         });
 
 

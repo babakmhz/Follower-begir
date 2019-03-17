@@ -19,9 +19,11 @@ public class TopUsersAdapter extends RecyclerView.Adapter<TopUsersAdapter.Item> 
 
     private ArrayList<TopUsers> topUsersList;
     private Context context;
+    private int type;
 
-    public TopUsersAdapter(ArrayList<TopUsers> topUsersList) {
+    public TopUsersAdapter(ArrayList<TopUsers> topUsersList,int type) {
         this.topUsersList = topUsersList;
+        this.type=type;
     }
 
     @NonNull
@@ -34,7 +36,12 @@ public class TopUsersAdapter extends RecyclerView.Adapter<TopUsersAdapter.Item> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Item item, int i) {
+    public void onBindViewHolder(@NonNull Item item, int position) {
+        TopUsers topUser = topUsersList.get(position);
+        item.tvRowNumber.setText(position+"");
+        item.tvCount.setText(topUser.getCount());
+        item.tvUserName.setText(topUser.getUserName());
+
 
     }
 
