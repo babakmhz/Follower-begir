@@ -55,7 +55,7 @@ public class InstagramAutenticationDialog extends DialogFragment {
     private boolean isRedirectd = false;
     private String userName, password;
 
-    public InstagramAutenticationDialog(boolean isRedirect, @Nullable String userName, @NonNull String password) {
+    public InstagramAutenticationDialog(boolean isRedirect, @Nullable String userName, @Nullable String password) {
         this.isRedirectd = isRedirect;
         this.password = password;
         this.userName = userName;
@@ -155,7 +155,7 @@ public class InstagramAutenticationDialog extends DialogFragment {
         });
     }
 
-    public void logOut() {
+    private void logOut() {
         try {
             api.Logout(new InstagramApi.ResponseHandler() {
                 @Override
@@ -179,6 +179,8 @@ public class InstagramAutenticationDialog extends DialogFragment {
                     App.Api_Token = null;
                     App.UUID = null;
                     App.likeCoin = 0;
+                    App.userId=null;
+                    App.profilePicURl=null;
 
 
                 }

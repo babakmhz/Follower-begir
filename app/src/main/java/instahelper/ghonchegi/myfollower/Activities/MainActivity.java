@@ -4,12 +4,19 @@ import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.NonNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
@@ -17,6 +24,7 @@ import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Fragments.GetCoin.GetCoinFragment;
 import instahelper.ghonchegi.myfollower.Fragments.HomeFragment;
 import instahelper.ghonchegi.myfollower.Fragments.Purchase.PurchaseFragment;
+import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.ActivityMainBinding;
 import ir.tapsell.sdk.Tapsell;
@@ -24,7 +32,11 @@ import ir.tapsell.sdk.TapsellAd;
 import ir.tapsell.sdk.TapsellAdRequestListener;
 import ir.tapsell.sdk.TapsellAdRequestOptions;
 import ir.tapsell.sdk.TapsellAdShowListener;
+import ir.tapsell.sdk.TapsellRewardListener;
 import ir.tapsell.sdk.TapsellShowOptions;
+
+import static instahelper.ghonchegi.myfollower.App.Base_URL;
+import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 public class MainActivity extends AppCompatActivity {
     public static TapsellAd ad;
@@ -46,42 +58,93 @@ public class MainActivity extends AppCompatActivity {
         currentItemId = R.id.action_home;
         progressDialog = new ProgressDialog(this);
         loadAd(App.TapSelZoneId, TapsellAdRequestOptions.CACHE_TYPE_CACHED);
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+            if (item.getItemId() != currentItemId)
+                switch (item.getItemId()) {
+                    case R.id.action_advertise:
+                        if (ad == null) {
+                            loadAd(App.TapSelZoneId, TapsellAdRequestOptions.CACHE_TYPE_CACHED);
+
+                        }
+                        shwoAds();
+                        break;
+                    case R.id.action_navigation:
+                        currentItemId = R.id.action_navigation;
+                        fm.beginTransaction().replace(R.id.fragmentHolder, getCoinFragment, "shopFragment").commit();
+
+                        break;
+                    case R.id.action_home:
+                        currentItemId = R.id.action_home;
+                        fm.beginTransaction().replace(R.id.fragmentHolder, homeFragment, "shopFragment").commit();
+
+
+                        break;
+                    case R.id.action_purchase:
+                        currentItemId = R.id.action_purchase;
+                        fm.beginTransaction().replace(R.id.fragmentHolder, purchaseFragment, "shopFragment").commit();
+
+                        break;
+                    case R.id.action_shopping:
+                        Toast.makeText(MainActivity.this, "5", Toast.LENGTH_SHORT).show();
+
+                        break;
+                }
+            return true;
+        });
+
+
+        Tapsell.setRewardListener(new TapsellRewardListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() != currentItemId)
-                    switch (item.getItemId()) {
-                        case R.id.action_advertise:
-                            if (ad == null) {
-                                loadAd(App.TapSelZoneId, TapsellAdRequestOptions.CACHE_TYPE_CACHED);
+            public void onAdShowFinished(TapsellAd tapsellAd, boolean b) {
+                if (b) {
+                    addCoin(0,2);
+                } else
+                    Toast.makeText(MainActivity.this, "not complete", Toast.LENGTH_SHORT).show();
 
-                            }
-                            shwoAds();
-                            break;
-                        case R.id.action_navigation:
-                            currentItemId = R.id.action_navigation;
-                            fm.beginTransaction().replace(R.id.fragmentHolder, getCoinFragment, "shopFragment").commit();
-
-                            break;
-                        case R.id.action_home:
-                            currentItemId = R.id.action_home;
-                            fm.beginTransaction().replace(R.id.fragmentHolder, homeFragment, "shopFragment").commit();
-
-
-                            break;
-                        case R.id.action_purchase:
-                            currentItemId = R.id.action_purchase;
-                            fm.beginTransaction().replace(R.id.fragmentHolder, purchaseFragment, "shopFragment").commit();
-
-                            break;
-                        case R.id.action_shopping:
-                            Toast.makeText(MainActivity.this, "5", Toast.LENGTH_SHORT).show();
-
-                            break;
-                    }
-                return true;
             }
         });
+    }
+
+    private void addCoin(int i, int o) {
+
+
+        final String requestBody = JsonManager.addCoin(i, String.valueOf(o));
+
+        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/add_coin", response1 -> {
+            if (response1 != null) {
+                try {
+                    JSONObject jsonRootObject = new JSONObject(response1);
+                    if (jsonRootObject.optBoolean("status") ) {
+                        App.followCoin=jsonRootObject.getInt("follow_coin");
+                        App.likeCoin=jsonRootObject.getInt("like_coin");
+
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, error -> {
+            Log.i("volley", "onErrorResponse: " + error.toString());
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return requestBody == null ? null : requestBody.getBytes();
+            }
+        };
+        request.setTag(this);
+        requestQueue.add(request);
     }
 
     private void setVariables() {

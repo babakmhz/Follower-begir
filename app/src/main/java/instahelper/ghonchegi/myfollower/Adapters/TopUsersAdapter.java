@@ -1,9 +1,6 @@
 package instahelper.ghonchegi.myfollower.Adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +8,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import instahelper.ghonchegi.myfollower.Models.TopUsers;
 import instahelper.ghonchegi.myfollower.R;
@@ -19,9 +19,11 @@ public class TopUsersAdapter extends RecyclerView.Adapter<TopUsersAdapter.Item> 
 
     private ArrayList<TopUsers> topUsersList;
     private Context context;
+    private int type;
 
-    public TopUsersAdapter(ArrayList<TopUsers> topUsersList) {
+    public TopUsersAdapter(ArrayList<TopUsers> topUsersList, int type) {
         this.topUsersList = topUsersList;
+        this.type = type;
     }
 
     @NonNull
@@ -34,7 +36,18 @@ public class TopUsersAdapter extends RecyclerView.Adapter<TopUsersAdapter.Item> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Item item, int i) {
+    public void onBindViewHolder(@NonNull Item item, int position) {
+        TopUsers topUser = topUsersList.get(position);
+        item.tvRowNumber.setText(position +1+"");
+        item.tvPrizeAmount.setText(topUser.getCount());
+        item.tvUserName.setText(topUser.getUserName());
+        if (type == 1) {
+            item.imvPrizeType.setImageResource(R.drawable.follow_coin);
+        } else {
+            item.imvPrizeType.setImageResource(R.drawable.like_coin);
+
+        }
+
 
     }
 
@@ -46,7 +59,6 @@ public class TopUsersAdapter extends RecyclerView.Adapter<TopUsersAdapter.Item> 
     public class Item extends RecyclerView.ViewHolder {
         private CircleImageView profilePic;
         private TextView tvUserName;
-        private TextView tvCount;
         private TextView tvPrizeAmount, tvRowNumber;
         private AppCompatImageView imvPrizeType;
 
@@ -56,7 +68,6 @@ public class TopUsersAdapter extends RecyclerView.Adapter<TopUsersAdapter.Item> 
             tvUserName = itemView.findViewById(R.id.tvUserName);
             tvPrizeAmount = itemView.findViewById(R.id.tvCoinCount);
             imvPrizeType = itemView.findViewById(R.id.imvCoin);
-            tvCount = itemView.findViewById(R.id.tvCount);
             tvRowNumber = itemView.findViewById(R.id.tvRowNumber);
 
         }
