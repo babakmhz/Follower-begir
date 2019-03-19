@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -38,7 +40,7 @@ public class TopUsersAdapter extends RecyclerView.Adapter<TopUsersAdapter.Item> 
     @Override
     public void onBindViewHolder(@NonNull Item item, int position) {
         TopUsers topUser = topUsersList.get(position);
-        item.tvRowNumber.setText(position +1+"");
+        item.tvRowNumber.setText(position + 1 + "");
         item.tvPrizeAmount.setText(topUser.getCount());
         item.tvUserName.setText(topUser.getUserName());
         if (type == 1) {
@@ -47,6 +49,7 @@ public class TopUsersAdapter extends RecyclerView.Adapter<TopUsersAdapter.Item> 
             item.imvPrizeType.setImageResource(R.drawable.like_coin);
 
         }
+        Picasso.get().load(topUser.getPicUrl()).into(item.profilePic);
 
 
     }

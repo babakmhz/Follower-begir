@@ -87,7 +87,7 @@ public class GetCoinLikeFragment extends Fragment {
                     JSONObject jsonObject = new JSONObject(response);
                     Picasso.get().load(jsonObject.getString("image_path")).into(binding.imvPic);
                     imageId = jsonObject.getString("type_id");
-                    transactionId = jsonObject.getInt("transaction_id");
+                    transactionId = jsonObject.getInt("id");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
