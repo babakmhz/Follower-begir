@@ -1,6 +1,7 @@
 package instahelper.ghonchegi.myfollower.Activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +50,97 @@ public class MainActivity extends AppCompatActivity {
     private int currentItemId;
     private ActivityMainBinding binding;
 
+    public static void globalLoadAd(Context context, final String zoneId, final int catchType) {
+        if (MainActivity.ad == null) {
+            TapsellAdRequestOptions options = new TapsellAdRequestOptions(catchType);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("بارگزاری ...");
+            progressDialog.show();
+            Tapsell.requestAd(context, zoneId, options, new TapsellAdRequestListener() {
+                @Override
+                public void onError(String error) {
+                    // Toast.makeText(MainActivity.this, "ERROR:\n" + error, Toast.LENGTH_SHORT).show();
+                    Log.e("Tapsell", "ERROR:" + error);
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onAdAvailable(TapsellAd ad) {
+
+                    MainActivity.ad = ad;
+                    App.isAdAvailable = true;
+                    Log.e("Tapsell", "adId: " + (ad == null ? "NULL" : ad.getId()) + " available, zoneId: " + (ad == null ? "NULL" : ad.getZoneId()));
+                    progressDialog.dismiss();
+//                new AlertDialog.Builder(MainActivity.this).setTitle("Title").setMessage("Message").show();
+                }
+
+                @Override
+                public void onNoAdAvailable() {
+                    App.isAdAvailable = false;
+                    //  Toast.makeText(MainActivity.this, "No Ad Available", Toast.LENGTH_LONG).show();
+                    progressDialog.dismiss();
+                    Log.e("Tapsell", "No Ad Available");
+                }
+
+                @Override
+                public void onNoNetwork() {
+                    App.isAdAvailable = false;
+                    //Toast.makeText(MainActivity.this, "No Network", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    Log.e("Tapsell", "No Network Available");
+                }
+
+                @Override
+                public void onExpiring(TapsellAd ad) {
+                    App.isAdAvailable = false;
+                    MainActivity.ad = null;
+                    globalLoadAd(context, zoneId, catchType);
+                }
+            });
+        }
+    }
+
+    public static void globalShowAd(Context context) {
+        if (MainActivity.ad != null) {
+            TapsellShowOptions showOptions = new TapsellShowOptions();
+            showOptions.setBackDisabled(false);
+            showOptions.setImmersiveMode(true);
+            showOptions.setRotationMode(TapsellShowOptions.ROTATION_UNLOCKED);
+            showOptions.setShowDialog(true);
+
+
+            showOptions.setWarnBackPressedDialogMessage("ویدیو را ادامه میدهید؟ در صورت لغو تماشای ویدیو سکه ای دریافت نخواهید کرد");
+            showOptions.setWarnBackPressedDialogMessageTextColor(Color.RED);
+//                    showOptions.setWarnBackPressedDialogAssetTypefaceFileName("IranNastaliq.ttf");
+            showOptions.setWarnBackPressedDialogPositiveButtonText("بله");
+            showOptions.setWarnBackPressedDialogNegativeButtonText("خیر");
+            showOptions.setWarnBackPressedDialogPositiveButtonBackgroundResId(R.drawable.rounded_circle_orange_border);
+            showOptions.setWarnBackPressedDialogNegativeButtonBackgroundResId(R.drawable.rounded_circle_orange_border);
+            showOptions.setWarnBackPressedDialogPositiveButtonTextColor(Color.BLACK);
+            showOptions.setWarnBackPressedDialogNegativeButtonTextColor(Color.BLACK);
+            showOptions.setWarnBackPressedDialogBackgroundResId(R.drawable.dialog_background);
+            showOptions.setBackDisabledToastMessage("لطفا جهت بازگشت تا انتهای پخش ویدیو صبر کنید.");
+//                    ad.show(MainActivity.this, showOptions);
+            MainActivity.ad.show(context, showOptions, new TapsellAdShowListener() {
+                @Override
+                public void onOpened(TapsellAd ad) {
+                    MainActivity.ad = null;
+                    globalLoadAd(context, App.TapSelZoneId, TapsellAdRequestOptions.CACHE_TYPE_CACHED);
+
+                    Log.e("MainActivity", "on ad opened");
+                }
+
+                @Override
+                public void onClosed(TapsellAd ad) {
+                    MainActivity.ad = null;
+                    globalLoadAd(context, App.TapSelZoneId, TapsellAdRequestOptions.CACHE_TYPE_CACHED);
+                    Log.e("MainActivity", "on ad closed");
+                }
+            });
+
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,15 +185,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Tapsell.setRewardListener(new TapsellRewardListener() {
-            @Override
-            public void onAdShowFinished(TapsellAd tapsellAd, boolean b) {
-                if (b) {
-                    addCoin(0,2);
-                } else
-                    Toast.makeText(MainActivity.this, "not complete", Toast.LENGTH_SHORT).show();
+        Tapsell.setRewardListener((tapsellAd, b) -> {
+            if (b) {
+                addCoin(0, 2);
+            } else
+            {}
 
-            }
         });
     }
 
@@ -114,9 +203,9 @@ public class MainActivity extends AppCompatActivity {
             if (response1 != null) {
                 try {
                     JSONObject jsonRootObject = new JSONObject(response1);
-                    if (jsonRootObject.optBoolean("status") ) {
-                        App.followCoin=jsonRootObject.getInt("follow_coin");
-                        App.likeCoin=jsonRootObject.getInt("like_coin");
+                    if (jsonRootObject.optBoolean("status")) {
+                        App.followCoin = jsonRootObject.getInt("follow_coin");
+                        App.likeCoin = jsonRootObject.getInt("like_coin");
 
 
                     }
@@ -211,15 +300,13 @@ public class MainActivity extends AppCompatActivity {
             showOptions.setRotationMode(TapsellShowOptions.ROTATION_UNLOCKED);
             showOptions.setShowDialog(true);
 
-            showOptions.setWarnBackPressedDialogMessage("ویدیو را ادامه میدهید؟");
-            showOptions.setWarnBackPressedDialogMessageTextColor(Color.RED);
+            showOptions.setWarnBackPressedDialogMessage("ویدیو را ادامه میدهید؟ در صورت لغو تماشای ویدیو سکه ای دریافت نخواهید کرد");
+            showOptions.setWarnBackPressedDialogMessageTextColor(Color.BLACK);
 //                    showOptions.setWarnBackPressedDialogAssetTypefaceFileName("IranNastaliq.ttf");
             showOptions.setWarnBackPressedDialogPositiveButtonText("بله");
             showOptions.setWarnBackPressedDialogNegativeButtonText("خیر");
-            showOptions.setWarnBackPressedDialogPositiveButtonBackgroundResId(R.drawable.rounded_circle_orange_border);
-            showOptions.setWarnBackPressedDialogNegativeButtonBackgroundResId(R.drawable.rounded_circle_orange_border);
-            showOptions.setWarnBackPressedDialogPositiveButtonTextColor(Color.RED);
-            showOptions.setWarnBackPressedDialogNegativeButtonTextColor(Color.GREEN);
+            showOptions.setWarnBackPressedDialogPositiveButtonTextColor(Color.BLACK);
+            showOptions.setWarnBackPressedDialogNegativeButtonTextColor(Color.BLACK);
             showOptions.setWarnBackPressedDialogBackgroundResId(R.drawable.dialog_background);
             showOptions.setBackDisabledToastMessage("لطفا جهت بازگشت تا انتهای پخش ویدیو صبر کنید.");
 //                    ad.show(MainActivity.this, showOptions);

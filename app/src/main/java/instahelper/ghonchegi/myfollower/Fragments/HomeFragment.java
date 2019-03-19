@@ -25,12 +25,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import instahelper.ghonchegi.myfollower.Activities.MainActivity;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.AccountStatisticsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.InstagramAutenticationDialog;
 import instahelper.ghonchegi.myfollower.Dialog.LuckyWheelPickerDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ManageAccountsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ReviewOrdersDialog;
+import instahelper.ghonchegi.myfollower.Dialog.TicketDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TopUsersDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TransferCoinDialog;
 import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
@@ -93,16 +95,11 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
 
         getUserInfo();
 
-        binding.imageView3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LuckyWheelPickerDialog dialog = new LuckyWheelPickerDialog();
-                dialog.show(getChildFragmentManager(), "");
-            }
-        });
+        binding.imageView3.setOnClickListener(v -> {
 
-        /*SelectPictureDialog selectPictureDialog = new SelectPictureDialog();
-        selectPictureDialog.show(getChildFragmentManager(), ":");*/
+            LuckyWheelPickerDialog dialog = new LuckyWheelPickerDialog();
+            dialog.show(getChildFragmentManager(), "");
+        });
         binding.tvTransferCoin.setOnClickListener(v -> {
             TransferCoinDialog transferCoinDialog = new TransferCoinDialog();
             transferCoinDialog.show(getChildFragmentManager(), "");
@@ -138,6 +135,14 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
             signOut();
         });
 
+        binding.tvSupport.setOnClickListener(v -> {
+            TicketDialog dialog = new TicketDialog();
+            dialog.show(getChildFragmentManager(), "");
+        });
+        binding.fourthContainer.setOnClickListener(v -> {
+            MainActivity.globalShowAd(getActivity());
+
+        });
 
         return view;
 
@@ -259,10 +264,10 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
                         App.followCoin = jsonRootObject.optInt("follow_coin");
                         App.likeCoin = jsonRootObject.optInt("like_coin");
                         JSONObject childJson = jsonRootObject.getJSONObject("special_banner");
-                        binding.tvGoldTitle.setText(childJson.getInt("follow_coin")+" سکه فالو");
-                        binding.tvGoldSubtitle.setText(childJson.getInt("like_coin")+" سکه لایک");
-                        specialBannerItemId= childJson.getString("RSA");
-                        binding.tvSpecialBannerPrice.setText(childJson.getInt("price")+" تومان");
+                        binding.tvGoldTitle.setText(childJson.getInt("follow_coin") + " سکه فالو");
+                        binding.tvGoldSubtitle.setText(childJson.getInt("like_coin") + " سکه لایک");
+                        specialBannerItemId = childJson.getString("RSA");
+                        binding.tvSpecialBannerPrice.setText(childJson.getInt("price") + " تومان");
 
 
                     }
