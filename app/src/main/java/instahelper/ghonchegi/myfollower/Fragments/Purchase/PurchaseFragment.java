@@ -27,7 +27,7 @@ public class PurchaseFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_purchase, container, false);
-        PurchaseViewPagerDapter adapter = new PurchaseViewPagerDapter(getChildFragmentManager(), 4);
+        PurchaseViewPagerDapter adapter = new PurchaseViewPagerDapter(getChildFragmentManager(), 3);
         viewPager = view.findViewById(R.id.viewPagerPurchases);
         viewPager.setAdapter(adapter);
 
@@ -59,12 +59,12 @@ public class PurchaseFragment extends Fragment {
                 setActive(2);
             }
         });
-        tvRobotLike.setOnClickListener(new View.OnClickListener() {
+/*        tvRobotLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setActive(3);
             }
-        });
+        });*/
         viewPager.setOffscreenPageLimit(0);
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -131,12 +131,12 @@ public class PurchaseFragment extends Fragment {
                 tvFollow.setBackground(getResources().getDrawable(R.drawable.active_tab));
                 tvFollow.setTextColor(getResources().getColor(R.color.white));
                 break;
-            case 3:
-                reset();
-                setViewPager(3);
-                tvRobotLike.setBackground(getResources().getDrawable(R.drawable.active_tab));
-                tvRobotLike.setTextColor(getResources().getColor(R.color.white));
-                break;
+//            case 3:
+//                reset();
+//                setViewPager(3);
+//                tvRobotLike.setBackground(getResources().getDrawable(R.drawable.active_tab));
+//                tvRobotLike.setTextColor(getResources().getColor(R.color.white));
+//                break;
         }
     }
 

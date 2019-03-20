@@ -14,6 +14,7 @@
             android:background="@color/orangeTextColor"
             android:gravity="center"
             android:padding="5dp"
+            android:visibility="gone"
             android:text="ثبت سفارش برای دیگران"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
