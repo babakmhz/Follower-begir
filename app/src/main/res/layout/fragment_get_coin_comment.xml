@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
+        android:layout_height="match_parent">
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -8,11 +15,12 @@
         android:layoutDirection="ltr">
 
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+        <ImageView
+            android:id="@+id/imvPic"
             android:layout_width="0dp"
+            android:src="@drawable/ic_image_black"
             android:layout_height="0dp"
-            android:background="@drawable/rounded_select_image"
+            android:background="@drawable/curved"
             app:layout_constraintBottom_toBottomOf="@id/guideLine2"
             app:layout_constraintEnd_toEndOf="@id/guideLine4"
             app:layout_constraintStart_toStartOf="@id/guideLine3"
@@ -66,9 +74,9 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/tvLikeCoin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2500"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
@@ -171,4 +179,6 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.8" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
 </layout>

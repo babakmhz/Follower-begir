@@ -43,14 +43,16 @@ import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 public class GetCoinLikeFragment extends Fragment {
     FragmentGetCoinLikeBinding binding;
-    ArrayList<String> likedUsers = new ArrayList<>();
     private View view;
+
+    ArrayList<String> likedUsers = new ArrayList<>();
     private String imageId;
     private int transactionId;
     private boolean autoLike = false;
     private Dialog progressDialog;
-    private Handler handler;
-
+    Handler h = new Handler();
+    int delay = 10*1000; //1 second=1000 milisecond, 10*1000=15seconds
+    Runnable runnable;
     public GetCoinLikeFragment() {
     }
 
@@ -67,17 +69,15 @@ public class GetCoinLikeFragment extends Fragment {
         });
         binding.btnAutoLike.setOnClickListener(v -> {
             autoLike = true;
-            ProgressDialog("در حال انجام لایک خودکار");
-            handler = new Handler();
-            int delay = 10000; //milliseconds
-
-            handler.postDelayed(new Runnable() {
+            ProgressDialog("انجام عملیات لایک خودکار");
+            h.postDelayed(runnable = new Runnable() {
                 public void run() {
                     binding.btnDoLike.performClick();
-
-                    handler.postDelayed(this, delay);
+                    h.postDelayed(runnable, delay);
                 }
             }, delay);
+
+
         });
 
 
@@ -98,6 +98,7 @@ public class GetCoinLikeFragment extends Fragment {
 
                     @Override
                     public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                        binding.btnNext.performClick();
 
                     }
                 });
@@ -121,13 +122,11 @@ public class GetCoinLikeFragment extends Fragment {
             public void onResponse(String response) {
                 if (response == null || response.equals("")) {
                     Toast.makeText(getActivity(), "سفارش فعالی موجود نیست", Toast.LENGTH_SHORT).show();
+                    binding.imvPic.setImageResource(R.drawable.ic_image_black);
                     if (autoLike) {
                         progressDialog.dismiss();
                         autoLike = false;
-                        handler = new Handler();
-                        handler.removeCallbacksAndMessages(null);
-
-
+                        h.removeCallbacks(runnable); //stop handler
                     }
                     return;
                 }
@@ -144,11 +143,13 @@ public class GetCoinLikeFragment extends Fragment {
 
             }
         },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
+                error -> {
+                    if (autoLike) {
+                        progressDialog.dismiss();
+                        autoLike = false;
+                        h.removeCallbacks(runnable); //stop handler
                     }
+
                 }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -178,6 +179,7 @@ public class GetCoinLikeFragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(response);
                 if (jsonObject.getBoolean("status")) {
                     App.likeCoin = jsonObject.getInt("like_coin");
+                    binding.tvLikeCoinCount.setText(App.likeCoin+"");
                     getLikeOrder();
                 }
 
@@ -187,7 +189,11 @@ public class GetCoinLikeFragment extends Fragment {
 
         },
                 error -> {
-
+                    if (autoLike) {
+                        progressDialog.dismiss();
+                        autoLike = false;
+                        h.removeCallbacks(runnable); //stop handler
+                    }
                 }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -218,8 +224,7 @@ public class GetCoinLikeFragment extends Fragment {
         }
         btnStop.setOnClickListener(v -> {
             autoLike = false;
-            handler = new Handler();
-            handler.removeCallbacksAndMessages(null);
+            h.removeCallbacks(runnable); //stop handler
             progressDialog.dismiss();
         });
         progressDialog.show();

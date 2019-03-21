@@ -11,8 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import instahelper.ghonchegi.myfollower.Adapters.PurchaseViewPagerDapter;
 import instahelper.ghonchegi.myfollower.R;
+import instahelper.ghonchegi.myfollower.instaAPI.InstaApiException;
+import instahelper.ghonchegi.myfollower.instaAPI.InstagramApi;
 
 
 public class PurchaseFragment extends Fragment {

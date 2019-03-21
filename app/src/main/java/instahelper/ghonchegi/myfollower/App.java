@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 
 import instahelper.ghonchegi.myfollower.Manager.VolleyManager;
+import instahelper.ghonchegi.myfollower.data.InstagramUser;
 import ir.tapsell.sdk.Tapsell;
 
 public class App extends Application {
@@ -39,6 +40,8 @@ public class App extends Application {
     public static boolean isAdAvailable = false;
     public static boolean isPrivateAccount = true;
     public static String userId = null;
+    public static InstagramUser user;
+    public static String responseBanner;
 
     public static void Toast(Context context, String message) {
         View view = App.inflater.inflate(R.layout.toast, null);

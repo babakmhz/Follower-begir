@@ -2,161 +2,170 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layoutDirection="ltr">
+        android:fillViewport="true"
+        android:fitsSystemWindows="true">
 
 
-        <ImageView
-            android:id="@+id/imvPic"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/curved"
-            app:layout_constraintBottom_toBottomOf="@id/guideLine2"
-            app:layout_constraintEnd_toEndOf="@id/guideLine4"
-            app:layout_constraintStart_toStartOf="@id/guideLine3"
-            app:layout_constraintTop_toTopOf="@id/guideLine" />
-
-        <LinearLayout
-            android:id="@+id/linear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15sp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine4"
-            app:layout_constraintStart_toStartOf="@id/guideLine3"
-            app:layout_constraintTop_toBottomOf="@id/guideLine2">
-
-            <Button
-                android:id="@+id/btnNext"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/rounded_five_roundness_grey"
-                android:text="بعدی"
-
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/btnReport"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/rounded_five_roundness"
-                android:text="گزارش"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
-
-        </LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layoutDirection="ltr">
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:id="@+id/imvPic"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/curved"
+                android:src="@drawable/ic_image_black"
+                app:layout_constraintBottom_toBottomOf="@id/guideLine2"
+                app:layout_constraintEnd_toEndOf="@id/guideLine4"
+                app:layout_constraintStart_toStartOf="@id/guideLine3"
+                app:layout_constraintTop_toTopOf="@id/guideLine" />
 
-            <TextView
-                android:id="@+id/tvLikeCoinCount"
+            <LinearLayout
+                android:id="@+id/linear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2500"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:layout_marginTop="15sp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+                app:layout_constraintStart_toStartOf="@id/guideLine3"
+                app:layout_constraintTop_toBottomOf="@id/guideLine2">
 
-            <androidx.appcompat.widget.AppCompatImageView
+                <Button
+                    android:id="@+id/btnNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/rounded_five_roundness_grey"
+                    android:text="بعدی"
+
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/btnReport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/rounded_five_roundness"
+                    android:text="گزارش"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/like_coin" />
-        </LinearLayout>
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvLikeCoinCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2500"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/like_coin" />
+            </LinearLayout>
 
 
-        <Button
-            android:id="@+id/btnDoLike"
-            android:layout_width="0dp"
-            android:layout_height="42dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/rounded_grey_border"
-            android:text="@string/doLike"
-            android:textColor="@color/darkerGrey"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine4"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@+id/guideLine3"
-            app:layout_constraintTop_toBottomOf="@+id/linear"
-            app:layout_goneMarginStart="10dp" />
+            <Button
+                android:id="@+id/btnDoLike"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/rounded_grey_border"
+                android:text="@string/doLike"
+                android:textColor="@color/darkerGrey"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="@+id/guideLine3"
+                app:layout_constraintTop_toBottomOf="@+id/linear"
+                app:layout_goneMarginStart="10dp" />
 
-        <Button
-            android:id="@+id/btnAutoLike"
-            android:layout_width="0dp"
-            android:layout_height="42dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_grey_border"
-            android:text="@string/autoLike"
-            android:textColor="@color/darkerGrey"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/btnDoLike"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@+id/btnDoLike"
-            app:layout_constraintTop_toBottomOf="@+id/btnDoLike"
-            app:layout_goneMarginStart="10dp" />
+            <Button
+                android:id="@+id/btnAutoLike"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_grey_border"
+                android:text="@string/autoLike"
+                android:textColor="@color/darkerGrey"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@+id/btnDoLike"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="@+id/btnDoLike"
+                app:layout_constraintTop_toBottomOf="@+id/btnDoLike"
+                app:layout_goneMarginStart="10dp" />
 
-        <Button
-            android:id="@+id/btnConfirmAndPay"
-            android:layout_width="0dp"
-            android:layout_height="42dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_orange"
-            android:text="@string/likeWithAllAccounts"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/btnAutoLike"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@+id/btnAutoLike"
-            app:layout_constraintTop_toBottomOf="@+id/btnAutoLike"
-            app:layout_goneMarginStart="10dp" />
+            <Button
+                android:id="@+id/btnConfirmAndPay"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_orange"
+                android:text="@string/likeWithAllAccounts"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="@+id/btnAutoLike"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="@+id/btnAutoLike"
+                app:layout_constraintTop_toBottomOf="@+id/btnAutoLike"
+                app:layout_goneMarginStart="10dp" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.1" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.1" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.4" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.4" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.2" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.2" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.8" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.8" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

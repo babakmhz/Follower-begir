@@ -24,8 +24,10 @@ import androidx.fragment.app.FragmentManager;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Fragments.GetCoin.GetCoinFragment;
 import instahelper.ghonchegi.myfollower.Fragments.HomeFragment;
+import instahelper.ghonchegi.myfollower.Fragments.Offers.ShopFragment;
 import instahelper.ghonchegi.myfollower.Fragments.Purchase.PurchaseFragment;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
+import instahelper.ghonchegi.myfollower.Models.Offers;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.ActivityMainBinding;
 import ir.tapsell.sdk.Tapsell;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private HomeFragment homeFragment = new HomeFragment();
     private PurchaseFragment purchaseFragment = new PurchaseFragment();
     private GetCoinFragment getCoinFragment = new GetCoinFragment();
+    private ShopFragment shopFragment=new ShopFragment();
     private int currentItemId;
     private ActivityMainBinding binding;
 
@@ -177,7 +180,9 @@ public class MainActivity extends AppCompatActivity {
 
                         break;
                     case R.id.action_shopping:
-                        Toast.makeText(MainActivity.this, "5", Toast.LENGTH_SHORT).show();
+                        currentItemId = R.id.action_shopping;
+                        fm.beginTransaction().replace(R.id.fragmentHolder, shopFragment, "shopFragment").commit();
+
 
                         break;
                 }

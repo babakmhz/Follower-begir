@@ -131,7 +131,7 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
         } else if (binding.seekBar.getProgress() == 0) {
             Toast.makeText(getContext(), "تعداد سفارش را مشخص کنید", Toast.LENGTH_SHORT).show();
         } else {
-            final String requestBody = JsonManager.submitOrder(0, itemId, selectedPicURL, binding.seekBar.getProgress());
+            final String requestBody = JsonManager.submitOrder(2, itemId, selectedPicURL, binding.seekBar.getProgress());
 
             StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/set", response1 -> {
                 if (response1 != null) {
