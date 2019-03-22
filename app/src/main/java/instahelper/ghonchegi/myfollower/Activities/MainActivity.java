@@ -24,6 +24,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.BuildConfig;
+import instahelper.ghonchegi.myfollower.Dialog.PurchasePackages.DirectPrchaseInterface;
 import instahelper.ghonchegi.myfollower.Fragments.GetCoin.GetCoinFragment;
 import instahelper.ghonchegi.myfollower.Fragments.HomeFragment;
 import instahelper.ghonchegi.myfollower.Fragments.Offers.ShopFragment;
@@ -31,6 +32,7 @@ import instahelper.ghonchegi.myfollower.Fragments.Purchase.PurchaseFragment;
 import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
+import instahelper.ghonchegi.myfollower.Models.ShopItem;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.ActivityMainBinding;
 import instahelper.ghonchegi.util.IabHelper;
@@ -47,19 +49,19 @@ import ir.tapsell.sdk.TapsellShowOptions;
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
-public class MainActivity extends AppCompatActivity implements PurchaseInterface {
+public class MainActivity extends AppCompatActivity implements PurchaseInterface, DirectPrchaseInterface {
     static final String TAG = "FollowerAPP";
-    static String SKU_PREMIUM = "Item1";
-    static int RC_REQUEST = 1372;
     public static TapsellAd ad;
     public static ProgressDialog progressDialog;
+    static String SKU_PREMIUM = "Item1";
+    static int RC_REQUEST = 1372;
+    private static ShopItem currentShop;
     boolean mIsPremium = false;
     IabHelper mHelper;
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener;
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener;
     private BottomNavigationView bottomNavigationView;
     private FragmentManager fm;
-
     private PurchaseFragment purchaseFragment = new PurchaseFragment();
     private GetCoinFragment getCoinFragment = new GetCoinFragment();
     private ShopFragment shopFragment = new ShopFragment();
@@ -164,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setVariables();
-        callBack=this;
+        callBack = this;
 
         fm.beginTransaction().replace(R.id.fragmentHolder, new HomeFragment(callBack), "shopFragment").commit();
         currentItemId = R.id.action_home;
@@ -210,71 +212,66 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         mHelper = new IabHelper(this, BuildConfig.BAZAR_RSA);
 
 
-        try{ mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
-            public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-                Log.d(TAG, "Query inventory finished.");
-                if (result.isFailure()) {
-                    Log.d(TAG, "Failed to query inventory: " + result);
-                    return;
-                } else {
-                    Log.d(TAG, "Query inventory was successful.");
-                    // does the user have the premium upgrade?
-                    mIsPremium = inventory.hasPurchase(SKU_PREMIUM);
-                    if (mIsPremium) {
-                        MasrafSeke(inventory.getPurchase(SKU_PREMIUM));
+        try {
+            mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+                public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+                    Log.d(TAG, "Query inventory finished.");
+                    if (result.isFailure()) {
+                        Log.d(TAG, "Failed to query inventory: " + result);
+                        return;
+                    } else {
+                        Log.d(TAG, "Query inventory was successful.");
+                        // does the user have the premium upgrade?
+                        mIsPremium = inventory.hasPurchase(SKU_PREMIUM);
+                        if (mIsPremium) {
+                            MasrafSeke(inventory.getPurchase(SKU_PREMIUM));
+                        }
+                        // update UI accordingly
+
+                        Log.d(TAG, "User is " + (mIsPremium ? "PREMIUM" : "NOT PREMIUM"));
                     }
-                    // update UI accordingly
 
-                    Log.d(TAG, "User is " + (mIsPremium ? "PREMIUM" : "NOT PREMIUM"));
+                    Log.d(TAG, "Initial inventory query finished; enabling main UI.");
                 }
-
-                Log.d(TAG, "Initial inventory query finished; enabling main UI.");
-            }
-        };
-        }
-        catch (Exception e)
-        {
+            };
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        try{mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-            public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-                if (result.isFailure()) {
-                    Log.d(TAG, "Error purchasing: " + result);
-                    return;
-                } else if (purchase.getSku().equals(App.SkuSpecialWheel)) {
-                    new SharedPreferences(MainActivity.this).setSpeccialWhhel(true);
-                    Toast.makeText(MainActivity.this, "خرید موفق", Toast.LENGTH_SHORT).show();
+        try {
+            mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+                public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+                    if (result.isFailure()) {
+                        Log.d(TAG, "Error purchasing: " + result);
+                        return;
+                    } else if (purchase.getSku().equals(App.SkuSpecialWheel)) {
+                        new SharedPreferences(MainActivity.this).setSpeccialWhhel(true);
+                        Toast.makeText(MainActivity.this, "خرید موفق", Toast.LENGTH_SHORT).show();
 
-                    MasrafSeke(purchase);
+                        MasrafSeke(purchase);
 
+                    }
                 }
-            }
-        };
-        }
-        catch (Exception e)
-        {
+            };
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
+        try {
+            mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+                public void onIabSetupFinished(IabResult result) {
+                    Log.d(TAG, "Setup finished.");
 
-
-        try{  mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result) {
-                Log.d(TAG, "Setup finished.");
-
-                if (!result.isSuccess()) {
-                    // Oh noes, there was a problem.
-                    Log.d(TAG, "Problem setting up In-app Billing: " + result);
+                    if (!result.isSuccess()) {
+                        // Oh noes, there was a problem.
+                        Log.d(TAG, "Problem setting up In-app Billing: " + result);
+                    }
+                    // Hooray, IAB is fully set up!
+                    mHelper.queryInventoryAsync(mGotInventoryListener);
                 }
-                // Hooray, IAB is fully set up!
-                mHelper.queryInventoryAsync(mGotInventoryListener);
-            }
-        });
-        }
-        catch (Exception e)
-        {
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -467,9 +464,63 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
     @Override
     public void buyItem(String sdk, int requestCode) {
-        SKU_PREMIUM=sdk;
-        RC_REQUEST=requestCode;
+        SKU_PREMIUM = sdk;
+        RC_REQUEST = requestCode;
         mHelper.launchPurchaseFlow(this, sdk, RC_REQUEST, mPurchaseFinishedListener, "extera info");
+
+    }
+
+    @Override
+    public void IABPurchase(ShopItem shopItem) {
+        mHelper.launchPurchaseFlow(this, shopItem.getSku(), shopItem.getReturnValue(), mPurchaseFinishedListener, "extera info");
+
+    }
+
+    private void increaseBeforeOrder() {
+        if (currentShop == null)
+            return;
+
+
+        final String requestBody = JsonManager.addCoin(currentShop.getType(), String.valueOf(currentShop.getAmount() * 2 + 1));
+
+        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/add_coin", response1 -> {
+            if (response1 != null) {
+                try {
+                    JSONObject jsonRootObject = new JSONObject(response1);
+                    if (jsonRootObject.optBoolean("status")) {
+                        purchaseAfterIncrease();
+
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, error -> {
+            Log.i("volley", "onErrorResponse: " + error.toString());
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return requestBody == null ? null : requestBody.getBytes();
+            }
+        };
+        request.setTag(this);
+        requestQueue.add(request);
+
+    }
+
+    private void purchaseAfterIncrease() {
 
     }
 }

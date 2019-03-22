@@ -29,7 +29,7 @@ public class PurchaseLike extends DialogFragment {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         //endregion
 
-        
+
 
         return dialog;
     }

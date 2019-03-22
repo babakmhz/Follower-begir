@@ -26,6 +26,7 @@ import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.App;
+import instahelper.ghonchegi.myfollower.Dialog.PurchasePackages.PurchaseLike;
 import instahelper.ghonchegi.myfollower.Dialog.SelectPictureDialog;
 import instahelper.ghonchegi.myfollower.Interface.ImagePickerInterface;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
@@ -96,7 +97,11 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
 
             }
         });
+        binding.btnConfirmAndPay.setOnClickListener(v->{
+            PurchaseLike dialog = new PurchaseLike();
+            dialog.show(getChildFragmentManager(),"");
 
+        });
 
         return view;
 
