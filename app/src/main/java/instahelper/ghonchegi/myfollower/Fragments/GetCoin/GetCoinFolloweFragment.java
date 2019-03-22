@@ -104,7 +104,7 @@ public class GetCoinFolloweFragment extends Fragment {
         final String requestBody = JsonManager.getOrders(1);
         StringRequest request = new StringRequest(Request.Method.POST, App.Base_URL + "transaction/get", response -> {
             if (response == null || response.equals("")) {
-                Toast.makeText(getActivity(), "سفارش فعالی موجود نیست", Toast.LENGTH_SHORT).show();
+
                 binding.imvPic.setImageResource(R.drawable.ic_user_avatar);
 
                 if (autoLike) {

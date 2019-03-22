@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 
+import instahelper.ghonchegi.myfollower.Manager.Config;
 import instahelper.ghonchegi.myfollower.Manager.VolleyManager;
 import instahelper.ghonchegi.myfollower.data.InstagramUser;
 import ir.tapsell.sdk.Tapsell;
@@ -42,6 +43,7 @@ public class App extends Application {
     public static String userId = null;
     public static InstagramUser user;
     public static String responseBanner;
+    public static String SkuSpecialWheel = "Item1";
 
     public static void Toast(Context context, String message) {
         View view = App.inflater.inflate(R.layout.toast, null);
@@ -90,6 +92,8 @@ public class App extends Application {
         requestQueue = VolleyManager.getRequestQueue(getBaseContext());
         requestQueue.start();
         Tapsell.initialize(this, TapSellKey);
+        Config.setupShopItems();
+
         //FontsOverride.setDefaultFont(this, "MONOSPACE", "iran.ttf");
     }
 

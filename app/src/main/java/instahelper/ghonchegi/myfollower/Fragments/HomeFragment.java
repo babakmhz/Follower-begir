@@ -1,5 +1,6 @@
 package instahelper.ghonchegi.myfollower.Fragments;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -33,10 +34,12 @@ import instahelper.ghonchegi.myfollower.Dialog.InstagramAutenticationDialog;
 import instahelper.ghonchegi.myfollower.Dialog.LuckyWheelPickerDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ManageAccountsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ReviewOrdersDialog;
+import instahelper.ghonchegi.myfollower.Dialog.SpecialLuckyWheelPickerDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TicketDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TopUsersDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TransferCoinDialog;
 import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
+import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
@@ -57,11 +60,13 @@ import static android.content.Context.MODE_PRIVATE;
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
+@SuppressLint("ValidFragment")
 public class HomeFragment extends Fragment implements AccountChangerInterface {
 
 
     public static IabHelper mHelper;
     public static IabHelper mPurchase;
+    private final PurchaseInterface callBackPurchase;
     private View view;
     private FragmentHomeBinding binding;
     private InstagramApi api = InstagramApi.getInstance();
@@ -76,7 +81,8 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
     private AccountChangerInterface callBack;
     private String specialBannerItemId;
 
-    public HomeFragment() {
+    public HomeFragment(PurchaseInterface callBack) {
+        this.callBackPurchase = callBack;
     }
 
 
@@ -151,8 +157,14 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
 
         });
 
-        binding.imageView.setOnClickListener(v->{
-            purchase("Item1");
+        binding.imageView.setOnClickListener(v -> {
+            if (new SharedPreferences(getActivity()).getSpecialWheel()) {
+                SpecialLuckyWheelPickerDialog dialog = new SpecialLuckyWheelPickerDialog();
+                dialog.show(getChildFragmentManager(), "Spc");
+            }
+            else {
+                        callBackPurchase.buyItem("Item1",2000);
+            }
         });
 
 
@@ -418,8 +430,6 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
                 }
             }
         });
-
-
 
 
     }

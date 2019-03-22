@@ -28,7 +28,9 @@ import instahelper.ghonchegi.myfollower.Fragments.GetCoin.GetCoinFragment;
 import instahelper.ghonchegi.myfollower.Fragments.HomeFragment;
 import instahelper.ghonchegi.myfollower.Fragments.Offers.ShopFragment;
 import instahelper.ghonchegi.myfollower.Fragments.Purchase.PurchaseFragment;
+import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
+import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.ActivityMainBinding;
 import instahelper.ghonchegi.util.IabHelper;
@@ -45,30 +47,26 @@ import ir.tapsell.sdk.TapsellShowOptions;
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
-public class MainActivity extends AppCompatActivity {
-    // Debug tag, for logging
-    // Debug tag, for logging
-    static final String TAG = "Esfandune.ir";
-    // SKUs for our products: the premium upgrade (non-consumable)
-    static final String SKU_PREMIUM = "Item1";
-    // (arbitrary) request code for the purchase flow
-    static final int RC_REQUEST = 1372;
+public class MainActivity extends AppCompatActivity implements PurchaseInterface {
+    static final String TAG = "FollowerAPP";
+    static String SKU_PREMIUM = "Item1";
+    static int RC_REQUEST = 1372;
     public static TapsellAd ad;
     public static ProgressDialog progressDialog;
-    // Does the user have the premium upgrade?
     boolean mIsPremium = false;
-    // The helper object
     IabHelper mHelper;
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener;
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener;
     private BottomNavigationView bottomNavigationView;
     private FragmentManager fm;
-    private HomeFragment homeFragment = new HomeFragment();
+
     private PurchaseFragment purchaseFragment = new PurchaseFragment();
     private GetCoinFragment getCoinFragment = new GetCoinFragment();
     private ShopFragment shopFragment = new ShopFragment();
     private int currentItemId;
     private ActivityMainBinding binding;
+
+    private PurchaseInterface callBack;
 
     public static void globalLoadAd(Context context, final String zoneId, final int catchType) {
         if (MainActivity.ad == null) {
@@ -166,9 +164,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setVariables();
-        fm.beginTransaction().replace(R.id.fragmentHolder, homeFragment, "shopFragment").commit();
+        callBack=this;
+
+        fm.beginTransaction().replace(R.id.fragmentHolder, new HomeFragment(callBack), "shopFragment").commit();
         currentItemId = R.id.action_home;
         progressDialog = new ProgressDialog(this);
+
+
         loadAd(App.TapSelZoneId, TapsellAdRequestOptions.CACHE_TYPE_CACHED);
         binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             if (item.getItemId() != currentItemId)
@@ -187,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.action_home:
                         currentItemId = R.id.action_home;
-                        fm.beginTransaction().replace(R.id.fragmentHolder, homeFragment, "shopFragment").commit();
+                        fm.beginTransaction().replace(R.id.fragmentHolder, new HomeFragment(callBack), "shopFragment").commit();
 
 
                         break;
@@ -199,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_shopping:
                         currentItemId = R.id.action_shopping;
                         fm.beginTransaction().replace(R.id.fragmentHolder, shopFragment, "shopFragment").commit();
-                        mHelper.launchPurchaseFlow(this, SKU_PREMIUM, RC_REQUEST, mPurchaseFinishedListener, "payload-string");
 
 
                         break;
@@ -209,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         mHelper = new IabHelper(this, BuildConfig.BAZAR_RSA);
 
 
-        mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+        try{ mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
             public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
                 Log.d(TAG, "Query inventory finished.");
                 if (result.isFailure()) {
@@ -230,24 +231,36 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "Initial inventory query finished; enabling main UI.");
             }
         };
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
-        mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        try{mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
             public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
                 if (result.isFailure()) {
                     Log.d(TAG, "Error purchasing: " + result);
                     return;
-                } else if (purchase.getSku().equals(SKU_PREMIUM)) {
-                    // give user access to premium content and update the UI
+                } else if (purchase.getSku().equals(App.SkuSpecialWheel)) {
+                    new SharedPreferences(MainActivity.this).setSpeccialWhhel(true);
                     Toast.makeText(MainActivity.this, "خرید موفق", Toast.LENGTH_SHORT).show();
+
                     MasrafSeke(purchase);
 
                 }
             }
         };
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
 
-        Log.d(TAG, "Starting setup.");
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+
+
+        try{  mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             public void onIabSetupFinished(IabResult result) {
                 Log.d(TAG, "Setup finished.");
 
@@ -259,6 +272,13 @@ public class MainActivity extends AppCompatActivity {
                 mHelper.queryInventoryAsync(mGotInventoryListener);
             }
         });
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        Log.d(TAG, "Starting setup.");
 
         Tapsell.setRewardListener((tapsellAd, b) -> {
             if (b) {
@@ -443,6 +463,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void buyItem(String sdk, int requestCode) {
+        SKU_PREMIUM=sdk;
+        RC_REQUEST=requestCode;
+        mHelper.launchPurchaseFlow(this, sdk, RC_REQUEST, mPurchaseFinishedListener, "extera info");
+
     }
 }
 

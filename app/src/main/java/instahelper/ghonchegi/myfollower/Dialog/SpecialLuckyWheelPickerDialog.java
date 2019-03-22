@@ -26,7 +26,9 @@ import java.util.Random;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
+import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.WheelPiclerView.LuckyItem;
 import instahelper.ghonchegi.myfollower.WheelPiclerView.LuckyWheelView;
@@ -34,7 +36,7 @@ import instahelper.ghonchegi.myfollower.WheelPiclerView.LuckyWheelView;
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
-public class LuckyWheelPickerDialog extends DialogFragment {
+public class SpecialLuckyWheelPickerDialog extends DialogFragment {
     List<LuckyItem> data = new ArrayList<>();
     private Button btnStart;
 
@@ -77,12 +79,8 @@ public class LuckyWheelPickerDialog extends DialogFragment {
                         type = "فالو";
                         break;
                 }
-                if (data.get(index).topText.equals("0")) {
-                    Toast.makeText(getContext(), "شانس با شما یار نبود !‌ ایشالا فردا ...", Toast.LENGTH_SHORT).show();
 
-                } else {
-                    Toast.makeText(getContext(), "شما برنده " + data.get(index).topText + " سکه " + type + " شدید ", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(getContext(), "شما برنده " + data.get(index).topText + " سکه " + type + " شدید ", Toast.LENGTH_SHORT).show();
                 setStatus(data.get(index));
             }
         });
@@ -93,21 +91,21 @@ public class LuckyWheelPickerDialog extends DialogFragment {
 
     private void setData(LuckyWheelView luckyWheelView) {
         LuckyItem luckyItem1 = new LuckyItem();
-        luckyItem1.topText = "4";
+        luckyItem1.topText = "100";
         luckyItem1.icon = R.drawable.like_coin;
         luckyItem1.color = 0xffFFF3E0;
         luckyItem1.type = 0;
         data.add(luckyItem1);
 
         LuckyItem luckyItem2 = new LuckyItem();
-        luckyItem2.topText = "9";
+        luckyItem2.topText = "125";
         luckyItem2.icon = R.drawable.like_coin;
         luckyItem2.color = 0xffFFE0B2;
         luckyItem1.type = 0;
         data.add(luckyItem2);
 
         LuckyItem luckyItem3 = new LuckyItem();
-        luckyItem3.topText = "5";
+        luckyItem3.topText = "210";
         luckyItem3.icon = R.drawable.follow_coin;
         luckyItem3.color = 0xffFFCC80;
         luckyItem1.type = 1;
@@ -115,21 +113,21 @@ public class LuckyWheelPickerDialog extends DialogFragment {
 
         //////////////////
         LuckyItem luckyItem4 = new LuckyItem();
-        luckyItem4.topText = "15";
+        luckyItem4.topText = "70";
         luckyItem4.icon = R.drawable.like_coin;
         luckyItem1.type = 0;
         luckyItem4.color = 0xffFFF3E0;
         data.add(luckyItem4);
 
         LuckyItem luckyItem5 = new LuckyItem();
-        luckyItem5.topText = "0";
+        luckyItem5.topText = "130";
         luckyItem5.icon = R.drawable.follow_coin;
         luckyItem1.type = 1;
         luckyItem5.color = 0xffFFE0B2;
         data.add(luckyItem5);
 
         LuckyItem luckyItem6 = new LuckyItem();
-        luckyItem6.topText = "6";
+        luckyItem6.topText = "500";
         luckyItem6.icon = R.drawable.like_coin;
         luckyItem1.type = 0;
         luckyItem6.color = 0xffFFCC80;
@@ -138,14 +136,14 @@ public class LuckyWheelPickerDialog extends DialogFragment {
 
         //////////////////////
         LuckyItem luckyItem7 = new LuckyItem();
-        luckyItem7.topText = "11";
+        luckyItem7.topText = "500";
         luckyItem1.type = 1;
         luckyItem7.icon = R.drawable.follow_coin;
         luckyItem7.color = 0xffFFF3E0;
         data.add(luckyItem7);
 
         LuckyItem luckyItem8 = new LuckyItem();
-        luckyItem8.topText = "5";
+        luckyItem8.topText = "245";
         luckyItem1.type = 0;
         luckyItem8.icon = R.drawable.like_coin;
         luckyItem8.color = 0xffFFE0B2;
@@ -153,7 +151,7 @@ public class LuckyWheelPickerDialog extends DialogFragment {
 
 
         LuckyItem luckyItem9 = new LuckyItem();
-        luckyItem9.topText = "8";
+        luckyItem9.topText = "311";
         luckyItem1.type = 1;
         luckyItem9.icon = R.drawable.follow_coin;
         luckyItem9.color = 0xffFFCC80;
@@ -161,21 +159,21 @@ public class LuckyWheelPickerDialog extends DialogFragment {
         ////////////////////////
 
         LuckyItem luckyItem10 = new LuckyItem();
-        luckyItem10.topText = "0";
+        luckyItem10.topText = "300";
         luckyItem1.type = 0;
         luckyItem10.icon = R.drawable.like_coin;
         luckyItem10.color = 0xffFFE0B2;
         data.add(luckyItem10);
 
         LuckyItem luckyItem11 = new LuckyItem();
-        luckyItem11.topText = "13";
+        luckyItem11.topText = "440";
         luckyItem1.type = 0;
         luckyItem11.icon = R.drawable.like_coin;
         luckyItem11.color = 0xffFFE0B2;
         data.add(luckyItem11);
 
         LuckyItem luckyItem12 = new LuckyItem();
-        luckyItem12.topText = "4";
+        luckyItem12.topText = "199";
         luckyItem1.type = 1;
         luckyItem12.icon = R.drawable.follow_coin;
         luckyItem12.color = 0xffFFE0B2;
@@ -187,60 +185,29 @@ public class LuckyWheelPickerDialog extends DialogFragment {
 
 
     private void checkStatus() {
-        final String requestBody = JsonManager.simpleJson();
 
-        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "lucky_arrow/get", response1 -> {
-            if (response1 != null) {
-                try {
-                    JSONObject jsonRootObject = new JSONObject(response1);
-                    if (!jsonRootObject.optBoolean("status")) {
-                        Toast.makeText(getContext(), "استفاده از این سرویس در هر روز فقط یک بار امکان پذیر می باشد", Toast.LENGTH_LONG).show();
-                        dismiss();
-                    } else btnStart.setEnabled(true);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        }, error -> {
-            Log.i("volley", "onErrorResponse: " + error.toString());
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                return requestBody == null ? null : requestBody.getBytes();
-            }
-        };
-        request.setTag(this);
-        requestQueue.add(request);
+        if (!new SharedPreferences(getActivity()).getSpecialWheel()) {
+            dismiss();
+        }
     }
 
 
     private void setStatus(LuckyItem luckyItem) {
-        final String requestBody = JsonManager.setLuckyWheel(luckyItem);
-
-        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "lucky_arrow/set", response1 -> {
+        final String requestBody = JsonManager.addCoin(luckyItem.type, luckyItem.topText);
+        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/add_coin", response1 -> {
             if (response1 != null) {
                 try {
                     JSONObject jsonRootObject = new JSONObject(response1);
-                    if (!jsonRootObject.optBoolean("status")) {
-                        Toast.makeText(getContext(), "خطا در ثبت اطلاعات", Toast.LENGTH_LONG).show();
-
-                    } else dismiss();
+                    if (jsonRootObject.optBoolean("status")) {
+                        App.followCoin = jsonRootObject.getInt("follow_coin");
+                        App.likeCoin = jsonRootObject.getInt("like_coin");
+                        new SharedPreferences(getActivity()).setSpeccialWhhel(false);
+                        dismiss();
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
         }, error -> {
             Log.i("volley", "onErrorResponse: " + error.toString());

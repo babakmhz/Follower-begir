@@ -111,17 +111,19 @@ public class GetCoinCommentFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.POST, App.Base_URL + "transaction/get", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if (response == null || response.equals("")) {
-                    Toast.makeText(getActivity(), "سفارش فعالی موجود نیست", Toast.LENGTH_SHORT).show();
-                    binding.imvPic.setImageResource(R.drawable.ic_image_black);
-                    if (autoLike) {
-                        progressDialog.dismiss();
-                        autoLike = false;
-                        h.removeCallbacks(runnable); //stop handler
-                    }
-                    return;
-                }
+
+
                 try {
+                    if (response == null || response.equals("")) {
+
+                        binding.imvPic.setImageResource(R.drawable.ic_image_black);
+                        if (autoLike) {
+                            progressDialog.dismiss();
+                            autoLike = false;
+                            h.removeCallbacks(runnable); //stop handler
+                        }
+                        return;
+                    }
                     JSONObject jsonObject = new JSONObject(response);
                     Picasso.get().load(jsonObject.getString("image_path")).into(binding.imvPic);
                     imageId = jsonObject.getString("type_id");
@@ -221,5 +223,8 @@ public class GetCoinCommentFragment extends Fragment {
         progressDialog.show();
     }
 
-
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
 }
