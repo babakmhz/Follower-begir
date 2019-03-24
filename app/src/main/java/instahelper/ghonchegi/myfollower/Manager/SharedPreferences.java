@@ -8,7 +8,7 @@ public class SharedPreferences {
     //region Keys
     private final String _user = "userKey";
     private final String _sendMobileTime = "sendMobileTimeKey";
-    private final String _lang = "languageKey";
+    private final String _specialWheel = "specialWheelKey";
     //endregion
     //region Variables
     private android.content.SharedPreferences pr;
@@ -40,6 +40,16 @@ public class SharedPreferences {
     public String getApiToken() {
         return pr.getString("_Token", "null");
 
+    }
+
+    public void setSpeccialWhhel(boolean state) {
+        editor.putBoolean(_specialWheel, state);
+        editor.apply();
+        editor.commit();
+    }
+
+    public boolean getSpecialWheel() {
+        return pr.getBoolean(_specialWheel, false);
     }
 
 }

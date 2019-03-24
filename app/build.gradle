@@ -10,6 +10,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        buildConfigField "String", "BAZAR_RSA", "\"MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwC/1J5x05Vu9la0B2RJMX+TP7XN29WEwCODNNrKNtf+x7sVE0MJ6PesMI2dFdzEPOf+M0pcp8dDBq8BMmH/nGQU1gJR7Ey8SR6pLmW/aMExK82NKIBZWaqtqC8sQrYWwAlxUe+hld+nTMe99cyh6K7zZCLv/skJ9crbsV0o48LOmRNaDSAFP4Sxl8kuJjR7jqxeZwMfJ1vSlybNuHB4I//OiUl9IN6T3WuHQBtbFOUCAwEAAQ==\""
     }
     dataBinding {
         enabled = true
@@ -54,6 +55,10 @@ dependencies {
     implementation 'com.auth0:java-jwt:2.1.0'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'ir.tapsell.sdk:tapsell-sdk-android:4.1.3'
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'com.intuit.ssp:ssp-android:1.0.6'
+
+
 
 
 

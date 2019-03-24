@@ -2,9 +2,6 @@ package instahelper.ghonchegi.myfollower.Dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.WheelPiclerView.LuckyItem;
@@ -77,7 +77,12 @@ public class LuckyWheelPickerDialog extends DialogFragment {
                         type = "فالو";
                         break;
                 }
-                Toast.makeText(getContext(), "شما برنده " + data.get(index).topText + " سکه " + type + " شدید ", Toast.LENGTH_SHORT).show();
+                if (data.get(index).topText.equals("0")) {
+                    Toast.makeText(getContext(), "شانس با شما یار نبود !‌ ایشالا فردا ...", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(getContext(), "شما برنده " + data.get(index).topText + " سکه " + type + " شدید ", Toast.LENGTH_SHORT).show();
+                }
                 setStatus(data.get(index));
             }
         });
@@ -229,8 +234,7 @@ public class LuckyWheelPickerDialog extends DialogFragment {
                     if (!jsonRootObject.optBoolean("status")) {
                         Toast.makeText(getContext(), "خطا در ثبت اطلاعات", Toast.LENGTH_LONG).show();
 
-                    }
-                    else dismiss();
+                    } else dismiss();
 
                 } catch (JSONException e) {
                     e.printStackTrace();

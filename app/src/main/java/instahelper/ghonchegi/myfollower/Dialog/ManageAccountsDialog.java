@@ -2,12 +2,7 @@ package instahelper.ghonchegi.myfollower.Dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +11,11 @@ import android.view.Window;
 
 import com.squareup.picasso.Picasso;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import instahelper.ghonchegi.myfollower.Adapters.AccountsListAdapter;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
@@ -47,7 +47,7 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         //endregion
-        internalCallback=this;
+        internalCallback = this;
         Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
         AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager(), internalCallback);
@@ -90,7 +90,7 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
 
     private void authenticate() {
         // startActivity(new Intent(this,ActivityLoginWebview.class));
-        InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(false, null, null);
+        AuthenticationDialog dialog = new AuthenticationDialog(false, null, null);
         dialog.setCancelable(true);
         dialog.show(getFragmentManager(), ":");
 
@@ -100,7 +100,7 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
 
     @Override
     public void changedInfo(String username, String password) {
-        externalCallBack.selectToChange(username,password);
+        externalCallBack.selectToChange(username, password);
         dismiss();
     }
 }

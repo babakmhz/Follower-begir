@@ -26,8 +26,8 @@ public class PurchaseViewPagerDapter extends FragmentPagerAdapter {
                 return new PurchaseCommentFragment();
             case 2:
                 return new PurchaseFolloweFragment();
-            case 3:
-                return new PurchaseLikeRobotFragment();
+//            case 3:
+//                return new PurchaseLikeRobotFragment();
             default:
                 return null;
         }

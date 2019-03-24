@@ -1,5 +1,6 @@
 package instahelper.ghonchegi.myfollower.Fragments.Purchase;
 
+import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.App;
+import instahelper.ghonchegi.myfollower.Dialog.PurchasePackages.PurchaseLike;
 import instahelper.ghonchegi.myfollower.Dialog.SelectPictureDialog;
 import instahelper.ghonchegi.myfollower.Interface.ImagePickerInterface;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
@@ -71,6 +73,12 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
         });
         binding.btnConfirm.setOnClickListener(v -> {
             submitOrder();
+        });
+
+        binding.btnConfirmAndPay.setOnClickListener(v->{
+            PurchaseLike dialog = new PurchaseLike(0);
+            dialog.show(getChildFragmentManager(),"");
+
         });
 
 

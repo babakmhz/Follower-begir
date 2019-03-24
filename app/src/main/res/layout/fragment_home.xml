@@ -424,7 +424,6 @@
                         app:layout_constraintStart_toEndOf="@+id/imvGolds"
                         app:layout_constraintTop_toBottomOf="@id/tvGoldTitle" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="0dp"

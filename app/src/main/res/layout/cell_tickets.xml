@@ -6,9 +6,9 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="20dp"
     android:layout_marginBottom="20sp"
-    android:layout_marginEnd="40dp"
-    android:layout_marginStart="40dp"
-    android:background="@drawable/rounded_circle_orange_border"
+    android:layout_marginEnd="10dp"
+    android:layout_marginStart="10dp"
+    android:background="@drawable/bg_ticket"
     android:layoutDirection="ltr"
     android:padding="10dp">
 

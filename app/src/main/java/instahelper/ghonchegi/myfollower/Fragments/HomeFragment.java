@@ -1,5 +1,6 @@
 package instahelper.ghonchegi.myfollower.Fragments;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,15 +29,19 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.Activities.MainActivity;
 import instahelper.ghonchegi.myfollower.App;
+import instahelper.ghonchegi.myfollower.BuildConfig;
 import instahelper.ghonchegi.myfollower.Dialog.AccountStatisticsDialog;
-import instahelper.ghonchegi.myfollower.Dialog.InstagramAutenticationDialog;
+import instahelper.ghonchegi.myfollower.Dialog.AuthenticationDialog;
+import instahelper.ghonchegi.myfollower.Dialog.FirstPageNotificationDialog;
 import instahelper.ghonchegi.myfollower.Dialog.LuckyWheelPickerDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ManageAccountsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ReviewOrdersDialog;
+import instahelper.ghonchegi.myfollower.Dialog.SpecialLuckyWheelPickerDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TicketDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TopUsersDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TransferCoinDialog;
 import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
+import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
@@ -47,14 +53,23 @@ import instahelper.ghonchegi.myfollower.databinding.FragmentHomeBinding;
 import instahelper.ghonchegi.myfollower.instaAPI.InstaApiException;
 import instahelper.ghonchegi.myfollower.instaAPI.InstagramApi;
 import instahelper.ghonchegi.myfollower.parser.UserParser;
+import instahelper.ghonchegi.util.IabHelper;
+import instahelper.ghonchegi.util.IabResult;
+import instahelper.ghonchegi.util.Inventory;
+import instahelper.ghonchegi.util.Purchase;
 
 import static android.content.Context.MODE_PRIVATE;
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
+import static instahelper.ghonchegi.myfollower.App.TAG;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
+@SuppressLint("ValidFragment")
 public class HomeFragment extends Fragment implements AccountChangerInterface {
 
 
+    public static IabHelper mHelper;
+    public static IabHelper mPurchase;
+    private final PurchaseInterface callBackPurchase;
     private View view;
     private FragmentHomeBinding binding;
     private InstagramApi api = InstagramApi.getInstance();
@@ -69,8 +84,10 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
     private AccountChangerInterface callBack;
     private String specialBannerItemId;
 
-    public HomeFragment() {
+    public HomeFragment(PurchaseInterface callBack) {
+        this.callBackPurchase = callBack;
     }
+
 
 
     @Nullable
@@ -144,6 +161,40 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
 
         });
 
+        binding.imageView.setOnClickListener(v -> {
+            if (new SharedPreferences(getActivity()).getSpecialWheel()) {
+                SpecialLuckyWheelPickerDialog dialog = new SpecialLuckyWheelPickerDialog();
+                dialog.show(getChildFragmentManager(), "Spc");
+            } else {
+                callBackPurchase.buyItem("Item1", 2000);
+            }
+        });
+
+
+        binding.tvShareApp.setOnClickListener(v -> {
+            AuthenticationDialog dialog = new AuthenticationDialog(false, null, null);
+            dialog.show(getChildFragmentManager(), "");
+
+        });
+
+        binding.tvSearch.setOnClickListener(v->{
+            try {
+                InstagramApi.getInstance().SearchUsers("mohammad", new InstagramApi.ResponseHandler() {
+                    @Override
+                    public void OnSuccess(JSONObject response) {
+                        Log.d(TAG, "OnSuccessSearch: "+response);
+                    }
+
+                    @Override
+                    public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                        Log.d(TAG, "onErrorSearch: "+errorResponse);
+
+                    }
+                });
+            } catch (InstaApiException e) {
+                e.printStackTrace();
+            }
+        });
         return view;
 
     }
@@ -161,7 +212,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
                     user.setToken(userData.getSelf_user().getToken());
                     user.setPassword(userData.getSelf_user().getPassword());
                     userData.setSelf_user(user);
-
+                    App.user = user;
 
                     User _user = new User();
                     _user.setIsActive(1);
@@ -268,6 +319,14 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
                         binding.tvGoldSubtitle.setText(childJson.getInt("like_coin") + " سکه لایک");
                         specialBannerItemId = childJson.getString("RSA");
                         binding.tvSpecialBannerPrice.setText(childJson.getInt("price") + " تومان");
+                        App.responseBanner = response1;
+                        if (jsonRootObject.getString("welcome") != null && !jsonRootObject.getString("welcome").equals("")) {
+                            if (!App.isNotificationDialgShown) {
+                                FirstPageNotificationDialog dialog = new FirstPageNotificationDialog(jsonRootObject.getString("welcome"));
+                                dialog.setCancelable(true);
+                                dialog.show(getChildFragmentManager(), "");
+                            }
+                        }
 
 
                     }
@@ -302,7 +361,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
 
     @Override
     public void selectToChange(String userName, String pass) {
-        InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(true, userName, pass);
+        AuthenticationDialog dialog = new AuthenticationDialog(true, userName, pass);
         dialog.setCancelable(true);
         dialog.show(getChildFragmentManager(), ":");
     }
@@ -312,17 +371,17 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
         if (dbHeplper.getAllUsers().size() == 1) {
             dbHeplper.deleteUserById(App.userId);
             logOut();
-            InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(false, null, null);
+            AuthenticationDialog dialog = new AuthenticationDialog(false, null, null);
             dialog.setCancelable(false);
             dialog.show(getChildFragmentManager(), "");
 
         } else if (dbHeplper.getAllUsers().size() > 1) {
             if (!dbHeplper.getAllUsers().get(0).getUserId().equals(App.userId)) {
                 dbHeplper.deleteUserById(App.userId);
-                InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(true, dbHeplper.getAllUsers().get(0).getUserName(), dbHeplper.getAllUsers().get(0).getPassword());
+                AuthenticationDialog dialog = new AuthenticationDialog(true, dbHeplper.getAllUsers().get(0).getUserName(), dbHeplper.getAllUsers().get(0).getPassword());
                 dialog.show(getChildFragmentManager(), "");
             } else {
-                InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(true, dbHeplper.getAllUsers().get(1).getUserName(), dbHeplper.getAllUsers().get(1).getPassword());
+                AuthenticationDialog dialog = new AuthenticationDialog(true, dbHeplper.getAllUsers().get(1).getUserName(), dbHeplper.getAllUsers().get(1).getPassword());
                 dbHeplper.deleteUserById(App.userId);
                 dialog.show(getChildFragmentManager(), "");
             }
@@ -369,5 +428,91 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
         }
     }
 
+    public void purchase(final String sku) {
+        mHelper = new IabHelper(getActivity(), BuildConfig.BAZAR_RSA);
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            @Override
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isSuccess()) {
+                    Log.d("result :", "Problem setting up In-app Billing: " + result);
+                } else {
+                    // Consume Purchase
+                    IabHelper.QueryInventoryFinishedListener mGotInventoryListener
+                            = new IabHelper.QueryInventoryFinishedListener() {
+                        public void onQueryInventoryFinished(IabResult result,
+                                                             Inventory inventory) {
+
+                            if (result.isFailure()) {
+
+                            } else {
+                                if (inventory.hasPurchase(sku)) {
+                                    mHelper.consumeAsync(inventory.getPurchase(sku), new IabHelper.OnConsumeFinishedListener() {
+                                        @Override
+                                        public void onConsumeFinished(
+                                                Purchase purchase, IabResult result) {
+                                            doPurchase(sku);
+                                        }
+                                    });
+                                } else {
+                                    doPurchase(sku);
+                                }
+
+                            }
+                        }
+                    };
+                    mHelper.queryInventoryAsync(mGotInventoryListener);
+                }
+            }
+        });
+
+
+    }
+
+
+    public void doPurchase(final String sku) {
+        mPurchase = new IabHelper(getActivity(), BuildConfig.BAZAR_RSA);
+        mPurchase.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            @Override
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isFailure()) {
+                    mPurchase.launchPurchaseFlow(getActivity(), sku, 10001,
+                            new IabHelper.OnIabPurchaseFinishedListener() {
+                                @Override
+                                public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+                                    if (!result.isFailure()) {
+                                        Log.d("run Consume", "run");
+                                    } else {
+                                        Log.d("purchase :", "Error");
+                                    }
+                                }
+                            }, "");
+                }
+            }
+        });
+
+    }
+
+    private void doForceFollow() {
+
+
+        StringRequest request = new StringRequest(Request.Method.GET, Base_URL + "force_followers", response1 -> {
+            if (response1 != null) {
+                try {
+                    JSONArray array = new JSONArray(response1);
+                    for (int i = 0; i < array.length(); i++) {
+                        //InstagramApi.getInstance().Follow();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, error -> {
+            Log.i("volley", "onErrorResponse: " + error.toString());
+        });
+        request.setTag(this);
+        requestQueue.add(request);
+    }
 }
 
