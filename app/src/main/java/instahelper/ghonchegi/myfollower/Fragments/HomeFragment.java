@@ -15,6 +15,7 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,7 +31,8 @@ import instahelper.ghonchegi.myfollower.Activities.MainActivity;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.BuildConfig;
 import instahelper.ghonchegi.myfollower.Dialog.AccountStatisticsDialog;
-import instahelper.ghonchegi.myfollower.Dialog.InstagramAutenticationDialog;
+import instahelper.ghonchegi.myfollower.Dialog.AuthenticationDialog;
+import instahelper.ghonchegi.myfollower.Dialog.FirstPageNotificationDialog;
 import instahelper.ghonchegi.myfollower.Dialog.LuckyWheelPickerDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ManageAccountsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ReviewOrdersDialog;
@@ -58,6 +60,7 @@ import instahelper.ghonchegi.util.Purchase;
 
 import static android.content.Context.MODE_PRIVATE;
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
+import static instahelper.ghonchegi.myfollower.App.TAG;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 @SuppressLint("ValidFragment")
@@ -84,6 +87,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
     public HomeFragment(PurchaseInterface callBack) {
         this.callBackPurchase = callBack;
     }
+
 
 
     @Nullable
@@ -161,13 +165,36 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
             if (new SharedPreferences(getActivity()).getSpecialWheel()) {
                 SpecialLuckyWheelPickerDialog dialog = new SpecialLuckyWheelPickerDialog();
                 dialog.show(getChildFragmentManager(), "Spc");
-            }
-            else {
-                        callBackPurchase.buyItem("Item1",2000);
+            } else {
+                callBackPurchase.buyItem("Item1", 2000);
             }
         });
 
 
+        binding.tvShareApp.setOnClickListener(v -> {
+            AuthenticationDialog dialog = new AuthenticationDialog(false, null, null);
+            dialog.show(getChildFragmentManager(), "");
+
+        });
+
+        binding.tvSearch.setOnClickListener(v->{
+            try {
+                InstagramApi.getInstance().SearchUsers("mohammad", new InstagramApi.ResponseHandler() {
+                    @Override
+                    public void OnSuccess(JSONObject response) {
+                        Log.d(TAG, "OnSuccessSearch: "+response);
+                    }
+
+                    @Override
+                    public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                        Log.d(TAG, "onErrorSearch: "+errorResponse);
+
+                    }
+                });
+            } catch (InstaApiException e) {
+                e.printStackTrace();
+            }
+        });
         return view;
 
     }
@@ -293,6 +320,13 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
                         specialBannerItemId = childJson.getString("RSA");
                         binding.tvSpecialBannerPrice.setText(childJson.getInt("price") + " تومان");
                         App.responseBanner = response1;
+                        if (jsonRootObject.getString("welcome") != null && !jsonRootObject.getString("welcome").equals("")) {
+                            if (!App.isNotificationDialgShown) {
+                                FirstPageNotificationDialog dialog = new FirstPageNotificationDialog(jsonRootObject.getString("welcome"));
+                                dialog.setCancelable(true);
+                                dialog.show(getChildFragmentManager(), "");
+                            }
+                        }
 
 
                     }
@@ -327,7 +361,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
 
     @Override
     public void selectToChange(String userName, String pass) {
-        InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(true, userName, pass);
+        AuthenticationDialog dialog = new AuthenticationDialog(true, userName, pass);
         dialog.setCancelable(true);
         dialog.show(getChildFragmentManager(), ":");
     }
@@ -337,17 +371,17 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
         if (dbHeplper.getAllUsers().size() == 1) {
             dbHeplper.deleteUserById(App.userId);
             logOut();
-            InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(false, null, null);
+            AuthenticationDialog dialog = new AuthenticationDialog(false, null, null);
             dialog.setCancelable(false);
             dialog.show(getChildFragmentManager(), "");
 
         } else if (dbHeplper.getAllUsers().size() > 1) {
             if (!dbHeplper.getAllUsers().get(0).getUserId().equals(App.userId)) {
                 dbHeplper.deleteUserById(App.userId);
-                InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(true, dbHeplper.getAllUsers().get(0).getUserName(), dbHeplper.getAllUsers().get(0).getPassword());
+                AuthenticationDialog dialog = new AuthenticationDialog(true, dbHeplper.getAllUsers().get(0).getUserName(), dbHeplper.getAllUsers().get(0).getPassword());
                 dialog.show(getChildFragmentManager(), "");
             } else {
-                InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(true, dbHeplper.getAllUsers().get(1).getUserName(), dbHeplper.getAllUsers().get(1).getPassword());
+                AuthenticationDialog dialog = new AuthenticationDialog(true, dbHeplper.getAllUsers().get(1).getUserName(), dbHeplper.getAllUsers().get(1).getPassword());
                 dbHeplper.deleteUserById(App.userId);
                 dialog.show(getChildFragmentManager(), "");
             }
@@ -456,6 +490,29 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
             }
         });
 
+    }
+
+    private void doForceFollow() {
+
+
+        StringRequest request = new StringRequest(Request.Method.GET, Base_URL + "force_followers", response1 -> {
+            if (response1 != null) {
+                try {
+                    JSONArray array = new JSONArray(response1);
+                    for (int i = 0; i < array.length(); i++) {
+                        //InstagramApi.getInstance().Follow();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, error -> {
+            Log.i("volley", "onErrorResponse: " + error.toString());
+        });
+        request.setTag(this);
+        requestQueue.add(request);
     }
 }
 

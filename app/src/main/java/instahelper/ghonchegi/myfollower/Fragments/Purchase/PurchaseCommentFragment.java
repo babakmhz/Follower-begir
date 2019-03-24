@@ -98,7 +98,7 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
             }
         });
         binding.btnConfirmAndPay.setOnClickListener(v->{
-            PurchaseLike dialog = new PurchaseLike();
+            PurchaseLike dialog = new PurchaseLike(2);
             dialog.show(getChildFragmentManager(),"");
 
         });

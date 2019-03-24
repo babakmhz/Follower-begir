@@ -87,7 +87,7 @@ public class PurchaseFolloweFragment extends Fragment  {
         });
 
         binding.btnConfirmAndPay.setOnClickListener(v->{
-            PurchaseLike dialog = new PurchaseLike();
+            PurchaseLike dialog = new PurchaseLike(1);
             dialog.show(getChildFragmentManager(),"");
 
         });

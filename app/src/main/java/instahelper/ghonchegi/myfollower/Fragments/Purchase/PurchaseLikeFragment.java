@@ -76,7 +76,7 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
         });
 
         binding.btnConfirmAndPay.setOnClickListener(v->{
-            PurchaseLike dialog = new PurchaseLike();
+            PurchaseLike dialog = new PurchaseLike(0);
             dialog.show(getChildFragmentManager(),"");
 
         });

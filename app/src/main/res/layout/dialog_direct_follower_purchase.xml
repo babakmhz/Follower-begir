@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="1200  تومان"
+                android:text="1۵00  تومان"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp" />
 
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="100 لایک بگیر"
+                android:text="1۸0 فالو "
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="5000  تومان"
+                android:text="4200  تومان"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp" />
 
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="500 لایک بگیر"
+                android:text="500 فالو "
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="9000  تومان"
+                android:text="10000  تومان"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp" />
 
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="1000 لایک بگیر"
+                android:text="1200 فالو "
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="19000  تومان"
+                android:text="20000  تومان"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp" />
 
@@ -127,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="2000 لایک بگیر"
+                android:text="2600 فالو "
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="28000  تومان"
+                android:text="40000  تومان"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp" />
 
@@ -154,7 +154,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="3000 لایک بگیر"
+                android:text="3800 فالو "
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>
