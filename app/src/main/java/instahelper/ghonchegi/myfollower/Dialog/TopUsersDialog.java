@@ -55,6 +55,7 @@ public class TopUsersDialog extends DialogFragment {
         Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
         //endregion
         getTopUsers();
+        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
 
         binding.btnTopLikers.setOnClickListener(v -> {
             try {

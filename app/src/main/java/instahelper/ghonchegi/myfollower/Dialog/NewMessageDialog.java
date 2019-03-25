@@ -21,6 +21,7 @@ import java.util.Map;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+import instahelper.ghonchegi.myfollower.Interface.NewMessageSubmittedInterface;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.DialogNewMessageBinding;
@@ -31,7 +32,18 @@ import static instahelper.ghonchegi.myfollower.App.requestQueue;
 @SuppressLint("ValidFragment")
 public class NewMessageDialog extends DialogFragment {
 
+    NewMessageSubmittedInterface callback;
     private DialogNewMessageBinding binding;
+    private String complaintText;
+
+    public NewMessageDialog(NewMessageSubmittedInterface callback) {
+        this.callback = callback;
+    }
+
+    public NewMessageDialog(String text) {
+        this.complaintText = text;
+
+    }
 
 
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
@@ -51,6 +63,11 @@ public class NewMessageDialog extends DialogFragment {
             binding.edtTitle.setText("");
         });
 
+        if (complaintText != null) {
+            binding.edtTitle.setText(complaintText);
+            binding.edtTitle.setEnabled(false);
+        }
+
         binding.btnSend.setOnClickListener(v -> {
             send();
         });
@@ -69,6 +86,8 @@ public class NewMessageDialog extends DialogFragment {
                     JSONObject jsonRootObject = new JSONObject(response1);
                     if (jsonRootObject.optBoolean("status")) {
                         Toast.makeText(getContext(), "پیام شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+                        if (callback != null)
+                            callback.sumbited(true);
                         dismiss();
 
 

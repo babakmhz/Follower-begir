@@ -54,6 +54,7 @@ public class AccountTransferChooserDialog extends DialogFragment implements Acco
 
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
 
         binding.rcvAccounts.setLayoutManager(mLayoutManager);
         binding.rcvAccounts.setItemAnimator(new DefaultItemAnimator());
