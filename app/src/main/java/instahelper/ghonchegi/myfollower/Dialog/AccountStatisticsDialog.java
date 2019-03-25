@@ -75,6 +75,8 @@ public class AccountStatisticsDialog extends DialogFragment {
 
             }
         });
+        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
+
         //endregion
         shared = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
         editor = shared.edit();

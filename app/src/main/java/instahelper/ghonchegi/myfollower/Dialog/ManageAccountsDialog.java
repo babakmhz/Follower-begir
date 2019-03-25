@@ -51,6 +51,7 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
         Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
         AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager(), internalCallback);
+        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
 
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);

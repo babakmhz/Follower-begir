@@ -1,15 +1,7 @@
 package instahelper.ghonchegi.myfollower.Dialog;
 
 import android.app.Dialog;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +22,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import instahelper.ghonchegi.myfollower.Adapters.OrdersAdapter;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
@@ -55,9 +55,10 @@ public class ReviewOrdersDialog extends DialogFragment {
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
+
         //endregion
         getUserCoins();
-
 
         return dialog;
     }
@@ -122,7 +123,7 @@ public class ReviewOrdersDialog extends DialogFragment {
         StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        OrdersAdapter adapter = new OrdersAdapter(getContext(), orders);
+        OrdersAdapter adapter = new OrdersAdapter(getContext(), orders,getChildFragmentManager());
 
         binding.rcvOrders.setLayoutManager(mLayoutManager);
         binding.rcvOrders.setItemAnimator(new DefaultItemAnimator());

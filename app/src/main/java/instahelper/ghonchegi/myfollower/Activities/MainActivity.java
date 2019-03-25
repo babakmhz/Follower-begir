@@ -30,6 +30,7 @@ import instahelper.ghonchegi.myfollower.Fragments.HomeFragment;
 import instahelper.ghonchegi.myfollower.Fragments.Offers.ShopFragment;
 import instahelper.ghonchegi.myfollower.Fragments.Purchase.PurchaseFragment;
 import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
+import instahelper.ghonchegi.myfollower.Manager.Config;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
 import instahelper.ghonchegi.myfollower.Models.ShopItem;
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     private ShopFragment shopFragment = new ShopFragment();
     private int currentItemId;
     private ActivityMainBinding binding;
+    private int iapFollowCoin;
+    private int iapLikeCoin;
 
     private PurchaseInterface callBack;
 
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
             TapsellAdRequestOptions options = new TapsellAdRequestOptions(catchType);
             progressDialog.setCancelable(false);
             progressDialog.setMessage("بارگزاری ...");
-            progressDialog.show();
+            //progressDialog.show(); TODO
             Tapsell.requestAd(context, zoneId, options, new TapsellAdRequestListener() {
                 @Override
                 public void onError(String error) {
@@ -250,6 +253,10 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
                         MasrafSeke(purchase);
 
+                    } else if (purchase.getSku().equals(Config.SKUSpecialBanner)) {
+                        addCoin(0, iapLikeCoin);
+                        addCoin(1,iapFollowCoin);
+                        MasrafSeke(purchase);
                     }
                 }
             };
@@ -279,6 +286,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
         Tapsell.setRewardListener((tapsellAd, b) -> {
             if (b) {
+                Toast.makeText(this, "2 سکه لایک به شما افزوده شد", Toast.LENGTH_SHORT).show();
                 addCoin(0, 2);
             } else {
             }
@@ -339,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
             TapsellAdRequestOptions options = new TapsellAdRequestOptions(catchType);
             progressDialog.setCancelable(false);
             progressDialog.setMessage("بارگزاری ...");
-            progressDialog.show();
+            //progressDialog.show(); TODO
             Tapsell.requestAd(MainActivity.this, zoneId, options, new TapsellAdRequestListener() {
                 @Override
                 public void onError(String error) {
@@ -361,7 +369,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                 @Override
                 public void onNoAdAvailable() {
                     App.isAdAvailable = false;
-                    Toast.makeText(MainActivity.this, "No Ad Available", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "رسانه فعالی موجود نیست", Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
                     Log.e("Tapsell", "No Ad Available");
                 }
@@ -369,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                 @Override
                 public void onNoNetwork() {
                     App.isAdAvailable = false;
-                    Toast.makeText(MainActivity.this, "No Network", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "خطا در اتصال به شبکه", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     Log.e("Tapsell", "No Network Available");
                 }
@@ -466,13 +474,13 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     public void buyItem(String sdk, int requestCode) {
         SKU_PREMIUM = sdk;
         RC_REQUEST = requestCode;
-        mHelper.launchPurchaseFlow(this, sdk, RC_REQUEST, mPurchaseFinishedListener, "extera info");
+        mHelper.launchPurchaseFlow(this, sdk, RC_REQUEST, mPurchaseFinishedListener, "extra info");
 
     }
 
     @Override
     public void IABPurchase(ShopItem shopItem) {
-        mHelper.launchPurchaseFlow(this, shopItem.getSku(), shopItem.getReturnValue(), mPurchaseFinishedListener, "extera info");
+        mHelper.launchPurchaseFlow(this, shopItem.getSku(), shopItem.getReturnValue(), mPurchaseFinishedListener, "extra info");
 
     }
 
@@ -521,6 +529,18 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     }
 
     private void purchaseAfterIncrease() {
+
+    }
+
+
+    @Override
+    public void specialBanner(String sku, int requestCode, int followCoin, int LikeCoin) {
+        SKU_PREMIUM = sku;
+        RC_REQUEST = requestCode;
+        iapFollowCoin = followCoin;
+        iapLikeCoin = LikeCoin;
+        mHelper.launchPurchaseFlow(this, sku, RC_REQUEST, mPurchaseFinishedListener, "extra info");
+
 
     }
 }

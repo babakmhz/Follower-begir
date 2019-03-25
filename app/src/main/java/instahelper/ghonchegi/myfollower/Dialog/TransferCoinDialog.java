@@ -1,9 +1,7 @@
 package instahelper.ghonchegi.myfollower.Dialog;
 
 import android.app.Dialog;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +21,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Interface.ExternalAccountTransferChooserInsterface;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
@@ -90,6 +90,10 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
     }
 
     public void exchangeLikeToFollowerCoin() {
+        if (TextUtils.isEmpty(binding.edtCoinAmountLiketoFollower.getText().toString())) {
+            Toast.makeText(getContext(), "تعداد سکه را مشخص کنید", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (App.likeCoin < Integer.parseInt(binding.edtCoinAmountLiketoFollower.getText().toString())) {
             Toast.makeText(getContext(), "عدم موجودی کافی", Toast.LENGTH_SHORT).show();
             return;
@@ -141,6 +145,10 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
     }
 
     public void exchangeFollowToLikeCoins() {
+        if (TextUtils.isEmpty(binding.edtCoinAmountliketoFollower2.getText().toString())) {
+            Toast.makeText(getContext(), "تعداد سکه را مشخص کنید", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (App.followCoin < Integer.parseInt(binding.edtCoinAmountliketoFollower2.getText().toString())) {
             Toast.makeText(getContext(), "عدم موجودی کافی", Toast.LENGTH_SHORT).show();
             return;

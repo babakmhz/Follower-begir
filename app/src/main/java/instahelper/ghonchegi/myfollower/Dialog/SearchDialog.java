@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import instahelper.ghonchegi.myfollower.Adapters.UserSearchAdapter;
+import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.data.InstagramUser;
 import instahelper.ghonchegi.myfollower.databinding.DialogSearchBinding;
@@ -58,6 +61,8 @@ public class SearchDialog extends DialogFragment {
             }
             return false;
         });
+        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
 
         return dialog;
     }

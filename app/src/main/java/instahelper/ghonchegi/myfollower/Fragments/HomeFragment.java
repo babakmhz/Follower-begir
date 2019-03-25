@@ -43,6 +43,7 @@ import instahelper.ghonchegi.myfollower.Dialog.TopUsersDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TransferCoinDialog;
 import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
 import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
+import instahelper.ghonchegi.myfollower.Manager.Config;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
@@ -197,6 +198,19 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
 
             }
         });
+
+        binding.secondContainer.setOnClickListener(v -> {
+            try {
+                JSONObject jsonObject = new JSONObject(App.responseBanner);
+                callBackPurchase.specialBanner("SpecialBanner", Config.ReqeuestSpeciialBanner, jsonObject.getInt("follow_coin"), jsonObject.getInt("like_coin"));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        });
+
+
         return view;
 
     }

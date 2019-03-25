@@ -7,8 +7,10 @@ import instahelper.ghonchegi.myfollower.Models.ShopItem;
 
 public class Config {
 
-    public static ArrayList<ShopItem> shopItems = new ArrayList<>();
+    public static final int ReqeuestSpeciialBanner = 10009;
+    public static final String SKUSpecialBanner = "SpecialBanner";
 
+    public static ArrayList<ShopItem> shopItems = new ArrayList<>();
 
     public static void setupShopItems() {
         final int min = 10000;

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -61,6 +62,11 @@ public class AccountTransferChooserAdapter extends RecyclerView.Adapter<AccountT
             holder.root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (usersList.get(position).getIsActive()==1)
+                    {
+                        Toast.makeText(context, "انتقال به اکانت یکسان مجازنیست", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     callback.sendUUID(usersList.get(position).getUuid(), usersList.get(position).getProfilePicture());
                     dialog.dismiss();
                 }

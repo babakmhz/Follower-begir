@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import instahelper.ghonchegi.myfollower.Adapters.TicketsAdapter;
 import instahelper.ghonchegi.myfollower.App;
+import instahelper.ghonchegi.myfollower.Interface.NewMessageSubmittedInterface;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Models.Messages;
 import instahelper.ghonchegi.myfollower.R;
@@ -41,8 +42,9 @@ import instahelper.ghonchegi.myfollower.databinding.DialogSupportBinding;
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
-public class TicketDialog extends DialogFragment {
+public class TicketDialog extends DialogFragment implements NewMessageSubmittedInterface {
 
+    NewMessageSubmittedInterface callback;
     private DialogSupportBinding binding;
 
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
@@ -56,12 +58,14 @@ public class TicketDialog extends DialogFragment {
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        callback = this;
         //endregion
 
         binding.fabAdd.setOnClickListener(v -> {
-            NewMessageDialog newMessageDialog = new NewMessageDialog();
+            NewMessageDialog newMessageDialog = new NewMessageDialog(callback);
             newMessageDialog.show(getChildFragmentManager(), "");
         });
+        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
 
         getTickets();
         return dialog;
@@ -141,4 +145,9 @@ public class TicketDialog extends DialogFragment {
         });
     }
 
+    @Override
+    public void sumbited(boolean state) {
+        if (state) getTickets();
+
+    }
 }
