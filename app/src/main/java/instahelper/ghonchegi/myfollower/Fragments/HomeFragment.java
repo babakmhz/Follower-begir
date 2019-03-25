@@ -36,6 +36,7 @@ import instahelper.ghonchegi.myfollower.Dialog.FirstPageNotificationDialog;
 import instahelper.ghonchegi.myfollower.Dialog.LuckyWheelPickerDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ManageAccountsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ReviewOrdersDialog;
+import instahelper.ghonchegi.myfollower.Dialog.SearchDialog;
 import instahelper.ghonchegi.myfollower.Dialog.SpecialLuckyWheelPickerDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TicketDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TopUsersDialog;
@@ -60,7 +61,6 @@ import instahelper.ghonchegi.util.Purchase;
 
 import static android.content.Context.MODE_PRIVATE;
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
-import static instahelper.ghonchegi.myfollower.App.TAG;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 @SuppressLint("ValidFragment")
@@ -87,7 +87,6 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
     public HomeFragment(PurchaseInterface callBack) {
         this.callBackPurchase = callBack;
     }
-
 
 
     @Nullable
@@ -151,6 +150,10 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
         binding.imvLogOut.setOnClickListener(v -> {
             signOut();
         });
+        binding.tvLogOut.setOnClickListener(v -> {
+            signOut();
+
+        });
 
         binding.tvSupport.setOnClickListener(v -> {
             TicketDialog dialog = new TicketDialog();
@@ -172,27 +175,26 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
 
 
         binding.tvShareApp.setOnClickListener(v -> {
-            AuthenticationDialog dialog = new AuthenticationDialog(false, null, null);
-            dialog.show(getChildFragmentManager(), "");
+
 
         });
 
-        binding.tvSearch.setOnClickListener(v->{
+        binding.tvSearch.setOnClickListener(v -> {
             try {
-                InstagramApi.getInstance().SearchUsers("mohammad", new InstagramApi.ResponseHandler() {
-                    @Override
-                    public void OnSuccess(JSONObject response) {
-                        Log.d(TAG, "OnSuccessSearch: "+response);
-                    }
+                SearchDialog dialog = new SearchDialog();
+                dialog.show(getChildFragmentManager(), "");
 
-                    @Override
-                    public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                        Log.d(TAG, "onErrorSearch: "+errorResponse);
+            } catch (Exception e) {
 
-                    }
-                });
-            } catch (InstaApiException e) {
-                e.printStackTrace();
+            }
+        });
+        binding.imvSearch.setOnClickListener(v -> {
+            try {
+                SearchDialog dialog = new SearchDialog();
+                dialog.show(getChildFragmentManager(), "");
+
+            } catch (Exception e) {
+
             }
         });
         return view;
