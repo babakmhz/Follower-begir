@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
             TapsellAdRequestOptions options = new TapsellAdRequestOptions(catchType);
             progressDialog.setCancelable(false);
             progressDialog.setMessage("بارگزاری ...");
-            progressDialog.show();
+          //  progressDialog.show();
             Tapsell.requestAd(context, zoneId, options, new TapsellAdRequestListener() {
                 @Override
                 public void onError(String error) {

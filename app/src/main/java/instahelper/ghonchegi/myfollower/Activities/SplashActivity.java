@@ -28,7 +28,24 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
 
-     
+
+
+        try {
+            InstagramApi.getInstance().SearchUsers("alex","23597941", new InstagramApi.ResponseHandler() {
+                @Override
+                public void OnSuccess(JSONObject response) {
+                    Log.d(TAG, "OnSuccessSearch: "+response);
+                }
+
+                @Override
+                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                    Log.d(TAG, "onErrorSearch: "+errorResponse);
+
+                }
+            });
+        } catch (InstaApiException e) {
+            e.printStackTrace();
+        }
         DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
         try {
             dataBaseHelper.createDatabase();
