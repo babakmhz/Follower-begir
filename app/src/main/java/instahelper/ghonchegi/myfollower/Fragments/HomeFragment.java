@@ -30,6 +30,7 @@ import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.Activities.MainActivity;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.BuildConfig;
+import instahelper.ghonchegi.myfollower.Dialog.AboutUsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.AccountStatisticsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.AuthenticationDialog;
 import instahelper.ghonchegi.myfollower.Dialog.FirstPageNotificationDialog;
@@ -43,6 +44,7 @@ import instahelper.ghonchegi.myfollower.Dialog.TopUsersDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TransferCoinDialog;
 import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
 import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
+import instahelper.ghonchegi.myfollower.Interface.ValueUpdaterBroadCast;
 import instahelper.ghonchegi.myfollower.Manager.Config;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
@@ -90,6 +92,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -108,7 +111,11 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
             e.printStackTrace();
         }
         db = dbHeplper.getWritableDatabase();
+        ValueUpdaterBroadCast.bindListener(() -> {
+            binding.tvLikeCoinCount.setText(App.likeCoin +"");
+            binding.tvFollowerCoinCount.setText(App.followCoin + "");
 
+        });
 
         getUserInfo();
 
@@ -202,7 +209,8 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
         binding.secondContainer.setOnClickListener(v -> {
             try {
                 JSONObject jsonObject = new JSONObject(App.responseBanner);
-                callBackPurchase.specialBanner("SpecialBanner", Config.ReqeuestSpeciialBanner, jsonObject.getInt("follow_coin"), jsonObject.getInt("like_coin"));
+                JSONObject bannerCount = jsonObject.getJSONObject("special_banner");
+                callBackPurchase.specialBanner("SpecialBanner", Config.ReqeuestSpeciialBanner, bannerCount.getInt("follow_coin"), bannerCount.getInt("like_coin"));
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -210,6 +218,12 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
 
         });
 
+
+        binding.tvAboutUs.setOnClickListener(v -> {
+            AboutUsDialog dialog = new AboutUsDialog();
+            dialog.setCancelable(true);
+            dialog.show(getChildFragmentManager(), "");
+        });
 
         return view;
 
@@ -530,5 +544,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
         request.setTag(this);
         requestQueue.add(request);
     }
+
+
 }
 

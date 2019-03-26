@@ -255,8 +255,10 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
                     } else if (purchase.getSku().equals(Config.SKUSpecialBanner)) {
                         addCoin(0, iapLikeCoin);
-                        addCoin(1,iapFollowCoin);
+                        addCoin(1, iapFollowCoin);
                         MasrafSeke(purchase);
+                        Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
+                        sendBroadcast(intent);
                     }
                 }
             };
@@ -288,6 +290,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
             if (b) {
                 Toast.makeText(this, "2 سکه لایک به شما افزوده شد", Toast.LENGTH_SHORT).show();
                 addCoin(0, 2);
+
             } else {
             }
 
@@ -306,6 +309,8 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                     if (jsonRootObject.optBoolean("status")) {
                         App.followCoin = jsonRootObject.getInt("follow_coin");
                         App.likeCoin = jsonRootObject.getInt("like_coin");
+                        Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
+                        sendBroadcast(intent);
 
 
                     }
@@ -463,8 +468,8 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
             @Override
             public void onConsumeFinished(Purchase purchase, IabResult result) {
                 if (result.isSuccess())
-                    Toast.makeText(MainActivity.this, "مصرف شد", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "NATIJE masraf: " + result.getMessage() + result.getResponse());
+                    //Toast.makeText(MainActivity.this, "مصرف شد", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "NATIJE masraf: " + result.getMessage() + result.getResponse());
 
             }
         });

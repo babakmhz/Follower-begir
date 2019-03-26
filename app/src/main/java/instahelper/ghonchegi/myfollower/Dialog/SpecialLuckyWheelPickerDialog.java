@@ -1,6 +1,7 @@
 package instahelper.ghonchegi.myfollower.Dialog;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -202,6 +203,8 @@ public class SpecialLuckyWheelPickerDialog extends DialogFragment {
                         App.followCoin = jsonRootObject.getInt("follow_coin");
                         App.likeCoin = jsonRootObject.getInt("like_coin");
                         new SharedPreferences(getActivity()).setSpeccialWhhel(false);
+                        Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
+                        getActivity().sendBroadcast(intent);
                         dismiss();
                     }
 
