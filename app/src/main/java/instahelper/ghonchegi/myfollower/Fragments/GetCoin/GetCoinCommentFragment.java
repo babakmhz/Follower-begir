@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -64,6 +63,7 @@ public class GetCoinCommentFragment extends Fragment {
         getCommentOrders();
         binding.tvLikeCoin.setText(App.likeCoin + "");
         binding.btnDoLike.setOnClickListener(v -> {
+            likeInProgress();
             String commentText = "";
             if (!TextUtils.isEmpty(binding.edtCommentText.getText().toString())) {
                 commentText = binding.edtCommentText.getText().toString();
@@ -74,15 +74,20 @@ public class GetCoinCommentFragment extends Fragment {
                     @Override
                     public void OnSuccess(JSONObject response) {
                         submit();
+                        likeFinished();
                     }
 
                     @Override
                     public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
                         binding.btnNext.performClick();
+                        likeFinished();
+
                     }
                 });
             } catch (InstaApiException e) {
                 e.printStackTrace();
+                likeFinished();
+
             }
         });
 
@@ -104,6 +109,16 @@ public class GetCoinCommentFragment extends Fragment {
 
         return view;
 
+    }
+
+    private void likeInProgress() {
+        binding.btnDoLike.setVisibility(View.INVISIBLE);
+        binding.prg.setVisibility(View.VISIBLE);
+    }
+
+    private void likeFinished() {
+        binding.btnDoLike.setVisibility(View.VISIBLE);
+        binding.prg.setVisibility(View.GONE);
     }
 
     private void getCommentOrders() {

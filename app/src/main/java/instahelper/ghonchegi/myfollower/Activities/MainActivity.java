@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     private FragmentManager fm;
     private PurchaseFragment purchaseFragment = new PurchaseFragment();
     private GetCoinFragment getCoinFragment = new GetCoinFragment();
-    private ShopFragment shopFragment = new ShopFragment();
     private int currentItemId;
     private ActivityMainBinding binding;
     private int iapFollowCoin;
@@ -179,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
 
         loadAd(App.TapSelZoneId, TapsellAdRequestOptions.CACHE_TYPE_CACHED);
+        //Bottom navigation
         binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             if (item.getItemId() != currentItemId)
                 switch (item.getItemId()) {
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                         break;
                     case R.id.action_shopping:
                         currentItemId = R.id.action_shopping;
-                        fm.beginTransaction().replace(R.id.fragmentHolder, shopFragment, "shopFragment").commit();
+                        fm.beginTransaction().replace(R.id.fragmentHolder, new ShopFragment(callBack), "shopFragment").commit();
 
 
                         break;
@@ -218,50 +218,47 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
 
         try {
-            mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
-                public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-                    Log.d(TAG, "Query inventory finished.");
-                    if (result.isFailure()) {
-                        Log.d(TAG, "Failed to query inventory: " + result);
-                        return;
-                    } else {
-                        Log.d(TAG, "Query inventory was successful.");
-                        // does the user have the premium upgrade?
-                        mIsPremium = inventory.hasPurchase(SKU_PREMIUM);
-                        if (mIsPremium) {
-                            MasrafSeke(inventory.getPurchase(SKU_PREMIUM));
-                        }
-                        // update UI accordingly
-
-                        Log.d(TAG, "User is " + (mIsPremium ? "PREMIUM" : "NOT PREMIUM"));
+            mGotInventoryListener = (result, inventory) -> {
+                Log.d(TAG, "Query inventory finished.");
+                if (result.isFailure()) {
+                    Log.d(TAG, "Failed to query inventory: " + result);
+                    return;
+                } else {
+                    Log.d(TAG, "Query inventory was successful.");
+                    // does the user have the premium upgrade?
+                    mIsPremium = inventory.hasPurchase(SKU_PREMIUM);
+                    if (mIsPremium) {
+                        MasrafSeke(inventory.getPurchase(SKU_PREMIUM));
                     }
+                    // update UI accordingly
 
-                    Log.d(TAG, "Initial inventory query finished; enabling main UI.");
+                    Log.d(TAG, "User is " + (mIsPremium ? "PREMIUM" : "NOT PREMIUM"));
                 }
+
+                Log.d(TAG, "Initial inventory query finished; enabling main UI.");
             };
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-                public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-                    if (result.isFailure()) {
-                        Log.d(TAG, "Error purchasing: " + result);
-                        return;
-                    } else if (purchase.getSku().equals(App.SkuSpecialWheel)) {
-                        new SharedPreferences(MainActivity.this).setSpeccialWhhel(true);
-                        Toast.makeText(MainActivity.this, "خرید موفق", Toast.LENGTH_SHORT).show();
+            mPurchaseFinishedListener = (result, purchase) -> {
+                if (result.isFailure()) {
+                    Log.d(TAG, "Error purchasing: " + result);
+                    return;
+                } else if (purchase.getSku().equals(App.SkuSpecialWheel)) {
+                    new SharedPreferences(MainActivity.this).setSpeccialWhhel(true);
+                    Toast.makeText(MainActivity.this, "خرید موفق", Toast.LENGTH_SHORT).show();
 
-                        MasrafSeke(purchase);
+                    MasrafSeke(purchase);
 
-                    } else if (purchase.getSku().equals(Config.SKUSpecialBanner)) {
-                        addCoin(0, iapLikeCoin);
-                        addCoin(1, iapFollowCoin);
-                        MasrafSeke(purchase);
-                        Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
-                        sendBroadcast(intent);
-                    }
+                } else if (purchase.getSku().equals(Config.SKUSpecialBanner)) {
+                    Toast.makeText(MainActivity.this, "با تشکر از خرید شما", Toast.LENGTH_SHORT).show();
+                    addCoin(0, iapLikeCoin);
+                    addCoin(1, iapFollowCoin);
+                    MasrafSeke(purchase);
+                    Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
+                    sendBroadcast(intent);
                 }
             };
         } catch (Exception e) {
@@ -270,17 +267,15 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
 
         try {
-            mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-                public void onIabSetupFinished(IabResult result) {
-                    Log.d(TAG, "Setup finished.");
+            mHelper.startSetup(result -> {
+                Log.d(TAG, "Setup finished.");
 
-                    if (!result.isSuccess()) {
-                        // Oh noes, there was a problem.
-                        Log.d(TAG, "Problem setting up In-app Billing: " + result);
-                    }
-                    // Hooray, IAB is fully set up!
-                    mHelper.queryInventoryAsync(mGotInventoryListener);
+                if (!result.isSuccess()) {
+                    // Oh noes, there was a problem.
+                    Log.d(TAG, "Problem setting up In-app Billing: " + result);
                 }
+                // Hooray, IAB is fully set up!
+                mHelper.queryInventoryAsync(mGotInventoryListener);
             });
         } catch (Exception e) {
             e.printStackTrace();

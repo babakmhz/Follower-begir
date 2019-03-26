@@ -7,7 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -46,6 +49,7 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
     FragmentPurchaseLikeBinding binding;
     private String selectedPicURL = null;
     private String itemId;
+    private Dialog progressDialog;
 
     public PurchaseLikeFragment() {
     }
@@ -115,6 +119,7 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void selectedPic(String imageId, String imageURL) {
+        ProgressDialog();
         binding.constraintLayout.setBackground(null);
         binding.imvSelectPic.setVisibility(View.INVISIBLE);
         binding.tvSelectPic.setVisibility(View.INVISIBLE);
@@ -123,8 +128,11 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
         itemId = imageId;
         try {
             Picasso.get().load(imageURL).error(R.drawable.app_logo).into(binding.imvSelectedPic);
+            progressDialog.cancel();
         } catch (Exception e) {
             Log.i(TAG, "selectedPic: " + e);
+            progressDialog.cancel();
+
         }
 
 
@@ -183,4 +191,13 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
 
         }
     }
+
+    public void ProgressDialog() {
+        progressDialog = new Dialog(getContext());
+        progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        progressDialog.setCancelable(false);
+        progressDialog.setContentView(R.layout.dialog_uploading);
+        progressDialog.show();
+    }
+
 }

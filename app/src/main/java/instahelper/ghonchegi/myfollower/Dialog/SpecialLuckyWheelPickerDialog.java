@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import instahelper.ghonchegi.myfollower.App;
+import instahelper.ghonchegi.myfollower.Manager.BroadcastManager;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
 import instahelper.ghonchegi.myfollower.R;
@@ -205,6 +206,7 @@ public class SpecialLuckyWheelPickerDialog extends DialogFragment {
                         new SharedPreferences(getActivity()).setSpeccialWhhel(false);
                         Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
                         getActivity().sendBroadcast(intent);
+                        BroadcastManager.sendBroadcast(getContext());
                         dismiss();
                     }
 

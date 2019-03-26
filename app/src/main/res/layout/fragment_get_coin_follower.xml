@@ -20,11 +20,11 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/curved"
-                app:srcCompat="@drawable/ic_user_avatar"
                 app:layout_constraintBottom_toBottomOf="@id/guideLine2"
                 app:layout_constraintEnd_toEndOf="@id/guideLine4"
                 app:layout_constraintStart_toStartOf="@id/guideLine3"
-                app:layout_constraintTop_toTopOf="@id/guideLine" />
+                app:layout_constraintTop_toTopOf="@id/guideLine"
+                app:srcCompat="@drawable/ic_user_avatar" />
 
             <LinearLayout
                 android:id="@+id/linear"
@@ -96,7 +96,7 @@
                 android:layout_height="42dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/rounded_grey_border"
@@ -106,8 +106,16 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideLine4"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="@+id/guideLine3"
-                app:layout_constraintTop_toBottomOf="@+id/linear"
-                app:layout_goneMarginStart="10dp" />
+                app:layout_constraintTop_toBottomOf="@+id/linear" />
+
+            <ProgressBar
+                android:id="@+id/prg"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+                app:layout_constraintStart_toStartOf="@+id/guideLine3"
+                app:layout_constraintTop_toBottomOf="@+id/linear" />
 
             <Button
                 android:id="@+id/btnAutoFollow"
