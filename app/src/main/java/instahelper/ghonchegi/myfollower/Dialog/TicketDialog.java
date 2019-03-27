@@ -67,7 +67,12 @@ public class TicketDialog extends DialogFragment implements NewMessageSubmittedI
         });
         binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
 
-        getTickets();
+
+        try {
+            getTickets();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return dialog;
     }
 

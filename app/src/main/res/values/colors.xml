@@ -7,6 +7,7 @@
     <color name="white">#fff</color>
     <color name="black">#000</color>
     <color name="orangeTextColor">#ff9000</color>
+    <color name="orangeLight">#FFAC42</color>
     <color name="grey">#ababab</color>
     <color name="darkerGrey">#4B4B4B</color>
     <color name="lightGrey">#dfdfdf</color>

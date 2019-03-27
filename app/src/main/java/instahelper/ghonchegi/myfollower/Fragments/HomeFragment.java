@@ -38,6 +38,7 @@ import instahelper.ghonchegi.myfollower.Dialog.AuthenticationDialog;
 import instahelper.ghonchegi.myfollower.Dialog.FirstPageNotificationDialog;
 import instahelper.ghonchegi.myfollower.Dialog.LuckyWheelPickerDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ManageAccountsDialog;
+import instahelper.ghonchegi.myfollower.Dialog.NetworkErrorDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ReviewOrdersDialog;
 import instahelper.ghonchegi.myfollower.Dialog.SearchDialog;
 import instahelper.ghonchegi.myfollower.Dialog.SpecialLuckyWheelPickerDialog;
@@ -50,6 +51,7 @@ import instahelper.ghonchegi.myfollower.Interface.ValueUpdaterBroadCast;
 import instahelper.ghonchegi.myfollower.Manager.Config;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
+import instahelper.ghonchegi.myfollower.Manager.NetworkManager;
 import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
 import instahelper.ghonchegi.myfollower.Models.User;
 import instahelper.ghonchegi.myfollower.R;
@@ -225,6 +227,12 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
 
 
         binding.tvAboutUs.setOnClickListener(v -> {
+            if (!NetworkManager.isConnectionToInternet(getContext())) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             AboutUsDialog dialog = new AboutUsDialog();
             dialog.setCancelable(true);
             dialog.show(getChildFragmentManager(), "");
