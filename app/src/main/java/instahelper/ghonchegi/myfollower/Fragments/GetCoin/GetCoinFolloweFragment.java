@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
@@ -40,14 +39,14 @@ import static instahelper.ghonchegi.myfollower.App.requestQueue;
 public class GetCoinFolloweFragment extends Fragment {
     FragmentGetCoinFollowerBinding binding;
     ArrayList<String> likedUsers = new ArrayList<>();
+    Handler h = new Handler();
+    int delay = 10 * 1000; //1 second=1000 milisecond, 10*1000=15seconds
+    Runnable runnable;
     private View view;
     private String userId;
     private int transactionId;
     private boolean autoLike = false;
     private Dialog progressDialog;
-    Handler h = new Handler();
-    int delay = 10*1000; //1 second=1000 milisecond, 10*1000=15seconds
-    Runnable runnable;
 
     public GetCoinFolloweFragment() {
     }
@@ -77,20 +76,24 @@ public class GetCoinFolloweFragment extends Fragment {
 
         });
         binding.btnDoFollow.setOnClickListener(b -> {
+            likeInProgress();
             try {
                 InstagramApi.getInstance().Follow(userId, new InstagramApi.ResponseHandler() {
                     @Override
                     public void OnSuccess(JSONObject response) {
                         submit();
+                        likeFinished();
                     }
 
                     @Override
                     public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
                         binding.btnNext.performClick();
+                        likeFinished();
                     }
                 });
             } catch (InstaApiException e) {
                 e.printStackTrace();
+                likeFinished();
             }
         });
 
@@ -99,6 +102,15 @@ public class GetCoinFolloweFragment extends Fragment {
 
     }
 
+    private void likeInProgress() {
+        binding.btnDoFollow.setVisibility(View.INVISIBLE);
+        binding.prg.setVisibility(View.VISIBLE);
+    }
+
+    private void likeFinished() {
+        binding.btnDoFollow.setVisibility(View.VISIBLE);
+        binding.prg.setVisibility(View.GONE);
+    }
 
     private void getLikeOrder() {
         final String requestBody = JsonManager.getOrders(1);

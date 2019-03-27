@@ -1,5 +1,7 @@
 package instahelper.ghonchegi.myfollower.Models;
 
+import instahelper.ghonchegi.myfollower.data.InstagramUser;
+
 public class User {
     String userId;
     String userName;

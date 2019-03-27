@@ -2,7 +2,9 @@ package instahelper.ghonchegi.myfollower.Fragments;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -112,7 +114,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
         }
         db = dbHeplper.getWritableDatabase();
         ValueUpdaterBroadCast.bindListener(() -> {
-            binding.tvLikeCoinCount.setText(App.likeCoin +"");
+            binding.tvLikeCoinCount.setText(App.likeCoin + "");
             binding.tvFollowerCoinCount.setText(App.followCoin + "");
 
         });
@@ -183,9 +185,11 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
 
 
         binding.tvShareApp.setOnClickListener(v -> {
-
+            shareApp();
 
         });
+
+        binding.tvRateUs.setOnClickListener(v -> rateUs());
 
         binding.tvSearch.setOnClickListener(v -> {
             try {
@@ -210,6 +214,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
             try {
                 JSONObject jsonObject = new JSONObject(App.responseBanner);
                 JSONObject bannerCount = jsonObject.getJSONObject("special_banner");
+                Config.SKUSpecialBanner = bannerCount.getString("special_banner_RSA");
                 callBackPurchase.specialBanner("SpecialBanner", Config.ReqeuestSpeciialBanner, bannerCount.getInt("follow_coin"), bannerCount.getInt("like_coin"));
 
             } catch (JSONException e) {
@@ -347,7 +352,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
                         JSONObject childJson = jsonRootObject.getJSONObject("special_banner");
                         binding.tvGoldTitle.setText(childJson.getInt("follow_coin") + " سکه فالو");
                         binding.tvGoldSubtitle.setText(childJson.getInt("like_coin") + " سکه لایک");
-                        specialBannerItemId = childJson.getString("RSA");
+                        specialBannerItemId = childJson.getString("special_banner_RSA");
                         binding.tvSpecialBannerPrice.setText(childJson.getInt("price") + " تومان");
                         App.responseBanner = response1;
                         if (jsonRootObject.getString("welcome") != null && !jsonRootObject.getString("welcome").equals("")) {
@@ -543,6 +548,23 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
         });
         request.setTag(this);
         requestQueue.add(request);
+    }
+
+    private void rateUs() {
+        Intent intent = new Intent(Intent.ACTION_EDIT);
+        intent.setData(Uri.parse("bazaar://details?id=" + getActivity().getApplicationContext().getPackageName()));
+        intent.setPackage("com.farsitel.bazaar");
+        startActivity(intent);
+    }
+
+    private void shareApp() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "بهترین نرم افزایش فالویر واقعی " + "  https://cafebazaar.ir/app/" + getActivity().getApplicationContext().getPackageName();
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share App");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
     }
 
 

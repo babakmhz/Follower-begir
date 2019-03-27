@@ -2,7 +2,6 @@ package instahelper.ghonchegi.myfollower.Fragments.Offers;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,11 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
@@ -39,6 +36,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import instahelper.ghonchegi.myfollower.Adapters.OffersAdapter;
 import instahelper.ghonchegi.myfollower.App;
+import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
+import instahelper.ghonchegi.myfollower.Manager.BroadcastManager;
+import instahelper.ghonchegi.myfollower.Manager.Config;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Models.Offers;
 import instahelper.ghonchegi.myfollower.R;
@@ -47,11 +47,17 @@ import instahelper.ghonchegi.myfollower.databinding.FragmentShopBinding;
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
+@SuppressLint("ValidFragment")
 public class ShopFragment extends Fragment {
+    private final PurchaseInterface callbackPurchaseBanner;
     FragmentShopBinding binding;
     private View view;
     private String specialBannerItemId;
     private Dialog progressDialog;
+
+    public ShopFragment(PurchaseInterface callBack) {
+        this.callbackPurchaseBanner = callBack;
+    }
 
     @Nullable
     @Override
@@ -79,12 +85,24 @@ public class ShopFragment extends Fragment {
             JSONObject childJson = jsonRootObject.getJSONObject("special_banner");
             binding.tvGoldTitle.setText(childJson.getInt("follow_coin") + " سکه فالو و" + childJson.getInt("like_coin") + " سکه لایک");
             binding.tvGoldSubtitle.setText("تنها با " + childJson.getInt("price") + " تومان");
-            specialBannerItemId = childJson.getString("RSA");
+            specialBannerItemId = childJson.getString("special_banner_RSA");
             binding.tvSpecialBannerPrice.setText(childJson.getInt("price") + " تومان");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+
+        binding.secondContainer.setOnClickListener(v -> {
+            try {
+                JSONObject jsonObject = new JSONObject(App.responseBanner);
+                JSONObject bannerCount = jsonObject.getJSONObject("special_banner");
+                Config.SKUSpecialBanner = bannerCount.getString("special_banner_RSA");
+                callbackPurchaseBanner.specialBanner("SpecialBanner", Config.ReqeuestSpeciialBanner, bannerCount.getInt("follow_coin"), bannerCount.getInt("like_coin"));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        });
 
         binding.btnCheckGiftCode.setOnClickListener(v -> validateGiftCode());
 
@@ -171,6 +189,18 @@ public class ShopFragment extends Fragment {
                     JSONObject jsonRootObject = new JSONObject(response1);
                     if (!jsonRootObject.optBoolean("status")) {
                         Toast.makeText(getContext(), "کد وارد شده معتبر نیست", Toast.LENGTH_SHORT).show();
+                    } else if (jsonRootObject.getBoolean("status")) {
+                        if (jsonRootObject.getInt("type") == 0) {
+                            Toast.makeText(getContext(), "تبریک!‌به سکه های شما " + jsonRootObject.getInt("amount") + " سکه لایک اضافه شد ", Toast.LENGTH_SHORT).show();
+                        } else if (jsonRootObject.getInt("type") == 1) {
+                            Toast.makeText(getContext(), "تبریک!‌به سکه های شما " + jsonRootObject.getInt("amount") + " سکه فالو اضافه شد ", Toast.LENGTH_SHORT).show();
+                        }
+
+                        App.followCoin = jsonRootObject.getInt("follow_coin");
+                        App.likeCoin = jsonRootObject.getInt("like_coin");
+
+                        BroadcastManager.sendBroadcast(getContext());
+
                     }
 
 
@@ -184,14 +214,14 @@ public class ShopFragment extends Fragment {
             Log.i("volley", "onErrorResponse: " + error.toString());
         }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
                 return headers;
             }
 
             @Override
-            public byte[] getBody() throws AuthFailureError {
+            public byte[] getBody() {
                 return requestBody == null ? null : requestBody.getBytes();
             }
         };

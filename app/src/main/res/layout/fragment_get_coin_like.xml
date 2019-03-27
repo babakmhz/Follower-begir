@@ -107,7 +107,17 @@
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="@+id/guideLine3"
                 app:layout_constraintTop_toBottomOf="@+id/linear"
-                app:layout_goneMarginStart="10dp" />
+                 />
+            <ProgressBar
+                android:id="@+id/prg"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="@+id/guideLine3"
+                app:layout_constraintTop_toBottomOf="@+id/linear"
+                />
 
             <Button
                 android:id="@+id/btnAutoLike"
