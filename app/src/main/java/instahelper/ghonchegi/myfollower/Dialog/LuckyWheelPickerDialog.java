@@ -1,6 +1,7 @@
 package instahelper.ghonchegi.myfollower.Dialog;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -82,6 +83,8 @@ public class LuckyWheelPickerDialog extends DialogFragment {
 
                 } else {
                     Toast.makeText(getContext(), "شما برنده " + data.get(index).topText + " سکه " + type + " شدید ", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
+                    getActivity().sendBroadcast(intent);
                 }
                 setStatus(data.get(index));
             }
@@ -234,7 +237,8 @@ public class LuckyWheelPickerDialog extends DialogFragment {
                     if (!jsonRootObject.optBoolean("status")) {
                         Toast.makeText(getContext(), "خطا در ثبت اطلاعات", Toast.LENGTH_LONG).show();
 
-                    } else dismiss();
+                    } else
+                        dismiss();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
