@@ -1,11 +1,13 @@
 package instahelper.ghonchegi.myfollower.Fragments.Purchase;
 
+import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -46,6 +48,7 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
     private View view;
     private String selectedPicURL = null;
     private String itemId;
+    private Dialog progressDialog;
 
     public PurchaseCommentFragment() {
     }
@@ -97,9 +100,9 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
 
             }
         });
-        binding.btnConfirmAndPay.setOnClickListener(v->{
+        binding.btnConfirmAndPay.setOnClickListener(v -> {
             PurchaseLike dialog = new PurchaseLike(2);
-            dialog.show(getChildFragmentManager(),"");
+            dialog.show(getChildFragmentManager(), "");
 
         });
 
@@ -111,6 +114,7 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void selectedPic(String imageId, String imageURL) {
+        ProgressDialog();
         binding.constraintLayout.setBackground(null);
         binding.imvSelectPic.setVisibility(View.INVISIBLE);
         binding.tvSelectPic.setVisibility(View.INVISIBLE);
@@ -119,8 +123,11 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
         itemId = imageId;
         try {
             Picasso.get().load(imageURL).error(R.drawable.app_logo).into(binding.imvSelectedPic);
+            progressDialog.cancel();
         } catch (Exception e) {
             Log.i(TAG, "selectedPic: " + e);
+            progressDialog.cancel();
+
         }
 
 
@@ -178,4 +185,13 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
 
         }
     }
+
+    public void ProgressDialog() {
+        progressDialog = new Dialog(getContext());
+        progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        progressDialog.setCancelable(false);
+        progressDialog.setContentView(R.layout.dialog_uploading);
+        progressDialog.show();
+    }
+
 }

@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 
@@ -43,16 +42,16 @@ import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 public class GetCoinLikeFragment extends Fragment {
     FragmentGetCoinLikeBinding binding;
-    private View view;
-
     ArrayList<String> likedUsers = new ArrayList<>();
+    Handler h = new Handler();
+    int delay = 10 * 1000; //1 second=1000 milisecond, 10*1000=15seconds
+    Runnable runnable;
+    private View view;
     private String imageId;
     private int transactionId;
     private boolean autoLike = false;
     private Dialog progressDialog;
-    Handler h = new Handler();
-    int delay = 10*1000; //1 second=1000 milisecond, 10*1000=15seconds
-    Runnable runnable;
+
     public GetCoinLikeFragment() {
     }
 
@@ -87,23 +86,26 @@ public class GetCoinLikeFragment extends Fragment {
         });
         binding.btnDoLike.setOnClickListener(v -> {
             try {
-
-
+                likeInProgress();
                 InstagramApi.getInstance().Like(imageId, new InstagramApi.ResponseHandler() {
                     @Override
                     public void OnSuccess(JSONObject response) {
                         submit();
+                        likeFinished();
 
                     }
 
                     @Override
                     public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
                         binding.btnNext.performClick();
+                        likeFinished();
 
                     }
                 });
             } catch (InstaApiException e) {
                 e.printStackTrace();
+                likeFinished();
+
             }
         });
 
@@ -114,6 +116,15 @@ public class GetCoinLikeFragment extends Fragment {
     }
 
 
+    private void likeInProgress() {
+        binding.btnDoLike.setVisibility(View.INVISIBLE);
+        binding.prg.setVisibility(View.VISIBLE);
+    }
+
+    private void likeFinished() {
+        binding.btnDoLike.setVisibility(View.VISIBLE);
+        binding.prg.setVisibility(View.GONE);
+    }
 
     private void getLikeOrder() {
         final String requestBody = JsonManager.getOrders(0);
@@ -179,7 +190,7 @@ public class GetCoinLikeFragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(response);
                 if (jsonObject.getBoolean("status")) {
                     App.likeCoin = jsonObject.getInt("like_coin");
-                    binding.tvLikeCoinCount.setText(App.likeCoin+"");
+                    binding.tvLikeCoinCount.setText(App.likeCoin + "");
                     getLikeOrder();
                 }
 

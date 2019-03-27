@@ -1,12 +1,14 @@
 package instahelper.ghonchegi.myfollower.Fragments.Purchase;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -44,6 +46,7 @@ public class PurchaseFolloweFragment extends Fragment  {
     private FragmentPurchaseFollowerBinding binding;
     private String selectedPicURL;
     private String itemId;
+    private Dialog progressDialog;
 
     public PurchaseFolloweFragment() {
     }
@@ -152,4 +155,13 @@ public class PurchaseFolloweFragment extends Fragment  {
 
         }
     }
+
+    public void ProgressDialog() {
+        progressDialog = new Dialog(getContext());
+        progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        progressDialog.setCancelable(false);
+        progressDialog.setContentView(R.layout.dialog_uploading);
+        progressDialog.show();
+    }
+
 }

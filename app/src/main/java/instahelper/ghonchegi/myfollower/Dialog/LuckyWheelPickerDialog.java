@@ -27,6 +27,7 @@ import java.util.Random;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import instahelper.ghonchegi.myfollower.Manager.BroadcastManager;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.WheelPiclerView.LuckyItem;
@@ -57,37 +58,33 @@ public class LuckyWheelPickerDialog extends DialogFragment {
         checkStatus();
         setData(luckyWheelView);
 
-        btnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int index = getRandomIndex();
-                luckyWheelView.startLuckyWheelWithTargetIndex(index);
-            }
+        btnStart.setOnClickListener(view -> {
+            int index = getRandomIndex();
+            luckyWheelView.startLuckyWheelWithTargetIndex(index);
         });
 
 
-        luckyWheelView.setLuckyRoundItemSelectedListener(new LuckyWheelView.LuckyRoundItemSelectedListener() {
-            @Override
-            public void LuckyRoundItemSelected(int index) {
-                String type = "";
-                switch (data.get(index).type) {
-                    case 0:
-                        type = "لایک";
-                        break;
-                    case 1:
-                        type = "فالو";
-                        break;
-                }
-                if (data.get(index).topText.equals("0")) {
-                    Toast.makeText(getContext(), "شانس با شما یار نبود !‌ ایشالا فردا ...", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    Toast.makeText(getContext(), "شما برنده " + data.get(index).topText + " سکه " + type + " شدید ", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
-                    getActivity().sendBroadcast(intent);
-                }
-                setStatus(data.get(index));
+        luckyWheelView.setLuckyRoundItemSelectedListener(index -> {
+            String type = "";
+            switch (data.get(index).type) {
+                case 0:
+                    type = "لایک";
+                    break;
+                case 1:
+                    type = "فالو";
+                    break;
             }
+            if (data.get(index).topText.equals("0")) {
+                Toast.makeText(getContext(), "شانس با شما یار نبود !‌ ایشالا فردا ...", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Toast.makeText(getContext(), "شما برنده " + data.get(index).topText + " سکه " + type + " شدید ", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
+                getActivity().sendBroadcast(intent);
+                BroadcastManager.sendBroadcast(getContext());
+
+            }
+            setStatus(data.get(index));
         });
         return dialog;
 
