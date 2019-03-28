@@ -33,6 +33,7 @@ import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
+import instahelper.ghonchegi.myfollower.Models.User;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.FragmentGetCoinLikeBinding;
 import instahelper.ghonchegi.myfollower.instaAPI.InstaApiException;
@@ -47,6 +48,7 @@ public class GetCoinLikeFragment extends Fragment {
     Handler h = new Handler();
     int delay = 10 * 1000; //1 second=1000 milisecond, 10*1000=15seconds
     Runnable runnable;
+    int step = 0;
     private View view;
     private String imageId;
     private int transactionId;
@@ -110,7 +112,7 @@ public class GetCoinLikeFragment extends Fragment {
             }
         });
 
-        binding.btnConfirmAndPay.setOnClickListener(v->likeWithAllAccounts());
+        binding.btnConfirmAndPay.setOnClickListener(v -> likeWithAllAccounts());
 
         getLikeOrder();
 
@@ -147,15 +149,14 @@ public class GetCoinLikeFragment extends Fragment {
                 try {
 
                     JSONObject jsonObject = new JSONObject(response);
-                    if (!jsonObject.getBoolean("status"))
-                    {
+                    if (!jsonObject.getBoolean("status")) {
                         getLikeOrder();
                         return;
                     }
                     Picasso.get().load(jsonObject.getString("image_path")).into(binding.imvPic);
                     imageId = jsonObject.getString("type_id");
                     transactionId = jsonObject.getInt("transaction_id");
-                   // checkLikers();
+                    // checkLikers();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -284,22 +285,59 @@ public class GetCoinLikeFragment extends Fragment {
         }
     }
 
-    private void likeWithAllAccounts()
-    {
-        InstagramApi api = new InstagramApi();
-        DataBaseHelper dataBaseHelper=new DataBaseHelper(getContext());
-        dataBaseHelper.getAllUsers().get(0).getUserId()
+    private void likeWithAllAccounts() {
+        InstagramApi tempApi = new InstagramApi();
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+        if (dataBaseHelper.getAllUsers().size() == 1) {
+            Toast.makeText(getContext(), "شما تنها یک حساب دارید ", Toast.LENGTH_SHORT).show();
+        } else if (step >= dataBaseHelper.getAllUsers().size()) { // اگر step  بزرگتر از سایز کاربرا بود یعنی تموم شده و باید با اکانت اصلی لاگین کنه
+            for (User user : dataBaseHelper.getAllUsers()) {
+                if (user.getIsActive() == 1) {
+                    tempApi.Login(user.getUserName(), user.getPassword(), new InstagramApi.ResponseHandler() {
+                        @Override
+                        public void OnSuccess(JSONObject response) {
 
-        api.Login("mitra.zamanii", "5111371gol4282", new InstagramApi.ResponseHandler() {
-            @Override
-            public void OnSuccess(JSONObject response) {
+                        }
 
+                        @Override
+                        public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+                        }
+                    });
+                }
             }
+        } else if (dataBaseHelper.getAllUsers().get(step).getIsActive() == 1 && step < dataBaseHelper.getAllUsers().size()) { // وقتی به اکانت فعال میرسه و ردش میکنه
+            step++;
+            likeWithAllAccounts();
+        } else if (dataBaseHelper.getAllUsers().get(step).getIsActive() == 1 && step == dataBaseHelper.getAllUsers().size()) {  // اگر آخرین مورد اکانت فعال بود به اون لاگین میکنه
+            tempApi.Login(dataBaseHelper.getAllUsers().get(step).getUserName(), dataBaseHelper.getAllUsers().get(step).getPassword(), new InstagramApi.ResponseHandler() {
+                @Override
+                public void OnSuccess(JSONObject response) {
+                    Log.d(App.TAG, "OnSuccess: Login " + response);
+                    step++;
+                    likeWithAllAccounts();
+                }
 
-            @Override
-            public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                @Override
+                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
 
-            }
-        });
+                }
+            });
+        } else { // لاگین با اکانت دیگه
+            tempApi.Login(dataBaseHelper.getAllUsers().get(step).getUserName(), dataBaseHelper.getAllUsers().get(step).getPassword(), new InstagramApi.ResponseHandler() {
+                @Override
+                public void OnSuccess(JSONObject response) {
+                    Log.d(App.TAG, "OnSuccess: Login " + response);
+                    step++;
+                    likeWithAllAccounts();
+                }
+
+                @Override
+                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+                }
+            });
+        }
+
     }
 }
