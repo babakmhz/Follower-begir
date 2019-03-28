@@ -44,6 +44,10 @@ public class Config {
     public static int reqeustFollowFifth = 14;
     public static String skuFifthFollow = "FifthFollowItem";
 
+    /////ShopItem
+    public static int requestShopItems = 888;
+
+
     public static ArrayList<ShopItem> shopItems = new ArrayList<>();
 
     public static void setupShopItems() {

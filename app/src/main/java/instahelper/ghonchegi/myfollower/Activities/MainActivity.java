@@ -31,6 +31,7 @@ import instahelper.ghonchegi.myfollower.Fragments.Offers.ShopFragment;
 import instahelper.ghonchegi.myfollower.Fragments.Purchase.PurchaseFragment;
 import instahelper.ghonchegi.myfollower.Interface.DirectPurchaseDialogInterface;
 import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
+import instahelper.ghonchegi.myfollower.Interface.ShopItemInterface;
 import instahelper.ghonchegi.myfollower.Manager.Config;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
@@ -52,7 +53,8 @@ import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 public class MainActivity extends AppCompatActivity implements PurchaseInterface,
         DirectPrchaseInterface,
-        DirectPurchaseDialogInterface {
+        DirectPurchaseDialogInterface,
+        ShopItemInterface {
     static final String TAG = "FollowerAPP";
     public static TapsellAd ad;
     public static ProgressDialog progressDialog;
@@ -73,8 +75,11 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     private DirectPurchaseDialogInterface callBackDirectPurchaseDialog;
     private String directOrderItemId = null, directOrderItemURL = null;
     private int directOrderCount = 0;
+    private ShopItemInterface callBackShopItem;
 
     private PurchaseInterface callBack;
+    private int shopItemType = 0;
+    private int shopItemAmount = 0;
 
     public static void globalLoadAd(Context context, final String zoneId, final int catchType) {
         if (MainActivity.ad == null) {
@@ -176,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         setVariables();
         callBack = this;
         callBackDirectPurchaseDialog = this;
-
+        callBackShopItem=this;
         fm.beginTransaction().replace(R.id.fragmentHolder, new HomeFragment(callBack), "shopFragment").commit();
         currentItemId = R.id.action_home;
         progressDialog = new ProgressDialog(this);
@@ -212,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                         break;
                     case R.id.action_shopping:
                         currentItemId = R.id.action_shopping;
-                        fm.beginTransaction().replace(R.id.fragmentHolder, new ShopFragment(callBack), "shopFragment").commit();
+                        fm.beginTransaction().replace(R.id.fragmentHolder, new ShopFragment(callBack,callBackShopItem), "shopFragment").commit();
 
 
                         break;
@@ -352,6 +357,8 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                         App.likeCoin = jsonRootObject.getInt("like_coin");
                         Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
                         sendBroadcast(intent);
+                        shopItemAmount = 0;
+                        shopItemType = 0;
 
 
                     }
@@ -482,6 +489,10 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         super.onActivityResult(requestCode, resultCode, data);
 
         Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
+        if (requestCode == Config.requestShopItems) {
+            if (shopItemType != 0 && shopItemAmount != 0)
+                addCoin(shopItemType, shopItemAmount);
+        }
 
         // Pass on the activity result to the helper for handling
         if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
@@ -630,6 +641,13 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         directOrderCount = count;
         mHelper.launchPurchaseFlow(this, sku, requestCode, mPurchaseFinishedListener, "extra info");
 
+    }
+
+    @Override
+    public void shopItemBuy(String sku, int type, int amount, int RequestCode) {
+        this.shopItemType = type;
+        this.shopItemAmount = amount;
+        mHelper.launchPurchaseFlow(this, sku, RequestCode, mPurchaseFinishedListener, "extra info");
     }
 }
 

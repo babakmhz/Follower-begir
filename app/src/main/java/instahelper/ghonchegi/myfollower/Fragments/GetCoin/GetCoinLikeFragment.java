@@ -2,6 +2,7 @@ package instahelper.ghonchegi.myfollower.Fragments.GetCoin;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,6 +55,7 @@ public class GetCoinLikeFragment extends Fragment {
     private int transactionId;
     private boolean autoLike = false;
     private Dialog progressDialog;
+    private CountDownTimer cTimer = null;
 
     public GetCoinLikeFragment() {
     }
@@ -112,7 +114,10 @@ public class GetCoinLikeFragment extends Fragment {
             }
         });
 
-        binding.btnConfirmAndPay.setOnClickListener(v -> likeWithAllAccounts());
+        binding.btnConfirmAndPay.setOnClickListener(v -> {
+            ProgressDialog("در حال انجام لایک با تمام اکانت ها . جهت جلوگیری از  شناسایی  توسط اینستاگرام و مسدود سازی حساب این فرآیند ممکن است زمانبر باشد ...");
+            likeWithAllAccounts();
+        });
 
         getLikeOrder();
 
@@ -290,17 +295,20 @@ public class GetCoinLikeFragment extends Fragment {
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
         if (dataBaseHelper.getAllUsers().size() == 1) {
             Toast.makeText(getContext(), "شما تنها یک حساب دارید ", Toast.LENGTH_SHORT).show();
+            progressDialog.dismiss();
         } else if (step >= dataBaseHelper.getAllUsers().size()) { // اگر step  بزرگتر از سایز کاربرا بود یعنی تموم شده و باید با اکانت اصلی لاگین کنه
             for (User user : dataBaseHelper.getAllUsers()) {
                 if (user.getIsActive() == 1) {
                     tempApi.Login(user.getUserName(), user.getPassword(), new InstagramApi.ResponseHandler() {
                         @Override
                         public void OnSuccess(JSONObject response) {
+                            progressDialog.dismiss();
 
                         }
 
                         @Override
                         public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                            progressDialog.dismiss();
 
                         }
                     });
@@ -324,19 +332,50 @@ public class GetCoinLikeFragment extends Fragment {
                 }
             });
         } else { // لاگین با اکانت دیگه
-            tempApi.Login(dataBaseHelper.getAllUsers().get(step).getUserName(), dataBaseHelper.getAllUsers().get(step).getPassword(), new InstagramApi.ResponseHandler() {
-                @Override
-                public void OnSuccess(JSONObject response) {
-                    Log.d(App.TAG, "OnSuccess: Login " + response);
-                    step++;
-                    likeWithAllAccounts();
-                }
+            if (cTimer == null)
+                cTimer = new CountDownTimer(15 * 1000 + 1000, 1000) {
 
-                @Override
-                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                    public void onTick(long millisUntilFinished) {
 
-                }
-            });
+
+                    }
+
+                    public void onFinish() {
+                        cTimer = null;
+                        tempApi.Login(dataBaseHelper.getAllUsers().get(step).getUserName(), dataBaseHelper.getAllUsers().get(step).getPassword(), new InstagramApi.ResponseHandler() {
+                            @Override
+                            public void OnSuccess(JSONObject response) {
+                                Log.d(App.TAG, "OnSuccess: Login " + response);
+                                try {
+                                    tempApi.Like(imageId, new InstagramApi.ResponseHandler() {
+                                        @Override
+                                        public void OnSuccess(JSONObject response) {
+
+
+
+                                        }
+
+                                        @Override
+                                        public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+                                        }
+                                    });
+                                } catch (InstaApiException e) {
+                                    e.printStackTrace();
+                                }
+                                step++;
+                                likeWithAllAccounts();
+                            }
+
+                            @Override
+                            public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                                step++;
+                                likeWithAllAccounts();
+                            }
+                        });
+                    }
+                }.start();
+
         }
 
     }

@@ -14,16 +14,20 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+import instahelper.ghonchegi.myfollower.Interface.ShopItemInterface;
+import instahelper.ghonchegi.myfollower.Manager.Config;
 import instahelper.ghonchegi.myfollower.Models.Offers;
 import instahelper.ghonchegi.myfollower.R;
 
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.Item> {
+    private final ShopItemInterface callBackShopItem;
     private Context context;
     private ArrayList<Offers> orders;
 
-    public OffersAdapter(Context context, ArrayList<Offers> orders) {
+    public OffersAdapter(Context context, ArrayList<Offers> orders, ShopItemInterface callBackShopItem) {
         this.context = context;
         this.orders = orders;
+        this.callBackShopItem = callBackShopItem;
     }
 
     @NonNull
@@ -48,6 +52,9 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.Item> {
         holder.tvDiscount.setPaintFlags(holder.tvDiscount.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.tvTotal.setText(offers.getCount() + " سکه");
         holder.tvPrice.setText(offers.getPrice() + "تومان");
+        holder.root.setOnClickListener(v -> {
+            callBackShopItem.shopItemBuy("100LikeCoin", offers.getType(), offers.getCount(), Config.requestShopItems);
+        });
 
 
     }
