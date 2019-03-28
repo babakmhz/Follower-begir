@@ -358,6 +358,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                         App.followCoin = jsonRootObject.getInt("follow_coin");
                         App.likeCoin = jsonRootObject.getInt("like_coin");
                         Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
+                        Toast.makeText(this, "سکه های شما افزایش یافت..", Toast.LENGTH_SHORT).show();
                         sendBroadcast(intent);
                         shopItemAmount = 0;
                         shopItemType = 0;
@@ -492,7 +493,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
         Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
         if (requestCode == Config.requestShopItems) {
-            if (shopItemType != 0 && shopItemAmount != 0)
+            if ( shopItemAmount != 0)
                 addCoin(shopItemType, shopItemAmount);
         }
 

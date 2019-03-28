@@ -46,6 +46,9 @@
                 <action android:name="com.journaldev.broadcastreceiver.Update" />
             </intent-filter>
         </receiver>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c3a46b2f2b01b95cfbcd785cd749a42c35d9af8c" />
     </application>
 
 </manifest>
