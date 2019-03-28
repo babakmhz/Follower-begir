@@ -140,9 +140,14 @@ public class GetCoinCommentFragment extends Fragment {
                         return;
                     }
                     JSONObject jsonObject = new JSONObject(response);
+                    if (!jsonObject.getBoolean("status"))
+                    {
+                        getCommentOrders();
+                        return;
+                    }
                     Picasso.get().load(jsonObject.getString("image_path")).into(binding.imvPic);
                     imageId = jsonObject.getString("type_id");
-                    transactionId = jsonObject.getInt("id");
+                    transactionId = jsonObject.getInt("transaction_id");
 
 
                 } catch (JSONException e) {

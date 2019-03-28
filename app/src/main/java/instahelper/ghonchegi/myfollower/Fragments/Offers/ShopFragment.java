@@ -243,5 +243,7 @@ public class ShopFragment extends Fragment {
         progressDialog.show();
     }
 
+    
+
 
 }

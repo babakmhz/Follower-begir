@@ -31,6 +31,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.App;
+import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.FragmentGetCoinLikeBinding;
@@ -109,6 +110,8 @@ public class GetCoinLikeFragment extends Fragment {
             }
         });
 
+        binding.btnConfirmAndPay.setOnClickListener(v->likeWithAllAccounts());
+
         getLikeOrder();
 
         return view;
@@ -142,11 +145,17 @@ public class GetCoinLikeFragment extends Fragment {
                     return;
                 }
                 try {
+
                     JSONObject jsonObject = new JSONObject(response);
+                    if (!jsonObject.getBoolean("status"))
+                    {
+                        getLikeOrder();
+                        return;
+                    }
                     Picasso.get().load(jsonObject.getString("image_path")).into(binding.imvPic);
                     imageId = jsonObject.getString("type_id");
-                    transactionId = jsonObject.getInt("id");
-                    checkLikers();
+                    transactionId = jsonObject.getInt("transaction_id");
+                   // checkLikers();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -273,5 +282,24 @@ public class GetCoinLikeFragment extends Fragment {
         } catch (InstaApiException e) {
             e.printStackTrace();
         }
+    }
+
+    private void likeWithAllAccounts()
+    {
+        InstagramApi api = new InstagramApi();
+        DataBaseHelper dataBaseHelper=new DataBaseHelper(getContext());
+        dataBaseHelper.getAllUsers().get(0).getUserId()
+
+        api.Login("mitra.zamanii", "5111371gol4282", new InstagramApi.ResponseHandler() {
+            @Override
+            public void OnSuccess(JSONObject response) {
+
+            }
+
+            @Override
+            public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+            }
+        });
     }
 }

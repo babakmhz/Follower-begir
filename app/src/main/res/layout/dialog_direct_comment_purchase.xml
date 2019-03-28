@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="200 لایک بگیر"
+                android:text="200 کامنت"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_14ssp" />
         </LinearLayout>

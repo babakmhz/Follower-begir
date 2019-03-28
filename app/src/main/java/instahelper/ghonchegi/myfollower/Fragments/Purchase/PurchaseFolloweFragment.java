@@ -2,7 +2,6 @@ package instahelper.ghonchegi.myfollower.Fragments.Purchase;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,30 +23,30 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.PurchasePackages.PurchaseLike;
-import instahelper.ghonchegi.myfollower.Dialog.SelectPictureDialog;
-import instahelper.ghonchegi.myfollower.Interface.ImagePickerInterface;
+import instahelper.ghonchegi.myfollower.Interface.DirectPurchaseDialogInterface;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.FragmentPurchaseFollowerBinding;
 
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
-import static instahelper.ghonchegi.myfollower.App.TAG;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 
-public class PurchaseFolloweFragment extends Fragment  {
+@SuppressLint("ValidFragment")
+public class PurchaseFolloweFragment extends Fragment {
+    private final DirectPurchaseDialogInterface callBackDirectPurchase;
     private View view;
     private FragmentPurchaseFollowerBinding binding;
     private String selectedPicURL;
     private String itemId;
     private Dialog progressDialog;
 
-    public PurchaseFolloweFragment() {
+    public PurchaseFolloweFragment(DirectPurchaseDialogInterface callBackDirectPurchase) {
+        this.callBackDirectPurchase = callBackDirectPurchase;
     }
 
     @SuppressLint("SetTextI18n")
@@ -84,14 +82,14 @@ public class PurchaseFolloweFragment extends Fragment  {
         });
 
 
-
         binding.btnConfirm.setOnClickListener(v -> {
             submitOrder();
         });
 
-        binding.btnConfirmAndPay.setOnClickListener(v->{
-            PurchaseLike dialog = new PurchaseLike(1);
-            dialog.show(getChildFragmentManager(),"");
+        binding.btnConfirmAndPay.setOnClickListener(v -> {
+            PurchaseLike dialog = new PurchaseLike(1, App.profilePicURl, binding.seekBar.getProgress(), App.userId, callBackDirectPurchase);
+
+            dialog.show(getChildFragmentManager(), "");
 
         });
 
@@ -105,7 +103,7 @@ public class PurchaseFolloweFragment extends Fragment  {
         if (App.followCoin <= 0) {
             Toast.makeText(getContext(), "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
 
-        }else if (binding.seekBar.getProgress() == 0) {
+        } else if (binding.seekBar.getProgress() == 0) {
             Toast.makeText(getContext(), "تعداد سفارش را مشخص کنید", Toast.LENGTH_SHORT).show();
         } else {
             final String requestBody = JsonManager.submitOrder(1, App.userId, App.profilePicURl, binding.seekBar.getProgress());
@@ -129,8 +127,7 @@ public class PurchaseFolloweFragment extends Fragment  {
                     }
 
 
-                }
-                else {
+                } else {
                     Toast.makeText(getContext(), "خطا در ثبت سفارش", Toast.LENGTH_SHORT).show();
 
                 }

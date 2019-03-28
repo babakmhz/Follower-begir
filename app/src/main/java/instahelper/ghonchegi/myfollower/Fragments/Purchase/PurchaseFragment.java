@@ -1,5 +1,6 @@
 package instahelper.ghonchegi.myfollower.Fragments.Purchase;
 
+import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -14,24 +15,29 @@ import android.widget.TextView;
 import org.json.JSONObject;
 
 import instahelper.ghonchegi.myfollower.Adapters.PurchaseViewPagerDapter;
+import instahelper.ghonchegi.myfollower.Interface.DirectPurchaseDialogInterface;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.instaAPI.InstaApiException;
 import instahelper.ghonchegi.myfollower.instaAPI.InstagramApi;
 
 
+@SuppressLint("ValidFragment")
 public class PurchaseFragment extends Fragment {
+    private final DirectPurchaseDialogInterface callBackDirectPurchase;
     private View view;
     private TextView tvLike, tvComment, tvFollow, tvRobotLike;
     private ViewPager viewPager;
 
-    public PurchaseFragment() {
+
+    public PurchaseFragment(DirectPurchaseDialogInterface callBackDirectPurchaseDialog) {
+        this.callBackDirectPurchase = callBackDirectPurchaseDialog;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_purchase, container, false);
-        PurchaseViewPagerDapter adapter = new PurchaseViewPagerDapter(getChildFragmentManager(), 3);
+        PurchaseViewPagerDapter adapter = new PurchaseViewPagerDapter(getChildFragmentManager(), 3,callBackDirectPurchase);
         viewPager = view.findViewById(R.id.viewPagerPurchases);
         viewPager.setAdapter(adapter);
 
@@ -45,24 +51,9 @@ public class PurchaseFragment extends Fragment {
     }
 
     private void init() {
-        tvLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setActive(0);
-            }
-        });
-        tvComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setActive(1);
-            }
-        });
-        tvFollow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setActive(2);
-            }
-        });
+        tvLike.setOnClickListener(v -> setActive(0));
+        tvComment.setOnClickListener(v -> setActive(1));
+        tvFollow.setOnClickListener(v -> setActive(2));
 /*        tvRobotLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

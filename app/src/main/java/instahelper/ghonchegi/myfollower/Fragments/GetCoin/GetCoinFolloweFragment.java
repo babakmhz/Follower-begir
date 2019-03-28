@@ -76,6 +76,8 @@ public class GetCoinFolloweFragment extends Fragment {
 
         });
         binding.btnDoFollow.setOnClickListener(b -> {
+            if (userId == null)
+                return;
             likeInProgress();
             try {
                 InstagramApi.getInstance().Follow(userId, new InstagramApi.ResponseHandler() {
@@ -128,9 +130,16 @@ public class GetCoinFolloweFragment extends Fragment {
             }
             try {
                 JSONObject jsonObject = new JSONObject(response);
+                if (!jsonObject.getBoolean("status")) {
+                    userId = null;
+                    transactionId = 0;
+                    Picasso.get().load(R.drawable.ic_user_avatar).into(binding.imvPic);
+                    getLikeOrder();
+                    return;
+                }
                 Picasso.get().load(jsonObject.getString("image_path")).into(binding.imvPic);
                 userId = jsonObject.getString("type_id");
-                transactionId = jsonObject.getInt("id");
+                transactionId = jsonObject.getInt("transaction_id");
 
             } catch (JSONException e) {
                 e.printStackTrace();

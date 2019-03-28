@@ -8,7 +8,41 @@ import instahelper.ghonchegi.myfollower.Models.ShopItem;
 public class Config {
 
     public static final int ReqeuestSpeciialBanner = 10009;
-    public static  String SKUSpecialBanner = "SpecialBanner";
+    public static String SKUSpecialBanner = "SpecialBanner";
+
+
+    //////
+    ////Direct Purchase LIKE Config
+    public static int reqeustLikeFirst = 30;
+    public static String skuFirstLike = "FirstLikeItem";
+    public static int reqeustLikeSecond = 31;
+    public static String skuSecondLike = "SecondLikeItem";
+    public static int reqeustLikeThird = 32;
+    public static String skuThirdLike = "ThirdLikeItem";
+    public static int reqeustLikeFourth = 33;
+    public static String skuFourthLike = "PurchaseFourthLike";
+    public static int reqeustLikeFifth = 34;
+    public static String skuFifthLike = "FifthLikeItem";
+    ////////
+    ////Direct Purchase Comment Config
+    public static int reqeustCommentFirst = 50;
+    public static String skuFirstComment = "FirstCommentItem";
+    public static int reqeustCommentSecond = 51;
+    public static String skuSecondComment = "SecondCommentItem";
+    public static int reqeustCommentThird = 52;
+    public static String skuThirdComment = "ThirdCommentItem";
+    ///////
+    ////Direct Purchase Follow Config
+    public static int reqeustFollowFirst = 16;
+    public static String skuFirstFollow = "FirstFollowItem";
+    public static int reqeustFollowSecond = 15;
+    public static String skuSecondFollow = "SecondFollowItem";
+    public static int reqeustFollowThird = 12;
+    public static String skuThirdFollow = "ThirdFollowItem";
+    public static int reqeustFollowFourth = 13;
+    public static String skuFourthFollow = "PurchaseFourthFollow";
+    public static int reqeustFollowFifth = 14;
+    public static String skuFifthFollow = "FifthFollowItem";
 
     public static ArrayList<ShopItem> shopItems = new ArrayList<>();
 

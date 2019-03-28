@@ -1,5 +1,6 @@
 package instahelper.ghonchegi.myfollower.Fragments.Purchase;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.PurchasePackages.PurchaseLike;
 import instahelper.ghonchegi.myfollower.Dialog.SelectPictureDialog;
+import instahelper.ghonchegi.myfollower.Interface.DirectPurchaseDialogInterface;
 import instahelper.ghonchegi.myfollower.Interface.ImagePickerInterface;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
@@ -41,16 +43,19 @@ import static instahelper.ghonchegi.myfollower.App.TAG;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 
+@SuppressLint("ValidFragment")
 public class PurchaseCommentFragment extends Fragment implements ImagePickerInterface {
     FragmentPurchaseCommentBinding binding;
     ImagePickerInterface callback;
     InstagramUser user;
+    DirectPurchaseDialogInterface callBackDirectPurchase;
     private View view;
     private String selectedPicURL = null;
     private String itemId;
     private Dialog progressDialog;
 
-    public PurchaseCommentFragment() {
+    public PurchaseCommentFragment(DirectPurchaseDialogInterface callBackDirectPurchase) {
+        this.callBackDirectPurchase = callBackDirectPurchase;
     }
 
     @Nullable
@@ -101,7 +106,7 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
             }
         });
         binding.btnConfirmAndPay.setOnClickListener(v -> {
-            PurchaseLike dialog = new PurchaseLike(2);
+            PurchaseLike dialog = new PurchaseLike(2, selectedPicURL, binding.seekBar.getProgress(), itemId, callBackDirectPurchase);
             dialog.show(getChildFragmentManager(), "");
 
         });

@@ -29,6 +29,7 @@ import instahelper.ghonchegi.myfollower.Fragments.GetCoin.GetCoinFragment;
 import instahelper.ghonchegi.myfollower.Fragments.HomeFragment;
 import instahelper.ghonchegi.myfollower.Fragments.Offers.ShopFragment;
 import instahelper.ghonchegi.myfollower.Fragments.Purchase.PurchaseFragment;
+import instahelper.ghonchegi.myfollower.Interface.DirectPurchaseDialogInterface;
 import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
 import instahelper.ghonchegi.myfollower.Manager.Config;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
@@ -38,7 +39,6 @@ import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.ActivityMainBinding;
 import instahelper.ghonchegi.util.IabHelper;
 import instahelper.ghonchegi.util.IabResult;
-import instahelper.ghonchegi.util.Inventory;
 import instahelper.ghonchegi.util.Purchase;
 import ir.tapsell.sdk.Tapsell;
 import ir.tapsell.sdk.TapsellAd;
@@ -50,7 +50,9 @@ import ir.tapsell.sdk.TapsellShowOptions;
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
-public class MainActivity extends AppCompatActivity implements PurchaseInterface, DirectPrchaseInterface {
+public class MainActivity extends AppCompatActivity implements PurchaseInterface,
+        DirectPrchaseInterface,
+        DirectPurchaseDialogInterface {
     static final String TAG = "FollowerAPP";
     public static TapsellAd ad;
     public static ProgressDialog progressDialog;
@@ -63,12 +65,14 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener;
     private BottomNavigationView bottomNavigationView;
     private FragmentManager fm;
-    private PurchaseFragment purchaseFragment = new PurchaseFragment();
     private GetCoinFragment getCoinFragment = new GetCoinFragment();
     private int currentItemId;
     private ActivityMainBinding binding;
     private int iapFollowCoin;
     private int iapLikeCoin;
+    private DirectPurchaseDialogInterface callBackDirectPurchaseDialog;
+    private String directOrderItemId = null, directOrderItemURL = null;
+    private int directOrderCount = 0;
 
     private PurchaseInterface callBack;
 
@@ -171,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setVariables();
         callBack = this;
+        callBackDirectPurchaseDialog = this;
 
         fm.beginTransaction().replace(R.id.fragmentHolder, new HomeFragment(callBack), "shopFragment").commit();
         currentItemId = R.id.action_home;
@@ -202,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                         break;
                     case R.id.action_purchase:
                         currentItemId = R.id.action_purchase;
-                        fm.beginTransaction().replace(R.id.fragmentHolder, purchaseFragment, "shopFragment").commit();
+                        fm.beginTransaction().replace(R.id.fragmentHolder, new PurchaseFragment(callBackDirectPurchaseDialog), "shopFragment").commit();
 
                         break;
                     case R.id.action_shopping:
@@ -259,6 +264,45 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                     MasrafSeke(purchase);
                     Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
                     sendBroadcast(intent);
+                } else if (purchase.getSku().equals(Config.skuFirstLike)) {
+                    increaseBeforeOrder(0, 100);
+                    MasrafSeke(purchase);
+                } else if (purchase.getSku().equals(Config.skuSecondLike)) {
+                    increaseBeforeOrder(0, 500);
+                    MasrafSeke(purchase);
+                } else if (purchase.getSku().equals(Config.skuThirdLike)) {
+                    increaseBeforeOrder(0, 1000);
+                    MasrafSeke(purchase);
+                } else if (purchase.getSku().equals(Config.skuFourthLike)) {
+                    increaseBeforeOrder(0, 2000);
+                    MasrafSeke(purchase);
+                } else if (purchase.getSku().equals(Config.skuFifthLike)) {
+                    increaseBeforeOrder(0, 3000);
+                    MasrafSeke(purchase);
+                } else if (purchase.getSku().equals(Config.skuFirstComment)) {
+                    increaseBeforeOrder(2, 50);
+                    MasrafSeke(purchase);
+                } else if (purchase.getSku().equals(Config.skuSecondComment)) {
+                    increaseBeforeOrder(2, 100);
+                    MasrafSeke(purchase);
+                } else if (purchase.getSku().equals(Config.skuThirdComment)) {
+                    increaseBeforeOrder(2, 200);
+                    MasrafSeke(purchase);
+                } else if (purchase.getSku().equals(Config.skuFirstFollow)) {
+                    increaseBeforeOrder(1, 180);
+                    MasrafSeke(purchase);
+                } else if (purchase.getSku().equals(Config.skuSecondFollow)) {
+                    increaseBeforeOrder(1, 500);
+                    MasrafSeke(purchase);
+                } else if (purchase.getSku().equals(Config.skuThirdFollow)) {
+                    increaseBeforeOrder(1, 1200);
+                    MasrafSeke(purchase);
+                } else if (purchase.getSku().equals(Config.skuFourthFollow)) {
+                    increaseBeforeOrder(1, 2600);
+                    MasrafSeke(purchase);
+                } else if (purchase.getSku().equals(Config.skuFifthFollow)) {
+                    increaseBeforeOrder(1, 3800);
+                    MasrafSeke(purchase);
                 }
             };
         } catch (Exception e) {
@@ -486,19 +530,17 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
     }
 
-    private void increaseBeforeOrder() {
-        if (currentShop == null)
-            return;
+    private void increaseBeforeOrder(int type, int count) {
 
 
-        final String requestBody = JsonManager.addCoin(currentShop.getType(), String.valueOf(currentShop.getAmount() * 2 + 1));
+        final String requestBody = JsonManager.addCoin(type, String.valueOf(count * 2));
 
         StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/add_coin", response1 -> {
             if (response1 != null) {
                 try {
                     JSONObject jsonRootObject = new JSONObject(response1);
                     if (jsonRootObject.optBoolean("status")) {
-                        purchaseAfterIncrease();
+                        purchaseAfterIncrease(type, count);
 
 
                     }
@@ -530,7 +572,42 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
     }
 
-    private void purchaseAfterIncrease() {
+    private void purchaseAfterIncrease(int type, int count) {
+        final String requestBody = JsonManager.submitOrder(type, directOrderItemId, directOrderItemURL, count);
+
+        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/set", response1 -> {
+            if (response1 != null) {
+                try {
+                    JSONObject jsonRootObject = new JSONObject(response1);
+                    if (jsonRootObject.optBoolean("status")) {
+                        Toast.makeText(this, "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, error -> {
+            Log.i("volley", "onErrorResponse: " + error.toString());
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return requestBody == null ? null : requestBody.getBytes();
+            }
+        };
+        request.setTag(this);
+        requestQueue.add(request);
 
     }
 
@@ -543,6 +620,15 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         iapLikeCoin = LikeCoin;
         mHelper.launchPurchaseFlow(this, sku, RC_REQUEST, mPurchaseFinishedListener, "extra info");
 
+
+    }
+
+    @Override
+    public void directPurchase(String sku, int requestCode, String imageUrl, String postId, int count) {
+        directOrderItemId = postId;
+        directOrderItemURL = imageUrl;
+        directOrderCount = count;
+        mHelper.launchPurchaseFlow(this, sku, requestCode, mPurchaseFinishedListener, "extra info");
 
     }
 }
