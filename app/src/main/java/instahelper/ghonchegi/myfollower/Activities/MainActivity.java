@@ -32,6 +32,7 @@ import instahelper.ghonchegi.myfollower.Fragments.Purchase.PurchaseFragment;
 import instahelper.ghonchegi.myfollower.Interface.DirectPurchaseDialogInterface;
 import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
 import instahelper.ghonchegi.myfollower.Interface.ShopItemInterface;
+import instahelper.ghonchegi.myfollower.Interface.AddCoinMultipleAccount;
 import instahelper.ghonchegi.myfollower.Manager.Config;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
@@ -54,7 +55,7 @@ import static instahelper.ghonchegi.myfollower.App.requestQueue;
 public class MainActivity extends AppCompatActivity implements PurchaseInterface,
         DirectPrchaseInterface,
         DirectPurchaseDialogInterface,
-        ShopItemInterface {
+        ShopItemInterface, AddCoinMultipleAccount {
     static final String TAG = "FollowerAPP";
     public static TapsellAd ad;
     public static ProgressDialog progressDialog;
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener;
     private BottomNavigationView bottomNavigationView;
     private FragmentManager fm;
-    private GetCoinFragment getCoinFragment = new GetCoinFragment();
     private int currentItemId;
     private ActivityMainBinding binding;
     private int iapFollowCoin;
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     private String directOrderItemId = null, directOrderItemURL = null;
     private int directOrderCount = 0;
     private ShopItemInterface callBackShopItem;
+    private AddCoinMultipleAccount addCoinMultipleAccount;
 
     private PurchaseInterface callBack;
     private int shopItemType = 0;
@@ -181,7 +182,8 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         setVariables();
         callBack = this;
         callBackDirectPurchaseDialog = this;
-        callBackShopItem=this;
+        callBackShopItem = this;
+        addCoinMultipleAccount = this;
         fm.beginTransaction().replace(R.id.fragmentHolder, new HomeFragment(callBack), "shopFragment").commit();
         currentItemId = R.id.action_home;
         progressDialog = new ProgressDialog(this);
@@ -201,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                         break;
                     case R.id.action_navigation:
                         currentItemId = R.id.action_navigation;
-                        fm.beginTransaction().replace(R.id.fragmentHolder, getCoinFragment, "shopFragment").commit();
+                        fm.beginTransaction().replace(R.id.fragmentHolder,new  GetCoinFragment(addCoinMultipleAccount), "shopFragment").commit();
 
                         break;
                     case R.id.action_home:
@@ -217,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                         break;
                     case R.id.action_shopping:
                         currentItemId = R.id.action_shopping;
-                        fm.beginTransaction().replace(R.id.fragmentHolder, new ShopFragment(callBack,callBackShopItem), "shopFragment").commit();
+                        fm.beginTransaction().replace(R.id.fragmentHolder, new ShopFragment(callBack, callBackShopItem), "shopFragment").commit();
 
 
                         break;
@@ -648,6 +650,12 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         this.shopItemType = type;
         this.shopItemAmount = amount;
         mHelper.launchPurchaseFlow(this, sku, RequestCode, mPurchaseFinishedListener, "extra info");
+    }
+
+    @Override
+    public void addCoinMultipleAccount(int type) {
+        addCoin(0, 1);
+
     }
 }
 

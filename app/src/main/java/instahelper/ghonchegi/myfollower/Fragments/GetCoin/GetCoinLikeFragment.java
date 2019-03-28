@@ -1,5 +1,6 @@
 package instahelper.ghonchegi.myfollower.Fragments.GetCoin;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -32,6 +33,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.App;
+import instahelper.ghonchegi.myfollower.Interface.AddCoinMultipleAccount;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Models.User;
@@ -43,6 +45,7 @@ import instahelper.ghonchegi.myfollower.instaAPI.InstagramApi;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 
+@SuppressLint("ValidFragment")
 public class GetCoinLikeFragment extends Fragment {
     FragmentGetCoinLikeBinding binding;
     ArrayList<String> likedUsers = new ArrayList<>();
@@ -50,6 +53,7 @@ public class GetCoinLikeFragment extends Fragment {
     int delay = 10 * 1000; //1 second=1000 milisecond, 10*1000=15seconds
     Runnable runnable;
     int step = 0;
+    private AddCoinMultipleAccount addCoinMultipleAccount;
     private View view;
     private String imageId;
     private int transactionId;
@@ -57,7 +61,9 @@ public class GetCoinLikeFragment extends Fragment {
     private Dialog progressDialog;
     private CountDownTimer cTimer = null;
 
-    public GetCoinLikeFragment() {
+
+    public GetCoinLikeFragment(AddCoinMultipleAccount addCoinMultipleAccount) {
+        this.addCoinMultipleAccount = addCoinMultipleAccount;
     }
 
     @Nullable
@@ -350,7 +356,7 @@ public class GetCoinLikeFragment extends Fragment {
                                     tempApi.Like(imageId, new InstagramApi.ResponseHandler() {
                                         @Override
                                         public void OnSuccess(JSONObject response) {
-
+                                            addCoinMultipleAccount.addCoinMultipleAccount(1);
 
 
                                         }
