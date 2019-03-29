@@ -1,8 +1,6 @@
 package instahelper.ghonchegi.myfollower.Adapters;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +12,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import instahelper.ghonchegi.myfollower.Interface.RecievedImageFromAdapterInterface;
 import instahelper.ghonchegi.myfollower.Models.PictureModel;
 import instahelper.ghonchegi.myfollower.R;
@@ -30,6 +30,11 @@ public class SelectPicAdapter extends RecyclerView.Adapter<SelectPicAdapter.Item
         this.context = context;
         this.picList = picList;
         this.callback = localCallBack;
+    }
+
+    public SelectPicAdapter(Context context, ArrayList<PictureModel> pictureModelArrayList) {
+        this.context = context;
+        this.picList = picList;
     }
 
     @NonNull

@@ -29,10 +29,11 @@ import instahelper.ghonchegi.myfollower.Fragments.GetCoin.GetCoinFragment;
 import instahelper.ghonchegi.myfollower.Fragments.HomeFragment;
 import instahelper.ghonchegi.myfollower.Fragments.Offers.ShopFragment;
 import instahelper.ghonchegi.myfollower.Fragments.Purchase.PurchaseFragment;
+import instahelper.ghonchegi.myfollower.Interface.AddCoinMultipleAccount;
 import instahelper.ghonchegi.myfollower.Interface.DirectPurchaseDialogInterface;
 import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
+import instahelper.ghonchegi.myfollower.Interface.SetPurchaseForOthersInterface;
 import instahelper.ghonchegi.myfollower.Interface.ShopItemInterface;
-import instahelper.ghonchegi.myfollower.Interface.AddCoinMultipleAccount;
 import instahelper.ghonchegi.myfollower.Manager.Config;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
@@ -55,7 +56,7 @@ import static instahelper.ghonchegi.myfollower.App.requestQueue;
 public class MainActivity extends AppCompatActivity implements PurchaseInterface,
         DirectPrchaseInterface,
         DirectPurchaseDialogInterface,
-        ShopItemInterface, AddCoinMultipleAccount {
+        ShopItemInterface, AddCoinMultipleAccount, SetPurchaseForOthersInterface {
     static final String TAG = "FollowerAPP";
     public static TapsellAd ad;
     public static ProgressDialog progressDialog;
@@ -187,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         fm.beginTransaction().replace(R.id.fragmentHolder, new HomeFragment(callBack), "shopFragment").commit();
         currentItemId = R.id.action_home;
         progressDialog = new ProgressDialog(this);
-
+        App.context = this;
 
         loadAd(App.TapSelZoneId, TapsellAdRequestOptions.CACHE_TYPE_CACHED);
         //Bottom navigation
@@ -203,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                         break;
                     case R.id.action_navigation:
                         currentItemId = R.id.action_navigation;
-                        fm.beginTransaction().replace(R.id.fragmentHolder,new  GetCoinFragment(addCoinMultipleAccount), "shopFragment").commit();
+                        fm.beginTransaction().replace(R.id.fragmentHolder, new GetCoinFragment(addCoinMultipleAccount), "shopFragment").commit();
 
                         break;
                     case R.id.action_home:
@@ -493,7 +494,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
         Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
         if (requestCode == Config.requestShopItems) {
-            if ( shopItemAmount != 0)
+            if (shopItemAmount != 0)
                 addCoin(shopItemType, shopItemAmount);
         }
 
@@ -657,6 +658,11 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     public void addCoinMultipleAccount(int type) {
         addCoin(0, 1);
 
+    }
+
+    @Override
+    public void showOtherProfileDialog(String userId) {
+        ////TODO
     }
 }
 

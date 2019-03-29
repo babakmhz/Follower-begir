@@ -107,7 +107,7 @@ public class SearchDialog extends DialogFragment {
     private void setViewUsers(ArrayList<InstagramUser> users) {
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        UserSearchAdapter adapter = new UserSearchAdapter(users);
+        UserSearchAdapter adapter = new UserSearchAdapter(users,getChildFragmentManager());
         binding.rcvUserSearch.setLayoutManager(mLayoutManager);
         binding.rcvUserSearch.setItemAnimator(new DefaultItemAnimator());
         binding.rcvUserSearch.setAdapter(adapter);
