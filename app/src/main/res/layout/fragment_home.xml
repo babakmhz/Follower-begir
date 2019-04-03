@@ -496,6 +496,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/transferCoin"
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toEndOf="@id/tvOrders"
@@ -563,9 +564,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/aboutUs"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:drawableStart="@drawable/ic_about_us"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toEndOf="@id/tvShareApp"
-                    app:layout_constraintTop_toBottomOf="@id/tvRateUs" />
+                    app:layout_constraintTop_toBottomOf="@id/tvRateUs"
+                    />
 
                 <TextView
                     android:id="@+id/tvSupport"

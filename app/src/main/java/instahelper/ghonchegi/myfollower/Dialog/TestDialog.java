@@ -9,11 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.widget.SeekBar;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
@@ -23,9 +32,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import instahelper.ghonchegi.myfollower.Adapters.SelectPicAdapter;
+import instahelper.ghonchegi.myfollower.Adapters.SelectPicOrderOthersAdapter;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Interface.RecievedImageFromAdapterInterface;
+import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Models.PictureModel;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.data.InstagramMedia;
@@ -34,7 +44,9 @@ import instahelper.ghonchegi.myfollower.instaAPI.InstaApiException;
 import instahelper.ghonchegi.myfollower.instaAPI.InstagramApi;
 import instahelper.ghonchegi.myfollower.parser.MediasParser;
 
+import static instahelper.ghonchegi.myfollower.App.Base_URL;
 import static instahelper.ghonchegi.myfollower.App.TAG;
+import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 @SuppressLint("ValidFragment")
 public class TestDialog extends DialogFragment {
@@ -47,6 +59,8 @@ public class TestDialog extends DialogFragment {
     private InstagramApi api = InstagramApi.getInstance();
     private boolean is_more_available = false;
     private String userId;
+    private String userImageAddress = "";
+
 
     public TestDialog(String userId) {
         this.userId = userId;
@@ -64,33 +78,146 @@ public class TestDialog extends DialogFragment {
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         //endregion
+        rcvPics = binding.rcvSelectPic;
+        binding.seekBar.setProgress(0);
+        binding.seekBar.setMax(App.followCoin / 2);
 
-        getPosts();
         try {
-            InstagramApi.getInstance().GetUserFeed(userId, new InstagramApi.ResponseHandler() {
+
+            InstagramApi.getInstance().GetUsernameInfo(userId, new InstagramApi.ResponseHandler() {
                 @Override
                 public void OnSuccess(JSONObject response) {
-                    Log.i(TAG, "OnSuccess: " + response);
+                    try {
+                        userImageAddress = response.getJSONObject("user").getString("profile_pic_url");
+                        Picasso.get().load(response.getJSONObject("user").getString("profile_pic_url")).into(binding.imgProfileImage);
+                        binding.tvPostCount.setText(response.getJSONObject("user").getString("media_count"));
+                        binding.tvFollowerCount.setText(response.getJSONObject("user").getString("follower_count"));
+                        binding.tvFollowingCount.setText(response.getJSONObject("user").getString("following_count"));
+                        if (!response.getJSONObject("user").getBoolean("is_private")) {
+                            getPosts();
+                        } else {
+                            Toast.makeText(getActivity(), "این صفحه شخصی می باشد و امکان سفارش وجود ندارد", Toast.LENGTH_SHORT).show();
+                            binding.prg.setVisibility(View.GONE);
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        binding.prg.setVisibility(View.GONE);
+
+
+                    }
+
 
                 }
 
                 @Override
                 public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                    binding.prg.setVisibility(View.GONE);
 
                 }
             });
         } catch (InstaApiException e) {
             e.printStackTrace();
+            binding.prg.setVisibility(View.GONE);
+
         }
+        binding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                binding.tvPurchaseFollowerCount.setText(binding.seekBar.getProgress() + "");
+
+            }
+        });
+        binding.btnSubmitFollower.setOnClickListener(v -> {
+            if (binding.btnSubmitFollower.getText().toString().equals("سفارش فالویر")) {
+                binding.layoutSeekBar.setVisibility(View.VISIBLE);
+                binding.btnSubmitFollower.setText("ثبت سفارش");
+            } else {
+
+                submitFollowerOrder(binding.seekBar.getProgress());
+
+            }
+        });
+
 
         return dialog;
     }
+
+    private void submitFollowerOrder(int count) {
+
+        if (binding.seekBar.getProgress() == 0) {
+            Toast.makeText(getContext(), "تعداد سفارش را مشخص کنید", Toast.LENGTH_SHORT).show();
+        } else if (App.followCoin <= 0) {
+            Toast.makeText(getContext(), "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
+
+        } else {
+            final String requestBody = JsonManager.submitOrder(1, userId, userImageAddress, count);
+
+            StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/set", response1 -> {
+                if (response1 != null) {
+                    try {
+                        JSONObject jsonRootObject = new JSONObject(response1);
+                        if (jsonRootObject.optBoolean("status")) {
+                            App.followCoin = Integer.parseInt(jsonRootObject.getString("follow_coin"));
+                            Toast.makeText(getContext(), "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+                            binding.seekBar.setProgress(0);
+                            binding.tvPurchaseFollowerCount.setText("0");
+                            binding.layoutSeekBar.setVisibility(View.GONE);
+
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } else {
+                    Toast.makeText(getContext(), "خطا در ثبت سفارش", Toast.LENGTH_SHORT).show();
+
+                }
+            }, error -> {
+                Log.i("volley", "onErrorResponse: " + error.toString());
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    return requestBody == null ? null : requestBody.getBytes();
+                }
+            };
+            request.setTag(this);
+            requestQueue.add(request);
+
+
+        }
+    }
+
 
     private void getPosts() {
 
         try {
             InstagramApi api = InstagramApi.getInstance();
-            api.GetUserFeed(userId,new InstagramApi.ResponseHandler() {
+            api.GetUserFeed(userId, new InstagramApi.ResponseHandler() {
                 @Override
                 public void OnSuccess(JSONObject response) {
                     MediasParser parser = new MediasParser();
@@ -118,11 +245,15 @@ public class TestDialog extends DialogFragment {
 
                 @Override
                 public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                    binding.prg.setVisibility(View.GONE);
+
 
                 }
             });
         } catch (InstaApiException e) {
             e.printStackTrace();
+            binding.prg.setVisibility(View.GONE);
+
         }
     }
 
@@ -130,7 +261,7 @@ public class TestDialog extends DialogFragment {
     private void fetchNextUserMedias() {
 
         try {
-            api.GetUserFeed(userId,pictureModelArrayList.get(pictureModelArrayList.size() - 1).getId(),
+            api.GetUserFeed(userId, pictureModelArrayList.get(pictureModelArrayList.size() - 1).getId(),
                     new InstagramApi.ResponseHandler() {
                         @Override
                         public void OnSuccess(JSONObject response) {
@@ -146,6 +277,8 @@ public class TestDialog extends DialogFragment {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                                 is_more_available = false;
+                                binding.prg.setVisibility(View.GONE);
+
                             }
                             if (is_more_available)
                                 fetchNextUserMedias();
@@ -160,6 +293,8 @@ public class TestDialog extends DialogFragment {
                     });
         } catch (InstaApiException e) {
             e.printStackTrace();
+            binding.prg.setVisibility(View.GONE);
+
         }
     }
 
@@ -173,11 +308,11 @@ public class TestDialog extends DialogFragment {
     private void setView() {
 
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        SelectPicAdapter adapter = new SelectPicAdapter(getContext(), pictureModelArrayList, localCallBack);
+        SelectPicOrderOthersAdapter adapter = new SelectPicOrderOthersAdapter(getContext(), pictureModelArrayList,getChildFragmentManager());
 
         rcvPics.setLayoutManager(layoutManager);
         rcvPics.setItemAnimator(new DefaultItemAnimator());
@@ -198,6 +333,7 @@ public class TestDialog extends DialogFragment {
                 return true;
             }
         });
+        binding.prg.setVisibility(View.GONE);
 
 
     }
