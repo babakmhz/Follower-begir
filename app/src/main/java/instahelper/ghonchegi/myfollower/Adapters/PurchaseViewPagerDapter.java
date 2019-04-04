@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import instahelper.ghonchegi.myfollower.Fragments.Purchase.PurchaseCommentFragment;
 import instahelper.ghonchegi.myfollower.Fragments.Purchase.PurchaseFolloweFragment;
 import instahelper.ghonchegi.myfollower.Fragments.Purchase.PurchaseLikeFragment;
-import instahelper.ghonchegi.myfollower.Fragments.Purchase.PurchaseLikeRobotFragment;
+import instahelper.ghonchegi.myfollower.Fragments.Purchase.PurchaseViewFragment;
 import instahelper.ghonchegi.myfollower.Interface.DirectPurchaseDialogInterface;
 
 public class PurchaseViewPagerDapter extends FragmentPagerAdapter {
@@ -29,8 +29,8 @@ public class PurchaseViewPagerDapter extends FragmentPagerAdapter {
                 return new PurchaseCommentFragment(callBackDirectPurchase);
             case 2:
                 return new PurchaseFolloweFragment(callBackDirectPurchase);
-//            case 3:
-//                return new PurchaseLikeRobotFragment();
+            case 3:
+                return new PurchaseViewFragment();
             default:
                 return null;
         }
