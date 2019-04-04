@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -29,7 +32,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import instahelper.ghonchegi.myfollower.Activities.MainActivity;
+import instahelper.ghonchegi.myfollower.Adapters.HorizontalAccountsListAdapter;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.BuildConfig;
 import instahelper.ghonchegi.myfollower.Dialog.AboutUsDialog;
@@ -46,6 +53,7 @@ import instahelper.ghonchegi.myfollower.Dialog.TicketDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TopUsersDialog;
 import instahelper.ghonchegi.myfollower.Dialog.TransferCoinDialog;
 import instahelper.ghonchegi.myfollower.Interface.AccountChangerInterface;
+import instahelper.ghonchegi.myfollower.Interface.AccountOptionChooserInterface;
 import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
 import instahelper.ghonchegi.myfollower.Interface.ValueUpdaterBroadCast;
 import instahelper.ghonchegi.myfollower.Manager.Config;
@@ -72,7 +80,7 @@ import static instahelper.ghonchegi.myfollower.App.TAG;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 @SuppressLint("ValidFragment")
-public class HomeFragment extends Fragment implements AccountChangerInterface {
+public class HomeFragment extends Fragment implements AccountChangerInterface, AccountOptionChooserInterface {
 
 
     public static IabHelper mHelper;
@@ -91,6 +99,8 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
     private String profilePicURL;
     private AccountChangerInterface callBack;
     private String specialBannerItemId;
+    private AccountOptionChooserInterface accountOptionCallBack;
+
 
     public HomeFragment(PurchaseInterface callBack) {
         this.callBackPurchase = callBack;
@@ -108,6 +118,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
         shared = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
         editor = shared.edit();
         callBack = this;
+        accountOptionCallBack = this;
 
         try {
             dbHeplper.createDatabase();
@@ -148,12 +159,9 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
 
         });
 
-        binding.tvManageAccounts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ManageAccountsDialog dialog = new ManageAccountsDialog(callBack);
-                dialog.show(getChildFragmentManager(), "");
-            }
+        binding.tvManageAccounts.setOnClickListener(v -> {
+            ManageAccountsDialog dialog = new ManageAccountsDialog(callBack);
+            dialog.show(getChildFragmentManager(), "");
         });
 
         binding.tvTopUsers.setOnClickListener(v -> {
@@ -226,7 +234,9 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
             }
 
         });
-
+        binding.imvAddAccount.setOnClickListener(v -> {
+            authenticate();
+        });
 
         binding.tvAboutUs.setOnClickListener(v -> {
             if (!NetworkManager.isConnectionToInternet(getContext())) {
@@ -239,6 +249,15 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
             dialog.setCancelable(true);
             dialog.show(getChildFragmentManager(), "");
         });
+
+        binding.imvArrowShowAccounts.setOnClickListener(v -> {
+            showOrHideAccountsLayout();
+        });
+
+        showAccounts();
+        Animation connectingAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.heartbeat);
+        binding.imvArrowShowAccounts.startAnimation(connectingAnimation);
+
 
         return view;
 
@@ -369,9 +388,9 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
                                     FirstPageNotificationDialog dialog = new FirstPageNotificationDialog(jsonRootObject.getString("welcome"));
                                     dialog.setCancelable(true);
                                     dialog.show(getChildFragmentManager(), "");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                                catch (Exception e)
-                                {e.printStackTrace();}
 
                             }
                         }
@@ -600,6 +619,62 @@ public class HomeFragment extends Fragment implements AccountChangerInterface {
 
     }
 
+    private void showAccounts() {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
+        HorizontalAccountsListAdapter adapter = new HorizontalAccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager(), accountOptionCallBack);
+
+        DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+        @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true);
+
+        binding.rcvAccounts.setLayoutManager(mLayoutManager);
+        binding.rcvAccounts.setItemAnimator(new DefaultItemAnimator());
+        binding.rcvAccounts.setAdapter(adapter);
+        binding.rcvAccounts.addItemDecoration(decoration);
+        binding.rcvAccounts.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                binding.rcvAccounts.getViewTreeObserver().removeOnPreDrawListener(this);
+                for (int i = 0; i < binding.rcvAccounts.getChildCount(); i++) {
+                    View v = binding.rcvAccounts.getChildAt(i);
+                    v.setAlpha(0.0f);
+                    v.animate().alpha(1.0f)
+                            .setDuration(300)
+                            .setStartDelay(i * 50)
+                            .start();
+                }
+                return true;
+            }
+        });
+
+    }
+
+
+    @Override
+    public void changedInfo(String username, String password) {
+        callBack.selectToChange(username, password);
+
+    }
+
+    private void authenticate() {
+        // startActivity(new Intent(this,ActivityLoginWebview.class));
+        AuthenticationDialog dialog = new AuthenticationDialog(false, null, null);
+        dialog.setCancelable(true);
+        dialog.show(getFragmentManager(), ":");
+
+
+    }
+
+    private void showOrHideAccountsLayout() {
+        if (binding.llAccounts.getVisibility() == View.VISIBLE) {
+            binding.llAccounts.setVisibility(View.GONE);
+            binding.imvArrowShowAccounts.setImageResource(R.drawable.ic_arrow_down_black);
+        } else {
+            binding.llAccounts.setVisibility(View.VISIBLE);
+            binding.imvArrowShowAccounts.setImageResource(R.drawable.ic_arrow_up_black);
+
+
+        }
+    }
 
 }
 
