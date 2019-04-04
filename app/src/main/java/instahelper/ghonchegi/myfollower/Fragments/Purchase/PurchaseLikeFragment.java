@@ -1,5 +1,6 @@
 package instahelper.ghonchegi.myfollower.Fragments.Purchase;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,9 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -32,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.PurchasePackages.PurchaseLike;
 import instahelper.ghonchegi.myfollower.Dialog.SelectPictureDialog;
+import instahelper.ghonchegi.myfollower.Interface.DirectPurchaseDialogInterface;
 import instahelper.ghonchegi.myfollower.Interface.ImagePickerInterface;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
@@ -42,16 +42,19 @@ import static instahelper.ghonchegi.myfollower.App.TAG;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 
+@SuppressLint("ValidFragment")
 public class PurchaseLikeFragment extends Fragment implements ImagePickerInterface {
 
 
+    private final DirectPurchaseDialogInterface callBackDirectPurchase;
     ImagePickerInterface callback;
     FragmentPurchaseLikeBinding binding;
     private String selectedPicURL = null;
     private String itemId;
     private Dialog progressDialog;
 
-    public PurchaseLikeFragment() {
+    public PurchaseLikeFragment(DirectPurchaseDialogInterface callBackDirectPurchase) {
+        this.callBackDirectPurchase=callBackDirectPurchase;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -79,9 +82,10 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
             submitOrder();
         });
 
-        binding.btnConfirmAndPay.setOnClickListener(v->{
-            PurchaseLike dialog = new PurchaseLike(0);
-            dialog.show(getChildFragmentManager(),"");
+        binding.btnConfirmAndPay.setOnClickListener(v -> {
+
+            PurchaseLike dialog = new PurchaseLike(0,selectedPicURL,binding.seekBar.getProgress(),itemId,callBackDirectPurchase);
+            dialog.show(getChildFragmentManager(), "");
 
         });
 

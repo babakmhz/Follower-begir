@@ -1,11 +1,10 @@
-package instahelper.ghonchegi.myfollower.Fragments.Purchase;
+package instahelper.ghonchegi.myfollower.Dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.SeekBar;
@@ -14,6 +13,7 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,47 +21,47 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
 import instahelper.ghonchegi.myfollower.App;
-import instahelper.ghonchegi.myfollower.Dialog.PurchasePackages.PurchaseLike;
-import instahelper.ghonchegi.myfollower.Interface.DirectPurchaseDialogInterface;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
-import instahelper.ghonchegi.myfollower.databinding.FragmentPurchaseFollowerBinding;
+import instahelper.ghonchegi.myfollower.databinding.DialogSelectCountPurchaseOthersBinding;
 
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
-
 @SuppressLint("ValidFragment")
-public class PurchaseFolloweFragment extends Fragment {
-    private final DirectPurchaseDialogInterface callBackDirectPurchase;
-    private View view;
-    private FragmentPurchaseFollowerBinding binding;
-    private String selectedPicURL;
-    private String itemId;
-    private Dialog progressDialog;
+public class SelectCountPurchaseOthersDialog extends DialogFragment {
 
-    public PurchaseFolloweFragment(DirectPurchaseDialogInterface callBackDirectPurchase) {
-        this.callBackDirectPurchase = callBackDirectPurchase;
+    private final int type;
+    private final String imageAdsress;
+    private DialogSelectCountPurchaseOthersBinding binding;
+    private String profilePic, userName, itemId;
+
+    public SelectCountPurchaseOthersDialog(int type, String id, String imageAddress) {
+        this.type = type;
+        this.imageAdsress = imageAddress;
+        this.itemId = id;
     }
 
-    @SuppressLint("SetTextI18n")
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_purchase_follower, container, false);
-        view = binding.getRoot();
-        binding.tvFollowCoin.setText(App.followCoin + "");
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
+
+        //region Dialog
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_select_count_purchase_others, null, false);
+        dialog.setContentView(binding.getRoot());
+        dialog.getWindow().setBackgroundDrawableResource(R.color.white);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        Picasso.get().load(imageAdsress).fit().centerCrop().into(binding.imvProfilePic);
+        //endregion
 
         binding.tvLikeExpenseCount.setText(0 + "");
         binding.tvLikeOrderCount.setText("0");
         binding.seekBar.setProgress(0);
-        binding.seekBar.setMax(App.followCoin / 2);
+        binding.seekBar.setMax(App.likeCoin / 2);
         binding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -81,43 +81,31 @@ public class PurchaseFolloweFragment extends Fragment {
             }
         });
 
-
-        binding.btnConfirm.setOnClickListener(v -> {
+        binding.btnPurchase.setOnClickListener(v -> {
             submitOrder();
         });
-
-        binding.btnConfirmAndPay.setOnClickListener(v -> {
-            PurchaseLike dialog = new PurchaseLike(1, App.profilePicURl, binding.seekBar.getProgress(), App.userId, callBackDirectPurchase);
-
-            dialog.show(getChildFragmentManager(), "");
-
-        });
-
-
-        return view;
-
+        return dialog;
     }
 
-
     private void submitOrder() {
-        if (App.followCoin <= 0) {
+
+        if (App.likeCoin <= 0) {
             Toast.makeText(getContext(), "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
 
         } else if (binding.seekBar.getProgress() == 0) {
             Toast.makeText(getContext(), "تعداد سفارش را مشخص کنید", Toast.LENGTH_SHORT).show();
         } else {
-            final String requestBody = JsonManager.submitOrder(1, App.userId, App.profilePicURl, binding.seekBar.getProgress());
+            final String requestBody = JsonManager.submitOrder(type, itemId, imageAdsress, binding.seekBar.getProgress());
 
             StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/set", response1 -> {
                 if (response1 != null) {
                     try {
                         JSONObject jsonRootObject = new JSONObject(response1);
                         if (jsonRootObject.optBoolean("status")) {
-                            App.followCoin = Integer.parseInt(jsonRootObject.getString("follow_coin"));
-                            binding.tvFollowCoin.setText(App.followCoin + "");
+                            App.likeCoin = Integer.parseInt(jsonRootObject.getString("like_coin"));
                             Toast.makeText(getContext(), "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
                             binding.seekBar.setProgress(0);
-
+                            dismiss();
 
                         }
 
@@ -126,9 +114,6 @@ public class PurchaseFolloweFragment extends Fragment {
                         e.printStackTrace();
                     }
 
-
-                } else {
-                    Toast.makeText(getContext(), "خطا در ثبت سفارش", Toast.LENGTH_SHORT).show();
 
                 }
             }, error -> {
@@ -153,12 +138,5 @@ public class PurchaseFolloweFragment extends Fragment {
         }
     }
 
-    public void ProgressDialog() {
-        progressDialog = new Dialog(getContext());
-        progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        progressDialog.setCancelable(false);
-        progressDialog.setContentView(R.layout.dialog_uploading);
-        progressDialog.show();
-    }
 
 }

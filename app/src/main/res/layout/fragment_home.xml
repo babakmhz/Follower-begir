@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:animateLayoutChanges="true"
         android:layout_height="match_parent">
+
 
         <ImageView
             android:id="@+id/imageView2"
@@ -306,6 +309,45 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <LinearLayout
+            android:id="@+id/llAccounts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/orangeTextColor"
+            android:gravity="center"
+            android:visibility="gone"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imvAddAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="addUser"
+                app:srcCompat="@drawable/ic_add_black"
+                tools:ignore="HardcodedText" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvAccounts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imvArrowShowAccounts"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llAccounts"
+            app:srcCompat="@drawable/ic_arrow_down_black" />
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -424,6 +466,7 @@
                         app:layout_constraintStart_toEndOf="@+id/imvGolds"
                         app:layout_constraintTop_toBottomOf="@id/tvGoldTitle" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="0dp"
@@ -483,7 +526,10 @@
                     style="@style/mainPageBottomTextStyles"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_orders"
+                    android:drawableRight="@drawable/ic_orders"
                     android:text="پیگیری سفارش"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toStartOf="@+id/tvTransferCoin"
                     app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintHorizontal_weight="1"
@@ -495,7 +541,10 @@
                     style="@style/mainPageBottomTextStyles"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_pay"
+                    android:drawableRight="@drawable/ic_pay"
                     android:text="@string/transferCoin"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toEndOf="@id/tvOrders"
@@ -506,7 +555,10 @@
                     style="@style/mainPageBottomTextStyles"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_statistics"
+                    android:drawableRight="@drawable/ic_statistics"
                     android:text="@string/accountInfo"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toStartOf="@+id/tvManageAccounts"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toStartOf="parent"
@@ -517,7 +569,10 @@
                     style="@style/mainPageBottomTextStyles"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_manage"
+                    android:drawableRight="@drawable/ic_manage"
                     android:text="@string/manageAccount"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toEndOf="@id/tvAccountInfo"
@@ -528,7 +583,10 @@
                     style="@style/mainPageBottomTextStyles"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_bests"
+                    android:drawableRight="@drawable/ic_bests"
                     android:text="@string/topUsers"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toStartOf="@+id/tvRateUs"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toStartOf="parent"
@@ -539,7 +597,10 @@
                     style="@style/mainPageBottomTextStyles"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_rate"
+                    android:drawableRight="@drawable/ic_rate"
                     android:text="@string/rateUs"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toEndOf="@id/tvTopUsers"
@@ -550,7 +611,10 @@
                     style="@style/mainPageBottomTextStyles"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_share"
+                    android:drawableRight="@drawable/ic_share"
                     android:text="@string/shareApp"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toStartOf="@+id/tvAboutUs"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toStartOf="parent"
@@ -561,7 +625,10 @@
                     style="@style/mainPageBottomTextStyles"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_about_us"
+                    android:drawableRight="@drawable/ic_about_us"
                     android:text="@string/aboutUs"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintStart_toEndOf="@id/tvShareApp"
@@ -572,7 +639,10 @@
                     style="@style/mainPageBottomTextStyles"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_support"
+                    android:drawableRight="@drawable/ic_support"
                     android:text="@string/support"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvShareApp" />

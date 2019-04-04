@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import instahelper.ghonchegi.myfollower.R;
 
 
-public class PurchaseLikeRobotFragment extends Fragment {
+public class PurchaseViewFragment extends Fragment {
     private View view;
 
-    public PurchaseLikeRobotFragment() {
+    public PurchaseViewFragment() {
     }
 
     @Nullable

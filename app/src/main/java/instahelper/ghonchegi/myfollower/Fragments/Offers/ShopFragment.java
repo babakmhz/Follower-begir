@@ -3,7 +3,9 @@ package instahelper.ghonchegi.myfollower.Fragments.Offers;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import instahelper.ghonchegi.myfollower.Adapters.OffersAdapter;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
+import instahelper.ghonchegi.myfollower.Interface.ShopItemInterface;
 import instahelper.ghonchegi.myfollower.Manager.BroadcastManager;
 import instahelper.ghonchegi.myfollower.Manager.Config;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
@@ -50,13 +53,15 @@ import static instahelper.ghonchegi.myfollower.App.requestQueue;
 @SuppressLint("ValidFragment")
 public class ShopFragment extends Fragment {
     private final PurchaseInterface callbackPurchaseBanner;
+    private final ShopItemInterface callBackShopItem;
     FragmentShopBinding binding;
     private View view;
     private String specialBannerItemId;
     private Dialog progressDialog;
 
-    public ShopFragment(PurchaseInterface callBack) {
+    public ShopFragment(PurchaseInterface callBack, ShopItemInterface callBackShopItem) {
         this.callbackPurchaseBanner = callBack;
+        this.callBackShopItem = callBackShopItem;
     }
 
     @Nullable
@@ -68,6 +73,14 @@ public class ShopFragment extends Fragment {
 
         init();
         getOffers();
+
+        binding.edtGiftCode.setOnKeyListener((v, keyCode, event) -> {
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                validateGiftCode();
+                return true;
+            }
+            return false;
+        });
 
         return view;
     }
@@ -157,7 +170,7 @@ public class ShopFragment extends Fragment {
         StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        OffersAdapter adapter = new OffersAdapter(getContext(), offers);
+        OffersAdapter adapter = new OffersAdapter(getContext(), offers, callBackShopItem);
         binding.rcvOffers.setLayoutManager(mLayoutManager);
         binding.rcvOffers.setItemAnimator(new DefaultItemAnimator());
         binding.rcvOffers.setAdapter(adapter);
@@ -181,6 +194,11 @@ public class ShopFragment extends Fragment {
 
 
     private void validateGiftCode() {
+        if (TextUtils.isEmpty(binding.edtGiftCode.getText().toString())) {
+            Toast.makeText(getContext(), "گد را وارد کنید", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         final String requestBody = JsonManager.validateOfferCode(binding.edtGiftCode.getText().toString());
 
         StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "check_gift_code", response1 -> {

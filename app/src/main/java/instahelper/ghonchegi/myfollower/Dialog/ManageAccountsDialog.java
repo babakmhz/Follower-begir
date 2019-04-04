@@ -80,8 +80,6 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
         binding.imvAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataBaseHelper dataBaseHelper1 = new DataBaseHelper(getActivity());
-                dataBaseHelper.setAllValueNotActive();
                 authenticate();
             }
         });

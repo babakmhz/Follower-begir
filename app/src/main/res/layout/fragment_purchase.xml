@@ -16,7 +16,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="5dp"
-        android:weightSum="3"
+        android:weightSum="4"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -57,8 +57,7 @@
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
             android:gravity="center"
-            android:visibility="gone"
-            android:text="@string/likeRobot" />
+            android:text="@string/view" />
 
 
     </LinearLayout>

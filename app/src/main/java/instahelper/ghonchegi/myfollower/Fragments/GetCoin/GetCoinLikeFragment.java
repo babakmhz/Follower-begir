@@ -1,7 +1,9 @@
 package instahelper.ghonchegi.myfollower.Fragments.GetCoin;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +33,10 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.App;
+import instahelper.ghonchegi.myfollower.Interface.AddCoinMultipleAccount;
+import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
+import instahelper.ghonchegi.myfollower.Models.User;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.FragmentGetCoinLikeBinding;
 import instahelper.ghonchegi.myfollower.instaAPI.InstaApiException;
@@ -40,19 +45,25 @@ import instahelper.ghonchegi.myfollower.instaAPI.InstagramApi;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 
+@SuppressLint("ValidFragment")
 public class GetCoinLikeFragment extends Fragment {
     FragmentGetCoinLikeBinding binding;
     ArrayList<String> likedUsers = new ArrayList<>();
     Handler h = new Handler();
     int delay = 10 * 1000; //1 second=1000 milisecond, 10*1000=15seconds
     Runnable runnable;
+    int step = 0;
+    private AddCoinMultipleAccount addCoinMultipleAccount;
     private View view;
     private String imageId;
     private int transactionId;
     private boolean autoLike = false;
     private Dialog progressDialog;
+    private CountDownTimer cTimer = null;
 
-    public GetCoinLikeFragment() {
+
+    public GetCoinLikeFragment(AddCoinMultipleAccount addCoinMultipleAccount) {
+        this.addCoinMultipleAccount = addCoinMultipleAccount;
     }
 
     @Nullable
@@ -109,6 +120,11 @@ public class GetCoinLikeFragment extends Fragment {
             }
         });
 
+        binding.btnConfirmAndPay.setOnClickListener(v -> {
+            ProgressDialog("در حال انجام لایک با تمام اکانت ها . جهت جلوگیری از  شناسایی  توسط اینستاگرام و مسدود سازی حساب این فرآیند ممکن است زمانبر باشد ...");
+            likeWithAllAccounts();
+        });
+
         getLikeOrder();
 
         return view;
@@ -142,11 +158,16 @@ public class GetCoinLikeFragment extends Fragment {
                     return;
                 }
                 try {
+
                     JSONObject jsonObject = new JSONObject(response);
+                    if (!jsonObject.getBoolean("status")) {
+                        getLikeOrder();
+                        return;
+                    }
                     Picasso.get().load(jsonObject.getString("image_path")).into(binding.imvPic);
                     imageId = jsonObject.getString("type_id");
-                    transactionId = jsonObject.getInt("id");
-                    checkLikers();
+                    transactionId = jsonObject.getInt("transaction_id");
+                    // checkLikers();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -273,5 +294,95 @@ public class GetCoinLikeFragment extends Fragment {
         } catch (InstaApiException e) {
             e.printStackTrace();
         }
+    }
+
+    private void likeWithAllAccounts() {
+        InstagramApi tempApi = new InstagramApi();
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+        if (dataBaseHelper.getAllUsers().size() == 1) {
+            Toast.makeText(getContext(), "شما تنها یک حساب دارید ", Toast.LENGTH_SHORT).show();
+            progressDialog.dismiss();
+        } else if (step >= dataBaseHelper.getAllUsers().size()) { // اگر step  بزرگتر از سایز کاربرا بود یعنی تموم شده و باید با اکانت اصلی لاگین کنه
+            for (User user : dataBaseHelper.getAllUsers()) {
+                if (user.getIsActive() == 1) {
+                    tempApi.Login(user.getUserName(), user.getPassword(), new InstagramApi.ResponseHandler() {
+                        @Override
+                        public void OnSuccess(JSONObject response) {
+                            progressDialog.dismiss();
+
+                        }
+
+                        @Override
+                        public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                            progressDialog.dismiss();
+
+                        }
+                    });
+                }
+            }
+        } else if (dataBaseHelper.getAllUsers().get(step).getIsActive() == 1 && step < dataBaseHelper.getAllUsers().size()) { // وقتی به اکانت فعال میرسه و ردش میکنه
+            step++;
+            likeWithAllAccounts();
+        } else if (dataBaseHelper.getAllUsers().get(step).getIsActive() == 1 && step == dataBaseHelper.getAllUsers().size()) {  // اگر آخرین مورد اکانت فعال بود به اون لاگین میکنه
+            tempApi.Login(dataBaseHelper.getAllUsers().get(step).getUserName(), dataBaseHelper.getAllUsers().get(step).getPassword(), new InstagramApi.ResponseHandler() {
+                @Override
+                public void OnSuccess(JSONObject response) {
+                    Log.d(App.TAG, "OnSuccess: Login " + response);
+                    step++;
+                    likeWithAllAccounts();
+                }
+
+                @Override
+                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+                }
+            });
+        } else { // لاگین با اکانت دیگه
+            if (cTimer == null)
+                cTimer = new CountDownTimer(15 * 1000 + 1000, 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+
+
+                    }
+
+                    public void onFinish() {
+                        cTimer = null;
+                        tempApi.Login(dataBaseHelper.getAllUsers().get(step).getUserName(), dataBaseHelper.getAllUsers().get(step).getPassword(), new InstagramApi.ResponseHandler() {
+                            @Override
+                            public void OnSuccess(JSONObject response) {
+                                Log.d(App.TAG, "OnSuccess: Login " + response);
+                                try {
+                                    tempApi.Like(imageId, new InstagramApi.ResponseHandler() {
+                                        @Override
+                                        public void OnSuccess(JSONObject response) {
+                                            addCoinMultipleAccount.addCoinMultipleAccount(1);
+
+
+                                        }
+
+                                        @Override
+                                        public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+                                        }
+                                    });
+                                } catch (InstaApiException e) {
+                                    e.printStackTrace();
+                                }
+                                step++;
+                                likeWithAllAccounts();
+                            }
+
+                            @Override
+                            public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                                step++;
+                                likeWithAllAccounts();
+                            }
+                        });
+                    }
+                }.start();
+
+        }
+
     }
 }

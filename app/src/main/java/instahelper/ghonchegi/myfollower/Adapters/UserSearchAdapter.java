@@ -15,9 +15,12 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import instahelper.ghonchegi.myfollower.Dialog.TestDialog;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.data.InstagramUser;
 
@@ -27,9 +30,11 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.It
 
     private ArrayList<InstagramUser> usersList;
     private Context context;
+    FragmentManager childFragmentManager;
 
-    public UserSearchAdapter(ArrayList<InstagramUser> usersList) {
+    public UserSearchAdapter(ArrayList<InstagramUser> usersList, @Nullable FragmentManager childFragmentManager) {
         this.usersList = usersList;
+        this.childFragmentManager=childFragmentManager;
 
     }
 
@@ -51,17 +56,20 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.It
             holder.tvFollowerCount.setText(currentUser.getFollowByCount() + " فالوئر ");
             Picasso.get().load(currentUser.getProfilePicture()).into(holder.profilePic);
             holder.root.setOnClickListener(v -> {
-                Uri uri = Uri.parse("http://instagram.com/_u/" + currentUser.getUserName());
-                Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
+                TestDialog dialog=new TestDialog(currentUser.getUserId());
+                dialog.show(childFragmentManager,"");
 
-                likeIng.setPackage("com.instagram.android");
-
-                try {
-                    context.startActivity(likeIng);
-                } catch (ActivityNotFoundException e) {
-                    context.startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://instagram.com/" + currentUser.getUserName())));
-                }
+//                Uri uri = Uri.parse("http://instagram.com/_u/" + currentUser.getUserName());
+//                Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
+//
+//                likeIng.setPackage("com.instagram.android");
+//
+//                try {
+//                    context.startActivity(likeIng);
+//                } catch (ActivityNotFoundException e) {
+//                    context.startActivity(new Intent(Intent.ACTION_VIEW,
+//                            Uri.parse("http://instagram.com/" + currentUser.getUserName())));
+//                }
             });
 
 

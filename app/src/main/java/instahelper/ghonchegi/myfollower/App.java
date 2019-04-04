@@ -16,9 +16,11 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 
+import com.crashlytics.android.Crashlytics;
 import instahelper.ghonchegi.myfollower.Manager.Config;
 import instahelper.ghonchegi.myfollower.Manager.VolleyManager;
 import instahelper.ghonchegi.myfollower.data.InstagramUser;
+import io.fabric.sdk.android.Fabric;
 import ir.tapsell.sdk.Tapsell;
 
 public class App extends Application {
@@ -85,6 +87,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         context = getApplicationContext();
 

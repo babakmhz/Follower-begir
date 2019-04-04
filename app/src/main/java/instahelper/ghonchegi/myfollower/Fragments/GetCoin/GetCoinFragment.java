@@ -1,6 +1,8 @@
 package instahelper.ghonchegi.myfollower.Fragments.GetCoin;
 
 import androidx.databinding.DataBindingUtil;
+
+import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -12,17 +14,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import instahelper.ghonchegi.myfollower.Adapters.GetCoinViewPagerAdapter;
+import instahelper.ghonchegi.myfollower.Interface.AddCoinMultipleAccount;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.FragmentGetCoinBinding;
 
 
+@SuppressLint("ValidFragment")
 public class GetCoinFragment extends Fragment {
     private View view;
-
+    private AddCoinMultipleAccount addCoinMultipleAccount;
     private FragmentGetCoinBinding binding;
     private GetCoinViewPagerAdapter adapter;
 
-    public GetCoinFragment() {
+
+
+    public GetCoinFragment(AddCoinMultipleAccount addCoinMultipleAccount) {
+        this.addCoinMultipleAccount=addCoinMultipleAccount;
     }
 
     @Nullable
@@ -40,7 +47,7 @@ public class GetCoinFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new GetCoinViewPagerAdapter(getChildFragmentManager(), 3);
+        adapter = new GetCoinViewPagerAdapter(getChildFragmentManager(), 3,addCoinMultipleAccount);
 
         binding.viewPagerGetCoin.setAdapter(adapter);
 
