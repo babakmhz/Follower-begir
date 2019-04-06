@@ -24,6 +24,9 @@ allprojects {
         maven {
             url 'https://dl.bintray.com/tapsellorg/maven'
         }
+        maven {
+            url 'https://repository.cheshmak.me'
+        }
     }
 }
 

@@ -148,6 +148,16 @@
                 app:layout_constraintStart_toStartOf="@+id/btnAutoLike"
                 app:layout_constraintTop_toBottomOf="@+id/btnAutoLike"
                 app:layout_goneMarginStart="10dp" />
+            <me.cheshmak.android.sdk.advertise.CheshmakBannerAd
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnConfirmAndPay"
+                android:id="@+id/cheshmak_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                app:banner_size="SMART_BANNER" />
+
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideLine"
