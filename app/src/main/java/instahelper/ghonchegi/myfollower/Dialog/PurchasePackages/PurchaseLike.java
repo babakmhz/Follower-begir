@@ -16,6 +16,7 @@ import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.DialogDirectCommentPurchaseBinding;
 import instahelper.ghonchegi.myfollower.databinding.DialogDirectFollowerPurchaseBinding;
 import instahelper.ghonchegi.myfollower.databinding.DialogDirectLikePurchaseBinding;
+import instahelper.ghonchegi.myfollower.databinding.DialogDirectPurchaseViewBinding;
 
 @SuppressLint("ValidFragment")
 public class PurchaseLike extends DialogFragment {
@@ -27,6 +28,7 @@ public class PurchaseLike extends DialogFragment {
     private DialogDirectLikePurchaseBinding bindingLike;
     private DialogDirectCommentPurchaseBinding bindingComment;
     private DialogDirectFollowerPurchaseBinding bindingFollow;
+    private DialogDirectPurchaseViewBinding bindingView;
 
 
     public PurchaseLike(int type, String selectedPicURL, int progress, String itemId, DirectPurchaseDialogInterface callBackDirectPurchase) {
@@ -58,6 +60,10 @@ public class PurchaseLike extends DialogFragment {
                 bindingComment = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_direct_comment_purchase, null, false);
                 dialog.setContentView(bindingComment.getRoot());
                 break;
+            case 3:
+                bindingView = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_direct_purchase_view, null, false);
+                dialog.setContentView(bindingView.getRoot());
+                break;
         }
 
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
@@ -78,10 +84,33 @@ public class PurchaseLike extends DialogFragment {
                 bindingComment.tvTitle.setText("با خرید کامنت مستقیم به محض انجام عملیات خرید سفارش شما آغاز می گردد.");
                 initCommentSubmit();
                 break;
+            case 3 :
+                bindingView.tvTitle.setText("با خرید ویو مستقیم به محض انجام عملیات خرید سفارش شما آغاز می گردد.");
+                initViewSumbite();
+                break;
         }
         return dialog;
     }
+    private void initViewSumbite() {
+        bindingView.llLikeOne.setOnClickListener(v -> {
+            if (validate()) {
+                callBackDirectPurchase.directPurchase(Config.skuFirstVIew, Config.reqeustViewtFirst, selectedPicURl, itemId, count);
+            }
 
+        });
+        bindingView.llLikeTwo.setOnClickListener(v -> {
+            if (validate()) {
+                callBackDirectPurchase.directPurchase(Config.skuSecondView, Config.reqeustViewSecond, selectedPicURl, itemId, count);
+            }
+
+        });
+        bindingView.llLikeThree.setOnClickListener(v -> {
+            if (validate()) {
+                callBackDirectPurchase.directPurchase(Config.skuThirdView, Config.reqeustViewThird, selectedPicURl, itemId, count);
+            }
+
+        });
+    }
     private void initCommentSubmit() {
         bindingComment.llLikeOne.setOnClickListener(v -> {
             if (validate()) {

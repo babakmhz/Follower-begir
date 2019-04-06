@@ -21,15 +21,17 @@ import instahelper.ghonchegi.myfollower.R;
 
 public class SelectPicAdapter extends RecyclerView.Adapter<SelectPicAdapter.Item> {
 
+    boolean isWebView;
     //region Variables
     private Context context;
     private ArrayList<PictureModel> picList;
     private RecievedImageFromAdapterInterface callback;
 
-    public SelectPicAdapter(Context context, ArrayList<PictureModel> picList, RecievedImageFromAdapterInterface localCallBack) {
+    public SelectPicAdapter(Context context, ArrayList<PictureModel> picList, RecievedImageFromAdapterInterface localCallBack, boolean isWebView) {
         this.context = context;
         this.picList = picList;
         this.callback = localCallBack;
+        this.isWebView = isWebView;
     }
 
     public SelectPicAdapter(Context context, ArrayList<PictureModel> pictureModelArrayList) {
@@ -61,9 +63,15 @@ public class SelectPicAdapter extends RecyclerView.Adapter<SelectPicAdapter.Item
         holder.imvPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.isRecieved(picList.get(position).getId(),
-                        picList.get(position).getUrl()
-                );
+                if (isWebView) {
+                    callback.isRecieved(picList.get(position).getName(),
+                            picList.get(position).getUrl()
+                    );
+                } else {
+                    callback.isRecieved(picList.get(position).getId(),
+                            picList.get(position).getUrl()
+                    );
+                }
             }
         });
     }

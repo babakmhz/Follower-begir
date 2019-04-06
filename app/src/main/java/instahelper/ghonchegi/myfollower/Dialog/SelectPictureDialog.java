@@ -3,13 +3,6 @@ package instahelper.ghonchegi.myfollower.Dialog;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +14,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import instahelper.ghonchegi.myfollower.Adapters.SelectPicAdapter;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Interface.ImagePickerInterface;
@@ -37,6 +37,7 @@ import static instahelper.ghonchegi.myfollower.App.TAG;
 @SuppressLint("ValidFragment")
 public class SelectPictureDialog extends DialogFragment implements RecievedImageFromAdapterInterface {
     private final ImagePickerInterface callback;
+    private final boolean isWebView;
     private RecievedImageFromAdapterInterface localCallBack;
     private RecyclerView rcvPics;
     private ArrayList<PictureModel> pictureModelArrayList = new ArrayList<>();
@@ -44,8 +45,9 @@ public class SelectPictureDialog extends DialogFragment implements RecievedImage
     private boolean is_more_available = false;
 
     @SuppressLint("ValidFragment")
-    public SelectPictureDialog(ImagePickerInterface callback) {
+    public SelectPictureDialog(ImagePickerInterface callback,boolean isWebView) {
         this.callback = callback;
+        this.isWebView=isWebView;
     }
 
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
@@ -68,11 +70,11 @@ public class SelectPictureDialog extends DialogFragment implements RecievedImage
     private void setView() {
 
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        SelectPicAdapter adapter = new SelectPicAdapter(getContext(), pictureModelArrayList, localCallBack);
+        SelectPicAdapter adapter = new SelectPicAdapter(getContext(), pictureModelArrayList, localCallBack,isWebView);
 
         rcvPics.setLayoutManager(layoutManager);
         rcvPics.setItemAnimator(new DefaultItemAnimator());
@@ -111,7 +113,14 @@ public class SelectPictureDialog extends DialogFragment implements RecievedImage
 
                         Log.d(TAG, "Images " + post.getPhotoId() + "  " + post.getImageUrl());
 
-                        pictureModelArrayList.add(new PictureModel(post.getPhotoId(), post.getCaption(), post.getImageUrl(), String.valueOf(post.getLikesCount())));
+                        String url = "";
+                        try {
+                            url =response.getJSONArray("items").getJSONObject(i).getString("code");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        pictureModelArrayList.add(new PictureModel(post.getPhotoId(), url, post.getImageUrl(), String.valueOf(post.getLikesCount())));
 
                     }
                     is_more_available = false;
@@ -149,6 +158,7 @@ public class SelectPictureDialog extends DialogFragment implements RecievedImage
                             ArrayList<InstagramMedia> postsList = parser.parseMedias(response);
                             for (int i = 0; i < postsList.size(); i++) {
                                 InstagramMedia post = postsList.get(i);
+                                Log.d(TAG, "POST URL: " + post.getMediaLink());
                                 pictureModelArrayList.add(new PictureModel(post.getPhotoId(), post.getCaption(), post.getImageUrl(), String.valueOf(post.getLikesCount())));
                             }
                             is_more_available = false;
@@ -196,8 +206,8 @@ public class SelectPictureDialog extends DialogFragment implements RecievedImage
     }
 
     @Override
-    public void isRecieved(String mediaID,String imageURL) {
-        callback.selectedPic(mediaID,imageURL);
+    public void isRecieved(String mediaID, String imageURL) {
+        callback.selectedPic(mediaID, imageURL);
         dismiss();
 
     }

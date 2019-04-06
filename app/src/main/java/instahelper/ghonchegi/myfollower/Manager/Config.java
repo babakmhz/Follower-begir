@@ -43,7 +43,14 @@ public class Config {
     public static String skuFourthFollow = "PurchaseFourthFollow";
     public static int reqeustFollowFifth = 14;
     public static String skuFifthFollow = "FifthFollowItem";
-
+    ////Direct Purchase View Config
+    public static int reqeustViewtFirst = 87;
+    public static String skuFirstVIew = "FirstViewItem";
+    public static int reqeustViewSecond = 88;
+    public static String skuSecondView = "SecondViewItem";
+    public static int reqeustViewThird = 89;
+    public static String skuThirdView = "ThirdViewItem";
+    ///////
     /////ShopItem
     public static int requestShopItems = 888;
 

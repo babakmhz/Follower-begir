@@ -72,7 +72,7 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
                     Toast.makeText(getActivity(), "اکانت شما خصوصی می باشد. لطفا اکانت خود را عمومی کرده و برنامه را مجددا راه اندازی نمایید", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                SelectPictureDialog selectPictureDialog = new SelectPictureDialog(callback);
+                SelectPictureDialog selectPictureDialog = new SelectPictureDialog(callback,false);
                 selectPictureDialog.show(getChildFragmentManager(), ":");
 
             }

@@ -22,14 +22,14 @@ import instahelper.ghonchegi.myfollower.Models.Orders;
 import instahelper.ghonchegi.myfollower.R;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.Item> {
+    FragmentManager fm;
     private Context context;
     private ArrayList<Orders> orders;
-    FragmentManager fm;
 
     public OrdersAdapter(Context context, ArrayList<Orders> orders, FragmentManager childFragmentManager) {
         this.context = context;
         this.orders = orders;
-        this.fm=childFragmentManager;
+        this.fm = childFragmentManager;
     }
 
     @NonNull
@@ -55,16 +55,19 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.Item> {
             case 2:
                 type = " کامنت ";
                 break;
+            case 3:
+                type = " ویو ";
+                break;
         }
         holder.tvTitle.setText("درخواست " + orders.get(position).getOrdered() + type);
-        //TODO holder.tvTrackingCode.setText(orders.get(position).getTrackingCode() + "");
+        holder.tvTrackingCode.setText(orders.get(position).getTrackingCode() + "");
         holder.tvDoneReport.setText("از تعداد  " + orders.get(position).getOrdered() + type + " درخواستی تعداد  " + orders.get(position).getNumberOfReceived() + " انجام شده ");
         holder.tvDateTime.setText(orders.get(position).getDateTime());
         Picasso.get().load(orders.get(position).getPicUrl()).into(holder.imvOrder);
-        holder.btnReOrder.setOnClickListener(v->{
-            String text=  "گزارش برای سفارش  "   + "  "+App.user;
-            NewMessageDialog dialog=new NewMessageDialog(text);
-            dialog.show(fm,"");
+        holder.btnReOrder.setOnClickListener(v -> {
+            String text = "گزارش برای سفارش  " + "  " + App.user;
+            NewMessageDialog dialog = new NewMessageDialog(text);
+            dialog.show(fm, "");
         });
 
 
@@ -88,7 +91,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.Item> {
             tvDateTime = itemView.findViewById(R.id.tvDateTime);
             tvDoneReport = itemView.findViewById(R.id.tvDoneReport);
             imvOrder = itemView.findViewById(R.id.imvPic);
-            btnReOrder=itemView.findViewById(R.id.btnReOrder);
+            btnReOrder = itemView.findViewById(R.id.btnReOrder);
         }
     }
 }

@@ -47,7 +47,7 @@ public class GetCoinFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new GetCoinViewPagerAdapter(getChildFragmentManager(), 3,addCoinMultipleAccount);
+        adapter = new GetCoinViewPagerAdapter(getChildFragmentManager(), 4,addCoinMultipleAccount);
 
         binding.viewPagerGetCoin.setAdapter(adapter);
 
@@ -75,7 +75,12 @@ public class GetCoinFragment extends Fragment {
                 setActive(2);
             }
         });
-
+        binding.tvView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setActive(3);
+            }
+        });
         binding.viewPagerGetCoin.setOffscreenPageLimit(0);
 
         binding.viewPagerGetCoin.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -101,12 +106,17 @@ public class GetCoinFragment extends Fragment {
         binding.tvLike.setTypeface(binding.tvComment.getTypeface(), Typeface.NORMAL);
         binding.tvComment.setTypeface(binding.tvComment.getTypeface(), Typeface.NORMAL);
         binding.tvFollower.setTypeface(binding.tvComment.getTypeface(), Typeface.NORMAL);
+        binding.tvView.setTypeface(binding.tvComment.getTypeface(), Typeface.NORMAL);
+
         binding.tvLike.setBackground(null);
         binding.tvComment.setBackground(null);
         binding.tvFollower.setBackground(null);
+        binding.tvView.setBackground(null);
         binding.tvLike.setTextColor(getResources().getColor(R.color.black));
         binding.tvComment.setTextColor(getResources().getColor(R.color.black));
         binding.tvFollower.setTextColor(getResources().getColor(R.color.black));
+        binding.tvView.setTextColor(getResources().getColor(R.color.black));
+
 
 
     }
@@ -130,6 +140,12 @@ public class GetCoinFragment extends Fragment {
                 setViewPager(2);
                 binding.tvFollower.setBackground(getResources().getDrawable(R.drawable.active_tab));
                 binding.tvFollower.setTextColor(getResources().getColor(R.color.white));
+                break;
+            case 3:
+                reset();
+                setViewPager(3);
+                binding.tvView.setBackground(getResources().getDrawable(R.drawable.active_tab));
+                binding.tvView.setTextColor(getResources().getColor(R.color.white));
                 break;
 
         }

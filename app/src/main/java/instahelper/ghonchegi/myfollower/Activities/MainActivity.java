@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -34,12 +35,14 @@ import instahelper.ghonchegi.myfollower.Interface.DirectPurchaseDialogInterface;
 import instahelper.ghonchegi.myfollower.Interface.PurchaseInterface;
 import instahelper.ghonchegi.myfollower.Interface.SetPurchaseForOthersInterface;
 import instahelper.ghonchegi.myfollower.Interface.ShopItemInterface;
+import instahelper.ghonchegi.myfollower.Manager.BroadcastManager;
 import instahelper.ghonchegi.myfollower.Manager.Config;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Manager.SharedPreferences;
 import instahelper.ghonchegi.myfollower.Models.ShopItem;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.ActivityMainBinding;
+import instahelper.ghonchegi.myfollower.instaAPI.InstagramApi;
 import instahelper.ghonchegi.util.IabHelper;
 import instahelper.ghonchegi.util.IabResult;
 import instahelper.ghonchegi.util.Purchase;
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     IabHelper mHelper;
     IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener;
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener;
+    int delay = 5000; //milliseconds
     private BottomNavigationView bottomNavigationView;
     private FragmentManager fm;
     private int currentItemId;
@@ -78,10 +82,11 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     private int directOrderCount = 0;
     private ShopItemInterface callBackShopItem;
     private AddCoinMultipleAccount addCoinMultipleAccount;
-
     private PurchaseInterface callBack;
     private int shopItemType = 0;
     private int shopItemAmount = 0;
+    private Handler handlerCheckCoin;
+    private Runnable runnableCheckCoin;
 
     public static void globalLoadAd(Context context, final String zoneId, final int catchType) {
         if (MainActivity.ad == null) {
@@ -228,6 +233,14 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
             return true;
         });
         mHelper = new IabHelper(this, BuildConfig.BAZAR_RSA);
+        handlerCheckCoin = new Handler();
+
+        handlerCheckCoin.postDelayed(runnableCheckCoin = new Runnable() {  /// TODO HAndler that checks coins
+            public void run() {
+                BroadcastManager.sendBroadcast(MainActivity.this);
+                handlerCheckCoin.postDelayed(runnableCheckCoin, delay);
+            }
+        }, delay);
 
 
         try {
@@ -627,6 +640,8 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     }
 
 
+
+
     @Override
     public void specialBanner(String sku, int requestCode, int followCoin, int LikeCoin) {
         SKU_PREMIUM = sku;
@@ -663,6 +678,28 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     @Override
     public void showOtherProfileDialog(String userId) {
         ////TODO
+    }
+
+    @Override
+    protected void onStop() {
+        handlerCheckCoin.removeCallbacks(runnableCheckCoin); //stop handler
+        super.onStop();
+
+    }
+
+    @Override
+    protected void onPause() {
+        handlerCheckCoin.removeCallbacks(runnableCheckCoin); //stop handler
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handlerCheckCoin.postDelayed(runnableCheckCoin = () -> {
+            BroadcastManager.sendBroadcast(MainActivity.this);
+            handlerCheckCoin.postDelayed(runnableCheckCoin, delay);
+        }, delay);
     }
 }
 

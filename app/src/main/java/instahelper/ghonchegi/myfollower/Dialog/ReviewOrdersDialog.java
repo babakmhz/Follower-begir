@@ -1,5 +1,6 @@
 package instahelper.ghonchegi.myfollower.Dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -84,7 +85,8 @@ public class ReviewOrdersDialog extends DialogFragment {
                             String dateTime = jsonObj.getString("created_at");
                             int type = jsonObj.getInt("type");
                             String image_path = jsonObj.getString("image_path");
-                            orders.add(new Orders(1, 1, image_path, remaining_count, dateTime, requestCount, type));
+                            int TrackingCode = jsonObj.getInt("tracking_code");
+                            orders.add(new Orders(1, TrackingCode, image_path, remaining_count, dateTime, requestCount, type));
                         }
 
                     setView(orders);
@@ -119,11 +121,11 @@ public class ReviewOrdersDialog extends DialogFragment {
 
     private void setView(ArrayList<Orders> orders) {
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        OrdersAdapter adapter = new OrdersAdapter(getContext(), orders,getChildFragmentManager());
+        OrdersAdapter adapter = new OrdersAdapter(getContext(), orders, getChildFragmentManager());
 
         binding.rcvOrders.setLayoutManager(mLayoutManager);
         binding.rcvOrders.setItemAnimator(new DefaultItemAnimator());

