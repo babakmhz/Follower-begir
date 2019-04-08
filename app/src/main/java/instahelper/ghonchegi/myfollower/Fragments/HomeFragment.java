@@ -43,6 +43,7 @@ import instahelper.ghonchegi.myfollower.Dialog.AboutUsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.AccountStatisticsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.AuthenticationDialog;
 import instahelper.ghonchegi.myfollower.Dialog.FirstPageNotificationDialog;
+import instahelper.ghonchegi.myfollower.Dialog.FirstPageUpdateDialog;
 import instahelper.ghonchegi.myfollower.Dialog.LuckyWheelPickerDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ManageAccountsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.NetworkErrorDialog;
@@ -258,7 +259,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         Animation connectingAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.heartbeat);
         binding.imvArrowShowAccounts.startAnimation(connectingAnimation);
         doMine();
-
+        getUpdateDialogInfo();
         return view;
 
     }
@@ -736,6 +737,34 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
 
     }
 
+
+    private  void getUpdateDialogInfo()
+    {
+        StringRequest request = new StringRequest(Request.Method.GET, Base_URL+"buttons", response1 -> {
+            if (response1 != null) {
+                try {
+                    JSONArray jsonObject=new JSONArray(response1);
+                    String title = jsonObject.getJSONObject(0).getString("title");
+                    String link = jsonObject.getJSONObject(0).getString("link");
+                    String icon = jsonObject.getJSONObject(0).getString("icon");
+                    FirstPageUpdateDialog dialog=new FirstPageUpdateDialog(title,link,icon);
+                    dialog.show(getChildFragmentManager(),"");
+
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, error -> {
+            Log.i("volley", "onErrorResponse: " + error.toString());
+            App.CancelProgressDialog();
+
+        }) ;
+        request.setTag(this);
+        requestQueue.add(request);
+    }
 
 }
 
