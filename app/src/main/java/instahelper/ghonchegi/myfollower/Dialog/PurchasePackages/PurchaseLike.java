@@ -77,7 +77,7 @@ public class PurchaseLike extends DialogFragment {
                 initSubmitLike();
                 break;
             case 1:
-                bindingFollow.tvTitle.setText("با خرید فالویر مستقیم به محض انجام عملیات خرید سفارش شما آغاز می گردد.");
+                bindingFollow.tvTitle.setText("با خرید فالوئر مستقیم به محض انجام عملیات خرید سفارش شما آغاز می گردد.");
                 initSubmitFollower();
                 break;
             case 2:

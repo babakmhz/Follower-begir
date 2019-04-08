@@ -142,7 +142,7 @@ public class TestDialog extends DialogFragment {
             }
         });
         binding.btnSubmitFollower.setOnClickListener(v -> {
-            if (binding.btnSubmitFollower.getText().toString().equals("سفارش فالویر")) {
+            if (binding.btnSubmitFollower.getText().toString().equals("سفارش فالوئر")) {
                 binding.layoutSeekBar.setVisibility(View.VISIBLE);
                 binding.btnSubmitFollower.setText("ثبت سفارش");
             } else {

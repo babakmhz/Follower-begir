@@ -209,7 +209,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="تبدیل سکه لایک به فالویر :"
+                    android:text="تبدیل سکه لایک به فالوئر :"
                     android:textColor="@color/darkerGrey"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -292,7 +292,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="تبدیل سکه فالویر به لایک :"
+                    android:text="تبدیل سکه فالوئر به لایک :"
                     android:textColor="@color/darkerGrey"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
