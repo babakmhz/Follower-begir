@@ -30,7 +30,7 @@ public class PurchaseViewPagerDapter extends FragmentPagerAdapter {
             case 2:
                 return new PurchaseFolloweFragment(callBackDirectPurchase);
             case 3:
-                return new PurchaseViewFragment();
+                return new PurchaseViewFragment(callBackDirectPurchase);
             default:
                 return null;
         }

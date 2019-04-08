@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.farsitel.bazaar.permission.PAY_THROUGH_BAZAAR" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
 
@@ -30,6 +32,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenStyle"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
+            <meta-data
+                android:name="cheshmakPush"
+                android:value="openActivityOnPush" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,7 +47,7 @@
             android:name="ir.tapsell.sdk.TapsellAdActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"></activity>
 
-        <receiver android:name=".Interface.ValueUpdaterBroadCast" >
+        <receiver android:name=".Interface.ValueUpdaterBroadCast">
             <intent-filter>
                 <action android:name="com.journaldev.broadcastreceiver.Update" />
             </intent-filter>

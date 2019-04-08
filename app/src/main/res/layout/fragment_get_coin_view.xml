@@ -100,14 +100,14 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/rounded_grey_border"
-                android:text="@string/doLike"
+                android:text="@string/doView"
                 android:textColor="@color/darkerGrey"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideLine4"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="@+id/guideLine3"
-                app:layout_constraintTop_toBottomOf="@+id/linear"
-                 />
+                app:layout_constraintTop_toBottomOf="@+id/linear" />
+
             <ProgressBar
                 android:id="@+id/prg"
                 android:layout_width="wrap_content"
@@ -116,8 +116,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideLine4"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="@+id/guideLine3"
-                app:layout_constraintTop_toBottomOf="@+id/linear"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/linear" />
 
             <Button
                 android:id="@+id/btnAutoLike"
@@ -128,6 +127,7 @@
                 android:text="@string/autoLike"
                 android:textColor="@color/darkerGrey"
                 android:textSize="14sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@+id/btnDoLike"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="@+id/btnDoLike"
@@ -143,21 +143,12 @@
                 android:text="@string/likeWithAllAccounts"
                 android:textColor="@color/white"
                 android:textSize="14sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@+id/btnAutoLike"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="@+id/btnAutoLike"
                 app:layout_constraintTop_toBottomOf="@+id/btnAutoLike"
                 app:layout_goneMarginStart="10dp" />
-            <me.cheshmak.android.sdk.advertise.CheshmakBannerAd
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnConfirmAndPay"
-                android:id="@+id/cheshmak_banner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                app:banner_size="SMART_BANNER" />
-
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideLine"

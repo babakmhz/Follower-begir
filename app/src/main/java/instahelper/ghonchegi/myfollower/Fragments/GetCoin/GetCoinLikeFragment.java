@@ -61,6 +61,43 @@ public class GetCoinLikeFragment extends Fragment {
     private Dialog progressDialog;
     private CountDownTimer cTimer = null;
 
+    private void report() {
+
+        final String requestBody = JsonManager.report(transactionId);
+
+        StringRequest request = new StringRequest(Request.Method.POST, App.Base_URL + "message/report/set", response -> {
+            assert response == null;
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                if (jsonObject.getBoolean("status")) {
+                    Toast.makeText(getContext(), "با تشکر از گزارش شما", Toast.LENGTH_SHORT).show();
+                    getLikeOrder();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        },
+                error -> {
+                    Toast.makeText(getContext(), "خطا", Toast.LENGTH_SHORT).show();
+
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return requestBody == null ? null : requestBody.getBytes();
+            }
+        };
+        request.setTag(this);
+        requestQueue.add(request);
+    }
 
     public GetCoinLikeFragment(AddCoinMultipleAccount addCoinMultipleAccount) {
         this.addCoinMultipleAccount = addCoinMultipleAccount;
@@ -92,6 +129,7 @@ public class GetCoinLikeFragment extends Fragment {
 
 
         binding.btnReport.setOnClickListener(v -> {
+            report();
 
 
         });

@@ -26,6 +26,20 @@ public class JsonManager {
         return jsonBody.toString();
     }
 
+    public static String duplicate(String userName, String userId) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("user_name", userName);
+            jsonBody.put("user_id", userId);
+
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        return jsonBody.toString();
+    }
+
 
     public static String firstPageItems(InstagramUser user, Context context) {
         JSONObject jsonBody = new JSONObject();
@@ -161,6 +175,23 @@ public class JsonManager {
         return jsonBody.toString();
     }
 
+    public static String report(int t_id) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("api_token", App.Api_Token);
+            jsonBody.put("uuid", App.UUID);
+            jsonBody.put("title", "گزارش محتوای نادرست");
+            jsonBody.put("description", "پست شماره :‌" + t_id);
+            jsonBody.put("m_id", t_id);
+
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        return jsonBody.toString();
+    }
+
     public static String addCoin(int i, String o) {
         JSONObject jsonBody = new JSONObject();
         try {
@@ -184,6 +215,7 @@ public class JsonManager {
 
         return jsonBody.toString();
     }
+
     public static String sendTicket(String title, String message) {
         JSONObject jsonBody = new JSONObject();
         try {

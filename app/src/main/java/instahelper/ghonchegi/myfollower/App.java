@@ -22,6 +22,8 @@ import instahelper.ghonchegi.myfollower.Manager.VolleyManager;
 import instahelper.ghonchegi.myfollower.data.InstagramUser;
 import io.fabric.sdk.android.Fabric;
 import ir.tapsell.sdk.Tapsell;
+import me.cheshmak.android.sdk.advertise.CheshmakAds;
+import me.cheshmak.android.sdk.core.Cheshmak;
 
 public class App extends Application {
 
@@ -97,6 +99,10 @@ public class App extends Application {
         requestQueue.start();
         Tapsell.initialize(this, TapSellKey);
         Config.setupShopItems();
+        Cheshmak.with(context);
+        Cheshmak.initTracker("XfrhCjC/AXDzF6GNtLaPCQ==");
+
+
 
         //FontsOverride.setDefaultFont(this, "MONOSPACE", "iran.ttf");
     }

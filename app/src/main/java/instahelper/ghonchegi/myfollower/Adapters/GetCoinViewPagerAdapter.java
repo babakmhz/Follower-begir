@@ -3,10 +3,10 @@ package instahelper.ghonchegi.myfollower.Adapters;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-
 import instahelper.ghonchegi.myfollower.Fragments.GetCoin.GetCoinCommentFragment;
 import instahelper.ghonchegi.myfollower.Fragments.GetCoin.GetCoinFolloweFragment;
 import instahelper.ghonchegi.myfollower.Fragments.GetCoin.GetCoinLikeFragment;
+import instahelper.ghonchegi.myfollower.Fragments.GetCoin.GetCoinViewFragment;
 import instahelper.ghonchegi.myfollower.Interface.AddCoinMultipleAccount;
 
 public class GetCoinViewPagerAdapter extends FragmentPagerAdapter {
@@ -16,7 +16,7 @@ public class GetCoinViewPagerAdapter extends FragmentPagerAdapter {
     public GetCoinViewPagerAdapter(FragmentManager fm, int numOfTabs, AddCoinMultipleAccount addCoinMultipleAccount) {
         super(fm);
         this.numOfTabs = numOfTabs;
-        this.addCoinMultipleAccount=addCoinMultipleAccount;
+        this.addCoinMultipleAccount = addCoinMultipleAccount;
     }
 
     @Override
@@ -28,7 +28,8 @@ public class GetCoinViewPagerAdapter extends FragmentPagerAdapter {
                 return new GetCoinCommentFragment(addCoinMultipleAccount);
             case 2:
                 return new GetCoinFolloweFragment(addCoinMultipleAccount);
-
+            case 3:
+                return new GetCoinViewFragment();
             default:
                 return null;
         }
