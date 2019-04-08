@@ -19,6 +19,9 @@
     <color name="lightPink">#ffedd3</color>
     <color name="red">#c83030</color>
     <color name="green">#e3e3e3</color>
+    <color name="mainColorFirst">#ee3259</color>
+    <color name="blueFirst">#08275d</color>
+    <color name="goldOne">#ffdc60</color>
 
 
 </resources>
