@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ff8a00</color>
-    <color name="colorPrimaryDark">#b76300</color>
-    <color name="colorAccent">#ff8a00</color>
-    <color name="splashOrangeColor">#ff8a00</color>
+    <color name="colorPrimary">#1E4EA3</color>
+    <color name="colorPrimaryDark">#08275d</color>
+    <color name="colorAccent">#ee3259</color>
+    <color name="splashOrangeColor">#ee3259</color>
     <color name="white">#fff</color>
     <color name="black">#000</color>
-    <color name="orangeTextColor">#ff9000</color>
-    <color name="orangeLight">#FFAC42</color>
+    <color name="orangeTextColor">#ee3259</color>
+    <color name="orangeLight">#F15475</color>
     <color name="grey">#ababab</color>
     <color name="darkerGrey">#4B4B4B</color>
     <color name="lightGrey">#dfdfdf</color>
@@ -22,6 +22,9 @@
     <color name="mainColorFirst">#ee3259</color>
     <color name="blueFirst">#08275d</color>
     <color name="goldOne">#ffdc60</color>
+    <color name="darkYellow">#fdc80a</color>
+    <color name="lightYellow">#ffe072</color>
+    <color name="lightBlue">#7faeff</color>
 
 
 </resources>

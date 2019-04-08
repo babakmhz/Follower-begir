@@ -65,6 +65,9 @@ public class PurchaseLikeFragment extends Fragment implements ImagePickerInterfa
                 inflater, R.layout.fragment_purchase_like, container, false);
         callback = this;
         View view = binding.getRoot();
+        binding.tvUserName.setText(App.user.getUserName());
+        Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
+
 
         binding.imvPickImage.setOnClickListener(new View.OnClickListener() {
             @Override

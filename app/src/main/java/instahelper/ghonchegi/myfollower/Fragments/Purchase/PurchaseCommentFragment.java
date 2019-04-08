@@ -65,6 +65,10 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
                 inflater, R.layout.fragment_purchase_comment, container, false);
         callback = this;
         View view = binding.getRoot();
+        binding.tvUserName.setText(App.user.getUserName());
+        Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
+
+
         binding.imvPickImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

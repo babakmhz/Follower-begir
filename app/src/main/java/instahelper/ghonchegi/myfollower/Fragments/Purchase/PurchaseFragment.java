@@ -98,10 +98,10 @@ public class PurchaseFragment extends Fragment {
         tvRobotLike.setBackground(null);
         tvComment.setBackground(null);
         tvFollow.setBackground(null);
-        tvLike.setTextColor(getResources().getColor(R.color.black));
-        tvComment.setTextColor(getResources().getColor(R.color.black));
-        tvFollow.setTextColor(getResources().getColor(R.color.black));
-        tvRobotLike.setTextColor(getResources().getColor(R.color.black));
+        tvLike.setTextColor(getResources().getColor(R.color.white));
+        tvComment.setTextColor(getResources().getColor(R.color.white));
+        tvFollow.setTextColor(getResources().getColor(R.color.white));
+        tvRobotLike.setTextColor(getResources().getColor(R.color.white));
 
 
     }
