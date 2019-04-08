@@ -5,6 +5,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/blueFirst"
         android:fillViewport="true">
 
         <LinearLayout
@@ -18,6 +19,7 @@
                 android:layout_height="60dp"
                 android:background="@color/lightGrey"
                 android:paddingTop="5dp"
+                android:visibility="gone"
                 android:paddingBottom="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -57,25 +59,238 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <LinearLayout
+                    android:id="@+id/layoutProfilePic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/rounded_profile_pic"
+                    android:gravity="center"
+                    android:layout_marginEnd="@dimen/_30sdp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginRight="@dimen/_30sdp">
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/transparent"
+                        android:scaleType="centerInside"
+                        app:civ_background_color="@color/transparent"
+                        app:civ_border_color="@color/white"
+                        app:civ_border_width="2dp"
+
+                        app:srcCompat="@drawable/ic_user" />
+
+                    <TextView
+                        android:id="@+id/tvUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginRight="8dp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_9ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutFollowCoin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="@dimen/_100sdp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/rounded_both"
+                    android:paddingStart="35dp"
+                    android:paddingLeft="35dp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="15dp"
+                    android:paddingRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingBottom="2dp"
+                    app:layout_constraintEnd_toStartOf="@+id/layoutProfilePic"
+                    app:layout_constraintTop_toTopOf="@+id/layoutProfilePic">
+
+
+                    <TextView
+                        android:id="@+id/tvFollowCoin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="@string/followerCoin"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvFollowCoinCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/mainColorFirst"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/tvFollowCoin"
+                        app:layout_constraintStart_toStartOf="@+id/tvFollowCoin"
+                        app:layout_constraintTop_toBottomOf="@+id/tvFollowCoin" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mainColorFirst"
+                    app:cardBackgroundColor="@color/mainColorFirst"
+                    app:cardCornerRadius="10dp"
+                    app:layout_constraintBottom_toBottomOf="@id/layoutFollowCoin"
+                    app:layout_constraintLeft_toLeftOf="@id/layoutFollowCoin"
+                    app:layout_constraintTop_toTopOf="@id/layoutFollowCoin">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imvFollowCoin"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="3dp"
+                        app:srcCompat="@drawable/ic_team" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutLikeCoin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:minWidth="@dimen/_100sdp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/rounded_both"
+                    android:paddingStart="35dp"
+                    android:paddingLeft="35dp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="15dp"
+                    android:paddingRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingBottom="2dp"
+                    app:layout_constraintEnd_toStartOf="@+id/layoutProfilePic"
+                    app:layout_constraintTop_toBottomOf="@id/layoutFollowCoin">
+
+
+                    <TextView
+                        android:id="@+id/tvLikeCoin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="@string/likeCoin"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvLikeCoinCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/mainColorFirst"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/tvLikeCoin"
+                        app:layout_constraintStart_toStartOf="@+id/tvLikeCoin"
+                        app:layout_constraintTop_toBottomOf="@+id/tvLikeCoin" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mainColorFirst"
+                    app:cardBackgroundColor="@color/mainColorFirst"
+                    app:cardCornerRadius="10dp"
+                    app:layout_constraintBottom_toBottomOf="@id/layoutLikeCoin"
+                    app:layout_constraintLeft_toLeftOf="@id/layoutLikeCoin"
+                    app:layout_constraintTop_toTopOf="@id/layoutLikeCoin">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imvLikeCoin"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="3dp"
+                        app:srcCompat="@drawable/ic_heart_coin" />
+
+                </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@color/veryLightGrey"
+                android:background="@color/blueFirstDark"
                 android:padding="10dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/imgProfileImage"
+                    android:id="@+id/imgProfileImageSender"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_margin="10dp"
                     android:src="@drawable/ic_user_avatar"
                     app:civ_border_color="@color/colorAccent"
                     app:civ_border_width="1dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/imgProfileImage"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+
+                    android:id="@+id/imgProfileImage"
+                    android:layout_width="100dp"
+
+                    android:layout_height="100dp"
+                    android:layout_margin="10dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/ic_user_avatar"
+                    app:civ_border_color="@color/colorAccent"
+                    app:civ_border_width="1dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.75"
+                    app:layout_constraintStart_toEndOf="@+id/imgProfileImageSender"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/ic_arrow_forward"
+                    app:layout_constraintBottom_toBottomOf="@+id/imgProfileImageSender"
+                    app:layout_constraintEnd_toStartOf="@+id/imgProfileImage"
+                    app:layout_constraintStart_toEndOf="@+id/imgProfileImageSender"
+                    app:layout_constraintTop_toTopOf="@+id/imgProfileImageSender" />
 
                 <TextView
                     android:id="@+id/tvSelectedAccount"

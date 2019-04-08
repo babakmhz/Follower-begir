@@ -52,6 +52,13 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         callBack = this;
+        Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImageSender);
+        Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.profileImage);
+        binding.tvUserName.setText(App.user.getUserName());
+        binding.tvLikeCoinCount.setText(App.likeCoin + "");
+        binding.tvFollowCoinCount.setText(App.followCoin + "");
+
+
         //endregion
 
         Picasso.get().load(App.profilePicURl).into(binding.imvProfilePic);
