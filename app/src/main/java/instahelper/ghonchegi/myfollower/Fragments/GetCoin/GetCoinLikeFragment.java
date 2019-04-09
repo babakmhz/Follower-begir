@@ -109,6 +109,10 @@ public class GetCoinLikeFragment extends Fragment {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_get_coin_like, container, false);
 
+
+        binding.tvUserName.setText(App.user.getUserName());
+        Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
+
         view = binding.getRoot();
         binding.tvLikeCoinCount.setText("" + App.likeCoin);
         binding.btnNext.setOnClickListener(v -> {

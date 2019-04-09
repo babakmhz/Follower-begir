@@ -11,20 +11,77 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blueFirst"
             android:layoutDirection="ltr">
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgProfileImage"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_30sdp"
+                app:civ_border_color="#c3c3c3"
+                app:civ_border_width="1dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:background="@drawable/rounded_both"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                app:layout_constraintBottom_toTopOf="@id/guideLine"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgProfileImage">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/mainColorFirst"
+                    app:srcCompat="@drawable/ic_heart_main_color" />
+
+                <TextView
+                    android:id="@+id/tvUserName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/mainColorFirst" />
+
+                <TextView
+                    android:id="@+id/tvLikeCoinCount"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/mainColorFirst" />
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/imvPic"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/curved"
-                android:src="@drawable/ic_image_black"
+                android:scaleType="fitXY"
                 app:layout_constraintBottom_toBottomOf="@id/guideLine2"
                 app:layout_constraintEnd_toEndOf="@id/guideLine4"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/guideLine3"
-                app:layout_constraintTop_toTopOf="@id/guideLine" />
+                app:layout_constraintTop_toTopOf="@id/guideLine"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/ic_image_black" />
 
             <LinearLayout
                 android:id="@+id/linear"
@@ -63,40 +120,12 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/tvLikeCoinCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2500"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/like_coin" />
-            </LinearLayout>
-
-
             <Button
                 android:id="@+id/btnDoLike"
                 android:layout_width="0dp"
                 android:layout_height="42dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="25dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/rounded_grey_border"
@@ -123,13 +152,13 @@
                 android:id="@+id/btnAutoLike"
                 android:layout_width="0dp"
                 android:layout_height="42dp"
-                android:layout_marginTop="10dp"
                 android:background="@drawable/rounded_grey_border"
                 android:text="@string/autoLike"
                 android:textColor="@color/darkerGrey"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/btnDoLike"
                 app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintBottom_toTopOf="@id/btnConfirmAndPay"
                 app:layout_constraintStart_toStartOf="@+id/btnDoLike"
                 app:layout_constraintTop_toBottomOf="@+id/btnDoLike"
                 app:layout_goneMarginStart="10dp" />
@@ -138,11 +167,12 @@
                 android:id="@+id/btnConfirmAndPay"
                 android:layout_width="0dp"
                 android:layout_height="42dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/rounded_orange"
                 android:text="@string/likeWithAllAccounts"
                 android:textColor="@color/white"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/btnAutoLike"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="@+id/btnAutoLike"
@@ -164,14 +194,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.1" />
+                app:layout_constraintGuide_percent="0.3" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideLine2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.4" />
+                app:layout_constraintGuide_percent="0.6" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideLine3"

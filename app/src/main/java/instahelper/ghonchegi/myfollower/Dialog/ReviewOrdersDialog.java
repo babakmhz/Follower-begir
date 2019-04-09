@@ -56,7 +56,8 @@ public class ReviewOrdersDialog extends DialogFragment {
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
-        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
+        binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
+        binding.tvUserName.setText(App.user.getUserName());
 
         //endregion
         getUserCoins();

@@ -112,10 +112,6 @@ public class GetCoinFragment extends Fragment {
         binding.tvComment.setBackground(null);
         binding.tvFollower.setBackground(null);
         binding.tvView.setBackground(null);
-        binding.tvLike.setTextColor(getResources().getColor(R.color.black));
-        binding.tvComment.setTextColor(getResources().getColor(R.color.black));
-        binding.tvFollower.setTextColor(getResources().getColor(R.color.black));
-        binding.tvView.setTextColor(getResources().getColor(R.color.black));
 
 
 

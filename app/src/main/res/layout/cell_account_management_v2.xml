@@ -35,7 +35,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_margin="10dp"
-            app:civ_border_color="@color/lightGrey"
+            app:civ_border_color="@color/mainColorFirst"
             app:civ_border_width="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -45,6 +45,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:background="@drawable/rounded_both_main_color"
+            android:padding="5dp"
             android:layout_marginLeft="10dp"
             android:textColor="@color/black"
             android:textSize="13sp" />

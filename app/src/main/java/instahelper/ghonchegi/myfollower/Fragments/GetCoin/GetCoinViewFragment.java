@@ -50,6 +50,9 @@ public class GetCoinViewFragment extends Fragment implements WebViewLoadedInterf
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_get_coin_view, container, false);
 
+        binding.tvUserName.setText(App.user.getUserName());
+        Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
+
         callBackWebView = this;
         view = binding.getRoot();
         binding.tvLikeCoinCount.setText("" + App.likeCoin);

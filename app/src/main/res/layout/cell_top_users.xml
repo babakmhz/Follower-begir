@@ -50,6 +50,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/black"
+                android:background="@drawable/rounded_both_main_color"
+                android:padding="5dp"
                 android:textSize="13sp" />
 
         </LinearLayout>

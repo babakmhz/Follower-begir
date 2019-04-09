@@ -112,6 +112,12 @@ public class GetCoinCommentFragment extends Fragment {
         view = binding.getRoot();
         getCommentOrders();
         binding.tvLikeCoin.setText(App.likeCoin + "");
+        binding.tvUserName.setText(App.user.getUserName());
+        Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
+
+        //
+
+
         binding.btnDoLike.setOnClickListener(v -> {
             likeInProgress();
             String commentText = "";
