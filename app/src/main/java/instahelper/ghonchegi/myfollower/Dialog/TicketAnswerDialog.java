@@ -3,17 +3,18 @@ package instahelper.ghonchegi.myfollower.Dialog;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,21 +32,25 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import instahelper.ghonchegi.myfollower.Adapters.TicketsAdapter;
-import instahelper.ghonchegi.myfollower.App;
-import instahelper.ghonchegi.myfollower.Interface.NewMessageSubmittedInterface;
+import instahelper.ghonchegi.myfollower.Adapters.TicketsAnswerAdapter;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.Models.Messages;
 import instahelper.ghonchegi.myfollower.R;
-import instahelper.ghonchegi.myfollower.databinding.DialogSupportBinding;
+import instahelper.ghonchegi.myfollower.databinding.DialogTicketAnswersBinding;
 
 import static instahelper.ghonchegi.myfollower.App.Base_URL;
 import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
-public class TicketDialog extends DialogFragment implements NewMessageSubmittedInterface {
+@SuppressLint("ValidFragment")
+public class TicketAnswerDialog extends DialogFragment {
 
-    NewMessageSubmittedInterface callback;
-    private DialogSupportBinding binding;
+    private final int ticketId;
+    private DialogTicketAnswersBinding binding;
+
+    public TicketAnswerDialog(int ticketId) {
+        this.ticketId = ticketId;
+    }
+
 
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
@@ -53,20 +58,14 @@ public class TicketDialog extends DialogFragment implements NewMessageSubmittedI
         final Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_support, null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_ticket_answers, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
-        binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
-        binding.tvUserName.setText(App.user.getUserName());
-        callback = this;
+
         //endregion
 
-        binding.fabAdd.setOnClickListener(v -> {
-            NewMessageDialog newMessageDialog = new NewMessageDialog(callback);
-            newMessageDialog.show(getChildFragmentManager(), "");
-        });
+        binding.imvSend.setOnClickListener(v -> send());
 
 
         try {
@@ -81,22 +80,39 @@ public class TicketDialog extends DialogFragment implements NewMessageSubmittedI
     private void getTickets() {
         ArrayList<Messages> messages = new ArrayList<>();
 
-        final String requestBody = JsonManager.simpleJson();
+        final String requestBody = JsonManager.specificTicket(ticketId);
 
-        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "message/ticket/list", response1 -> {
+        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "message/ticket/get", response1 -> {
             if (response1 != null) {
                 try {
-                    JSONArray jsonArray = new JSONArray(response1);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        Messages ticket = new Messages();
-                        ticket.setId(jsonObject.getInt("id"));
-                        ticket.setStatus(jsonObject.getInt("status"));
-                        ticket.setTitle(jsonObject.getString("title"));
-                        ticket.setCreated_at(jsonObject.getString("created_at"));
-                        messages.add(ticket);
+                    JSONObject jsonObject = new JSONObject(response1);
+                    binding.ticketNumber.setText(jsonObject.getInt("id") + "");
+                    binding.ticketDesc.setText(jsonObject.getString("description"));
+                    binding.ticketTime.setText(jsonObject.getString("created_at"));
+                    binding.ticketTitle.setText(jsonObject.getString("title"));
+                    if (jsonObject.getInt("status") == 1)
+                        binding.ticketStatus.setText("خوانده شده");
+                    else
+                        binding.ticketStatus.setText("خوانده نشده");
+                    JSONArray answers = jsonObject.getJSONArray("answer");
+                    if (answers == null || answers.length() == 0) {
+                        binding.llNoMessage.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.llNoMessage.setVisibility(View.GONE);
+                        for (int i = 0; i < answers.length(); i++) {
+                            JSONObject object = answers.getJSONObject(i);
+                            Messages ticket = new Messages();
+                            ticket.setId(object.getInt("id"));
+                            ticket.setStatus(object.getInt("status"));
+                            ticket.setTitle(object.getString("title"));
+                            ticket.setCreated_at(object.getString("created_at"));
+                            ticket.setUser_name(object.getInt("user_name"));
+                            ticket.setDescription(object.getString("description"));
+                            messages.add(ticket);
+                        }
+                        setView(messages);
                     }
-                    setView(messages);
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -129,7 +145,7 @@ public class TicketDialog extends DialogFragment implements NewMessageSubmittedI
         StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        TicketsAdapter adapter = new TicketsAdapter(getContext(), messageList,getChildFragmentManager());
+        TicketsAnswerAdapter adapter = new TicketsAnswerAdapter(getContext(), messageList);
         binding.rcvMessages.setLayoutManager(mLayoutManager);
         binding.rcvMessages.setItemAnimator(new DefaultItemAnimator());
         binding.rcvMessages.setAdapter(adapter);
@@ -151,9 +167,51 @@ public class TicketDialog extends DialogFragment implements NewMessageSubmittedI
         });
     }
 
-    @Override
-    public void sumbited(boolean state) {
-        if (state) getTickets();
 
+    private void send() {
+        if (TextUtils.isEmpty(binding.edtNewMessage.getText().toString())) {
+            Toast.makeText(getContext(), "متن ر وارد کنید", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        final String requestBody = JsonManager.reply(binding.ticketTitle.getText().toString(), binding.edtNewMessage.getText().toString(), ticketId);
+
+        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "message/ticket/set", response1 -> {
+            if (response1 != null) {
+                try {
+                    JSONObject jsonRootObject = new JSONObject(response1);
+                    if (jsonRootObject.optBoolean("status")) {
+                        binding.edtNewMessage.setText("");
+                        getTickets();
+
+
+                    } else
+                        Toast.makeText(getContext(), "خطا در ارسال پیام", Toast.LENGTH_SHORT).show();
+
+
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(), "خطا در ارسال پیام", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, error -> {
+            Log.i("volley", "onErrorResponse: " + error.toString());
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return requestBody == null ? null : requestBody.getBytes();
+            }
+        };
+        request.setTag(this);
+        requestQueue.add(request);
     }
+
 }

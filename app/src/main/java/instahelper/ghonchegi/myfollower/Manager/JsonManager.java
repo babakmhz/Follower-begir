@@ -111,6 +111,22 @@ public class JsonManager {
 
     }
 
+    public static String specificTicket(int ticketId) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("api_token", App.Api_Token);
+            jsonBody.put("uuid", App.UUID);
+            jsonBody.put("m_id", ticketId);
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        return jsonBody.toString();
+
+
+    }
+
     public static String setLuckyWheel(LuckyItem luckyItem) {
         JSONObject jsonBody = new JSONObject();
         try {
@@ -230,6 +246,23 @@ public class JsonManager {
 
         return jsonBody.toString();
     }
+
+    public static String reply(String title, String message, int messageId) {
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("api_token", App.Api_Token);
+            jsonBody.put("uuid", App.UUID);
+            jsonBody.put("title", title);
+            jsonBody.put("description", message);
+            jsonBody.put("m_id", messageId);
+
+        } catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        return jsonBody.toString();
+    }
+
 
     public static String validateOfferCode(String code) {
         JSONObject jsonBody = new JSONObject();
