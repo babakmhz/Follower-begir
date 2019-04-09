@@ -53,9 +53,10 @@ public class TopUsersDialog extends DialogFragment {
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
+        binding.tvUserName.setText(App.user.getUserName());
         //endregion
         getTopUsers();
-        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
 
         binding.btnTopLikers.setOnClickListener(v -> {
             try {

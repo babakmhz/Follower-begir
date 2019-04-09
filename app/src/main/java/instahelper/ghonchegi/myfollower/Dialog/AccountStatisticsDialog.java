@@ -8,11 +8,9 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import androidx.databinding.DataBindingUtil;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +25,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Manager.DataBaseHelper;
 import instahelper.ghonchegi.myfollower.R;
@@ -68,6 +68,8 @@ public class AccountStatisticsDialog extends DialogFragment {
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         binding.prg.setVisibility(View.VISIBLE);
+        binding.tvUserName.setText(App.user.getUserName());
+
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -75,7 +77,7 @@ public class AccountStatisticsDialog extends DialogFragment {
 
             }
         });
-        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
+
 
         //endregion
         shared = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
@@ -91,7 +93,7 @@ public class AccountStatisticsDialog extends DialogFragment {
         }
         db = dbHeplper.getWritableDatabase();
         Picasso.get().load(picURl).into(binding.imgProfileImage);
-        binding.imvArrowLeft.setOnClickListener(new View.OnClickListener() {
+        binding.tvReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();

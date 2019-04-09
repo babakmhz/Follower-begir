@@ -14,6 +14,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:background="@color/blueFirst"
             android:layout_height="match_parent">
 
 
@@ -21,8 +22,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@color/lightGrey"
+                android:layout_height="wrap_content"
+
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -31,35 +32,64 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imgProfileImage"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:src="@drawable/image_profile_test"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_margin="10dp"
                     app:civ_border_color="#c3c3c3"
                     app:civ_border_width="1dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imvArrowLeft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_arrow_left" />
 
-                <TextView
-                    android:id="@+id/imvFilters"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/linearLayout5"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="آمار اکانت"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_margin="10dp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:background="@drawable/rounded_both"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imgProfileImage">
+
+                    <TextView
+                        android:id="@+id/tvReturn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="برگشت"
+                        android:textStyle="bold"
+                        android:drawableStart="@drawable/ic_arrow_left_main_color"
+                        android:textColor="@color/mainColorFirst"
+                        android:drawableLeft="@drawable/ic_arrow_left_main_color" />
+
+                    <TextView
+                        android:id="@+id/tvUserName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/mainColorFirst" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="آمار اکانت"
+                        android:textStyle="bold"
+                        android:drawableEnd="@drawable/ic_arrow_down_main_color"
+                        android:gravity="center"
+                        android:textColor="@color/mainColorFirst"
+                        android:drawableRight="@drawable/ic_arrow_down_main_color" />
+
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -89,7 +119,7 @@
                     android:drawableRight="@drawable/ic_arrow_left"
                     android:gravity="center_vertical"
                     android:text="من را فالو نکرده اند"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -121,7 +151,7 @@
                     android:drawableRight="@drawable/ic_arrow_left"
                     android:gravity="center_vertical"
                     android:text="من فالو تکرده ام"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -152,7 +182,7 @@
                     android:drawableRight="@drawable/ic_arrow_left"
                     android:gravity="center_vertical"
                     android:text="مجموع لایک ها"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -184,7 +214,7 @@
                     android:drawableRight="@drawable/ic_arrow_left"
                     android:gravity="center_vertical"
                     android:text="میانگین لایک برای هر پست"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -217,7 +247,7 @@
                     android:drawableRight="@drawable/ic_arrow_left"
                     android:gravity="center_vertical"
                     android:text="مجموع کامنت های عکس"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -249,10 +279,11 @@
                     android:drawableRight="@drawable/ic_arrow_left"
                     android:gravity="center_vertical"
                     android:text="میانگین لایک برای هر پست"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
 
             </LinearLayout>
+
 
 
 
@@ -293,7 +324,7 @@
                     android:drawableRight="@drawable/ic_arrow_left"
                     android:gravity="center_vertical"
                     android:text="پر لایک ترین پست"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -337,7 +368,7 @@
                     android:drawableRight="@drawable/ic_arrow_left"
                     android:gravity="center_vertical"
                     android:text="کم لایک ترین پست"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -380,7 +411,7 @@
                     android:drawableRight="@drawable/ic_arrow_left"
                     android:gravity="center_vertical"
                     android:text="پر کامنت ترین پست"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -424,7 +455,7 @@
                     android:drawableRight="@drawable/ic_arrow_left"
                     android:gravity="center_vertical"
                     android:text="کم کامنت ترین پست"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
 
             </LinearLayout>

@@ -58,6 +58,8 @@ public class TicketDialog extends DialogFragment implements NewMessageSubmittedI
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
+        binding.tvUserName.setText(App.user.getUserName());
         callback = this;
         //endregion
 
@@ -65,7 +67,6 @@ public class TicketDialog extends DialogFragment implements NewMessageSubmittedI
             NewMessageDialog newMessageDialog = new NewMessageDialog(callback);
             newMessageDialog.show(getChildFragmentManager(), "");
         });
-        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
 
 
         try {

@@ -64,7 +64,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="آمار اکانت"
+                android:text="سفارشات"
                 android:textStyle="bold"
                 android:drawableEnd="@drawable/ic_arrow_down_main_color"
                 android:gravity="center"

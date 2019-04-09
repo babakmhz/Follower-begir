@@ -46,15 +46,17 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
+        binding.tvUserName.setText(App.user.getUserName());
         //endregion
         internalCallback = this;
         Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
         AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager(), internalCallback);
-        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
+
 
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
         binding.rcvAccounts.setLayoutManager(mLayoutManager);
         binding.rcvAccounts.setItemAnimator(new DefaultItemAnimator());
