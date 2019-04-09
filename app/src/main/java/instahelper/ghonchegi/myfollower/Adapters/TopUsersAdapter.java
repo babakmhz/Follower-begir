@@ -49,7 +49,8 @@ public class TopUsersAdapter extends RecyclerView.Adapter<TopUsersAdapter.Item> 
             item.imvPrizeType.setImageResource(R.drawable.ic_heart_coin);
 
         }
-        Picasso.get().load(topUser.getPicUrl()).into(item.profilePic);
+        if (topUser.getPicUrl() != null)
+            Picasso.get().load(topUser.getPicUrl()).into(item.profilePic);
 
 
     }
