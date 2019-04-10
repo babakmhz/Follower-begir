@@ -30,6 +30,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.PurchasePackages.PurchaseLike;
+import instahelper.ghonchegi.myfollower.Dialog.SearchDialog;
 import instahelper.ghonchegi.myfollower.Dialog.SelectPictureDialog;
 import instahelper.ghonchegi.myfollower.Interface.DirectPurchaseDialogInterface;
 import instahelper.ghonchegi.myfollower.Interface.ImagePickerInterface;
@@ -90,7 +91,10 @@ public class PurchaseViewFragment extends Fragment implements ImagePickerInterfa
             dialog.show(getChildFragmentManager(), "");
 
         });
-
+        binding.tvOrderForOther.setOnClickListener(v->{
+            SearchDialog dialog=new SearchDialog();
+            dialog.show(getFragmentManager(),"");
+        });
 
         binding.tvLikeCoinCounts.setText(App.likeCoin + "");
         binding.tvLikeExpenseCount.setText(0 + "");

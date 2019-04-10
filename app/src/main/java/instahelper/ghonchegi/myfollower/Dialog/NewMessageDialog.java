@@ -72,6 +72,10 @@ public class NewMessageDialog extends DialogFragment {
             send();
         });
 
+        binding.brnDiscard.setOnClickListener(v -> {
+            dismiss();
+        });
+
 
         return dialog;
     }

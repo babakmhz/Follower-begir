@@ -259,7 +259,10 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         Animation connectingAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.heartbeat);
         binding.imvArrowShowAccounts.startAnimation(connectingAnimation);
         doMine();
-        getUpdateDialogInfo();
+        if (!App.isNotificationDialgShown) {
+            getUpdateDialogInfo();
+            App.isNotificationDialgShown = true;
+        }
         return view;
 
     }

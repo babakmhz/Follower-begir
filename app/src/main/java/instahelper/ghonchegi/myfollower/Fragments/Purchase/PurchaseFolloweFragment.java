@@ -28,6 +28,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.PurchasePackages.PurchaseLike;
+import instahelper.ghonchegi.myfollower.Dialog.SearchDialog;
 import instahelper.ghonchegi.myfollower.Interface.DirectPurchaseDialogInterface;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
@@ -95,7 +96,10 @@ public class PurchaseFolloweFragment extends Fragment {
             dialog.show(getChildFragmentManager(), "");
 
         });
-
+        binding.tvOrderForOther.setOnClickListener(v->{
+            SearchDialog dialog=new SearchDialog();
+            dialog.show(getFragmentManager(),"");
+        });
 
         return view;
 

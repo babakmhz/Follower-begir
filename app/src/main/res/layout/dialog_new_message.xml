@@ -63,6 +63,7 @@
             <Button
                 android:id="@+id/brnDiscard"
                 android:layout_width="0dp"
+                android:background="@drawable/rounded_both_main_color"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
@@ -71,7 +72,9 @@
             <Button
                 android:id="@+id/btnSend"
                 android:layout_width="0dp"
+                android:background="@drawable/rounded_both_main_color"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:text="ارسال" />
