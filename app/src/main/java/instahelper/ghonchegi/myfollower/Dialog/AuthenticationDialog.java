@@ -170,12 +170,17 @@ public class AuthenticationDialog extends DialogFragment {
                 Log.i(TAG, "onFailed: " + errorResponse);
 
                 try {
-                    if (errorResponse.getString("error_type").equals("checkpoint_challenge_required")) {
-                        Toast.makeText(getActivity(), "حساب کاربری شما نیاز به تایید دارد.ابتدا با نرم افزار اینستاگرام وارد حساب خود شوید", Toast.LENGTH_LONG).show();
-                    } else if (errorResponse.getString("error_type").equals("bad_password")) {
-                        Toast.makeText(getActivity(), "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
-                    }else if (errorResponse.getString("error_type").equals("invalid_user")) {
-                        Toast.makeText(getActivity(), "چنین کاربری وجود ندارد", Toast.LENGTH_LONG).show();
+                    switch (errorResponse.getString("error_type")) {
+                        case "checkpoint_challenge_required":
+                            AccountNeedsVerification dialog = new AccountNeedsVerification();
+                            dialog.show(getChildFragmentManager(), "");
+                            break;
+                        case "bad_password":
+                            Toast.makeText(getActivity(), "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
+                            break;
+                        case "invalid_user":
+                            Toast.makeText(getActivity(), "چنین کاربری وجود ندارد", Toast.LENGTH_LONG).show();
+                            break;
                     }
 
                 } catch (JSONException e) {

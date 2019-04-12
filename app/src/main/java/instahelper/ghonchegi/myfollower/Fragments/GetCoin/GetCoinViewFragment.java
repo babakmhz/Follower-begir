@@ -67,6 +67,7 @@ public class GetCoinViewFragment extends Fragment implements WebViewLoadedInterf
         });
         binding.btnDoLike.setOnClickListener(v -> {
             WebViewDialog webViewDialog = new WebViewDialog(imageId, transactionId, callBackWebView);
+            webViewDialog.setCancelable(false);
             webViewDialog.show(getChildFragmentManager(), "this");
         });
 
