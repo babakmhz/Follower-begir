@@ -61,43 +61,6 @@ public class GetCoinCommentFragment extends Fragment {
     private int step=0;
     private CountDownTimer cTimer=null;
 
-    private void report() {
-
-        final String requestBody = JsonManager.report(transactionId);
-
-        StringRequest request = new StringRequest(Request.Method.POST, App.Base_URL + "message/report/set", response -> {
-            assert response == null;
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                if (jsonObject.getBoolean("status")) {
-                    Toast.makeText(getContext(), "با تشکر از گزارش شما", Toast.LENGTH_SHORT).show();
-                    getCommentOrders();
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        },
-                error -> {
-                    Toast.makeText(getContext(), "خطا", Toast.LENGTH_SHORT).show();
-
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                return requestBody == null ? null : requestBody.getBytes();
-            }
-        };
-        request.setTag(this);
-        requestQueue.add(request);
-    }
 
     public GetCoinCommentFragment(AddCoinMultipleAccount addCoinMultipleAccount) {
         this.addCoinMultipleAccount=addCoinMultipleAccount;
@@ -111,7 +74,7 @@ public class GetCoinCommentFragment extends Fragment {
                 inflater, R.layout.fragment_get_coin_comment, container, false);
         view = binding.getRoot();
         getCommentOrders();
-        binding.tvLikeCoin.setText(App.likeCoin + "");
+        binding.tvLikeCoinCounts.setText(App.likeCoin + "");
         binding.tvUserName.setText(App.user.getUserName());
         Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
 
@@ -255,7 +218,7 @@ public class GetCoinCommentFragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(response);
                 if (jsonObject.getBoolean("status")) {
                     App.likeCoin = jsonObject.getInt("like_coin");
-                    binding.tvLikeCoin.setText(App.likeCoin + "");
+                    binding.tvLikeCoinCounts.setText(App.likeCoin + "");
 
                     getCommentOrders();
                 }
@@ -401,5 +364,44 @@ public class GetCoinCommentFragment extends Fragment {
         }
 
     }
+
+    private void report() {
+
+        final String requestBody = JsonManager.report(transactionId);
+
+        StringRequest request = new StringRequest(Request.Method.POST, App.Base_URL + "message/report/set", response -> {
+            assert response == null;
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                if (jsonObject.getBoolean("status")) {
+                    Toast.makeText(getContext(), "با تشکر از گزارش شما", Toast.LENGTH_SHORT).show();
+                    getCommentOrders();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        },
+                error -> {
+                    Toast.makeText(getContext(), "خطا", Toast.LENGTH_SHORT).show();
+
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                return requestBody == null ? null : requestBody.getBytes();
+            }
+        };
+        request.setTag(this);
+        requestQueue.add(request);
+    }
+
 
 }

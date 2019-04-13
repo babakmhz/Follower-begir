@@ -56,7 +56,7 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
         Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.profileImage);
         binding.tvUserName.setText(App.user.getUserName());
         binding.tvLikeCoinCount.setText(App.likeCoin + "");
-        binding.tvFollowCoinCount.setText(App.followCoin + "");
+        binding.tvFollowerCoinCount.setText(App.followCoin + "");
 
 
         //endregion

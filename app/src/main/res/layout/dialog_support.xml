@@ -6,7 +6,6 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:background="@color/blueFirst"
         android:layout_height="match_parent"
@@ -14,76 +13,251 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout4"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/mainColorFirst"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imgProfileImage"
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_60sdp"
-                android:layout_margin="10dp"
-                app:civ_border_color="#c3c3c3"
-                app:civ_border_width="1dp"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
             <LinearLayout
-                android:id="@+id/linearLayout5"
-                android:layout_width="0dp"
+                android:id="@+id/layoutProfilePic"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
-                android:background="@drawable/rounded_both"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                app:layout_constraintBottom_toTopOf="@id/guideLine"
+                android:orientation="vertical"
+                android:padding="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imgProfileImage">
+                app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/tvReturn"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="برگشت"
-                    android:textStyle="bold"
-                    android:drawableStart="@drawable/ic_arrow_left_main_color"
-                    android:textColor="@color/mainColorFirst"
-                    android:drawableLeft="@drawable/ic_arrow_left_main_color" />
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/transparent"
+                    android:scaleType="centerInside"
+                    app:civ_background_color="@color/transparent"
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="2dp"
+
+                    app:srcCompat="@drawable/ic_user" />
 
                 <TextView
                     android:id="@+id/tvUserName"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="@color/mainColorFirst" />
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_8ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutLikeCoin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:paddingStart="35dp"
+                android:paddingLeft="35dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="15dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/layoutProfilePic"
+                app:layout_constraintStart_toEndOf="@+id/cardView3"
+                app:layout_constraintTop_toTopOf="@+id/layoutProfilePic">
+
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:id="@+id/tvLikeCoin"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="پشتیبانی"
-                    android:textStyle="bold"
-                    android:drawableEnd="@drawable/ic_arrow_down_main_color"
-                    android:gravity="center"
-                    android:textColor="@color/mainColorFirst"
-                    android:drawableRight="@drawable/ic_arrow_down_main_color" />
+                    android:layout_margin="5dp"
+                    android:text="@string/likeCoin"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/tvLikeCoinCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/mainColorFirst"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tvLikeCoin"
+                    app:layout_constraintStart_toStartOf="@+id/tvLikeCoin"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLikeCoin" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/mainColorFirst"
+                app:cardBackgroundColor="@color/mainColorFirst"
+                app:cardCornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="@id/layoutLikeCoin"
+                app:layout_constraintLeft_toLeftOf="@id/layoutLikeCoin"
+                app:layout_constraintTop_toTopOf="@id/layoutLikeCoin">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imvLikeCoin"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="3dp"
+                    app:srcCompat="@drawable/ic_heart_coin" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutFollowerCoin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:paddingStart="15dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="35dp"
+                android:paddingRight="35dp"
+                android:paddingBottom="2dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/layoutLikeCoin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/layoutProfilePic">
+
+
+                <TextView
+                    android:id="@+id/tvFollowerCoin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:text="@string/followerCoin"
+                    android:textColor="@color/white"
+
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvFollowerCoinCount"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/mainColorFirst"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tvFollowerCoin"
+                    app:layout_constraintStart_toStartOf="@+id/tvFollowerCoin"
+                    app:layout_constraintTop_toBottomOf="@+id/tvFollowerCoin" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/mainColorFirst"
+                app:cardBackgroundColor="@color/mainColorFirst"
+                app:cardCornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="@id/layoutFollowerCoin"
+                app:layout_constraintRight_toRightOf="@id/layoutFollowerCoin"
+                app:layout_constraintTop_toTopOf="@id/layoutFollowerCoin">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imvFollowerCoin"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_margin="3dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    app:srcCompat="@drawable/ic_team" />
+
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="1dp"
+                android:layout_height="50dp"
+                android:background="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/layoutLikeCoin"
+                app:layout_constraintEnd_toStartOf="@id/layoutLikeCoin"
+                app:layout_constraintStart_toEndOf="@+id/cardView3"
+                app:layout_constraintTop_toTopOf="@+id/layoutLikeCoin" />
+
+            <TextView
+                android:id="@+id/tvReturn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_arrow_left_main_color"
+                android:drawableLeft="@drawable/ic_arrow_left_main_color"
+                android:gravity="center"
+                android:text="برگشت"
+                android:textColor="@color/mainColorFirst"
+                android:textStyle="bold"
+                android:background="@color/blueFirst"
+                app:layout_constraintEnd_toEndOf="@+id/cardView3"
+                app:layout_constraintStart_toStartOf="@+id/layoutFollowerCoin"
+                app:layout_constraintTop_toBottomOf="@+id/layoutFollowerCoin" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="1"
+                android:drawableEnd="@drawable/ic_arrow_down_main_color"
+                android:drawableRight="@drawable/ic_arrow_down_main_color"
+                android:gravity="center"
+                android:text="پشتیبانی"
+                android:background="@color/blueFirst"
+                android:textColor="@color/mainColorFirst"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/layoutProfilePic"
+                app:layout_constraintStart_toStartOf="@+id/cardView2"
+                app:layout_constraintTop_toBottomOf="@+id/layoutLikeCoin" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -100,7 +274,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"/>
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAdd"

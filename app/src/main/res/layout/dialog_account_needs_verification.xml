@@ -61,6 +61,7 @@
             <Button
                 android:id="@+id/btnActivateAccount"
                 android:layout_width="0dp"
+                android:textColor="@color/white"
                 android:background="@drawable/rounded_five_roundness"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"

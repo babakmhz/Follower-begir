@@ -5,7 +5,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/blueFirst"
+        android:background="@color/white"
         android:fillViewport="true">
 
         <LinearLayout
@@ -61,6 +61,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
+                android:background="@color/greyNew"
                 android:layout_height="wrap_content">
 
 
@@ -68,19 +69,17 @@
                     android:id="@+id/layoutProfilePic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/rounded_profile_pic"
+                    android:background="@color/blueFirst"
                     android:gravity="center"
-                    android:layout_marginEnd="@dimen/_30sdp"
                     android:orientation="vertical"
+                    android:padding="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginRight="@dimen/_30sdp">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <com.mikhaellopez.circularimageview.CircularImageView
                         android:id="@+id/profile_image"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
                         android:layout_marginTop="15dp"
                         android:background="@color/transparent"
                         android:scaleType="centerInside"
@@ -99,8 +98,8 @@
 
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_9ssp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8ssp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -108,82 +107,14 @@
                 </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layoutFollowCoin"
+                    android:id="@+id/layoutLikeCoin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minWidth="@dimen/_100sdp"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:background="@drawable/rounded_both"
-                    android:paddingStart="35dp"
-                    android:paddingLeft="35dp"
-                    android:paddingTop="2dp"
-                    android:paddingEnd="15dp"
-                    android:paddingRight="15dp"
-                    android:layout_marginTop="5dp"
-                    android:paddingBottom="2dp"
-                    app:layout_constraintEnd_toStartOf="@+id/layoutProfilePic"
-                    app:layout_constraintTop_toTopOf="@+id/layoutProfilePic">
-
-
-                    <TextView
-                        android:id="@+id/tvFollowCoin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="@string/followerCoin"
-                        android:textColor="@color/black"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvFollowCoinCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/mainColorFirst"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/tvFollowCoin"
-                        app:layout_constraintStart_toStartOf="@+id/tvFollowCoin"
-                        app:layout_constraintTop_toBottomOf="@+id/tvFollowCoin" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/mainColorFirst"
-                    app:cardBackgroundColor="@color/mainColorFirst"
-                    app:cardCornerRadius="10dp"
-                    app:layout_constraintBottom_toBottomOf="@id/layoutFollowCoin"
-                    app:layout_constraintLeft_toLeftOf="@id/layoutFollowCoin"
-                    app:layout_constraintTop_toTopOf="@id/layoutFollowCoin">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imvFollowCoin"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_margin="3dp"
-                        app:srcCompat="@drawable/ic_team" />
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layoutLikeCoin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/rounded_both"
-                    android:minWidth="@dimen/_100sdp"
                     android:paddingStart="35dp"
                     android:paddingLeft="35dp"
                     android:paddingTop="2dp"
@@ -192,7 +123,8 @@
                     android:paddingBottom="2dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/layoutProfilePic"
-                    app:layout_constraintTop_toBottomOf="@id/layoutFollowCoin">
+                    app:layout_constraintStart_toEndOf="@+id/cardView3"
+                    app:layout_constraintTop_toTopOf="@+id/layoutProfilePic">
 
 
                     <TextView
@@ -223,6 +155,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/mainColorFirst"
@@ -240,13 +173,100 @@
                         app:srcCompat="@drawable/ic_heart_coin" />
 
                 </androidx.cardview.widget.CardView>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutFollowerCoin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:paddingStart="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="35dp"
+                    android:paddingRight="35dp"
+                    android:paddingBottom="2dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/layoutLikeCoin"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/layoutProfilePic">
+
+
+                    <TextView
+                        android:id="@+id/tvFollowerCoin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/followerCoin"
+                        android:textColor="@color/black"
+
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tvFollowerCoinCount"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/mainColorFirst"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/tvFollowerCoin"
+                        app:layout_constraintStart_toStartOf="@+id/tvFollowerCoin"
+                        app:layout_constraintTop_toBottomOf="@+id/tvFollowerCoin" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mainColorFirst"
+                    app:cardBackgroundColor="@color/mainColorFirst"
+                    app:cardCornerRadius="10dp"
+                    app:layout_constraintBottom_toBottomOf="@id/layoutFollowerCoin"
+                    app:layout_constraintRight_toRightOf="@id/layoutFollowerCoin"
+                    app:layout_constraintTop_toTopOf="@id/layoutFollowerCoin">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imvFollowerCoin"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="3dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        app:srcCompat="@drawable/ic_team" />
+
+                </androidx.cardview.widget.CardView>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="50dp"
+                    android:background="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/layoutLikeCoin"
+                    app:layout_constraintEnd_toStartOf="@id/layoutLikeCoin"
+                    app:layout_constraintStart_toEndOf="@+id/cardView3"
+                    app:layout_constraintTop_toTopOf="@+id/layoutLikeCoin" />
+
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@color/blueFirstDark"
+                android:background="@color/greyNew"
                 android:padding="10dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -272,8 +292,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="4dp"
                     app:srcCompat="@drawable/ic_user_avatar"
-                    app:civ_border_color="@color/colorAccent"
-                    app:civ_border_width="1dp"
+                    app:civ_border_color="@color/mainColorFirst"
+                    app:civ_border_width="3dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.75"
                     app:layout_constraintStart_toEndOf="@+id/imgProfileImageSender"
@@ -309,7 +329,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:background="@drawable/rounded_orange"
+                    android:background="@color/mainColorFirst"
                     android:padding="10dp"
                     android:text="@string/selectAccount"
                     android:textColor="@color/white"
@@ -339,13 +359,13 @@
                     android:layout_margin="10dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:background="@drawable/border_grey_fill_grey"
+                    android:background="@color/blueFirst"
                     android:gravity="center"
                     android:hint="@string/coinAmount"
                     android:inputType="numberSigned"
                     android:padding="10dp"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/black"
+                    android:textColorHint="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toStartOf="@+id/guide_v_7"
                     app:layout_constraintStart_toStartOf="@+id/guide_v_3"
@@ -368,7 +388,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:textColor="@color/white"
+                        android:textColor="@color/blueFirst"
                         android:layout_weight="1"
                         android:text="@string/followerCoin" />
 
@@ -377,7 +397,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:textColor="@color/white"
+                        android:textColor="@color/blueFirst"
                         android:layout_weight="1"
                         android:text="@string/likeCoin" />
                 </RadioGroup>
@@ -390,7 +410,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:background="@drawable/rounded_orange_new"
+                    android:background="@color/blueFirst"
                     android:text="@string/transfer"
                     android:textColor="@color/white"
                     android:textSize="18sp"
@@ -486,7 +506,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/rounded_orange_new"
+                    android:background="@color/mainColorFirst"
                     android:text="@string/change"
                     android:textColor="@color/white"
                     android:textSize="18sp"
@@ -501,7 +521,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@color/blueFirstDark"
+                android:background="@color/mainColorFirst"
                 android:padding="10dp">
 
                 <TextView
@@ -552,13 +572,13 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/border_grey_fill_grey"
+                    android:background="@color/blueFirst"
                     android:gravity="center"
                     android:hint="@string/coinAmount"
                     android:inputType="numberSigned"
                     android:padding="10dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
                     app:layout_constraintStart_toStartOf="@+id/linearLayout2"
@@ -569,7 +589,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/rounded_orange_new"
+                    android:background="@color/blueFirst"
                     android:text="@string/change"
                     android:textColor="@color/white"
                     android:textSize="18sp"

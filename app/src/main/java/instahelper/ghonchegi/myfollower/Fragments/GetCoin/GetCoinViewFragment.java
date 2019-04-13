@@ -55,7 +55,7 @@ public class GetCoinViewFragment extends Fragment implements WebViewLoadedInterf
 
         callBackWebView = this;
         view = binding.getRoot();
-        binding.tvLikeCoinCount.setText("" + App.likeCoin);
+        binding.tvLikeCoinCounts.setText("" + App.likeCoin);
         binding.btnNext.setOnClickListener(v -> {
             getLikeOrder();
         });
@@ -149,7 +149,7 @@ public class GetCoinViewFragment extends Fragment implements WebViewLoadedInterf
                 JSONObject jsonObject = new JSONObject(response);
                 if (jsonObject.getBoolean("status")) {
                     App.likeCoin = jsonObject.getInt("like_coin");
-                    binding.tvLikeCoinCount.setText(App.likeCoin + "");
+                    binding.tvLikeCoinCounts.setText(App.likeCoin + "");
                     getLikeOrder();
                 }
 

@@ -69,6 +69,8 @@ public class AccountStatisticsDialog extends DialogFragment {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         binding.prg.setVisibility(View.VISIBLE);
         binding.tvUserName.setText(App.user.getUserName());
+        binding.tvFollowerCoinCount.setText(App.followCoin + "");
+        binding.tvLikeCoinCount.setText(App.likeCoin + "");
 
         getActivity().runOnUiThread(new Runnable() {
             @Override
@@ -92,7 +94,7 @@ public class AccountStatisticsDialog extends DialogFragment {
 
         }
         db = dbHeplper.getWritableDatabase();
-        Picasso.get().load(picURl).into(binding.imgProfileImage);
+        Picasso.get().load(picURl).into(binding.profileImage);
         binding.tvReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

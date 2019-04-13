@@ -58,7 +58,7 @@ public class PurchaseFolloweFragment extends Fragment {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_purchase_follower, container, false);
         view = binding.getRoot();
-        binding.tvFollowCoinCount.setText(App.followCoin + "");
+        binding.tvFollowCoinCount.setText("سکه فالوئر‌:‌ "+App.followCoin + "");
 
         binding.tvUserName.setText(App.user.getUserName());
         Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);

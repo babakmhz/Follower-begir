@@ -72,7 +72,7 @@ public class GetCoinFolloweFragment extends Fragment {
                 inflater, R.layout.fragment_get_coin_follower, container, false);
         view = binding.getRoot();
         getLikeOrder();
-        binding.tvFollowerCoinCount.setText(App.followCoin + "");
+        binding.tvLikeCoinCounts.setText(App.followCoin + "");
 
         binding.tvUserName.setText(App.user.getUserName());
         Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
@@ -242,7 +242,7 @@ public class GetCoinFolloweFragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(response);
                 if (jsonObject.getBoolean("status")) {
                     App.followCoin = jsonObject.getInt("follow_coin");
-                    binding.tvFollowerCoinCount.setText(App.followCoin + "");
+                    binding.tvLikeCoinCounts.setText(App.followCoin + "");
                     getLikeOrder();
                 }
 

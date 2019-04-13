@@ -114,7 +114,7 @@ public class GetCoinLikeFragment extends Fragment {
         Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
 
         view = binding.getRoot();
-        binding.tvLikeCoinCount.setText("" + App.likeCoin);
+        binding.tvLikeCoinCounts.setText("" + App.likeCoin);
         binding.btnNext.setOnClickListener(v -> {
             getLikeOrder();
         });
@@ -253,7 +253,7 @@ public class GetCoinLikeFragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(response);
                 if (jsonObject.getBoolean("status")) {
                     App.likeCoin = jsonObject.getInt("like_coin");
-                    binding.tvLikeCoinCount.setText(App.likeCoin + "");
+                    binding.tvLikeCoinCounts.setText(App.likeCoin + "");
                     getLikeOrder();
                 }
 
