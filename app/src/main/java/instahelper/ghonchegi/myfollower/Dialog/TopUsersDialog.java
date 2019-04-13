@@ -131,52 +131,60 @@ public class TopUsersDialog extends DialogFragment {
     }
 
     private void setAdapter(int type) throws JSONException {
-        binding.llNoItem.setVisibility(View.GONE);
-
-        JSONArray jsonArray = null;
-        ArrayList<TopUsers> topUserList = new ArrayList<>();
-        switch (type) {
-            case 0:
-                jsonArray = jsonObjectMain.getJSONArray("like");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject object = jsonArray.getJSONObject(i);
-                    TopUsers topUser = new TopUsers();
-                    topUser.setCount(String.valueOf(object.getInt("like_count")));
-                    topUser.setUserName(object.getString("user_name"));
-                    topUser.setPicUrl(object.getString("image_path"));
-                    topUserList.add(topUser);
-                }
-                break;
-            case 1:
-                jsonArray = jsonObjectMain.getJSONArray("follow");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject object = jsonArray.getJSONObject(i);
-                    TopUsers topUser = new TopUsers();
-                    topUser.setCount(String.valueOf(object.getInt("follow_count")));
-                    topUser.setUserName(object.getString("user_name"));
-                    topUser.setPicUrl(object.getString("image_path"));
-                    topUserList.add(topUser);
-
-                }
-                break;
-            case 2:
-                jsonArray = jsonObjectMain.getJSONArray("comment");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject object = jsonArray.getJSONObject(i);
-                    TopUsers topUser = new TopUsers();
-                    topUser.setCount(String.valueOf(object.getInt("comment_count")));
-                    topUser.setUserName(object.getString("user_name"));
-                    topUser.setPicUrl(object.getString("image_path"));
-                    topUserList.add(topUser);
-
-                }
-                break;
-        }
-        if (  topUserList.size()==0 )
+        try
         {
-            binding.llNoItem.setVisibility(View.VISIBLE);
+            binding.llNoItem.setVisibility(View.GONE);
+
+            JSONArray jsonArray = null;
+            ArrayList<TopUsers> topUserList = new ArrayList<>();
+            switch (type) {
+                case 0:
+                    jsonArray = jsonObjectMain.getJSONArray("like");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        TopUsers topUser = new TopUsers();
+                        topUser.setCount(String.valueOf(object.getInt("like_count")));
+                        topUser.setUserName(object.getString("user_name"));
+                        topUser.setPicUrl(object.getString("image_path"));
+                        topUserList.add(topUser);
+                    }
+                    break;
+                case 1:
+                    jsonArray = jsonObjectMain.getJSONArray("follow");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        TopUsers topUser = new TopUsers();
+                        topUser.setCount(String.valueOf(object.getInt("follow_count")));
+                        topUser.setUserName(object.getString("user_name"));
+                        topUser.setPicUrl(object.getString("image_path"));
+                        topUserList.add(topUser);
+
+                    }
+                    break;
+                case 2:
+                    jsonArray = jsonObjectMain.getJSONArray("comment");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        TopUsers topUser = new TopUsers();
+                        topUser.setCount(String.valueOf(object.getInt("comment_count")));
+                        topUser.setUserName(object.getString("user_name"));
+                        topUser.setPicUrl(object.getString("image_path"));
+                        topUserList.add(topUser);
+
+                    }
+                    break;
+            }
+            if (  topUserList.size()==0 )
+            {
+                binding.llNoItem.setVisibility(View.VISIBLE);
+            }
+            setView(topUserList, type);
         }
-        setView(topUserList, type);
+        catch (Exception e)
+        {
+
+        }
+
 
     }
 

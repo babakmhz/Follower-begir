@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -81,6 +82,10 @@ public class AuthenticationDialog extends DialogFragment {
             OnCredentialsEntered(userName, password);
         }
         db = dbHeplper.getWritableDatabase();
+        Typeface typeface;
+        typeface=Typeface.create(Typeface.SANS_SERIF,Typeface.NORMAL);
+        binding.editText.setTypeface(typeface);
+        binding.editText2.setTypeface(typeface);
         return dialog;
     }
 

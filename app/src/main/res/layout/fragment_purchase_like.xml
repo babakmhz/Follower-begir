@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:background="@color/blueFirst"
         android:layout_height="match_parent"
         android:layoutDirection="ltr">
-
 
 
         <ImageView
@@ -79,8 +77,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
         <LinearLayout
             android:id="@+id/linear"
             android:layout_width="wrap_content"
@@ -144,8 +140,6 @@
             app:layout_constraintTop_toBottomOf="@id/linear" />
 
 
-
-
         <Button
             android:id="@+id/btnConfirm"
             android:layout_width="0dp"
@@ -185,77 +179,80 @@
             app:layout_constraintStart_toEndOf="@+id/btnConfirm"
             app:layout_constraintTop_toBottomOf="@+id/seekBar"
             app:layout_goneMarginStart="10dp" />
-        <TextView
-            android:id="@+id/tvOrderForOther"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_40sdp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="@dimen/_40sdp"
-            android:background="@drawable/rounded_both_main_color"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="ثبت سفارش برای دیگران"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgProfileImage"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/_70sdp"
             android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             app:civ_border_color="#c3c3c3"
             app:civ_border_width="1dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+            app:layout_constraintBottom_toTopOf="@+id/tvUserName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.9"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvOrderForOther"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-
-        <LinearLayout
-            android:id="@+id/linearLayout5"
+        <TextView
+            android:id="@+id/tvUserName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:background="@drawable/rounded_both"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="3"
+            android:textColor="@color/mainColorFirst"
             app:layout_constraintBottom_toTopOf="@id/guideLine"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+            app:layout_constraintStart_toStartOf="@+id/imgProfileImage" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/mainColorFirst"
-                app:srcCompat="@drawable/ic_heart_main_color" />
+        <TextView
+            android:id="@+id/tvOrderForOther"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/blueFirst"
+            android:gravity="center"
+            android:text="ثبت سفارش برای دیگران"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/guideLine"
+            app:layout_constraintEnd_toStartOf="@+id/imgProfileImage"
+            app:layout_constraintStart_toStartOf="@+id/guideLine3"
+            app:layout_constraintTop_toBottomOf="@id/tvLikeCoinCounts"
+            app:layout_constraintVertical_bias="0.2" />
 
-            <TextView
-                android:id="@+id/tvUserName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/mainColorFirst" />
 
-            <TextView
-                android:id="@+id/tvLikeCoinCounts"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/mainColorFirst" />
+        <TextView
+            android:id="@+id/tvLikeCoinCounts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:background="@color/greyNew"
+            android:drawableStart="@drawable/ic_heart_main_color"
+            android:drawableLeft="@drawable/ic_heart_main_color"
+            android:gravity="center"
+            android:text="سکه لایک"
+            android:textColor="@color/blueFirst"
+            app:layout_constraintBottom_toTopOf="@+id/tvOrderForOther"
+            app:layout_constraintEnd_toStartOf="@+id/imgProfileImage"
+            app:layout_constraintStart_toStartOf="@+id/guideLine3"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideLine"
