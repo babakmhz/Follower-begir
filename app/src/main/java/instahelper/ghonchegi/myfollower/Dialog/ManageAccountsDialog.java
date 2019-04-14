@@ -50,7 +50,7 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
         binding.tvUserName.setText(App.user.getUserName());
         //endregion
         internalCallback = this;
-        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        Picasso.get().load(App.profilePicURl).into(binding.profileImage);
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
         AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager(), internalCallback);
 
