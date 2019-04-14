@@ -597,7 +597,7 @@
                             android:background="@drawable/rounded_left_purple_spc"
                             android:gravity="center"
                             android:minHeight="@dimen/_60sdp"
-                            android:text="گردونه ویژه\n  10 تا \n100 سکه"
+                            android:text="گردونه رایگان\n  10 تا \n100 سکه"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_10ssp"
                             android:textStyle="bold"
