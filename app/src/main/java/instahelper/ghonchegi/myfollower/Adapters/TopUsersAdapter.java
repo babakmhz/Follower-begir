@@ -44,12 +44,13 @@ public class TopUsersAdapter extends RecyclerView.Adapter<TopUsersAdapter.Item> 
         item.tvPrizeAmount.setText(topUser.getCount());
         item.tvUserName.setText(topUser.getUserName());
         if (type == 1) {
-            item.imvPrizeType.setImageResource(R.drawable.follow_coin);
+            item.imvPrizeType.setImageResource(R.drawable.ic_team);
         } else {
-            item.imvPrizeType.setImageResource(R.drawable.like_coin);
+            item.imvPrizeType.setImageResource(R.drawable.ic_heart_coin);
 
         }
-        Picasso.get().load(topUser.getPicUrl()).into(item.profilePic);
+        if (topUser.getPicUrl() != null)
+            Picasso.get().load(topUser.getPicUrl()).into(item.profilePic);
 
 
     }

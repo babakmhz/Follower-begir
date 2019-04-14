@@ -5,22 +5,84 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:layoutDirection="ltr">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgProfileImage"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            app:civ_border_color="#c3c3c3"
+            app:civ_border_width="1dp"
+            app:layout_constraintBottom_toTopOf="@+id/tvUserName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvLikeCoinCounts"
+            android:layout_width="0dp"
+            android:minHeight="@dimen/_35sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:background="@color/greyNew"
+            android:drawableStart="@drawable/ic_heart_main_color"
+            android:drawableLeft="@drawable/ic_heart_main_color"
+            android:gravity="center"
+            android:text="سکه لایک"
+            android:textColor="@color/blueFirst"
+            app:layout_constraintBottom_toTopOf="@+id/tvOrderForOther"
+            app:layout_constraintEnd_toStartOf="@+id/imgProfileImage"
+            app:layout_constraintStart_toStartOf="@+id/guideLine3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/mainColorFirst"
+            app:layout_constraintBottom_toTopOf="@id/guideLine"
+            app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+            app:layout_constraintStart_toStartOf="@+id/imgProfileImage" />
 
         <TextView
             android:id="@+id/tvOrderForOther"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:minHeight="@dimen/_35sdp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/orangeTextColor"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/blueFirst"
             android:gravity="center"
-            android:padding="5dp"
             android:text="ثبت سفارش برای دیگران"
             android:textColor="@color/white"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/guideLine"
+            app:layout_constraintEnd_toStartOf="@+id/imgProfileImage"
+            app:layout_constraintStart_toStartOf="@+id/guideLine3"
+            app:layout_constraintTop_toBottomOf="@id/tvLikeCoinCounts"
+            app:layout_constraintVertical_bias="0.2" />
+
+
+
         <ImageView
             android:id="@+id/imvSelectedPic"
             android:layout_width="0dp"
@@ -37,6 +99,7 @@
             android:id="@+id/constraintLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_margin="5dp"
             android:background="@drawable/rounded_select_image"
             app:layout_constraintBottom_toBottomOf="@id/guideLine2"
             app:layout_constraintEnd_toEndOf="@id/guideLine4"
@@ -46,8 +109,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imvSelectPic"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
@@ -58,7 +121,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_image" />
+                app:srcCompat="@drawable/ic_image_icon" />
 
             <TextView
                 android:id="@+id/tvSelectPic"
@@ -91,6 +154,7 @@
 
 
 
+
         <LinearLayout
             android:id="@+id/linear"
             android:layout_width="wrap_content"
@@ -108,7 +172,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="500"
-                android:textColor="@color/black"
+                android:textColor="@color/blueFirst"
                 android:textSize="14sp"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -117,7 +181,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                app:srcCompat="@drawable/ic_heart" />
+                app:srcCompat="@drawable/ic_heart_white" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
@@ -132,17 +196,18 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="500"
-                android:textColor="@color/orangeTextColor"
+                android:textColor="@color/blueFirst"
                 android:textSize="14sp"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imvFollower"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/follow_coin" />
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/ic_heart_coin" />
 
         </LinearLayout>
+
 
         <SeekBar
             android:id="@+id/seekBar"
@@ -154,30 +219,6 @@
             app:layout_constraintTop_toBottomOf="@id/linear" />
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvOrderForOther">
-
-            <TextView
-                android:id="@+id/tvLikeCoinCounts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2500"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/like_coin" />
-        </LinearLayout>
 
 
         <Button

@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/orangeLight"
+        android:background="@color/blueFirst"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -38,7 +38,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="از اتصال به اینترنت اطمینان حاصل کنید"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/_16ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

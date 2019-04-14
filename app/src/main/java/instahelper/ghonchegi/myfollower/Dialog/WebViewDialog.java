@@ -3,6 +3,8 @@ package instahelper.ghonchegi.myfollower.Dialog;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -15,6 +17,8 @@ import instahelper.ghonchegi.myfollower.Interface.WebViewLoadedInterface;
 import instahelper.ghonchegi.myfollower.R;
 import instahelper.ghonchegi.myfollower.databinding.DialogWebViewBinding;
 
+import static com.crashlytics.android.beta.Beta.TAG;
+
 @SuppressLint("ValidFragment")
 public class WebViewDialog extends DialogFragment {
 
@@ -23,6 +27,7 @@ public class WebViewDialog extends DialogFragment {
     final int transactionId;
     private final WebViewLoadedInterface callbackWebView;
     private DialogWebViewBinding binding;
+    private CountDownTimer countDown=null;
 
     public WebViewDialog(String urlAddress, int transactionId, WebViewLoadedInterface callBackWebView) {
         this.urlAddress = urlAddress;
@@ -48,9 +53,29 @@ public class WebViewDialog extends DialogFragment {
         binding.webView.loadUrl("https://www.instagram.com/p/" + urlAddress);
         callbackWebView.webViewOpened();
         binding.btnReturn.setOnClickListener(v -> dismiss());
+        binding.btnReturn.setEnabled(false);
+        countDown=new CountDownTimer(7000, 1000) {
 
+            public void onTick(long millisUntilFinished) {
+                Log.d(TAG, "seconds remaining:  + "+millisUntilFinished / 1000);
+                binding.btnReturn.setText(millisUntilFinished/1000 +"");
+
+            }
+
+            public void onFinish() {
+                binding.btnReturn.setText("بازگشت");
+                binding.btnReturn.setEnabled(true);
+            }
+
+        }.start();
 
         return dialog;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        countDown.cancel();
+        countDown=null;
+    }
 }

@@ -50,9 +50,12 @@ public class GetCoinViewFragment extends Fragment implements WebViewLoadedInterf
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_get_coin_view, container, false);
 
+        binding.tvUserName.setText(App.user.getUserName());
+        Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
+
         callBackWebView = this;
         view = binding.getRoot();
-        binding.tvLikeCoinCount.setText("" + App.likeCoin);
+        binding.tvLikeCoinCounts.setText("" + App.likeCoin);
         binding.btnNext.setOnClickListener(v -> {
             getLikeOrder();
         });
@@ -64,6 +67,7 @@ public class GetCoinViewFragment extends Fragment implements WebViewLoadedInterf
         });
         binding.btnDoLike.setOnClickListener(v -> {
             WebViewDialog webViewDialog = new WebViewDialog(imageId, transactionId, callBackWebView);
+            webViewDialog.setCancelable(false);
             webViewDialog.show(getChildFragmentManager(), "this");
         });
 
@@ -145,7 +149,7 @@ public class GetCoinViewFragment extends Fragment implements WebViewLoadedInterf
                 JSONObject jsonObject = new JSONObject(response);
                 if (jsonObject.getBoolean("status")) {
                     App.likeCoin = jsonObject.getInt("like_coin");
-                    binding.tvLikeCoinCount.setText(App.likeCoin + "");
+                    binding.tvLikeCoinCounts.setText(App.likeCoin + "");
                     getLikeOrder();
                 }
 

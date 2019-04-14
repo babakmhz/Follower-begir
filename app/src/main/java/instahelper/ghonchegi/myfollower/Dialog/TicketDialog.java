@@ -57,7 +57,9 @@ public class TicketDialog extends DialogFragment implements NewMessageSubmittedI
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        Picasso.get().load(App.profilePicURl).into(binding.profileImage);
+        binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
+        binding.tvUserName.setText(App.user.getUserName());
         callback = this;
         //endregion
 
@@ -65,7 +67,6 @@ public class TicketDialog extends DialogFragment implements NewMessageSubmittedI
             NewMessageDialog newMessageDialog = new NewMessageDialog(callback);
             newMessageDialog.show(getChildFragmentManager(), "");
         });
-        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
 
 
         try {
@@ -128,7 +129,7 @@ public class TicketDialog extends DialogFragment implements NewMessageSubmittedI
         StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        TicketsAdapter adapter = new TicketsAdapter(getContext(), messageList);
+        TicketsAdapter adapter = new TicketsAdapter(getContext(), messageList,getChildFragmentManager());
         binding.rcvMessages.setLayoutManager(mLayoutManager);
         binding.rcvMessages.setItemAnimator(new DefaultItemAnimator());
         binding.rcvMessages.setAdapter(adapter);

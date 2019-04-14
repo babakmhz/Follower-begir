@@ -102,14 +102,14 @@ public class LuckyWheelPickerDialog extends DialogFragment {
         LuckyItem luckyItem2 = new LuckyItem();
         luckyItem2.topText = "9";
         luckyItem2.icon = R.drawable.like_coin;
-        luckyItem2.color = 0xffFFE0B2;
+        luckyItem2.color = R.color.yellow;
         luckyItem1.type = 0;
         data.add(luckyItem2);
 
         LuckyItem luckyItem3 = new LuckyItem();
         luckyItem3.topText = "5";
         luckyItem3.icon = R.drawable.follow_coin;
-        luckyItem3.color = 0xffFFCC80;
+        luckyItem3.color = R.color.green;
         luckyItem1.type = 1;
         data.add(luckyItem3);
 
@@ -125,14 +125,14 @@ public class LuckyWheelPickerDialog extends DialogFragment {
         luckyItem5.topText = "0";
         luckyItem5.icon = R.drawable.follow_coin;
         luckyItem1.type = 1;
-        luckyItem5.color = 0xffFFE0B2;
+        luckyItem5.color = R.color.yellow;
         data.add(luckyItem5);
 
         LuckyItem luckyItem6 = new LuckyItem();
         luckyItem6.topText = "6";
         luckyItem6.icon = R.drawable.like_coin;
         luckyItem1.type = 0;
-        luckyItem6.color = 0xffFFCC80;
+        luckyItem6.color = R.color.green;
         data.add(luckyItem6);
         //////////////////
 
@@ -148,7 +148,7 @@ public class LuckyWheelPickerDialog extends DialogFragment {
         luckyItem8.topText = "5";
         luckyItem1.type = 0;
         luckyItem8.icon = R.drawable.like_coin;
-        luckyItem8.color = 0xffFFE0B2;
+        luckyItem8.color = R.color.yellow;
         data.add(luckyItem8);
 
 
@@ -156,7 +156,7 @@ public class LuckyWheelPickerDialog extends DialogFragment {
         luckyItem9.topText = "8";
         luckyItem1.type = 1;
         luckyItem9.icon = R.drawable.follow_coin;
-        luckyItem9.color = 0xffFFCC80;
+        luckyItem9.color = R.color.green;
         data.add(luckyItem9);
         ////////////////////////
 
@@ -171,14 +171,14 @@ public class LuckyWheelPickerDialog extends DialogFragment {
         luckyItem11.topText = "13";
         luckyItem1.type = 0;
         luckyItem11.icon = R.drawable.like_coin;
-        luckyItem11.color = 0xffFFE0B2;
+        luckyItem11.color = R.color.yellow;
         data.add(luckyItem11);
 
         LuckyItem luckyItem12 = new LuckyItem();
         luckyItem12.topText = "4";
         luckyItem1.type = 1;
         luckyItem12.icon = R.drawable.follow_coin;
-        luckyItem12.color = 0xffFFE0B2;
+        luckyItem12.color =R.color.green;
         data.add(luckyItem12);
         luckyWheelView.setData(data);
         luckyWheelView.setRound(5);

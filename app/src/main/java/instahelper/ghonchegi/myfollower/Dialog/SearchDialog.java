@@ -61,8 +61,8 @@ public class SearchDialog extends DialogFragment {
             }
             return false;
         });
-        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
-        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
+        Picasso.get().load(App.profilePicURl).into(binding.profileImage);
+        binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
 
         return dialog;
     }
@@ -106,7 +106,7 @@ public class SearchDialog extends DialogFragment {
 
     private void setViewUsers(ArrayList<InstagramUser> users) {
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         UserSearchAdapter adapter = new UserSearchAdapter(users,getChildFragmentManager());
         binding.rcvUserSearch.setLayoutManager(mLayoutManager);
         binding.rcvUserSearch.setItemAnimator(new DefaultItemAnimator());

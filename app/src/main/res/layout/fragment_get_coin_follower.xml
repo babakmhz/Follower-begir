@@ -11,8 +11,61 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
             android:layoutDirection="ltr">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgProfileImage"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                app:civ_border_color="#c3c3c3"
+                app:civ_border_width="1dp"
+                app:layout_constraintBottom_toTopOf="@+id/tvUserName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.9"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvLikeCoinCounts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:background="@color/greyNew"
+                android:padding="@dimen/_5sdp"
+                android:drawableStart="@drawable/ic_team_main_color"
+                android:drawableLeft="@drawable/ic_team_main_color"
+                android:gravity="center"
+                android:minHeight="@dimen/_35sdp"
+                android:text="سکه لایک"
+                android:textColor="@color/blueFirst"
+                app:layout_constraintBottom_toTopOf="@+id/tvUserName"
+                app:layout_constraintEnd_toStartOf="@+id/imgProfileImage"
+                app:layout_constraintStart_toStartOf="@+id/guideLine3"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvUserName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/mainColorFirst"
+                app:layout_constraintBottom_toTopOf="@id/guideLine"
+                app:layout_constraintEnd_toEndOf="@+id/imgProfileImage"
+                app:layout_constraintStart_toStartOf="@+id/imgProfileImage" />
 
 
             <ImageView
@@ -20,6 +73,8 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/curved"
+                android:scaleType="fitXY"
+                android:layout_margin="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="@id/guideLine2"
                 app:layout_constraintEnd_toEndOf="@id/guideLine4"
                 app:layout_constraintStart_toStartOf="@id/guideLine3"
@@ -44,7 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_margin="5dp"
-                    android:background="@drawable/rounded_five_roundness_grey"
+                    android:background="@color/red"
                     android:text="بعدی"
 
                     android:textColor="@color/white"
@@ -55,7 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_margin="5dp"
-                    android:background="@drawable/rounded_five_roundness"
+                    android:background="@color/mainColorFirst"
                     android:text="گزارش"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
@@ -63,49 +118,20 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/tvFollowerCoinCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2500"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/like_coin" />
-            </LinearLayout>
-
-
             <Button
                 android:id="@+id/btnDoFollow"
                 android:layout_width="0dp"
                 android:layout_height="42dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginRight="18dp"
                 android:background="@drawable/rounded_grey_border"
                 android:text="@string/doFollow"
                 android:textColor="@color/darkerGrey"
+                app:layout_constraintStart_toEndOf="@id/btnAutoFollow"
                 android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+                app:layout_constraintBottom_toTopOf="@id/btnFollowWithAll"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toStartOf="@+id/guideLine3"
                 app:layout_constraintTop_toBottomOf="@+id/linear" />
 
             <ProgressBar
@@ -121,29 +147,37 @@
                 android:id="@+id/btnAutoFollow"
                 android:layout_width="0dp"
                 android:layout_height="42dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginLeft="18dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginRight="8dp"
                 android:background="@drawable/rounded_grey_border"
                 android:text="@string/autoFollow"
                 android:textColor="@color/darkerGrey"
                 android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="@+id/btnDoFollow"
+                app:layout_constraintEnd_toStartOf="@+id/btnDoFollow"
                 app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toStartOf="@+id/btnDoFollow"
-                app:layout_constraintTop_toBottomOf="@+id/btnDoFollow"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/btnDoFollow"
                 app:layout_goneMarginStart="10dp" />
 
             <Button
                 android:id="@+id/btnFollowWithAll"
                 android:layout_width="0dp"
                 android:layout_height="42dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/rounded_orange"
                 android:text="@string/followWithAllAccounts"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="@+id/btnAutoFollow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine4"
                 app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toStartOf="@+id/btnAutoFollow"
+                app:layout_constraintStart_toStartOf="@+id/guideLine3"
                 app:layout_constraintTop_toBottomOf="@+id/btnAutoFollow"
                 app:layout_goneMarginStart="10dp" />
 
@@ -152,14 +186,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.1" />
+                app:layout_constraintGuide_percent="0.2" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideLine2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.4" />
+                app:layout_constraintGuide_percent="0.5" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideLine3"

@@ -12,10 +12,12 @@
         android:id="@+id/llTabBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:background="@color/blueFirst"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="5dp"
+        android:textColor="@color/white"
+
         android:weightSum="4"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -26,6 +28,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:paddingTop="3dp"
+            android:textColor="@color/white"
+
             android:paddingBottom="3dp"
             android:text="@string/like" />
 
@@ -34,9 +38,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:gravity="center"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
+
             android:text="@string/comment" />
 
         <TextView
@@ -45,6 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:textColor="@color/white"
+
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
             android:text="@string/follower" />
@@ -56,6 +64,8 @@
             android:layout_weight="1"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
+            android:textColor="@color/white"
+
             android:gravity="center"
             android:text="@string/view" />
 

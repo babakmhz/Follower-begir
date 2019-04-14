@@ -54,7 +54,8 @@ public class AccountTransferChooserDialog extends DialogFragment implements Acco
 
         DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
+        binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
+        binding.tvUserName.setText(App.user.getUserName());
 
         binding.rcvAccounts.setLayoutManager(mLayoutManager);
         binding.rcvAccounts.setItemAnimator(new DefaultItemAnimator());
@@ -85,7 +86,7 @@ public class AccountTransferChooserDialog extends DialogFragment implements Acco
                 authenticate();
             }
         });
-        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        Picasso.get().load(App.profilePicURl).into(binding.profileImage);
         return dialog;
     }
 

@@ -9,7 +9,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+import instahelper.ghonchegi.myfollower.Dialog.TicketAnswerDialog;
 import instahelper.ghonchegi.myfollower.Models.Messages;
 import instahelper.ghonchegi.myfollower.R;
 
@@ -17,10 +20,13 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.Item> {
 
     private Context context;
     private ArrayList<Messages> messageList;
+    FragmentManager fm;
 
-    public TicketsAdapter(Context context, ArrayList<Messages> messageList) {
+    public TicketsAdapter(Context context, ArrayList<Messages> messageList, FragmentManager childFragmentManager) {
         this.context = context;
         this.messageList = messageList;
+        this.fm = childFragmentManager;
+
     }
 
     @NonNull
@@ -38,14 +44,19 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.Item> {
         holder.tvTitle.setText(messages.getTitle());
         if (messages.getStatus() == 0) {
             holder.tvStatus.setText("پاسخ داده نشده");
-            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.red));
+            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.black));
         }
         else if  (messages.getStatus() == 1) {
             holder.tvStatus.setText("پاسخ داده شده");
-            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.green));
+            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.white));
         }
         holder.tvCreated.setText(messages.getCreated_at());
         holder.tvRowNmber.setText(position+1 + "");
+        holder.root.setOnClickListener(v -> {
+            TicketAnswerDialog dialog = new TicketAnswerDialog(messages.getId());
+            dialog.show(fm, "");
+
+        });
 
     }
 
@@ -59,6 +70,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.Item> {
         private TextView tvStatus;
         private TextView tvCreated;
         private TextView tvRowNmber;
+        private ConstraintLayout root;
 
         public Item(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +78,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.Item> {
             tvStatus = itemView.findViewById(R.id.tvStatus);
             tvCreated = itemView.findViewById(R.id.tvDateTime);
             tvRowNmber = itemView.findViewById(R.id.tvRowNmber);
+            root = itemView.findViewById(R.id.rootMessages);
         }
     }
 }

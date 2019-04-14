@@ -109,8 +109,12 @@ public class GetCoinLikeFragment extends Fragment {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_get_coin_like, container, false);
 
+
+        binding.tvUserName.setText(App.user.getUserName());
+        Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
+
         view = binding.getRoot();
-        binding.tvLikeCoinCount.setText("" + App.likeCoin);
+        binding.tvLikeCoinCounts.setText("" + App.likeCoin);
         binding.btnNext.setOnClickListener(v -> {
             getLikeOrder();
         });
@@ -249,7 +253,7 @@ public class GetCoinLikeFragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(response);
                 if (jsonObject.getBoolean("status")) {
                     App.likeCoin = jsonObject.getInt("like_coin");
-                    binding.tvLikeCoinCount.setText(App.likeCoin + "");
+                    binding.tvLikeCoinCounts.setText(App.likeCoin + "");
                     getLikeOrder();
                 }
 
@@ -300,39 +304,6 @@ public class GetCoinLikeFragment extends Fragment {
         progressDialog.show();
     }
 
-    private void checkLikers() {
-        try {
-            InstagramApi.getInstance().GetMediaLikers(imageId, new InstagramApi.ResponseHandler() {
-                @Override
-                public void OnSuccess(JSONObject response) {
-                    try {
-                        JSONArray jsonArray = response.getJSONArray("users");
-                        likedUsers.clear();
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject temp = jsonArray.getJSONObject(i);
-                            likedUsers.add(temp.getString("pk"));
-                            Log.d("LastPOSITION", "LastPOSITION: " + i);
-
-                        }
-                        for (String item : likedUsers) {
-                            if (App.userId.equals(item)) {
-                                binding.btnNext.performClick();
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-
-                }
-            });
-        } catch (InstaApiException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void likeWithAllAccounts() {
         InstagramApi tempApi = new InstagramApi();
@@ -391,24 +362,26 @@ public class GetCoinLikeFragment extends Fragment {
                             public void OnSuccess(JSONObject response) {
                                 Log.d(App.TAG, "OnSuccess: Login " + response);
                                 try {
-                                    tempApi.Like(imageId, new InstagramApi.ResponseHandler() {
+                                    tempApi.Like(imageId, new InstagramApi.ResponseHandler() {////// لایک با اکانت دیگه
                                         @Override
                                         public void OnSuccess(JSONObject response) {
                                             addCoinMultipleAccount.addCoinMultipleAccount(1);
-
+                                            step++;
+                                            likeWithAllAccounts();
 
                                         }
 
                                         @Override
                                         public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                                            step++;
+                                            likeWithAllAccounts();
 
                                         }
                                     });
                                 } catch (InstaApiException e) {
                                     e.printStackTrace();
                                 }
-                                step++;
-                                likeWithAllAccounts();
+
                             }
 
                             @Override
@@ -422,5 +395,26 @@ public class GetCoinLikeFragment extends Fragment {
 
         }
 
+    }
+
+    private void loginWithMainAccount() {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+        for (User user : dataBaseHelper.getAllUsers()) {
+            if (user.getIsActive() == 1) {
+                InstagramApi.getInstance().Login(user.getUserName(), user.getPassword(), new InstagramApi.ResponseHandler() {
+                    @Override
+                    public void OnSuccess(JSONObject response) {
+                        progressDialog.dismiss();
+
+                    }
+
+                    @Override
+                    public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                        progressDialog.dismiss();
+
+                    }
+                });
+            }
+        }
     }
 }

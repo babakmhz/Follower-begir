@@ -79,7 +79,6 @@ public class SelectPictureDialog extends DialogFragment implements RecievedImage
         rcvPics.setLayoutManager(layoutManager);
         rcvPics.setItemAnimator(new DefaultItemAnimator());
         rcvPics.setAdapter(adapter);
-        rcvPics.addItemDecoration(decoration);
         rcvPics.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {

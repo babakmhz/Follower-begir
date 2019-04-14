@@ -137,7 +137,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         getUserInfo();
         doForceFollow();
 
-        binding.imageView3.setOnClickListener(v -> {
+        binding.freeWheelPicker.setOnClickListener(v -> {
 
             LuckyWheelPickerDialog dialog = new LuckyWheelPickerDialog();
             dialog.show(getChildFragmentManager(), "");
@@ -187,7 +187,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
 
         });
 
-        binding.imageView.setOnClickListener(v -> {
+        binding.specialWheelPicker.setOnClickListener(v -> {
             if (new SharedPreferences(getActivity()).getSpecialWheel()) {
                 SpecialLuckyWheelPickerDialog dialog = new SpecialLuckyWheelPickerDialog();
                 dialog.show(getChildFragmentManager(), "Spc");
@@ -223,7 +223,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
             }
         });
 
-        binding.secondContainer.setOnClickListener(v -> {
+        binding.specialOffers.setOnClickListener(v -> {
             try {
                 JSONObject jsonObject = new JSONObject(App.responseBanner);
                 JSONObject bannerCount = jsonObject.getJSONObject("special_banner");
@@ -259,7 +259,10 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         Animation connectingAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.heartbeat);
         binding.imvArrowShowAccounts.startAnimation(connectingAnimation);
         doMine();
-        getUpdateDialogInfo();
+        if (!App.isNotificationDialgShown) {
+            getUpdateDialogInfo();
+            App.isNotificationDialgShown = true;
+        }
         return view;
 
     }
@@ -294,7 +297,6 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                         dbelper.addUser(_user);
                     }
                     Picasso.get().load(user.getProfilePicture()).error(R.drawable.app_logo).into(binding.profileImage);
-                    Picasso.get().load(user.getProfilePicture()).error(R.drawable.app_logo).into(binding.imageView2);
                     profilePicURL = user.getProfilePicture();
                     App.profilePicURl = user.getProfilePicture();
                     App.userId = user.getUserId();
@@ -380,10 +382,11 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                         App.followCoin = jsonRootObject.optInt("follow_coin");
                         App.likeCoin = jsonRootObject.optInt("like_coin");
                         JSONObject childJson = jsonRootObject.getJSONObject("special_banner");
-                        binding.tvGoldTitle.setText(childJson.getInt("follow_coin") + " سکه فالو");
-                        binding.tvGoldSubtitle.setText(childJson.getInt("like_coin") + " سکه لایک");
+                        //TODO Removed in third design
+                        //binding.tvGoldTitle.setText(childJson.getInt("follow_coin") + " سکه فالو");
+                        //binding.tvGoldSubtitle.setText(childJson.getInt("like_coin") + " سکه لایک");
                         specialBannerItemId = childJson.getString("special_banner_RSA");
-                        binding.tvSpecialBannerPrice.setText(childJson.getInt("price") + " تومان");
+                        //binding.tvSpecialBannerPrice.setText(childJson.getInt("price") + " تومان");
                         App.responseBanner = response1;
                         if (jsonRootObject.getString("welcome") != null && !jsonRootObject.getString("welcome").equals("")) {
                             if (!App.isNotificationDialgShown) {
@@ -643,7 +646,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
     private void shareApp() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = "بهترین نرم افزایش فالویر واقعی " + "  https://cafebazaar.ir/app/" + getActivity().getApplicationContext().getPackageName();
+        String shareBody = "بهترین نرم افزایش فالوئر واقعی " + "  https://cafebazaar.ir/app/" + getActivity().getApplicationContext().getPackageName();
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share App");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
@@ -738,19 +741,16 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
     }
 
 
-    private  void getUpdateDialogInfo()
-    {
-        StringRequest request = new StringRequest(Request.Method.GET, Base_URL+"buttons", response1 -> {
+    private void getUpdateDialogInfo() {
+        StringRequest request = new StringRequest(Request.Method.GET, Base_URL + "buttons", response1 -> {
             if (response1 != null) {
                 try {
-                    JSONArray jsonObject=new JSONArray(response1);
+                    JSONArray jsonObject = new JSONArray(response1);
                     String title = jsonObject.getJSONObject(0).getString("title");
                     String link = jsonObject.getJSONObject(0).getString("link");
                     String icon = jsonObject.getJSONObject(0).getString("icon");
-                    FirstPageUpdateDialog dialog=new FirstPageUpdateDialog(title,link,icon);
-                    dialog.show(getChildFragmentManager(),"");
-
-
+                    FirstPageUpdateDialog dialog = new FirstPageUpdateDialog(title, link, icon);
+                    dialog.show(getChildFragmentManager(), "");
 
 
                 } catch (JSONException e) {
@@ -761,7 +761,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
             Log.i("volley", "onErrorResponse: " + error.toString());
             App.CancelProgressDialog();
 
-        }) ;
+        });
         request.setTag(this);
         requestQueue.add(request);
     }

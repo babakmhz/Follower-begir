@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +28,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import instahelper.ghonchegi.myfollower.App;
 import instahelper.ghonchegi.myfollower.Dialog.PurchasePackages.PurchaseLike;
+import instahelper.ghonchegi.myfollower.Dialog.SearchDialog;
 import instahelper.ghonchegi.myfollower.Interface.DirectPurchaseDialogInterface;
 import instahelper.ghonchegi.myfollower.Manager.JsonManager;
 import instahelper.ghonchegi.myfollower.R;
@@ -56,8 +58,10 @@ public class PurchaseFolloweFragment extends Fragment {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_purchase_follower, container, false);
         view = binding.getRoot();
-        binding.tvFollowCoin.setText(App.followCoin + "");
+        binding.tvFollowCoinCount.setText("سکه فالوئر‌:‌ "+App.followCoin + "");
 
+        binding.tvUserName.setText(App.user.getUserName());
+        Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
         binding.tvLikeExpenseCount.setText(0 + "");
         binding.tvLikeOrderCount.setText("0");
         binding.seekBar.setProgress(0);
@@ -92,7 +96,10 @@ public class PurchaseFolloweFragment extends Fragment {
             dialog.show(getChildFragmentManager(), "");
 
         });
-
+        binding.tvOrderForOther.setOnClickListener(v->{
+            SearchDialog dialog=new SearchDialog();
+            dialog.show(getFragmentManager(),"");
+        });
 
         return view;
 
@@ -114,7 +121,7 @@ public class PurchaseFolloweFragment extends Fragment {
                         JSONObject jsonRootObject = new JSONObject(response1);
                         if (jsonRootObject.optBoolean("status")) {
                             App.followCoin = Integer.parseInt(jsonRootObject.getString("follow_coin"));
-                            binding.tvFollowCoin.setText(App.followCoin + "");
+                            binding.tvFollowCoinCount.setText(App.followCoin + "");
                             Toast.makeText(getContext(), "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
                             binding.seekBar.setProgress(0);
 

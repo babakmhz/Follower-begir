@@ -6,12 +6,32 @@ public class Messages {
     private int status;
     private  String title;
     private String created_at;
+    private int user_name;
+    private String description;
 
-    public Messages(int id, int status, String title, String created_at) {
+    public Messages(int id, int status, String title, String created_at, int user_name, String description) {
         this.id = id;
         this.status = status;
         this.title = title;
         this.created_at = created_at;
+        this.user_name = user_name;
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(int user_name) {
+        this.user_name = user_name;
     }
 
     public Messages() {

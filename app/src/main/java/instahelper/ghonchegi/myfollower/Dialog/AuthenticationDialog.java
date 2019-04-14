@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -81,6 +82,10 @@ public class AuthenticationDialog extends DialogFragment {
             OnCredentialsEntered(userName, password);
         }
         db = dbHeplper.getWritableDatabase();
+        Typeface typeface;
+        typeface=Typeface.create(Typeface.SANS_SERIF,Typeface.NORMAL);
+        binding.editText.setTypeface(typeface);
+        binding.editText2.setTypeface(typeface);
         return dialog;
     }
 
@@ -170,12 +175,17 @@ public class AuthenticationDialog extends DialogFragment {
                 Log.i(TAG, "onFailed: " + errorResponse);
 
                 try {
-                    if (errorResponse.getString("error_type").equals("checkpoint_challenge_required")) {
-                        Toast.makeText(getActivity(), "حساب کاربری شما نیاز به تایید دارد.ابتدا با نرم افزار اینستاگرام وارد حساب خود شوید", Toast.LENGTH_LONG).show();
-                    } else if (errorResponse.getString("error_type").equals("bad_password")) {
-                        Toast.makeText(getActivity(), "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
-                    }else if (errorResponse.getString("error_type").equals("invalid_user")) {
-                        Toast.makeText(getActivity(), "چنین کاربری وجود ندارد", Toast.LENGTH_LONG).show();
+                    switch (errorResponse.getString("error_type")) {
+                        case "checkpoint_challenge_required":
+                            AccountNeedsVerification dialog = new AccountNeedsVerification();
+                            dialog.show(getChildFragmentManager(), "");
+                            break;
+                        case "bad_password":
+                            Toast.makeText(getActivity(), "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
+                            break;
+                        case "invalid_user":
+                            Toast.makeText(getActivity(), "چنین کاربری وجود ندارد", Toast.LENGTH_LONG).show();
+                            break;
                     }
 
                 } catch (JSONException e) {
