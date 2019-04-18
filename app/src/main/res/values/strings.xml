@@ -7,7 +7,6 @@
     <string name="support">پشتیبانی</string>
     <string name="aboutUs">درباره ما</string>
     <string name="shareApp">اشتراک برنامه</string>
-    <string name="setting">تنظیمات</string>
     <string name="transferCoin">انتقال سکه</string>
     <string name="accountInfo">آمار اکانت</string>
     <string name="manageAccount">مدیریت اکانت</string>
@@ -15,7 +14,6 @@
     <string name="like">لایک</string>
     <string name="comment">کامنت</string>
     <string name="follower">فالوئر</string>
-    <string name="likeRobot">ربات لایک</string>
     <string name="chooseImage">انتخاب عکس</string>
     <string name="purchase">ثبت سفارش</string>
     <string name="purchaseWithCoin">ثبت سفارش با سکه</string>
@@ -32,7 +30,6 @@
     <string name="coinAmount">تعداد سکه</string>
     <string name="transfer">انتقال</string>
     <string name="noteTransferOne">انتقال سکه تنها به حساب هایی که با آن ها وارد برنامه شده اید قابل انجام است .</string>
-    <string name="noteTransferTwo">حداقل میزان قابل انتقال ۱۰۰ سکه است.</string>
     <string name="doneOrder">سفارش شما انجام شد . از ۱۵۵ لایک درخواستی ۱۶ تا تحویل داده شد</string>
     <string name="change">تبدیل کن</string>
     <string name="submitYourFirstOrder">اولین سفارش خود را ثبت کنید!‌</string>

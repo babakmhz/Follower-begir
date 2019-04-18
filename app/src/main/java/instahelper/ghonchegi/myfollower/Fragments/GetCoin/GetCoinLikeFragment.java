@@ -20,7 +20,6 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -386,8 +385,16 @@ public class GetCoinLikeFragment extends Fragment {
 
                             @Override
                             public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                                step++;
-                                likeWithAllAccounts();
+                                try {
+                                    if (errorResponse.getString("error_type").contains("checkpoint_challenge_required")) {
+                                        Toast.makeText(getContext(), "حساب شما به محدودیت رسید. دقایقی دیگر مجددا تلاش کنید", Toast.LENGTH_SHORT).show();
+                                        loginWithMainAccount();
+                                        progressDialog.cancel();
+                                    }
+                                } catch (Exception e) {
+
+                                }
+
                             }
                         });
                     }

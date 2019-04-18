@@ -361,6 +361,7 @@ public class GetCoinFolloweFragment extends Fragment {
                                         @Override
                                         public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
 
+
                                         }
                                     });
                                 } catch (InstaApiException e) {
@@ -372,8 +373,15 @@ public class GetCoinFolloweFragment extends Fragment {
 
                             @Override
                             public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                                step++;
-                                likeWithAllAccounts();
+                                try {
+                                    if (errorResponse.getString("error_type").contains("checkpoint_challenge_required")) {
+                                        Toast.makeText(getContext(), "حساب شما به محدودیت رسید. دقایقی دیگر مجددا تلاش کنید", Toast.LENGTH_SHORT).show();
+                                        loginWithMainAccount();
+                                        progressDialog.cancel();
+                                    }
+                                } catch (Exception e) {
+
+                                }
                             }
                         });
                     }
@@ -383,5 +391,25 @@ public class GetCoinFolloweFragment extends Fragment {
 
     }
 
+    private void loginWithMainAccount() {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+        for (User user : dataBaseHelper.getAllUsers()) {
+            if (user.getIsActive() == 1) {
+                InstagramApi.getInstance().Login(user.getUserName(), user.getPassword(), new InstagramApi.ResponseHandler() {
+                    @Override
+                    public void OnSuccess(JSONObject response) {
+                        progressDialog.dismiss();
+
+                    }
+
+                    @Override
+                    public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                        progressDialog.dismiss();
+
+                    }
+                });
+            }
+        }
+    }
 
 }

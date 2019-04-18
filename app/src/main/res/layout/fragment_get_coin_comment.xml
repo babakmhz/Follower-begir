@@ -71,7 +71,7 @@
         <ImageView
             android:id="@+id/imvPic"
             android:layout_width="0dp"
-            android:src="@drawable/ic_image_black"
+            app:srcCompat="@drawable/ic_image_black"
             android:layout_height="0dp"
             android:scaleType="fitXY"
             android:background="@drawable/curved"
