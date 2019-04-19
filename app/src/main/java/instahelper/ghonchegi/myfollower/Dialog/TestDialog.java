@@ -2,6 +2,7 @@ package instahelper.ghonchegi.myfollower.Dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,7 +61,13 @@ public class TestDialog extends DialogFragment {
     private boolean is_more_available = false;
     private String userId;
     private String userImageAddress = "";
+    private Context context;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
 
     public TestDialog(String userId) {
         this.userId = userId;
@@ -73,7 +80,7 @@ public class TestDialog extends DialogFragment {
         final Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_test, null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_test, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -159,9 +166,9 @@ public class TestDialog extends DialogFragment {
     private void submitFollowerOrder(int count) {
 
         if (binding.seekBar.getProgress() == 0) {
-            Toast.makeText(getContext(), "تعداد سفارش را مشخص کنید", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "تعداد سفارش را مشخص کنید", Toast.LENGTH_SHORT).show();
         } else if (App.followCoin <= 0) {
-            Toast.makeText(getContext(), "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
 
         } else {
             final String requestBody = JsonManager.submitOrder(1, userId, userImageAddress, count);
@@ -172,7 +179,7 @@ public class TestDialog extends DialogFragment {
                         JSONObject jsonRootObject = new JSONObject(response1);
                         if (jsonRootObject.optBoolean("status")) {
                             App.followCoin = Integer.parseInt(jsonRootObject.getString("follow_coin"));
-                            Toast.makeText(getContext(), "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
                             binding.seekBar.setProgress(0);
                             binding.tvPurchaseFollowerCount.setText("0");
                             binding.layoutSeekBar.setVisibility(View.GONE);
@@ -187,7 +194,7 @@ public class TestDialog extends DialogFragment {
 
 
                 } else {
-                    Toast.makeText(getContext(), "خطا در ثبت سفارش", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "خطا در ثبت سفارش", Toast.LENGTH_SHORT).show();
 
                 }
             }, error -> {
@@ -307,12 +314,12 @@ public class TestDialog extends DialogFragment {
 
     private void setView() {
 
-        DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+        DividerItemDecoration decoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
         @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        SelectPicOrderOthersAdapter adapter = new SelectPicOrderOthersAdapter(getContext(), pictureModelArrayList,getChildFragmentManager());
+        SelectPicOrderOthersAdapter adapter = new SelectPicOrderOthersAdapter(context, pictureModelArrayList, getChildFragmentManager());
 
         rcvPics.setLayoutManager(layoutManager);
         rcvPics.setItemAnimator(new DefaultItemAnimator());

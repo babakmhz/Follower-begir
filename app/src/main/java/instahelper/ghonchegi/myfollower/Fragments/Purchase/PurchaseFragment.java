@@ -23,11 +23,13 @@ import instahelper.ghonchegi.myfollower.instaAPI.InstagramApi;
 
 @SuppressLint("ValidFragment")
 public class PurchaseFragment extends Fragment {
-    private final DirectPurchaseDialogInterface callBackDirectPurchase;
+    private  DirectPurchaseDialogInterface callBackDirectPurchase;
     private View view;
     private TextView tvLike, tvComment, tvFollow, tvRobotLike;
     private ViewPager viewPager;
 
+    public PurchaseFragment() {
+    }
 
     public PurchaseFragment(DirectPurchaseDialogInterface callBackDirectPurchaseDialog) {
         this.callBackDirectPurchase = callBackDirectPurchaseDialog;

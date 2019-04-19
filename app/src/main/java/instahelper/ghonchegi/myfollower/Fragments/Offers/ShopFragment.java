@@ -52,12 +52,15 @@ import static instahelper.ghonchegi.myfollower.App.requestQueue;
 
 @SuppressLint("ValidFragment")
 public class ShopFragment extends Fragment {
-    private final PurchaseInterface callbackPurchaseBanner;
-    private final ShopItemInterface callBackShopItem;
+    private  PurchaseInterface callbackPurchaseBanner;
+    private  ShopItemInterface callBackShopItem;
     FragmentShopBinding binding;
     private View view;
     private String specialBannerItemId;
     private Dialog progressDialog;
+
+    public ShopFragment() {
+    }
 
     public ShopFragment(PurchaseInterface callBack, ShopItemInterface callBackShopItem) {
         this.callbackPurchaseBanner = callBack;

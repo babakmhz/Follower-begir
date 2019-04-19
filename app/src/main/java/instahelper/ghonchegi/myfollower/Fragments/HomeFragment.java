@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
 
     public static IabHelper mHelper;
     public static IabHelper mPurchase;
-    private final PurchaseInterface callBackPurchase;
+    private  PurchaseInterface callBackPurchase;
     private View view;
     private FragmentHomeBinding binding;
     private InstagramApi api = InstagramApi.getInstance();
@@ -102,6 +102,8 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
     private String specialBannerItemId;
     private AccountOptionChooserInterface accountOptionCallBack;
 
+    public HomeFragment() {
+    }
 
     public HomeFragment(PurchaseInterface callBack) {
         this.callBackPurchase = callBack;

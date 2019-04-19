@@ -3,7 +3,6 @@ package instahelper.ghonchegi.myfollower.Adapters;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,7 +66,6 @@ public class SelectPicOrderOthersAdapter extends RecyclerView.Adapter<SelectPicO
             @Override
             public void onClick(View v) {
                 PopupMenu popup = new PopupMenu(context, holder.tvLikeCounts);
-                popup.setGravity(Gravity.END);
                 //Inflating the Popup using xml file
                 popup.getMenuInflater()
                         .inflate(R.menu.action_purchase_others, popup.getMenu());

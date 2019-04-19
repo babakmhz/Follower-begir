@@ -27,6 +27,8 @@ public class GetCoinFragment extends Fragment {
     private GetCoinViewPagerAdapter adapter;
 
 
+    public GetCoinFragment() {
+    }
 
     public GetCoinFragment(AddCoinMultipleAccount addCoinMultipleAccount) {
         this.addCoinMultipleAccount=addCoinMultipleAccount;
