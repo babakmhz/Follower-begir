@@ -7,6 +7,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import ka.follow.app.Dialog.AuthenticationDialog;
+import ka.follow.app.Dialog.InstagramAutenticationDialog;
 import ka.follow.app.Manager.DataBaseHelper;
 import ka.follow.app.R;
 import ka.follow.app.databinding.ActivitySplashBinding;
@@ -56,7 +57,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
 
     private void authenticate() {
         // startActivity(new Intent(this,ActivityLoginWebview.class));
-        AuthenticationDialog dialog = new AuthenticationDialog(false, null, null);
+        InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(false, null, null);
         dialog.setCancelable(true);
         dialog.show(getSupportFragmentManager(), ":");
 
