@@ -26,7 +26,7 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        buildConfigField "String", "BAZAR_RSA", "\"MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwC/1J5x05Vu9la0B2RJMX+TP7XN29WEwCODNNrKNtf+x7sVE0MJ6PesMI2dFdzEPOf+M0pcp8dDBq8BMmH/nGQU1gJR7Ey8SR6pLmW/aMExK82NKIBZWaqtqC8sQrYWwAlxUe+hld+nTMe99cyh6K7zZCLv/skJ9crbsV0o48LOmRNaDSAFP4Sxl8kuJjR7jqxeZwMfJ1vSlybNuHB4I//OiUl9IN6T3WuHQBtbFOUCAwEAAQ==\""
+        buildConfigField "String", "BAZAR_RSA", "\"MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwDB1YN8n11QuwWpL+XHqqqdGKgYG9d4FLglhJqfLEeV7FFXShc06oA1qbu6cFBLSqd31aK1k57ctyuitaZVOm3gPXlB2kYhfGbVz6R33G0h0o5HqRXgyavf3JvP5YMBvTJa4anxPa1CcOjxjPwazLvsc0w/aUf/Xg++q1OUVAc/Ib46kChsZmJ/D1o8WHsxi37hW+aKud18WDfBoeNdvOnMpAu7t6qX6pNW2uMgQlUCAwEAAQ==\""
     }
     dataBinding {
         enabled = true

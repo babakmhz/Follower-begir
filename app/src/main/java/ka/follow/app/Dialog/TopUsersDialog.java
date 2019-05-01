@@ -12,6 +12,7 @@ import android.view.Window;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.crashlytics.android.Crashlytics;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -28,6 +29,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import io.fabric.sdk.android.Fabric;
 import ka.follow.app.Adapters.TopUsersAdapter;
 import ka.follow.app.App;
 import ka.follow.app.Models.TopUsers;
@@ -90,123 +93,146 @@ public class TopUsersDialog extends DialogFragment {
 
 
     private void setBackground(int which) {
-        binding.btnTopLikers.setBackground(getResources().getDrawable(R.drawable.border_orange));
-        binding.btnTopfollowers.setBackground(getResources().getDrawable(R.drawable.border_orange));
-        binding.btnTopCommenters.setBackground(getResources().getDrawable(R.drawable.border_orange));
-        switch (which) {
-            case 0:
-                binding.btnTopLikers.setBackground(getResources().getDrawable(R.drawable.border_orange_active_pink));
+        try{   binding.btnTopLikers.setBackground(getResources().getDrawable(R.drawable.border_orange));
+            binding.btnTopfollowers.setBackground(getResources().getDrawable(R.drawable.border_orange));
+            binding.btnTopCommenters.setBackground(getResources().getDrawable(R.drawable.border_orange));
+            switch (which) {
+                case 0:
+                    binding.btnTopLikers.setBackground(getResources().getDrawable(R.drawable.border_orange_active_pink));
 
-                break;
-            case 1:
-                binding.btnTopfollowers.setBackground(getResources().getDrawable(R.drawable.border_orange_active_pink));
+                    break;
+                case 1:
+                    binding.btnTopfollowers.setBackground(getResources().getDrawable(R.drawable.border_orange_active_pink));
 
-                break;
-            case 2:
-                binding.btnTopCommenters.setBackground(getResources().getDrawable(R.drawable.border_orange_active_pink));
+                    break;
+                case 2:
+                    binding.btnTopCommenters.setBackground(getResources().getDrawable(R.drawable.border_orange_active_pink));
 
-                break;
+                    break;
+            }}
+        catch (Exception e)
+        {
+            Crashlytics.logException(e);
         }
+
 
     }
 
     private void getTopUsers() {
+        try{
+            StringRequest request = new StringRequest(Request.Method.GET, Base_URL + "bests", (String response1) -> {
 
-        StringRequest request = new StringRequest(Request.Method.GET, Base_URL + "bests", (String response1) -> {
-
-            if (response1 != null) {
-                try {
-                    jsonObjectMain = new JSONObject(response1);
-                    setAdapter(0);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (response1 != null) {
+                    try {
+                        jsonObjectMain = new JSONObject(response1);
+                        setAdapter(0);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }, error -> {
-            Log.i("volley", "onErrorResponse: " + error.toString());
-        });
-        request.setTag(this);
-        requestQueue.add(request);
+            }, error -> {
+                Log.i("volley", "onErrorResponse: " + error.toString());
+            });
+            request.setTag(this);
+            requestQueue.add(request);
+        }
+        catch (Exception e)
+        {
+            Crashlytics.logException(e);
+        }
+
+
 
     }
 
     private void setAdapter(int type) throws JSONException {
         binding.llNoItem.setVisibility(View.GONE);
+        try
+        {     JSONArray jsonArray = null;
+            ArrayList<TopUsers> topUserList = new ArrayList<>();
+            switch (type) {
+                case 0:
+                    jsonArray = jsonObjectMain.getJSONArray("like");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        TopUsers topUser = new TopUsers();
+                        topUser.setCount(String.valueOf(object.getInt("like_count")));
+                        topUser.setUserName(object.getString("user_name"));
+                        topUser.setPicUrl(object.getString("image_path"));
+                        topUserList.add(topUser);
+                    }
+                    break;
+                case 1:
+                    jsonArray = jsonObjectMain.getJSONArray("follow");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        TopUsers topUser = new TopUsers();
+                        topUser.setCount(String.valueOf(object.getInt("follow_count")));
+                        topUser.setUserName(object.getString("user_name"));
+                        topUser.setPicUrl(object.getString("image_path"));
+                        topUserList.add(topUser);
 
-        JSONArray jsonArray = null;
-        ArrayList<TopUsers> topUserList = new ArrayList<>();
-        switch (type) {
-            case 0:
-                jsonArray = jsonObjectMain.getJSONArray("like");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject object = jsonArray.getJSONObject(i);
-                    TopUsers topUser = new TopUsers();
-                    topUser.setCount(String.valueOf(object.getInt("like_count")));
-                    topUser.setUserName(object.getString("user_name"));
-                    topUser.setPicUrl(object.getString("image_path"));
-                    topUserList.add(topUser);
-                }
-                break;
-            case 1:
-                jsonArray = jsonObjectMain.getJSONArray("follow");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject object = jsonArray.getJSONObject(i);
-                    TopUsers topUser = new TopUsers();
-                    topUser.setCount(String.valueOf(object.getInt("follow_count")));
-                    topUser.setUserName(object.getString("user_name"));
-                    topUser.setPicUrl(object.getString("image_path"));
-                    topUserList.add(topUser);
+                    }
+                    break;
+                case 2:
+                    jsonArray = jsonObjectMain.getJSONArray("comment");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        TopUsers topUser = new TopUsers();
+                        topUser.setCount(String.valueOf(object.getInt("comment_count")));
+                        topUser.setUserName(object.getString("user_name"));
+                        topUser.setPicUrl(object.getString("image_path"));
+                        topUserList.add(topUser);
 
-                }
-                break;
-            case 2:
-                jsonArray = jsonObjectMain.getJSONArray("comment");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject object = jsonArray.getJSONObject(i);
-                    TopUsers topUser = new TopUsers();
-                    topUser.setCount(String.valueOf(object.getInt("comment_count")));
-                    topUser.setUserName(object.getString("user_name"));
-                    topUser.setPicUrl(object.getString("image_path"));
-                    topUserList.add(topUser);
-
-                }
-                break;
-        }
-        if (  topUserList.size()==0 )
+                    }
+                    break;
+            }
+            if (  topUserList.size()==0 )
+            {
+                binding.llNoItem.setVisibility(View.VISIBLE);
+            }
+            setView(topUserList, type);}
+        catch (Exception e)
         {
-            binding.llNoItem.setVisibility(View.VISIBLE);
+            Crashlytics.logException(e);
         }
-        setView(topUserList, type);
+
 
     }
 
 
     private void setView(ArrayList<TopUsers> topUsers, int type) {
-        DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-        //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        TopUsersAdapter adapter = new TopUsersAdapter(topUsers, type);
-        binding.rcvTopsers.setLayoutManager(mLayoutManager);
-        binding.rcvTopsers.setItemAnimator(new DefaultItemAnimator());
-        binding.rcvTopsers.setAdapter(adapter);
-        binding.rcvTopsers.addItemDecoration(decoration);
-        binding.rcvTopsers.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                binding.rcvTopsers.getViewTreeObserver().removeOnPreDrawListener(this);
-                for (int i = 0; i < binding.rcvTopsers.getChildCount(); i++) {
-                    View v = binding.rcvTopsers.getChildAt(i);
-                    v.setAlpha(0.0f);
-                    v.animate().alpha(1.0f)
-                            .setDuration(300)
-                            .setStartDelay(i * 50)
-                            .start();
+        try
+        {        DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+            @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+            //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+            TopUsersAdapter adapter = new TopUsersAdapter(topUsers, type);
+            binding.rcvTopsers.setLayoutManager(mLayoutManager);
+            binding.rcvTopsers.setItemAnimator(new DefaultItemAnimator());
+            binding.rcvTopsers.setAdapter(adapter);
+            binding.rcvTopsers.addItemDecoration(decoration);
+            binding.rcvTopsers.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    binding.rcvTopsers.getViewTreeObserver().removeOnPreDrawListener(this);
+                    for (int i = 0; i < binding.rcvTopsers.getChildCount(); i++) {
+                        View v = binding.rcvTopsers.getChildAt(i);
+                        v.setAlpha(0.0f);
+                        v.animate().alpha(1.0f)
+                                .setDuration(300)
+                                .setStartDelay(i * 50)
+                                .start();
+                    }
+                    return true;
                 }
-                return true;
-            }
-        });
+            });}
+        catch (Exception e)
+        {
+            Crashlytics.logException(e);
+        }
+
     }
 
 

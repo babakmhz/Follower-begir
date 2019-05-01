@@ -100,7 +100,7 @@ public class App extends Application {
         Tapsell.initialize(this, TapSellKey);
         Config.setupShopItems();
         Cheshmak.with(context);
-        Cheshmak.initTracker("XfrhCjC/AXDzF6GNtLaPCQ==");
+        Cheshmak.initTracker("PYD9xSizPBVpM8TZRbXkgw==");
 
 
 

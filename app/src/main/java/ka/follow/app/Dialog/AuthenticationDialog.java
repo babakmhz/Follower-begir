@@ -2,32 +2,39 @@ package ka.follow.app.Dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import ka.follow.app.Activities.MainActivity;
 import ka.follow.app.App;
 import ka.follow.app.Manager.DataBaseHelper;
 import ka.follow.app.R;
-import ka.follow.app.databinding.InstaBinding;
+import ka.follow.app.databinding.DialogAuthenticateBinding;
 import ka.follow.app.instaAPI.InstaApiException;
 import ka.follow.app.instaAPI.InstagramApi;
 
@@ -37,21 +44,37 @@ import static ka.follow.app.App.TAG;
 @SuppressLint("ValidFragment")
 public class AuthenticationDialog extends DialogFragment {
 
-    private final String userName;
-    private final String password;
-    InstaBinding binding;
+    DialogAuthenticateBinding binding;
     private InstagramApi api = InstagramApi.getInstance();
+    private Handler handler;
+    private WebView loginWebView;
     private SharedPreferences shared;
     private SharedPreferences.Editor editor;
     private SQLiteDatabase db;
     private DataBaseHelper dbHeplper;
     private boolean isRedirectd = false;
+    private String userName, password;
 
     public AuthenticationDialog(boolean isRedirect, @Nullable String userName, @Nullable String password) {
         this.isRedirectd = isRedirect;
         this.password = password;
         this.userName = userName;
 
+    }
+
+    public static void clearCookies(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            CookieManager.getInstance().removeAllCookies(null);
+            CookieManager.getInstance().flush();
+        } else {
+            CookieSyncManager cookieSyncMngr = CookieSyncManager.createInstance(context);
+            cookieSyncMngr.startSync();
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.removeAllCookie();
+            cookieManager.removeSessionCookie();
+            cookieSyncMngr.stopSync();
+            cookieSyncMngr.sync();
+        }
     }
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
@@ -61,95 +84,46 @@ public class AuthenticationDialog extends DialogFragment {
         final Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //dialog.setContentView(R.layout.dialog_authenticate);
         dbHeplper = new DataBaseHelper(getContext());
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.insta, null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_authenticate, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
         //endregion
+        handler = new Handler(getActivity().getMainLooper());
+        loginWebView = binding.webViewAuthenticate;
+        AuthenticationDialog.LoginWebClient client = new AuthenticationDialog.LoginWebClient();
         shared = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
         editor = shared.edit();
-        init();
-
+        loginWebView.getSettings().setJavaScriptEnabled(true);
+        loginWebView.addJavascriptInterface(new AuthenticationDialog.MyJavaScriptInterface(), "MYOBJECT");
+        loginWebView.setWebViewClient(client);
+        loginWebView.clearCache(true);
+        loginWebView.clearHistory();
+        loginWebView.getSettings().setSaveFormData(false);
+        clearCookies(getContext());
         if (isRedirectd) {
             logOut();
-            binding.editText.setText(userName);
-            binding.editText2.setText(password);
             OnCredentialsEntered(userName, password);
-        }
+        } else
+            loginWebView.loadUrl("https://www.instagram.com/accounts/login/?force_classic_login");
         db = dbHeplper.getWritableDatabase();
+
+
         return dialog;
     }
 
-    private void init() {
-        binding.editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(binding.editText.getText().toString()) && !TextUtils.isEmpty(binding.editText2.getText().toString())) {
-                    binding.button.setBackground(getResources().getDrawable(R.drawable.insta_btn_back_active));
-                } else
-                    binding.button.setBackground(getResources().getDrawable(R.drawable.insta_btn_back));
-
-
-            }
-        });
-        binding.editText2.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(binding.editText.getText().toString()) && !TextUtils.isEmpty(binding.editText2.getText().toString())) {
-                    binding.button.setBackground(getResources().getDrawable(R.drawable.insta_btn_back_active));
-                } else
-                    binding.button.setBackground(getResources().getDrawable(R.drawable.insta_btn_back));
-
-
-            }
-        });
-
-        binding.button.setOnClickListener(v -> {
-            if (!TextUtils.isEmpty(binding.editText.getText().toString()) && !TextUtils.isEmpty(binding.editText2.getText().toString())) {
-                OnCredentialsEntered(binding.editText.getText().toString(), binding.editText2.getText().toString());
-            }
-
-        });
-    }
-
     private void OnCredentialsEntered(String username, String password) {
-        binding.prgInstagram.setVisibility(View.VISIBLE);
-        binding.tvLogin.setVisibility(View.GONE);
+        binding.prg.setVisibility(View.VISIBLE);
         api = InstagramApi.getInstance();
         api.Login(username, password, new InstagramApi.ResponseHandler() {
             @Override
             public void OnSuccess(JSONObject response) {
                 Log.i(TAG, "OnSuccess: " + response);
-                binding.prgInstagram.setVisibility(View.GONE);
-                binding.tvLogin.setVisibility(View.VISIBLE);
-                JSONObject jsonRootObject = null;
                 try {
-                    jsonRootObject = new JSONObject(String.valueOf(response));
+                    JSONObject jsonRootObject = new JSONObject(String.valueOf(response));
                     JSONObject newObj = jsonRootObject.getJSONObject("logged_in_user");
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -164,10 +138,7 @@ public class AuthenticationDialog extends DialogFragment {
 
             @Override
             public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                binding.prgInstagram.setVisibility(View.GONE);
-                binding.tvLogin.setVisibility(View.VISIBLE);
-                Log.i(TAG, "onFailed: " + errorResponse);
-
+                binding.prg.setVisibility(View.GONE);
                 try {
                     switch (errorResponse.getString("error_type")) {
                         case "checkpoint_challenge_required":
@@ -226,6 +197,86 @@ public class AuthenticationDialog extends DialogFragment {
             });
         } catch (InstaApiException e) {
             e.printStackTrace();
+        }
+    }
+
+    private class LoginWebClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (url.contains("instagram.com/accounts/login/?force_classic_login")) {
+                view.loadUrl(url);
+            } else if (url.contains("instagram.com/accounts/password/reset")) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                getActivity().startActivity(intent);
+            }
+            return true;
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            if (url.equalsIgnoreCase("https://www.instagram.com/")) {
+                view.stopLoading();
+                clearCookies(getActivity());
+                return;
+            }
+            binding.prg.setVisibility(View.VISIBLE);
+
+            super.onPageStarted(view, url, favicon);
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            StringBuilder sb = new StringBuilder();
+            sb.append("var values = { user:'' , pass:'' }; ");
+            sb.append("document.getElementsByTagName('form')[0].onsubmit = function () {");
+            sb.append("var objPWD, objAccount;var str = '';");
+            sb.append("var inputs = document.getElementsByTagName('input');");
+            sb.append("for (var i = 0; i < inputs.length; i++) {");
+            sb.append("if (inputs[i].name.toLowerCase() === 'password') {objPWD = inputs[i];}");
+            sb.append("else if (inputs[i].name.toLowerCase() === 'username') {objAccount = inputs[i];}");
+            sb.append("}");
+            sb.append("if (objAccount != null) " +
+                    "{values.user = objAccount.value;" +
+                    "}");
+            sb.append("if (objPWD != null) { values.pass = objPWD.value;}");
+            sb.append("window.MYOBJECT.processHTML(JSON.stringify(values));");
+            sb.append("return true;");
+            sb.append("};");
+            view.loadUrl("javascript:" + sb.toString());
+            try {
+                if (!url.equals("https://www.instagram.com/")) {
+                    binding.prg.setVisibility(View.GONE);
+                }
+            } catch (Exception ignored) {
+
+            }
+        }
+    }
+
+    private class MyJavaScriptInterface {
+        @JavascriptInterface
+        public void processHTML(String json) {
+            String user = null;
+            String password = null;
+            try {
+                JSONObject jsonObject = new JSONObject(json);
+                user = jsonObject.getString("user");
+                password = jsonObject.getString("pass");
+            } catch (JSONException ignored) {
+
+            }
+            final String username = user;
+            final String password_final = password;
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+
+
+                    OnCredentialsEntered(username, password_final);
+                }
+            });
         }
     }
 
