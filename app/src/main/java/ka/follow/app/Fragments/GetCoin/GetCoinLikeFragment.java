@@ -149,7 +149,8 @@ public class GetCoinLikeFragment extends Fragment {
 
                     @Override
                     public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                        binding.btnNext.performClick();
+                        submit();
+
                         likeFinished();
 
                     }

@@ -14,6 +14,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
@@ -26,10 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import ka.follow.app.App;
 import ka.follow.app.Interface.AddCoinMultipleAccount;
 import ka.follow.app.Manager.DataBaseHelper;
@@ -108,7 +109,7 @@ public class GetCoinFolloweFragment extends Fragment {
 
                     @Override
                     public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                        binding.btnNext.performClick();
+                        submit();
                         likeFinished();
                     }
                 });
