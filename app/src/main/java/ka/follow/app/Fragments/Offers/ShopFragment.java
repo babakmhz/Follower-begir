@@ -36,6 +36,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import ka.follow.app.Activities.MainActivity;
 import ka.follow.app.Adapters.OffersAdapter;
 import ka.follow.app.App;
 import ka.follow.app.Interface.PurchaseInterface;
@@ -113,7 +115,9 @@ public class ShopFragment extends Fragment {
                 JSONObject jsonObject = new JSONObject(App.responseBanner);
                 JSONObject bannerCount = jsonObject.getJSONObject("special_banner");
                 Config.SKUSpecialBanner = bannerCount.getString("special_banner_RSA");
-                callbackPurchaseBanner.specialBanner("SpecialBanner", Config.ReqeuestSpeciialBanner, bannerCount.getInt("follow_coin"), bannerCount.getInt("like_coin"));
+                Config.bannerFollowCoin=bannerCount.getInt("follow_coin");
+                Config.bannerLikeCoinCount=bannerCount.getInt("like_coin");
+                MainActivity.mNivadBilling.purchase(getActivity(),Config.SKUSpecialBanner);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -124,6 +128,7 @@ public class ShopFragment extends Fragment {
 
 
     }
+
 
     private void getOffers() {
         ProgressDialog(" در حال دریافت پیشنهادات ویژه شما... ");

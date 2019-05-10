@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+
+import ka.follow.app.Activities.MainActivity;
 import ka.follow.app.Interface.DirectPurchaseDialogInterface;
 import ka.follow.app.Manager.Config;
 import ka.follow.app.R;
@@ -94,19 +96,26 @@ public class PurchaseLike extends DialogFragment {
     private void initViewSumbite() {
         bindingView.llLikeOne.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuFirstVIew, Config.reqeustViewtFirst, selectedPicURl, itemId, count);
+
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFirstVIew);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
         bindingView.llLikeTwo.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuSecondView, Config.reqeustViewSecond, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuSecondView);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
         bindingView.llLikeThree.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuThirdView, Config.reqeustViewThird, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuThirdView);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
@@ -114,19 +123,25 @@ public class PurchaseLike extends DialogFragment {
     private void initCommentSubmit() {
         bindingComment.llLikeOne.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuFirstComment, Config.reqeustCommentFirst, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFirstComment);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
         bindingComment.llLikeTwo.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuSecondComment, Config.reqeustCommentSecond, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuSecondComment);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
         bindingComment.llLikeThree.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuThirdComment, Config.reqeustCommentThird, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuThirdComment);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
@@ -135,31 +150,41 @@ public class PurchaseLike extends DialogFragment {
     private void initSubmitFollower() {
         bindingFollow.llLikeOne.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuFirstFollow, Config.reqeustFollowFirst, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFirstFollow);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
         bindingFollow.llLikeTwo.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuSecondFollow, Config.reqeustFollowSecond, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuSecondFollow);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
         bindingFollow.llLikeThree.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuThirdFollow, Config.reqeustFollowThird, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuThirdFollow);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
         bindingFollow.llLikeFour.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuFourthFollow, Config.reqeustFollowFourth, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFourthFollow);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
         bindingFollow.llLikeFive.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuFifthFollow, Config.reqeustFollowFifth, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFifthFollow);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
@@ -168,35 +193,46 @@ public class PurchaseLike extends DialogFragment {
     private void initSubmitLike() {
         bindingLike.llLikeOne.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuFirstLike, Config.reqeustLikeFirst, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFirstLike);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
         bindingLike.llLikeTwo.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuSecondLike, Config.reqeustLikeSecond, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuSecondLike);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
         bindingLike.llLikeThree.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuThirdLike, Config.reqeustLikeThird, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuThirdLike);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
         bindingLike.llLikeFour.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuFourthLike, Config.reqeustLikeFourth, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFourthLike);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
         bindingLike.llLikeFive.setOnClickListener(v -> {
             if (validate()) {
-                callBackDirectPurchase.directPurchase(Config.skuFifthLike, Config.reqeustLikeFifth, selectedPicURl, itemId, count);
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFifthLike);
+                MainActivity.directOrderItemId = itemId;
+                MainActivity.directOrderItemURL = selectedPicURl;
             }
 
         });
     }
+
 
     private boolean validate() {
         if (selectedPicURl == null) {

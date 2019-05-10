@@ -14,6 +14,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -27,10 +32,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import ka.follow.app.App;
 import ka.follow.app.Interface.AddCoinMultipleAccount;
 import ka.follow.app.Manager.DataBaseHelper;
@@ -59,6 +60,7 @@ public class GetCoinLikeFragment extends Fragment {
     private boolean autoLike = false;
     private Dialog progressDialog;
     private CountDownTimer cTimer = null;
+    private boolean isAvailable = false;
 
     private void report() {
 
@@ -118,6 +120,10 @@ public class GetCoinLikeFragment extends Fragment {
             getLikeOrder();
         });
         binding.btnAutoLike.setOnClickListener(v -> {
+            if (!isAvailable) {
+                return;
+            }
+
             autoLike = true;
             ProgressDialog("انجام عملیات لایک خودکار");
             h.postDelayed(runnable = new Runnable() {
@@ -137,6 +143,9 @@ public class GetCoinLikeFragment extends Fragment {
 
         });
         binding.btnDoLike.setOnClickListener(v -> {
+            if (!isAvailable) {
+                return;
+            }
             try {
                 likeInProgress();
                 InstagramApi.getInstance().Like(imageId, new InstagramApi.ResponseHandler() {
@@ -150,7 +159,6 @@ public class GetCoinLikeFragment extends Fragment {
                     @Override
                     public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
                         submit();
-
                         likeFinished();
 
                     }
@@ -163,10 +171,12 @@ public class GetCoinLikeFragment extends Fragment {
         });
 
         binding.btnConfirmAndPay.setOnClickListener(v -> {
+            if (!isAvailable) {
+                return;
+            }
             ProgressDialog("در حال انجام لایک با تمام اکانت ها . جهت جلوگیری از  شناسایی  توسط اینستاگرام و مسدود سازی حساب این فرآیند ممکن است زمانبر باشد ...");
             likeWithAllAccounts();
         });
-
         getLikeOrder();
 
         return view;
@@ -190,6 +200,10 @@ public class GetCoinLikeFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 if (response == null || response.equals("")) {
+                    isAvailable = false;
+                    binding.btnAutoLike.setAlpha(0.5f);
+                    binding.btnDoLike.setAlpha(0.5f);
+                    binding.btnConfirmAndPay.setAlpha(0.5f);
                     Toast.makeText(getActivity(), "سفارش فعالی موجود نیست", Toast.LENGTH_SHORT).show();
                     binding.imvPic.setImageResource(R.drawable.ic_image_black);
                     if (autoLike) {
@@ -200,18 +214,32 @@ public class GetCoinLikeFragment extends Fragment {
                     return;
                 }
                 try {
-
                     JSONObject jsonObject = new JSONObject(response);
                     if (!jsonObject.getBoolean("status")) {
+                        isAvailable = false;
+                        binding.btnAutoLike.setAlpha(0.5f);
+                        binding.btnDoLike.setAlpha(0.5f);
+                        binding.btnConfirmAndPay.setAlpha(0.5f);
                         getLikeOrder();
                         return;
                     }
+                    isAvailable = true;
+
+                    binding.btnAutoLike.setAlpha(1f);
+                    ;
+                    binding.btnDoLike.setAlpha(1f);
+                    binding.btnConfirmAndPay.setAlpha(1f);
+
                     Picasso.get().load(jsonObject.getString("image_path")).into(binding.imvPic);
                     imageId = jsonObject.getString("type_id");
                     transactionId = jsonObject.getInt("transaction_id");
                     // checkLikers();
 
                 } catch (JSONException e) {
+                    isAvailable = false;
+                    binding.btnAutoLike.setAlpha(0.5f);
+                    binding.btnDoLike.setAlpha(0.5f);
+                    binding.btnConfirmAndPay.setAlpha(0.5f);
                     e.printStackTrace();
                 }
 
@@ -219,6 +247,10 @@ public class GetCoinLikeFragment extends Fragment {
         },
                 error -> {
                     if (autoLike) {
+                        isAvailable = false;
+                        binding.btnAutoLike.setAlpha(0.5f);
+                        binding.btnDoLike.setAlpha(0.5f);
+                        binding.btnConfirmAndPay.setAlpha(0.5f);
                         progressDialog.dismiss();
                         autoLike = false;
                         h.removeCallbacks(runnable); //stop handler

@@ -56,6 +56,12 @@ public class Config {
 
 
     public static ArrayList<ShopItem> shopItems = new ArrayList<>();
+    public static int bannerLikeCoinCount=0;
+    public static int bannerFollowCoin=0;
+    public static String shopSku;
+    public static int shopType;
+    public static int shopCounts;
+
 
     public static void setupShopItems() {
         final int min = 10000;

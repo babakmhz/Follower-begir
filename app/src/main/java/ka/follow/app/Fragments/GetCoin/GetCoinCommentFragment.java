@@ -61,6 +61,8 @@ public class GetCoinCommentFragment extends Fragment {
     private Dialog progressDialog;
     private int step=0;
     private CountDownTimer cTimer=null;
+    private boolean isAvailable = false;
+
 
     private void report() {
 
@@ -120,6 +122,10 @@ public class GetCoinCommentFragment extends Fragment {
 
 
         binding.btnDoLike.setOnClickListener(v -> {
+            if (!isAvailable) {
+                return;
+            }
+
             likeInProgress();
             String commentText = "";
             if (!TextUtils.isEmpty(binding.edtCommentText.getText().toString())) {
@@ -154,6 +160,10 @@ public class GetCoinCommentFragment extends Fragment {
             getCommentOrders();
         });
         binding.btnAutoLike.setOnClickListener(v -> {
+            if (!isAvailable) {
+                return;
+            }
+
             autoLike = true;
             ProgressDialog("انجام عملیات فالو خودکار");
             h.postDelayed(runnable = new Runnable() {
@@ -167,6 +177,10 @@ public class GetCoinCommentFragment extends Fragment {
         });
 
         binding.btnConfirmAndPay.setOnClickListener(v -> {
+            if (!isAvailable) {
+                return;
+            }
+
             ProgressDialog("در حال انجام لایک با تمام اکانت ها . جهت جلوگیری از  شناسایی  توسط اینستاگرام و مسدود سازی حساب این فرآیند ممکن است زمانبر باشد ...");
             likeWithAllAccounts();
         });
@@ -186,6 +200,7 @@ public class GetCoinCommentFragment extends Fragment {
         binding.prg.setVisibility(View.GONE);
     }
 
+
     private void getCommentOrders() {
         final String requestBody = JsonManager.getOrders(2);
         StringRequest request = new StringRequest(Request.Method.POST, App.Base_URL + "transaction/get", new Response.Listener<String>() {
@@ -195,7 +210,10 @@ public class GetCoinCommentFragment extends Fragment {
 
                 try {
                     if (response == null || response.equals("")) {
-
+                        isAvailable = false;
+                        binding.btnAutoLike.setAlpha(0.5f);
+                        binding.btnDoLike.setAlpha(0.5f);
+                        binding.btnConfirmAndPay.setAlpha(0.5f);
                         binding.imvPic.setImageResource(R.drawable.ic_image_black);
                         if (autoLike) {
                             progressDialog.dismiss();
@@ -205,18 +223,29 @@ public class GetCoinCommentFragment extends Fragment {
                         return;
                     }
                     JSONObject jsonObject = new JSONObject(response);
-                    if (!jsonObject.getBoolean("status"))
-                    {
+                    if (!jsonObject.getBoolean("status")) {
+                        isAvailable = false;
+                        binding.btnAutoLike.setAlpha(0.5f);
+                        binding.btnDoLike.setAlpha(0.5f);
+                        binding.btnConfirmAndPay.setAlpha(0.5f);
                         getCommentOrders();
                         return;
                     }
                     Picasso.get().load(jsonObject.getString("image_path")).into(binding.imvPic);
                     imageId = jsonObject.getString("type_id");
                     transactionId = jsonObject.getInt("transaction_id");
+                    isAvailable = true;
+                    binding.btnAutoLike.setAlpha(1f);
+                    binding.btnDoLike.setAlpha(1f);
+                    binding.btnConfirmAndPay.setAlpha(1f);
 
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    isAvailable = false;
+                    binding.btnAutoLike.setAlpha(0.5f);
+                    binding.btnDoLike.setAlpha(0.5f);
+                    binding.btnConfirmAndPay.setAlpha(0.5f);
                 }
 
             }
@@ -226,6 +255,10 @@ public class GetCoinCommentFragment extends Fragment {
                         progressDialog.dismiss();
                         autoLike = false;
                         h.removeCallbacks(runnable); //stop handler
+                        isAvailable = false;
+                        binding.btnAutoLike.setAlpha(0.5f);
+                        binding.btnDoLike.setAlpha(0.5f);
+                        binding.btnConfirmAndPay.setAlpha(0.5f);
                     }
                 }) {
             @Override

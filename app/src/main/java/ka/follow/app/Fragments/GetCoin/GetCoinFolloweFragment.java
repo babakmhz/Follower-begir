@@ -59,6 +59,7 @@ public class GetCoinFolloweFragment extends Fragment {
     private AddCoinMultipleAccount addCoinMultipleAccount;
     private int step = 0;
     private CountDownTimer cTimer = null;
+    private boolean isAvailable=false;
 
 
     public GetCoinFolloweFragment(AddCoinMultipleAccount addCoinMultipleAccount) {
@@ -81,6 +82,8 @@ public class GetCoinFolloweFragment extends Fragment {
         binding.btnNext.setOnClickListener(v -> getLikeOrder());
 
         binding.btnAutoFollow.setOnClickListener(v -> {
+            if (!isAvailable)
+                return;
             autoLike = true;
             ProgressDialog("انجام عملیات فالو خودکار");
             h.postDelayed(runnable = new Runnable() {
@@ -96,6 +99,8 @@ public class GetCoinFolloweFragment extends Fragment {
         binding.btnReport.setOnClickListener(v->report());
 
         binding.btnDoFollow.setOnClickListener(b -> {
+            if (!isAvailable)
+                return;
             if (userId == null)
                 return;
             likeInProgress();
@@ -120,6 +125,8 @@ public class GetCoinFolloweFragment extends Fragment {
         });
 
         binding.btnFollowWithAll.setOnClickListener(v -> {
+            if (!isAvailable)
+                return;
             ProgressDialog("در حال انجام لایک با تمام اکانت ها . جهت جلوگیری از  شناسایی  توسط اینستاگرام و مسدود سازی حساب این فرآیند ممکن است زمانبر باشد ...");
             likeWithAllAccounts();
         });
@@ -180,7 +187,10 @@ public class GetCoinFolloweFragment extends Fragment {
         final String requestBody = JsonManager.getOrders(1);
         StringRequest request = new StringRequest(Request.Method.POST, App.Base_URL + "transaction/get", response -> {
             if (response == null || response.equals("")) {
-
+                isAvailable = false;
+                binding.btnAutoFollow.setAlpha(0.5f);
+                binding.btnDoFollow.setAlpha(0.5f);
+                binding.btnFollowWithAll.setAlpha(0.5f);
                 binding.imvPic.setImageResource(R.drawable.ic_user_avatar);
 
                 if (autoLike) {
@@ -193,18 +203,30 @@ public class GetCoinFolloweFragment extends Fragment {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 if (!jsonObject.getBoolean("status")) {
+                    isAvailable = false;
+                    binding.btnAutoFollow.setAlpha(0.5f);
+                    binding.btnDoFollow.setAlpha(0.5f);
+                    binding.btnFollowWithAll.setAlpha(0.5f);
                     userId = null;
                     transactionId = 0;
                     Picasso.get().load(R.drawable.ic_user_avatar).into(binding.imvPic);
                     getLikeOrder();
                     return;
                 }
+                isAvailable = true;
+                binding.btnAutoFollow.setAlpha(1f);
+                binding.btnDoFollow.setAlpha(1f);
+                binding.btnFollowWithAll.setAlpha(1f);
                 Picasso.get().load(jsonObject.getString("image_path")).into(binding.imvPic);
                 userId = jsonObject.getString("type_id");
                 transactionId = jsonObject.getInt("transaction_id");
 
             } catch (JSONException e) {
                 e.printStackTrace();
+                isAvailable = false;
+                binding.btnAutoFollow.setAlpha(0.5f);
+                binding.btnDoFollow.setAlpha(0.5f);
+                binding.btnFollowWithAll.setAlpha(0.5f);
             }
 
         },
@@ -212,6 +234,10 @@ public class GetCoinFolloweFragment extends Fragment {
                     if (autoLike) {
                         progressDialog.dismiss();
                         autoLike = false;
+                        isAvailable = false;
+                        binding.btnAutoFollow.setAlpha(0.5f);
+                        binding.btnDoFollow.setAlpha(0.5f);
+                        binding.btnFollowWithAll.setAlpha(0.5f);
                         h.removeCallbacks(runnable); //stop handler
                     }
                 }) {

@@ -9,6 +9,10 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
@@ -20,9 +24,15 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentManager;
+import io.nivad.iab.BillingProcessor;
+import io.nivad.iab.MarketName;
+import io.nivad.iab.TransactionDetails;
+import ir.tapsell.sdk.Tapsell;
+import ir.tapsell.sdk.TapsellAd;
+import ir.tapsell.sdk.TapsellAdRequestListener;
+import ir.tapsell.sdk.TapsellAdRequestOptions;
+import ir.tapsell.sdk.TapsellAdShowListener;
+import ir.tapsell.sdk.TapsellShowOptions;
 import ka.follow.app.App;
 import ka.follow.app.BuildConfig;
 import ka.follow.app.Dialog.PurchasePackages.DirectPrchaseInterface;
@@ -42,15 +52,6 @@ import ka.follow.app.Manager.SharedPreferences;
 import ka.follow.app.Models.ShopItem;
 import ka.follow.app.R;
 import ka.follow.app.databinding.ActivityMainBinding;
-import ka.follow.util.IabHelper;
-import ka.follow.util.IabResult;
-import ka.follow.util.Purchase;
-import ir.tapsell.sdk.Tapsell;
-import ir.tapsell.sdk.TapsellAd;
-import ir.tapsell.sdk.TapsellAdRequestListener;
-import ir.tapsell.sdk.TapsellAdRequestOptions;
-import ir.tapsell.sdk.TapsellAdShowListener;
-import ir.tapsell.sdk.TapsellShowOptions;
 
 import static ka.follow.app.App.Base_URL;
 import static ka.follow.app.App.requestQueue;
@@ -58,7 +59,7 @@ import static ka.follow.app.App.requestQueue;
 public class MainActivity extends AppCompatActivity implements PurchaseInterface,
         DirectPrchaseInterface,
         DirectPurchaseDialogInterface,
-        ShopItemInterface, AddCoinMultipleAccount, SetPurchaseForOthersInterface {
+        ShopItemInterface, AddCoinMultipleAccount, SetPurchaseForOthersInterface, BillingProcessor.IBillingHandler {
     static final String TAG = "FollowerAPP";
     public static TapsellAd ad;
     public static ProgressDialog progressDialog;
@@ -66,9 +67,6 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     static int RC_REQUEST = 1372;
     private static ShopItem currentShop;
     boolean mIsPremium = false;
-    public static IabHelper mHelper;
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener;
-    IabHelper.QueryInventoryFinishedListener mGotInventoryListener;
     int delay = 5000; //milliseconds
     private BottomNavigationView bottomNavigationView;
     private FragmentManager fm;
@@ -77,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     private int iapFollowCoin;
     private int iapLikeCoin;
     private DirectPurchaseDialogInterface callBackDirectPurchaseDialog;
-    private String directOrderItemId = null, directOrderItemURL = null;
+    public static String directOrderItemId = null, directOrderItemURL = null;
     private int directOrderCount = 0;
     private ShopItemInterface callBackShopItem;
     private AddCoinMultipleAccount addCoinMultipleAccount;
@@ -89,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     private boolean doubleBackToExitPressedOnce = false;
     private String currentSKU;
     private boolean isSuccessShop = false;
-
+    public static BillingProcessor mNivadBilling;
 
     public static void globalLoadAd(Context context, final String zoneId, final int catchType) {
         if (MainActivity.ad == null) {
@@ -196,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         currentItemId = R.id.action_home;
         progressDialog = new ProgressDialog(this);
         App.context = this;
-
+        App.currentActivity=this;
         loadAd(App.TapSelZoneId, TapsellAdRequestOptions.CACHE_TYPE_CACHED);
         //Bottom navigation
         binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
@@ -234,7 +232,6 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                 }
             return true;
         });
-        mHelper = new IabHelper(this, BuildConfig.BAZAR_RSA);
         handlerCheckCoin = new Handler();
 
         handlerCheckCoin.postDelayed(runnableCheckCoin = new Runnable() {  /// TODO HAndler that checks coins
@@ -245,108 +242,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         }, delay);
 
 
-        try {
-            mGotInventoryListener = (result, inventory) -> {
-                Log.d(TAG, "Query inventory finished.");
-                if (result.isFailure()) {
-                    Log.d(TAG, "Failed to query inventory: " + result);
-                    return;
-                } else {
-                    Log.d(TAG, "Query inventory was successful.");
-                    // does the user have the premium upgrade?
-                    mIsPremium = inventory.hasPurchase(SKU_PREMIUM);
-                    if (mIsPremium) {
-                        MasrafSeke(inventory.getPurchase(SKU_PREMIUM));
-                    }
-                    // update UI accordingly
 
-                    Log.d(TAG, "User is " + (mIsPremium ? "PREMIUM" : "NOT PREMIUM"));
-                }
-
-                Log.d(TAG, "Initial inventory query finished; enabling main UI.");
-            };
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            mPurchaseFinishedListener = (result, purchase) -> {
-                if (result.isFailure()) {
-                    Log.d(TAG, "Error purchasing: " + result);
-                    return;
-                } else if (purchase.getSku().equals(App.SkuSpecialWheel)) {
-                    new SharedPreferences(MainActivity.this).setSpeccialWhhel(true);
-                    Toast.makeText(MainActivity.this, "خرید موفق", Toast.LENGTH_SHORT).show();
-
-                    MasrafSeke(purchase);
-
-                } else if (purchase.getSku().equals(Config.SKUSpecialBanner)) {
-                    Toast.makeText(MainActivity.this, "با تشکر از خرید شما", Toast.LENGTH_SHORT).show();
-                    addCoin(0, iapLikeCoin);
-                    addCoin(1, iapFollowCoin);
-                    MasrafSeke(purchase);
-                    Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
-                    sendBroadcast(intent);
-                } else if (purchase.getSku().equals(Config.skuFirstLike)) {
-                    increaseBeforeOrder(0, 100);
-                    MasrafSeke(purchase);
-                } else if (purchase.getSku().equals(Config.skuSecondLike)) {
-                    increaseBeforeOrder(0, 500);
-                    MasrafSeke(purchase);
-                } else if (purchase.getSku().equals(Config.skuThirdLike)) {
-                    increaseBeforeOrder(0, 1000);
-                    MasrafSeke(purchase);
-                } else if (purchase.getSku().equals(Config.skuFourthLike)) {
-                    increaseBeforeOrder(0, 2000);
-                    MasrafSeke(purchase);
-                } else if (purchase.getSku().equals(Config.skuFifthLike)) {
-                    increaseBeforeOrder(0, 3000);
-                    MasrafSeke(purchase);
-                } else if (purchase.getSku().equals(Config.skuFirstComment)) {
-                    increaseBeforeOrder(2, 50);
-                    MasrafSeke(purchase);
-                } else if (purchase.getSku().equals(Config.skuSecondComment)) {
-                    increaseBeforeOrder(2, 100);
-                    MasrafSeke(purchase);
-                } else if (purchase.getSku().equals(Config.skuThirdComment)) {
-                    increaseBeforeOrder(2, 200);
-                    MasrafSeke(purchase);
-                } else if (purchase.getSku().equals(Config.skuFirstFollow)) {
-                    increaseBeforeOrder(1, 180);
-                    MasrafSeke(purchase);
-                } else if (purchase.getSku().equals(Config.skuSecondFollow)) {
-                    increaseBeforeOrder(1, 500);
-                    MasrafSeke(purchase);
-                } else if (purchase.getSku().equals(Config.skuThirdFollow)) {
-                    increaseBeforeOrder(1, 1200);
-                    MasrafSeke(purchase);
-                } else if (purchase.getSku().equals(Config.skuFourthFollow)) {
-                    increaseBeforeOrder(1, 2600);
-                    MasrafSeke(purchase);
-                } else if (purchase.getSku().equals(Config.skuFifthFollow)) {
-                    increaseBeforeOrder(1, 3800);
-                    MasrafSeke(purchase);
-                }
-            };
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        try {
-            mHelper.startSetup(result -> {
-                Log.d(TAG, "Setup finished.");
-
-                if (!result.isSuccess()) {
-                    // Oh noes, there was a problem.
-                    Log.d(TAG, "Problem setting up In-app Billing: " + result);
-                }
-                // Hooray, IAB is fully set up!
-                mHelper.queryInventoryAsync(mGotInventoryListener);
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         Log.d(TAG, "Starting setup.");
 
@@ -359,7 +255,190 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
             }
 
         });
+
+        mNivadBilling = new BillingProcessor(this, BuildConfig.BAZAR_RSA,
+                null,
+                null, MarketName.CAFE_BAZAAR, this); // مقدار دهی در انتهای onCreate
+        Log.i(TAG, "onCreate: ");
     }
+
+    private void checkNivadOrder(String sku, TransactionDetails transactionDetails) {
+
+
+        if (mNivadBilling.isPurchased(App.SkuSpecialWheel)) {
+            boolean success = mNivadBilling.consumePurchase(App.SkuSpecialWheel);
+            {
+                if (success) {
+                    new SharedPreferences(MainActivity.this).setSpeccialWhhel(true);
+                    Toast.makeText(MainActivity.this, "گردونه ویژه با موفقیت خریداری شد", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.SKUSpecialBanner)) {
+            boolean success = mNivadBilling.consumePurchase(Config.SKUSpecialBanner);
+            {
+                if (success) {
+                    addCoin(0, Config.bannerLikeCoinCount);
+                    addCoin(1, Config.bannerFollowCoin);
+                    Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
+                    sendBroadcast(intent);
+                    Toast.makeText(MainActivity.this, "با تشکر از خرید شما", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.skuFirstLike)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuFirstLike);
+            {
+                if (success) {
+                    increaseBeforeOrder(0, 100);
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.skuSecondLike)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuSecondLike);
+            {
+                if (success) {
+                    increaseBeforeOrder(0, 500);
+
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.skuThirdLike)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuThirdLike);
+            {
+                if (success) {
+                    increaseBeforeOrder(0, 1000);
+
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.skuFourthLike)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuFourthLike);
+            {
+                if (success) {
+                    increaseBeforeOrder(0, 2000);
+
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.skuFifthLike)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuFifthLike);
+            {
+                if (success) {
+                    increaseBeforeOrder(0, 3000);
+
+                }
+            }
+        }
+//Comments
+        else if (mNivadBilling.isPurchased(Config.skuFirstComment)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuFirstComment);
+            {
+                if (success) {
+                    increaseBeforeOrder(2, 50);
+
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.skuSecondComment)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuSecondComment);
+            {
+                if (success) {
+                    increaseBeforeOrder(2, 100);
+
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.skuThirdComment)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuThirdComment);
+            {
+                if (success) {
+                    increaseBeforeOrder(2, 200);
+
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.skuThirdComment)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuThirdComment);
+            {
+                if (success) {
+                    increaseBeforeOrder(2, 200);
+
+                }
+            }
+        }
+        //Follow
+
+        else if (mNivadBilling.isPurchased(Config.skuFirstFollow)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuFirstFollow);
+            {
+                if (success) {
+                    increaseBeforeOrder(1, 180);
+
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.skuSecondFollow)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuSecondFollow);
+            {
+                if (success) {
+                    increaseBeforeOrder(1, 500);
+
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.skuThirdFollow)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuThirdFollow);
+            {
+                if (success) {
+                    increaseBeforeOrder(1, 1200);
+
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.skuFourthFollow)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuFourthFollow);
+            {
+                if (success) {
+                    increaseBeforeOrder(1, 2600);
+
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.skuFifthFollow)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuFifthFollow);
+            {
+                if (success) {
+                    increaseBeforeOrder(1, 3800);
+
+                }
+            }
+        }
+//View
+
+        else if (mNivadBilling.isPurchased(Config.skuFirstVIew)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuFirstVIew);
+            {
+                if (success) {
+                    increaseBeforeOrder(3, 100);
+
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.skuSecondView)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuSecondView);
+            {
+                if (success) {
+                    increaseBeforeOrder(3, 200);
+
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.skuThirdComment)) {
+            boolean success = mNivadBilling.consumePurchase(Config.skuThirdComment);
+            {
+                if (success) {
+                    increaseBeforeOrder(3, 300);
+
+                }
+            }
+        } else if (mNivadBilling.isPurchased(Config.shopSku)) {
+            boolean success = mNivadBilling.consumePurchase(Config.shopSku);
+            {
+                if (success) {
+                    addCoin(Config.shopType, Config.shopCounts);
+
+                }
+            }
+        }
+
+    }
+
 
 
     private void addCoin(int i, int o) {
@@ -508,52 +587,19 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
-       /* if (requestCode == Config.requestShopItems) {
-            if (shopItemAmount != 0)
-                addCoin(shopItemType, shopItemAmount);
-        }*/
-
-        // Pass on the activity result to the helper for handling
-        if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
+        if (!mNivadBilling.handleActivityResult(requestCode, resultCode, data))
             super.onActivityResult(requestCode, resultCode, data);
-        } else {
-            Log.d(TAG, "onActivityResult handled by IABUtil.");
-            if (requestCode == Config.requestShopItems && isSuccessShop) {
-                if (shopItemAmount != 0) {
-                    addCoin(shopItemType, shopItemAmount);
-
-                }
-            }
-        }
     }
 
 
     @Override
     public void onDestroy() {
-        //از سرویس در زمان اتمام عمر activity قطع شوید
+        if (mNivadBilling != null)
+            mNivadBilling.release();
         super.onDestroy();
-        if (mHelper != null) mHelper.dispose();
-        mHelper = null;
     }
 
 
-    private void MasrafSeke(Purchase kala) {
-        // برای اینکه کاربر فقط یکبار بتواند از کالای فروشی استفاده کند
-        // باید بعد از خرید آن کالا را مصرف کنیم
-        // در غیر اینصورت کاربر با یکبار خرید محصول می تواند چندبار از آن استفاده کند
-        mHelper.consumeAsync(kala, new IabHelper.OnConsumeFinishedListener() {
-            @Override
-            public void onConsumeFinished(Purchase purchase, IabResult result) {
-                if (result.isSuccess())
-                    //Toast.makeText(MainActivity.this, "مصرف شد", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "NATIJE masraf: " + result.getMessage() + result.getResponse());
-
-            }
-        });
-    }
 
     @Override
     public void buyItem(String sdk, int requestCode) {
@@ -564,18 +610,10 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         }
         SKU_PREMIUM = sdk;
         RC_REQUEST = requestCode;
-        mHelper.launchPurchaseFlow(this, sdk, RC_REQUEST, mPurchaseFinishedListener, "extra info");
-
     }
 
     @Override
     public void IABPurchase(ShopItem shopItem) {
-        if (!App.isBazarInstalled) {
-            Toast.makeText(this, "برای پرداخت درون برنامه ای کافه بازار را نصب کنید", Toast.LENGTH_LONG).show();
-            return;
-
-        }
-        mHelper.launchPurchaseFlow(this, shopItem.getSku(), shopItem.getReturnValue(), mPurchaseFinishedListener, "extra info");
 
     }
 
@@ -674,7 +712,6 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         RC_REQUEST = requestCode;
         iapFollowCoin = followCoin;
         iapLikeCoin = LikeCoin;
-        mHelper.launchPurchaseFlow(this, sku, RC_REQUEST, mPurchaseFinishedListener, "extra info");
 
 
     }
@@ -689,7 +726,6 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         directOrderItemId = postId;
         directOrderItemURL = imageUrl;
         directOrderCount = count;
-        mHelper.launchPurchaseFlow(this, sku, requestCode, mPurchaseFinishedListener, "extra info");
 
     }
 
@@ -704,7 +740,6 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         this.shopItemType = type;
         this.shopItemAmount = amount;
         this.currentSKU = sku;
-        mHelper.launchPurchaseFlow(this, sku, RequestCode, mPurchaseFinishedListener, "extra info");
     }
 
     @Override
@@ -759,6 +794,51 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                 doubleBackToExitPressedOnce=false;
             }
         }, 4000);
+    }
+
+    @Override
+    public void onProductPurchased(String s, TransactionDetails transactionDetails) {
+        checkNivadOrder(s, transactionDetails);
+
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+
+    }
+
+    @Override
+    public void onBillingError(int i, Throwable throwable) {
+        switch (i) {
+            case 101:
+                App.Toast(MainActivity.this, "مشکلی پیش آمده ، از نصب بودن کافه بازار بر روی دستگاهتان مطمئن شده و مجددا تلاش نمایید !");
+                break;
+            case 102:
+                App.Toast(MainActivity.this, "مشکلی پیش آمده ، مجددا تلاش نمایید !");
+                break;
+            case 103:
+                App.Toast(MainActivity.this, "مشکلی پیش آمده ، مجددا تلاش نمایید !");
+                break;
+            case 203:
+                App.Toast(MainActivity.this, "مشکلی پیش آمده ، از اتصال اینترنت مطمئن شده و مجددا تلاش نمایید !");
+                break;
+            case 204:
+                App.Toast(MainActivity.this, "مشکلی پیش آمده ، از اتصال اینترنت مطمئن شده و مجددا تلاش نمایید !");
+                break;
+            case 205:
+                App.Toast(MainActivity.this, "این برنامه غیر قابل هک می باشد ، لطفا از راه صحیح اقدام به خرید نمایید !اخطار آخر ...");
+                break;
+            case 110:
+                App.Toast(MainActivity.this, "مشکلی پیش آمده ، مجددا تلاش نمایید !");
+                break;
+        }
+
+
+    }
+
+    @Override
+    public void onBillingInitialized() {
+        App.IsBazarExists = true;
     }
 }
 

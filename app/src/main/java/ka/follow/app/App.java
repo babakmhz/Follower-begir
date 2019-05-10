@@ -5,6 +5,8 @@ import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -49,6 +51,7 @@ public class App extends Application {
     public static String SkuSpecialWheel = "Item1";
     public static boolean isNotificationDialgShown= false;
     public static boolean isBazarInstalled=true;
+    public static boolean IsBazarExists;
 
     public static void Toast(Context context, String message) {
         View view = App.inflater.inflate(R.layout.toast, null);
@@ -105,6 +108,11 @@ public class App extends Application {
 
 
         //FontsOverride.setDefaultFont(this, "MONOSPACE", "iran.ttf");
+    }
+    public static boolean isNetworkAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 
 }

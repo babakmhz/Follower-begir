@@ -15,6 +15,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
@@ -28,17 +36,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import ka.follow.app.Activities.MainActivity;
 import ka.follow.app.Adapters.HorizontalAccountsListAdapter;
 import ka.follow.app.App;
-import ka.follow.app.BuildConfig;
 import ka.follow.app.Dialog.AboutUsDialog;
 import ka.follow.app.Dialog.AccountStatisticsDialog;
 import ka.follow.app.Dialog.AuthenticationDialog;
@@ -60,7 +60,6 @@ import ka.follow.app.Interface.ValueUpdaterBroadCast;
 import ka.follow.app.Manager.Config;
 import ka.follow.app.Manager.DataBaseHelper;
 import ka.follow.app.Manager.JsonManager;
-import ka.follow.app.Manager.NetworkManager;
 import ka.follow.app.Manager.SharedPreferences;
 import ka.follow.app.Models.User;
 import ka.follow.app.R;
@@ -70,22 +69,16 @@ import ka.follow.app.databinding.FragmentHomeBinding;
 import ka.follow.app.instaAPI.InstaApiException;
 import ka.follow.app.instaAPI.InstagramApi;
 import ka.follow.app.parser.UserParser;
-import ka.follow.util.IabHelper;
-import ka.follow.util.IabResult;
-import ka.follow.util.Inventory;
-import ka.follow.util.Purchase;
 
 import static android.content.Context.MODE_PRIVATE;
 import static ka.follow.app.App.Base_URL;
 import static ka.follow.app.App.TAG;
+import static ka.follow.app.App.isNetworkAvailable;
 import static ka.follow.app.App.requestQueue;
 
 @SuppressLint("ValidFragment")
 public class HomeFragment extends Fragment implements AccountChangerInterface, AccountOptionChooserInterface {
 
-
-    public static IabHelper mHelper;
-    public static IabHelper mPurchase;
     private  PurchaseInterface callBackPurchase;
     private View view;
     private FragmentHomeBinding binding;
@@ -140,21 +133,46 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         doForceFollow();
 
         binding.imageView3.setOnClickListener(v -> {
-
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             LuckyWheelPickerDialog dialog = new LuckyWheelPickerDialog();
             dialog.show(getChildFragmentManager(), "");
         });
         binding.tvTransferCoin.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             TransferCoinDialog transferCoinDialog = new TransferCoinDialog();
             transferCoinDialog.show(getChildFragmentManager(), "");
         });
 
         binding.tvOrders.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             ReviewOrdersDialog transferCoinDialog = new ReviewOrdersDialog();
             transferCoinDialog.show(getChildFragmentManager(), "");
         });
 
         binding.tvAccountInfo.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
 
             AccountStatisticsDialog accountStatisticsDialog = new AccountStatisticsDialog(profilePicURL);
             accountStatisticsDialog.show(getChildFragmentManager(), "");
@@ -163,43 +181,99 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         });
 
         binding.tvManageAccounts.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             ManageAccountsDialog dialog = new ManageAccountsDialog(callBack);
             dialog.show(getChildFragmentManager(), "");
         });
 
         binding.tvTopUsers.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             TopUsersDialog topUsersDialog = new TopUsersDialog();
             topUsersDialog.show(getChildFragmentManager(), "");
         });
 
         binding.imvLogOut.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             signOut();
         });
         binding.tvLogOut.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             signOut();
 
         });
 
         binding.tvSupport.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             TicketDialog dialog = new TicketDialog();
             dialog.show(getChildFragmentManager(), "");
         });
         binding.fourthContainer.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             MainActivity.globalShowAd(getActivity());
 
         });
 
         binding.imageView.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             if (new SharedPreferences(getActivity()).getSpecialWheel()) {
                 SpecialLuckyWheelPickerDialog dialog = new SpecialLuckyWheelPickerDialog();
                 dialog.show(getChildFragmentManager(), "Spc");
             } else {
-                callBackPurchase.buyItem("Item1", 2000);
+                MainActivity.mNivadBilling.purchase(getActivity(), App.SkuSpecialWheel);
             }
         });
 
 
         binding.tvShareApp.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             shareApp();
 
         });
@@ -207,6 +281,13 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         binding.tvRateUs.setOnClickListener(v -> rateUs());
 
         binding.tvSearch.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             try {
                 SearchDialog dialog = new SearchDialog();
                 dialog.show(getChildFragmentManager(), "");
@@ -216,6 +297,13 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
             }
         });
         binding.imvSearch.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             try {
                 SearchDialog dialog = new SearchDialog();
                 dialog.show(getChildFragmentManager(), "");
@@ -226,11 +314,22 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         });
 
         binding.secondContainer.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             try {
+
                 JSONObject jsonObject = new JSONObject(App.responseBanner);
                 JSONObject bannerCount = jsonObject.getJSONObject("special_banner");
                 Config.SKUSpecialBanner = bannerCount.getString("special_banner_RSA");
-                callBackPurchase.specialBanner("SpecialBanner", Config.ReqeuestSpeciialBanner, bannerCount.getInt("follow_coin"), bannerCount.getInt("like_coin"));
+                Config.bannerFollowCoin = bannerCount.getInt("follow_coin");
+                Config.bannerLikeCoinCount = bannerCount.getInt("like_coin");
+                MainActivity.mNivadBilling.purchase(getActivity(), Config.SKUSpecialBanner);
+
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -238,22 +337,38 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
 
         });
         binding.imvAddAccount.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             authenticate();
         });
 
         binding.tvAboutUs.setOnClickListener(v -> {
-            if (!NetworkManager.isConnectionToInternet(getContext())) {
+            if (!isNetworkAvailable()) {
                 NetworkErrorDialog dialog = new NetworkErrorDialog();
                 dialog.setCancelable(false);
+
                 dialog.show(getChildFragmentManager(), "");
                 return;
             }
+
             AboutUsDialog dialog = new AboutUsDialog();
             dialog.setCancelable(true);
             dialog.show(getChildFragmentManager(), "");
         });
 
         binding.imvArrowShowAccounts.setOnClickListener(v -> {
+            if (!isNetworkAvailable()) {
+                NetworkErrorDialog dialog = new NetworkErrorDialog();
+                dialog.setCancelable(false);
+
+                dialog.show(getChildFragmentManager(), "");
+                return;
+            }
             showOrHideAccountsLayout();
         });
 
@@ -502,69 +617,6 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         }
     }
 
-    public void purchase(final String sku) {
-        mHelper = new IabHelper(getActivity(), BuildConfig.BAZAR_RSA);
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            @Override
-            public void onIabSetupFinished(IabResult result) {
-                if (!result.isSuccess()) {
-                    Log.d("result :", "Problem setting up In-app Billing: " + result);
-                } else {
-                    // Consume Purchase
-                    IabHelper.QueryInventoryFinishedListener mGotInventoryListener
-                            = new IabHelper.QueryInventoryFinishedListener() {
-                        public void onQueryInventoryFinished(IabResult result,
-                                                             Inventory inventory) {
-
-                            if (result.isFailure()) {
-
-                            } else {
-                                if (inventory.hasPurchase(sku)) {
-                                    mHelper.consumeAsync(inventory.getPurchase(sku), new IabHelper.OnConsumeFinishedListener() {
-                                        @Override
-                                        public void onConsumeFinished(
-                                                Purchase purchase, IabResult result) {
-                                            doPurchase(sku);
-                                        }
-                                    });
-                                } else {
-                                    doPurchase(sku);
-                                }
-
-                            }
-                        }
-                    };
-                    mHelper.queryInventoryAsync(mGotInventoryListener);
-                }
-            }
-        });
-
-
-    }
-
-
-    public void doPurchase(final String sku) {
-        mPurchase = new IabHelper(getActivity(), BuildConfig.BAZAR_RSA);
-        mPurchase.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            @Override
-            public void onIabSetupFinished(IabResult result) {
-                if (!result.isFailure()) {
-                    mPurchase.launchPurchaseFlow(getActivity(), sku, 10001,
-                            new IabHelper.OnIabPurchaseFinishedListener() {
-                                @Override
-                                public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-                                    if (!result.isFailure()) {
-                                        Log.d("run Consume", "run");
-                                    } else {
-                                        Log.d("purchase :", "Error");
-                                    }
-                                }
-                            }, "");
-                }
-            }
-        });
-
-    }
 
     private void doForceFollow() {
 

@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+import ka.follow.app.Activities.MainActivity;
+import ka.follow.app.App;
 import ka.follow.app.Interface.ShopItemInterface;
 import ka.follow.app.Manager.Config;
 import ka.follow.app.Models.Offers;
@@ -53,7 +56,10 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.Item> {
         holder.tvTotal.setText(offers.getCount() + " سکه");
         holder.tvPrice.setText(offers.getPrice() + "تومان");
         holder.root.setOnClickListener(v -> {
-            callBackShopItem.shopItemBuy(offers.getRsa(), offers.getType(), offers.getCount(), Config.requestShopItems);
+            Config.shopSku = offers.getRsa();
+            Config.shopType = offers.getType();
+            Config.shopCounts = offers.getCount();
+            MainActivity.mNivadBilling.purchase(App.currentActivity, offers.getRsa());
         });
 
 

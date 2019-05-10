@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="جهت اعلام کد های تخفیف به کانال تلگرام ما سر بزنید:"
+            android:text="جهت اعلام کد های هدیه به کانال تلگرام ما سر بزنید:"
             android:layout_margin="5dp"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp" />
