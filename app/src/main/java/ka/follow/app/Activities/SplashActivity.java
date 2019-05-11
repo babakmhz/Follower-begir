@@ -6,6 +6,8 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+
+import ka.follow.app.App;
 import ka.follow.app.Dialog.AuthenticationDialog;
 import ka.follow.app.Dialog.InstagramAutenticationDialog;
 import ka.follow.app.Manager.DataBaseHelper;
@@ -17,12 +19,17 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
     ActivitySplashBinding binding;
     private InstagramApi api = InstagramApi.getInstance();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
-
+        if (!App.isNetworkAvailable()) {
+            startActivity(new Intent(SplashActivity.this, NetworkErrorActivity.class));
+            finish();
+            return;
+        }
 
         DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
         try {

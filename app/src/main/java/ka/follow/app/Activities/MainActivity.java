@@ -181,6 +181,8 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
         }
     }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -256,9 +258,9 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
         });
 
-        mNivadBilling = new BillingProcessor(this, BuildConfig.BAZAR_RSA,
-                null,
-                null, MarketName.CAFE_BAZAAR, this); // مقدار دهی در انتهای onCreate
+        mNivadBilling = new BillingProcessor(this, "MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwDB1YN8n11QuwWpL+XHqqqdGKgYG9d4FLglhJqfLEeV7FFXShc06oA1qbu6cFBLSqd31aK1k57ctyuitaZVOm3gPXlB2kYhfGbVz6R33G0h0o5HqRXgyavf3JvP5YMBvTJa4anxPa1CcOjxjPwazLvsc0w/aUf/Xg++q1OUVAc/Ib46kChsZmJ/D1o8WHsxi37hW+aKud18WDfBoeNdvOnMpAu7t6qX6pNW2uMgQlUCAwEAAQ==",
+                "99cf884d-3517-48d4-8d3d-0e32062c4e66",
+                "5ticxVqTG05PfGyQ4pacn4nCnCYnBOqicuOywhcwRUoBHbMwtO2Gae1BwqX6T1SW", MarketName.CAFE_BAZAAR, this); // مقدار دهی در انتهای onCreate
         Log.i(TAG, "onCreate: ");
     }
 

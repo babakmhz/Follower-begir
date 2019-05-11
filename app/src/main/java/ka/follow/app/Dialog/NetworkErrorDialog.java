@@ -12,10 +12,11 @@ import ka.follow.app.Manager.NetworkManager;
 import ka.follow.app.R;
 import ka.follow.app.databinding.DialogNetworkErrorBinding;
 
+import static ka.follow.app.App.isNetworkAvailable;
+
 public class NetworkErrorDialog extends DialogFragment {
 
     private DialogNetworkErrorBinding binding;
-
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
         //region Dialog
@@ -28,7 +29,7 @@ public class NetworkErrorDialog extends DialogFragment {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         //endregion
         binding.btnReconnect.setOnClickListener(v -> {
-            if (NetworkManager.isConnectionToInternet(getContext())) {
+            if (isNetworkAvailable()) {
                 dismiss();
             }
 
