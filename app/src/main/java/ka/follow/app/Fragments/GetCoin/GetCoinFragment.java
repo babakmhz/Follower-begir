@@ -1,17 +1,18 @@
 package ka.follow.app.Fragments.GetCoin;
 
-import androidx.databinding.DataBindingUtil;
-
 import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import ka.follow.app.Adapters.GetCoinViewPagerAdapter;
 import ka.follow.app.Interface.AddCoinMultipleAccount;
@@ -27,8 +28,6 @@ public class GetCoinFragment extends Fragment {
     private GetCoinViewPagerAdapter adapter;
 
 
-    public GetCoinFragment() {
-    }
 
     public GetCoinFragment(AddCoinMultipleAccount addCoinMultipleAccount) {
         this.addCoinMultipleAccount=addCoinMultipleAccount;
@@ -49,10 +48,15 @@ public class GetCoinFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        adapter = new GetCoinViewPagerAdapter(getChildFragmentManager(), 4,addCoinMultipleAccount);
+//        adapter = new GetCoinViewPagerAdapter(getChildFragmentManager(), 1,addCoinMultipleAccount);
+//
+//        binding.viewPagerGetCoin.setAdapter(adapter);
+//        binding.viewPagerGetCoin.setOffscreenPageLimit(0);
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
 
-        binding.viewPagerGetCoin.setAdapter(adapter);
+        ft.replace(binding.frmGetCoin.getId(), new GetCoinLikeFragment(addCoinMultipleAccount));
 
+        ft.commit();
         init();
 
         setActive(0);
@@ -62,25 +66,50 @@ public class GetCoinFragment extends Fragment {
         binding.tvLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+
+                ft.replace(binding.frmGetCoin.getId(), new GetCoinLikeFragment(addCoinMultipleAccount));
+
+                ft.commit();
                 setActive(0);
             }
         });
         binding.tvComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+
+                ft.replace(binding.frmGetCoin.getId(), new GetCoinCommentFragment(addCoinMultipleAccount));
+
+                ft.commit();
                 setActive(1);
+
+
             }
         });
         binding.tvFollower.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+
+                ft.replace(binding.frmGetCoin.getId(), new GetCoinFolloweFragment(addCoinMultipleAccount));
+
+                ft.commit();
                 setActive(2);
+
+
             }
         });
         binding.tvView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+
+                ft.replace(binding.frmGetCoin.getId(), new GetCoinViewFragment());
+
+                ft.commit();
                 setActive(3);
+
             }
         });
         binding.viewPagerGetCoin.setOffscreenPageLimit(0);
@@ -150,10 +179,14 @@ public class GetCoinFragment extends Fragment {
     }
 
     private void setViewPager(int index) {
-        binding.viewPagerGetCoin.setCurrentItem(index);
+//        binding.viewPagerGetCoin.setCurrentItem(index);
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
 
 
+    }
 }

@@ -8,6 +8,8 @@ import android.view.Window;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+
+import ka.follow.app.App;
 import ka.follow.app.Manager.NetworkManager;
 import ka.follow.app.R;
 import ka.follow.app.databinding.DialogNetworkErrorBinding;
@@ -23,7 +25,7 @@ public class NetworkErrorDialog extends DialogFragment {
         final Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_network_error, null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_network_error, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);

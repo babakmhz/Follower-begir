@@ -85,8 +85,8 @@ public class AuthenticationDialog extends DialogFragment {
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //dialog.setContentView(R.layout.dialog_authenticate);
-        dbHeplper = new DataBaseHelper(getContext());
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_authenticate, null, false);
+        dbHeplper = new DataBaseHelper(App.currentActivity);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_authenticate, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -102,7 +102,7 @@ public class AuthenticationDialog extends DialogFragment {
         loginWebView.clearCache(true);
         loginWebView.clearHistory();
         loginWebView.getSettings().setSaveFormData(false);
-        clearCookies(getContext());
+        clearCookies(App.currentActivity);
         if (isRedirectd) {
             logOut();
             OnCredentialsEntered(userName, password);

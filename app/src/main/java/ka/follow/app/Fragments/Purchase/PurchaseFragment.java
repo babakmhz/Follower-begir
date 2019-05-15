@@ -3,14 +3,15 @@ package ka.follow.app.Fragments.Purchase;
 import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import ka.follow.app.Adapters.PurchaseViewPagerDapter;
 import ka.follow.app.Interface.DirectPurchaseDialogInterface;
@@ -19,13 +20,11 @@ import ka.follow.app.R;
 
 @SuppressLint("ValidFragment")
 public class PurchaseFragment extends Fragment {
-    private  DirectPurchaseDialogInterface callBackDirectPurchase;
+    private final DirectPurchaseDialogInterface callBackDirectPurchase;
     private View view;
     private TextView tvLike, tvComment, tvFollow, tvRobotLike;
     private ViewPager viewPager;
 
-    public PurchaseFragment() {
-    }
 
     public PurchaseFragment(DirectPurchaseDialogInterface callBackDirectPurchaseDialog) {
         this.callBackDirectPurchase = callBackDirectPurchaseDialog;

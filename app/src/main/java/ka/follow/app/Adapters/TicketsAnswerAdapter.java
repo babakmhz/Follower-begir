@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import ka.follow.app.App;
 import ka.follow.app.Models.Messages;
 import ka.follow.app.R;
 
@@ -26,7 +28,7 @@ public class TicketsAnswerAdapter extends RecyclerView.Adapter<TicketsAnswerAdap
     @NonNull
     @Override
     public Item onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        this.context = parent.getContext();
+        this.context = App.currentActivity;
         View row = LayoutInflater.from(context).inflate(R.layout.cell_ticket_answer, parent, false);
         return new TicketsAnswerAdapter.Item(row);
     }

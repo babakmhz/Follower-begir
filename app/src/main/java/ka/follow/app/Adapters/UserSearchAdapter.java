@@ -17,6 +17,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import ka.follow.app.App;
 import ka.follow.app.Dialog.TestDialog;
 import ka.follow.app.R;
 import ka.follow.app.data.InstagramUser;
@@ -38,7 +39,7 @@ public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.It
     @NonNull
     @Override
     public Item onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        this.context = parent.getContext();
+        this.context = App.currentActivity;
         View row = LayoutInflater.from(context).inflate(R.layout.cell_user_search, parent, false);
         return new UserSearchAdapter.Item(row);
 

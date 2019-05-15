@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import ka.follow.app.App;
 import ka.follow.app.Dialog.TicketAnswerDialog;
 import ka.follow.app.Models.Messages;
 import ka.follow.app.R;
@@ -32,7 +34,7 @@ public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.Item> {
     @NonNull
     @Override
     public Item onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        this.context = parent.getContext();
+        this.context = App.currentActivity;
         View row = LayoutInflater.from(context).inflate(R.layout.cell_tickets, parent, false);
         return new TicketsAdapter.Item(row);
     }

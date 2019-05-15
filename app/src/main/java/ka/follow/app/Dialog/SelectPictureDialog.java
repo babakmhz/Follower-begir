@@ -74,7 +74,7 @@ public class SelectPictureDialog extends DialogFragment implements RecievedImage
         StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        SelectPicAdapter adapter = new SelectPicAdapter(getContext(), pictureModelArrayList, localCallBack,isWebView);
+        SelectPicAdapter adapter = new SelectPicAdapter(App.currentActivity, pictureModelArrayList, localCallBack,isWebView);
 
         rcvPics.setLayoutManager(layoutManager);
         rcvPics.setItemAnimator(new DefaultItemAnimator());

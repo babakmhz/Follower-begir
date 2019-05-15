@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
 import ka.follow.app.Activities.MainActivity;
+import ka.follow.app.App;
 import ka.follow.app.Interface.DirectPurchaseDialogInterface;
 import ka.follow.app.Manager.Config;
 import ka.follow.app.R;
@@ -50,20 +51,20 @@ public class PurchaseLike extends DialogFragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         switch (type) {
             case 0:
-                bindingLike = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_direct_like_purchase, null, false);
+                bindingLike = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_direct_like_purchase, null, false);
                 dialog.setContentView(bindingLike.getRoot());
 
                 break;
             case 1:
-                bindingFollow = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_direct_follower_purchase, null, false);
+                bindingFollow = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_direct_follower_purchase, null, false);
                 dialog.setContentView(bindingFollow.getRoot());
                 break;
             case 2:
-                bindingComment = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_direct_comment_purchase, null, false);
+                bindingComment = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_direct_comment_purchase, null, false);
                 dialog.setContentView(bindingComment.getRoot());
                 break;
             case 3:
-                bindingView = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_direct_purchase_view, null, false);
+                bindingView = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_direct_purchase_view, null, false);
                 dialog.setContentView(bindingView.getRoot());
                 break;
         }
@@ -236,7 +237,7 @@ public class PurchaseLike extends DialogFragment {
 
     private boolean validate() {
         if (selectedPicURl == null) {
-            Toast.makeText(getContext(), "یک عکس انتخاب کنید", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "یک عکس انتخاب کنید", Toast.LENGTH_SHORT).show();
             return false;
 
         } else return true;

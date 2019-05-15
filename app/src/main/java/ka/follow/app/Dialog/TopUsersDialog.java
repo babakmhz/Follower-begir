@@ -3,23 +3,11 @@ package ka.follow.app.Dialog;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
-
-import com.android.volley.Request;
-import com.android.volley.toolbox.StringRequest;
-import com.crashlytics.android.Crashlytics;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
@@ -30,20 +18,34 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import io.fabric.sdk.android.Fabric;
+import com.crashlytics.android.Crashlytics;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+
 import ka.follow.app.Adapters.TopUsersAdapter;
 import ka.follow.app.App;
 import ka.follow.app.Models.TopUsers;
 import ka.follow.app.R;
+import ka.follow.app.Retrofit.ApiClient;
+import ka.follow.app.Retrofit.ApiInterface;
+import ka.follow.app.Retrofit.Bests;
+import ka.follow.app.Retrofit.Comment;
+import ka.follow.app.Retrofit.Follow;
+import ka.follow.app.Retrofit.Like;
 import ka.follow.app.databinding.DialogTopUsersBinding;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-import static ka.follow.app.App.Base_URL;
-import static ka.follow.app.App.requestQueue;
+import static ka.follow.app.Retrofit.ApiClient.retrofit;
 
 public class TopUsersDialog extends DialogFragment {
 
     private DialogTopUsersBinding binding;
-    private JSONObject jsonObjectMain;
+    private Bests bests;
 
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
@@ -59,32 +61,23 @@ public class TopUsersDialog extends DialogFragment {
         binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
         binding.tvUserName.setText(App.user.getUserName());
         //endregion
-        getTopUsers();
+        ApiClient.getClient();
+
+        final ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+        getTopUsers(apiInterface);
 
         binding.btnTopLikers.setOnClickListener(v -> {
-            try {
-                setAdapter(0);
-                setBackground(0);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            setAdapter(0);
+            setBackground(0);
         });
         binding.btnTopfollowers.setOnClickListener(v -> {
-            try {
-                setAdapter(1);
-                setBackground(1);
+            setAdapter(1);
+            setBackground(1);
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         });
         binding.btnTopCommenters.setOnClickListener(v -> {
-            try {
-                setAdapter(2);
-                setBackground(2);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            setAdapter(2);
+            setBackground(2);
         });
 
 
@@ -118,70 +111,63 @@ public class TopUsersDialog extends DialogFragment {
 
     }
 
-    private void getTopUsers() {
-        try{
-            StringRequest request = new StringRequest(Request.Method.GET, Base_URL + "bests", (String response1) -> {
-
-                if (response1 != null) {
-                    try {
-                        jsonObjectMain = new JSONObject(response1);
-                        setAdapter(0);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+    private void getTopUsers(ApiInterface apiInterface) {
+        apiInterface.Bests().enqueue(new Callback<Bests>() {
+            @Override
+            public void onResponse(Call<Bests> call, Response<Bests> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        bests = response.body();
                     }
                 }
-            }, error -> {
-                Log.i("volley", "onErrorResponse: " + error.toString());
-            });
-            request.setTag(this);
-            requestQueue.add(request);
-        }
-        catch (Exception e)
-        {
-            Crashlytics.logException(e);
-        }
+            }
+
+            @Override
+            public void onFailure(Call<Bests> call, Throwable t) {
+                Crashlytics.logException(t);
+            }
+        });
 
 
 
     }
 
-    private void setAdapter(int type) throws JSONException {
+    private void setAdapter(int type) {
         binding.llNoItem.setVisibility(View.GONE);
+        if (bests == null) {
+            return;
+        }
         try
         {     JSONArray jsonArray = null;
             ArrayList<TopUsers> topUserList = new ArrayList<>();
             switch (type) {
                 case 0:
-                    jsonArray = jsonObjectMain.getJSONArray("like");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject object = jsonArray.getJSONObject(i);
+                    for (Like like : bests.getLike()) {
                         TopUsers topUser = new TopUsers();
-                        topUser.setCount(String.valueOf(object.getInt("like_count")));
-                        topUser.setUserName(object.getString("user_name"));
-                        topUser.setPicUrl(object.getString("image_path"));
+                        topUser.setCount(String.valueOf(like.getLikeCount()));
+                        topUser.setUserName(like.getUserName());
+                        topUser.setPicUrl(like.getImagePath());
                         topUserList.add(topUser);
+
                     }
+
                     break;
                 case 1:
-                    jsonArray = jsonObjectMain.getJSONArray("follow");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject object = jsonArray.getJSONObject(i);
+                    for (Follow like : bests.getFollow()) {
                         TopUsers topUser = new TopUsers();
-                        topUser.setCount(String.valueOf(object.getInt("follow_count")));
-                        topUser.setUserName(object.getString("user_name"));
-                        topUser.setPicUrl(object.getString("image_path"));
+                        topUser.setCount(String.valueOf(like.getFollowCount()));
+                        topUser.setUserName(like.getUserName());
+                        topUser.setPicUrl(like.getImagePath());
                         topUserList.add(topUser);
 
                     }
                     break;
                 case 2:
-                    jsonArray = jsonObjectMain.getJSONArray("comment");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject object = jsonArray.getJSONObject(i);
+                    for (Comment like : bests.getComment()) {
                         TopUsers topUser = new TopUsers();
-                        topUser.setCount(String.valueOf(object.getInt("comment_count")));
-                        topUser.setUserName(object.getString("user_name"));
-                        topUser.setPicUrl(object.getString("image_path"));
+                        topUser.setCount(String.valueOf(like.getCommentCount()));
+                        topUser.setUserName(like.getUserName());
+                        topUser.setPicUrl(like.getImagePath());
                         topUserList.add(topUser);
 
                     }

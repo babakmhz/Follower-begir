@@ -3,7 +3,6 @@ package ka.follow.app.Fragments.Purchase;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,31 +10,27 @@ import android.view.Window;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.toolbox.StringRequest;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+
+import com.squareup.picasso.Picasso;
+
 import ka.follow.app.App;
 import ka.follow.app.Dialog.PurchasePackages.PurchaseLike;
 import ka.follow.app.Dialog.SearchDialog;
 import ka.follow.app.Interface.DirectPurchaseDialogInterface;
-import ka.follow.app.Manager.JsonManager;
 import ka.follow.app.R;
+import ka.follow.app.Retrofit.ApiClient;
+import ka.follow.app.Retrofit.ApiInterface;
+import ka.follow.app.Retrofit.UserCoin;
 import ka.follow.app.databinding.FragmentPurchaseFollowerBinding;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-import static ka.follow.app.App.Base_URL;
-import static ka.follow.app.App.requestQueue;
+import static ka.follow.app.Retrofit.ApiClient.retrofit;
 
 
 @SuppressLint("ValidFragment")
@@ -108,60 +103,41 @@ public class PurchaseFolloweFragment extends Fragment {
 
     private void submitOrder() {
         if (App.followCoin <= 0) {
-            Toast.makeText(getContext(), "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
 
         } else if (binding.seekBar.getProgress() == 0) {
-            Toast.makeText(getContext(), "تعداد سفارش را مشخص کنید", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "تعداد سفارش را مشخص کنید", Toast.LENGTH_SHORT).show();
         } else {
-            final String requestBody = JsonManager.submitOrder(1, App.userId, App.profilePicURl, binding.seekBar.getProgress());
+            ApiClient.getClient();
 
-            StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/set", response1 -> {
-                if (response1 != null) {
-                    try {
-                        JSONObject jsonRootObject = new JSONObject(response1);
-                        if (jsonRootObject.optBoolean("status")) {
-                            App.followCoin = Integer.parseInt(jsonRootObject.getString("follow_coin"));
-                            binding.tvFollowCoinCount.setText(App.followCoin + "");
-                            Toast.makeText(getContext(), "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
-                            binding.seekBar.setProgress(0);
-
-
+            final ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+            int count = binding.seekBar.getProgress();
+            apiInterface.SetOrder(App.UUID, App.Api_Token, 1, App.userId, count, count, App.profilePicURl).enqueue(new Callback<UserCoin>() {
+                @Override
+                public void onResponse(Call<UserCoin> call, Response<UserCoin> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            if (response.body().getStatus()) {
+                                App.followCoin = response.body().getFollowCoin();
+                                binding.tvFollowCoinCount.setText(App.followCoin + "");
+                                Toast.makeText(App.currentActivity, "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+                                binding.seekBar.setProgress(0);
+                            }
                         }
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-
-
-                } else {
-                    Toast.makeText(getContext(), "خطا در ثبت سفارش", Toast.LENGTH_SHORT).show();
-
-                }
-            }, error -> {
-                Log.i("volley", "onErrorResponse: " + error.toString());
-            }) {
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<String, String>();
-                    headers.put("Content-Type", "application/json");
-                    return headers;
                 }
 
                 @Override
-                public byte[] getBody() throws AuthFailureError {
-                    return requestBody == null ? null : requestBody.getBytes();
-                }
-            };
-            request.setTag(this);
-            requestQueue.add(request);
+                public void onFailure(Call<UserCoin> call, Throwable t) {
 
+                }
+            });
 
         }
     }
 
     public void ProgressDialog() {
-        progressDialog = new Dialog(getContext());
+        progressDialog = new Dialog(App.currentActivity);
         progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         progressDialog.setCancelable(false);
         progressDialog.setContentView(R.layout.dialog_uploading);

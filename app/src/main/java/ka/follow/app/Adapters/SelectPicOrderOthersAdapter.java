@@ -11,14 +11,16 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+import ka.follow.app.App;
 import ka.follow.app.Dialog.SelectCountPurchaseOthersDialog;
 import ka.follow.app.Models.PictureModel;
 import ka.follow.app.R;
@@ -43,7 +45,7 @@ public class SelectPicOrderOthersAdapter extends RecyclerView.Adapter<SelectPicO
     @NonNull
     @Override
     public Item onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        this.context = parent.getContext();
+        this.context = App.currentActivity;
         View row = LayoutInflater.from(context).inflate(R.layout.row_select_pic, parent, false);
         return new Item(row);
     }

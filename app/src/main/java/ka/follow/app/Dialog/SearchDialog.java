@@ -43,7 +43,7 @@ public class SearchDialog extends DialogFragment {
         final Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_search, null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_search, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -105,28 +105,36 @@ public class SearchDialog extends DialogFragment {
     }
 
     private void setViewUsers(ArrayList<InstagramUser> users) {
-        DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        UserSearchAdapter adapter = new UserSearchAdapter(users,getChildFragmentManager());
-        binding.rcvUserSearch.setLayoutManager(mLayoutManager);
-        binding.rcvUserSearch.setItemAnimator(new DefaultItemAnimator());
-        binding.rcvUserSearch.setAdapter(adapter);
-        binding.rcvUserSearch.addItemDecoration(decoration);
-        binding.rcvUserSearch.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                binding.rcvUserSearch.getViewTreeObserver().removeOnPreDrawListener(this);
-                for (int i = 0; i < binding.rcvUserSearch.getChildCount(); i++) {
-                    View v = binding.rcvUserSearch.getChildAt(i);
-                    v.setAlpha(0.0f);
-                    v.animate().alpha(1.0f)
-                            .setDuration(300)
-                            .setStartDelay(i * 50)
-                            .start();
+        try
+        {
+            DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+            @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            UserSearchAdapter adapter = new UserSearchAdapter(users,getChildFragmentManager());
+            binding.rcvUserSearch.setLayoutManager(mLayoutManager);
+            binding.rcvUserSearch.setItemAnimator(new DefaultItemAnimator());
+            binding.rcvUserSearch.setAdapter(adapter);
+            binding.rcvUserSearch.addItemDecoration(decoration);
+            binding.rcvUserSearch.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    binding.rcvUserSearch.getViewTreeObserver().removeOnPreDrawListener(this);
+                    for (int i = 0; i < binding.rcvUserSearch.getChildCount(); i++) {
+                        View v = binding.rcvUserSearch.getChildAt(i);
+                        v.setAlpha(0.0f);
+                        v.animate().alpha(1.0f)
+                                .setDuration(300)
+                                .setStartDelay(i * 50)
+                                .start();
+                    }
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
+        }
+        catch (Exception e)
+        {
+
+        }
+
     }
 
 

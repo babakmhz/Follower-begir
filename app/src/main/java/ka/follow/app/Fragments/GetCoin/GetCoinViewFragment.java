@@ -2,35 +2,35 @@ package ka.follow.app.Fragments.GetCoin;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.toolbox.StringRequest;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+
+import com.squareup.picasso.Picasso;
+
 import ka.follow.app.App;
 import ka.follow.app.Dialog.WebViewDialog;
 import ka.follow.app.Interface.WebViewLoadedInterface;
-import ka.follow.app.Manager.JsonManager;
+import ka.follow.app.Manager.Config;
 import ka.follow.app.R;
+import ka.follow.app.Retrofit.ApiClient;
+import ka.follow.app.Retrofit.ApiInterface;
+import ka.follow.app.Retrofit.SimpleResult;
+import ka.follow.app.Retrofit.Transaction;
+import ka.follow.app.Retrofit.UserCoin;
 import ka.follow.app.databinding.FragmentGetCoinViewBinding;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-import static ka.follow.app.App.requestQueue;
+import static ka.follow.app.Retrofit.ApiClient.retrofit;
 
 
 @SuppressLint("ValidFragment")
@@ -43,6 +43,10 @@ public class GetCoinViewFragment extends Fragment implements WebViewLoadedInterf
     private String imageId;
     private int transactionId;
     private WebViewLoadedInterface callBackWebView;
+    private Handler handlerCheckCoin;
+    private Runnable runnableCheckCoin;
+    private boolean autoLike, isAvailable;
+    private int retryCount = 0;
 
     @Nullable
     @Override
@@ -56,6 +60,7 @@ public class GetCoinViewFragment extends Fragment implements WebViewLoadedInterf
         callBackWebView = this;
         view = binding.getRoot();
         binding.tvLikeCoinCount.setText("" + App.likeCoin);
+        handlerCheckCoin = new Handler();
         binding.btnNext.setOnClickListener(v -> {
             getLikeOrder();
         });
@@ -66,6 +71,8 @@ public class GetCoinViewFragment extends Fragment implements WebViewLoadedInterf
 
         });
         binding.btnDoLike.setOnClickListener(v -> {
+            if (transactionId == 0)
+                return;
             WebViewDialog webViewDialog = new WebViewDialog(imageId, transactionId, callBackWebView);
             webViewDialog.setCancelable(false);
             webViewDialog.show(getChildFragmentManager(), "this");
@@ -88,136 +95,149 @@ public class GetCoinViewFragment extends Fragment implements WebViewLoadedInterf
         binding.prg.setVisibility(View.GONE);
     }
 
-    private void getLikeOrder() {
-        final String requestBody = JsonManager.getOrders(3);
-        StringRequest request = new StringRequest(Request.Method.POST, App.Base_URL + "transaction/get", new Response.Listener<String>() {
+    private void report() {
+        ApiClient.getClient();
+
+        ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+        String title = "گزارش محتوای نادرست";
+        String message = "پست شماره : " + transactionId;
+        apiInterface.Report(App.UUID, App.Api_Token, message, title).enqueue(new Callback<SimpleResult>() {
             @Override
-            public void onResponse(String response) {
-                if (response == null || response.equals("")) {
-                    Toast.makeText(getActivity(), "سفارش فعالی موجود نیست", Toast.LENGTH_SHORT).show();
-                    binding.imvPic.setImageResource(R.drawable.ic_image_black);
-
-                    return;
-                }
-                try {
-
-                    JSONObject jsonObject = new JSONObject(response);
-                    if (!jsonObject.getBoolean("status")) {
+            public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().getStatus()) {
+                        Toast.makeText(App.currentActivity, "با تشکر از گزارش شما", Toast.LENGTH_SHORT).show();
                         getLikeOrder();
-                        return;
                     }
-                    Picasso.get().load(jsonObject.getString("image_path")).into(binding.imvPic);
-                    imageId = jsonObject.getString("type_id");
-                    transactionId = jsonObject.getInt("transaction_id");
-                    // checkLikers();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-
-            }
-        },
-                error -> {
-
-
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
             }
 
             @Override
-            public byte[] getBody() throws AuthFailureError {
-                return requestBody == null ? null : requestBody.getBytes();
+            public void onFailure(Call<SimpleResult> call, Throwable t) {
+
             }
-        };
-        request.setTag(this);
-        requestQueue.add(request);
-
-
+        });
     }
 
     private void submit() {
+        ApiClient.getClient();
 
-        final String requestBody = JsonManager.setSubmit(3, transactionId);
+        final ApiInterface apiInterface = retrofit.create(ApiInterface.class);
 
-        StringRequest request = new StringRequest(Request.Method.POST, App.Base_URL + "transaction/submit", response -> {
-            assert response == null;
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                if (jsonObject.getBoolean("status")) {
-                    App.likeCoin = jsonObject.getInt("like_coin");
-                    binding.tvLikeCoinCount.setText(App.likeCoin + "");
-                    getLikeOrder();
+        apiInterface.SubmitOrder(App.UUID, App.Api_Token, 3, String.valueOf(transactionId)).enqueue(new Callback<UserCoin>() {
+            @Override
+            public void onResponse(Call<UserCoin> call, Response<UserCoin> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().getStatus()) {
+                            App.likeCoin = response.body().getLikeCoin();
+                            binding.tvLikeCoinCount.setText(App.likeCoin + "");
+                            transactionId = 0;
+                            binding.btnNext.performClick();
+
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserCoin> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+
+    private void getLikeOrder() {
+        if (retryCount == 5) {
+            handlerCheckCoin.removeCallbacks(runnableCheckCoin);
+            Toast.makeText(App.currentActivity, "سفارشی موجود نیست", Toast.LENGTH_SHORT).show();
+            retryCount = 0;
+            binding.imvPic.setImageResource(R.drawable.ic_image_black);
+            return;
+
+        }
+        ApiClient.getClient();
+
+        ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+
+        apiInterface.getOrder(App.UUID, App.Api_Token, 3).enqueue(new Callback<Transaction>() {
+            @Override
+            public void onResponse(Call<Transaction> call, Response<Transaction> response) {
+                if (response.code() == 204) {
+                    Toast.makeText(App.currentActivity, "موردی موجود نیست", Toast.LENGTH_SHORT).show();
+                    handlerCheckCoin.removeCallbacks(runnableCheckCoin);
+                    return;
                 }
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().getStatus()) {
+                            Picasso.get().load(response.body().getImagePath()).into(binding.imvPic);
+                            imageId = response.body().getTypeId();
+                            transactionId = response.body().getTransactionId();
+                            isAvailable = true;
+                            binding.btnDoLike.setEnabled(true);
+                            binding.btnAutoLike.setAlpha(1f);
+                            binding.btnDoLike.setAlpha(1f);
+                            binding.btnConfirmAndPay.setAlpha(1f);
+                            retryCount = 0;
+                            handlerCheckCoin.removeCallbacks(runnableCheckCoin);
+
+
+                        } else {
+                            isAvailable = false;
+                            binding.btnAutoLike.setAlpha(0.5f);
+                            binding.btnDoLike.setAlpha(0.5f);
+                            binding.btnConfirmAndPay.setAlpha(0.5f);
+                            retryCount++;
+                            final Handler handler = new Handler();
+                            handlerCheckCoin.postDelayed(runnableCheckCoin = new Runnable() {  /// TODO HAndler that checks coins
+                                public void run() {
+                                    getLikeOrder();
+                                }
+                            }, Config.delayGetOrder);
+
+                            return;
+                        }
+                    }
+                } else {
+                    isAvailable = false;
+                    binding.btnDoLike.setEnabled(false);
+                    binding.btnAutoLike.setAlpha(0.5f);
+                    binding.btnDoLike.setAlpha(0.5f);
+                    binding.btnConfirmAndPay.setAlpha(0.5f);
+                    binding.imvPic.setImageResource(R.drawable.ic_image_black);
+
+
+                }
             }
 
-        },
-                error -> {
-
-                }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
+            public void onFailure(Call<Transaction> call, Throwable t) {
+                isAvailable = false;
+                binding.btnAutoLike.setAlpha(0.5f);
+                binding.btnDoLike.setAlpha(0.5f);
+                binding.btnConfirmAndPay.setAlpha(0.5f);
+                binding.imvPic.setImageResource(R.drawable.ic_image_black);
 
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                return requestBody == null ? null : requestBody.getBytes();
             }
-        };
-        request.setTag(this);
-        requestQueue.add(request);
+        });
+
     }
+
 
     @Override
     public void webViewOpened() {
         submit();
     }
 
-    private void report() {
-
-        final String requestBody = JsonManager.report(transactionId);
-
-        StringRequest request = new StringRequest(Request.Method.POST, App.Base_URL + "message/report/set", response -> {
-            assert response == null;
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                if (jsonObject.getBoolean("status")) {
-                    Toast.makeText(getContext(), "با تشکر از گزارش شما", Toast.LENGTH_SHORT).show();
-                    getLikeOrder();
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        },
-                error -> {
-                    Toast.makeText(getContext(), "خطا", Toast.LENGTH_SHORT).show();
-
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                return requestBody == null ? null : requestBody.getBytes();
-            }
-        };
-        request.setTag(this);
-        requestQueue.add(request);
+    @Override
+    public void onStop() {
+        super.onStop();
+        handlerCheckCoin.removeCallbacks(runnableCheckCoin);
     }
 
 }

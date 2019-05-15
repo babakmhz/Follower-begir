@@ -101,7 +101,7 @@ public class InstagramAutenticationDialog extends DialogFragment {
         loginWebView.clearCache(true);
         loginWebView.clearHistory();
         loginWebView.getSettings().setSaveFormData(false);
-        clearCookies(getContext());
+        clearCookies(App.currentActivity);
         if (isRedirectd) {
             logOut();
             OnCredentialsEntered(userName, password);

@@ -42,7 +42,7 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
         final Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_manage_accounts, null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_manage_accounts, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);

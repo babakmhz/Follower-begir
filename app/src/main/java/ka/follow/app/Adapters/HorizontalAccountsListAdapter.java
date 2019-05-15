@@ -8,14 +8,16 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import ka.follow.app.App;
 import ka.follow.app.Dialog.AccountActionsDialog;
 import ka.follow.app.Interface.AccountOptionChooserInterface;
 import ka.follow.app.Models.User;
@@ -39,7 +41,7 @@ public class HorizontalAccountsListAdapter extends RecyclerView.Adapter<Horizont
     @NonNull
     @Override
     public Item onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        this.context = parent.getContext();
+        this.context = App.currentActivity;
         View row = LayoutInflater.from(context).inflate(R.layout.cell_account_management_horizontal, parent, false);
         return new HorizontalAccountsListAdapter.Item(row);
 

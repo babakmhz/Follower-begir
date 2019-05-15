@@ -13,9 +13,19 @@ import android.view.Window;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.crashlytics.android.Crashlytics;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -25,14 +35,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import ka.follow.app.Adapters.SelectPicOrderOthersAdapter;
 import ka.follow.app.App;
 import ka.follow.app.Interface.RecievedImageFromAdapterInterface;
@@ -313,34 +315,37 @@ public class TestDialog extends DialogFragment {
     }
 
     private void setView() {
+        try {
+            DividerItemDecoration decoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+            @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+            //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+            SelectPicOrderOthersAdapter adapter = new SelectPicOrderOthersAdapter(context, pictureModelArrayList, getChildFragmentManager());
 
-        DividerItemDecoration decoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
-        @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-        //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        SelectPicOrderOthersAdapter adapter = new SelectPicOrderOthersAdapter(context, pictureModelArrayList, getChildFragmentManager());
-
-        rcvPics.setLayoutManager(layoutManager);
-        rcvPics.setItemAnimator(new DefaultItemAnimator());
-        rcvPics.setAdapter(adapter);
-        rcvPics.addItemDecoration(decoration);
-        rcvPics.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                rcvPics.getViewTreeObserver().removeOnPreDrawListener(this);
-                for (int i = 0; i < rcvPics.getChildCount(); i++) {
-                    View v = rcvPics.getChildAt(i);
-                    v.setAlpha(0.0f);
-                    v.animate().alpha(1.0f)
-                            .setDuration(300)
-                            .setStartDelay(i * 50)
-                            .start();
+            rcvPics.setLayoutManager(layoutManager);
+            rcvPics.setItemAnimator(new DefaultItemAnimator());
+            rcvPics.setAdapter(adapter);
+            rcvPics.addItemDecoration(decoration);
+            rcvPics.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    rcvPics.getViewTreeObserver().removeOnPreDrawListener(this);
+                    for (int i = 0; i < rcvPics.getChildCount(); i++) {
+                        View v = rcvPics.getChildAt(i);
+                        v.setAlpha(0.0f);
+                        v.animate().alpha(1.0f)
+                                .setDuration(300)
+                                .setStartDelay(i * 50)
+                                .start();
+                    }
+                    return true;
                 }
-                return true;
-            }
-        });
-        binding.prg.setVisibility(View.GONE);
+            });
+            binding.prg.setVisibility(View.GONE);
+        } catch (Exception e) {
+            Crashlytics.logException(e);
+        }
 
 
     }

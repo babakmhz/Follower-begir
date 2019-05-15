@@ -17,13 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
-
 import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
+import ir.tapsell.sdk.Tapsell;
 import ka.follow.app.Manager.Config;
 import ka.follow.app.Manager.VolleyManager;
 import ka.follow.app.data.InstagramUser;
-import io.fabric.sdk.android.Fabric;
-import ir.tapsell.sdk.Tapsell;
 import me.cheshmak.android.sdk.core.Cheshmak;
 
 public class App extends Application {
@@ -52,6 +52,8 @@ public class App extends Application {
     public static boolean isNotificationDialgShown= false;
     public static boolean isBazarInstalled=true;
     public static boolean IsBazarExists;
+    public static InstagramUser instagramUser;
+    public static boolean isGotUserInfo = false;
 
     public static void Toast(Context context, String message) {
         View view = App.inflater.inflate(R.layout.toast, null);

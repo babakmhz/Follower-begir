@@ -17,10 +17,12 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +36,6 @@ import ir.tapsell.sdk.TapsellAdRequestOptions;
 import ir.tapsell.sdk.TapsellAdShowListener;
 import ir.tapsell.sdk.TapsellShowOptions;
 import ka.follow.app.App;
-import ka.follow.app.BuildConfig;
 import ka.follow.app.Dialog.PurchasePackages.DirectPrchaseInterface;
 import ka.follow.app.Fragments.GetCoin.GetCoinFragment;
 import ka.follow.app.Fragments.HomeFragment;
@@ -51,10 +52,17 @@ import ka.follow.app.Manager.JsonManager;
 import ka.follow.app.Manager.SharedPreferences;
 import ka.follow.app.Models.ShopItem;
 import ka.follow.app.R;
+import ka.follow.app.Retrofit.ApiClient;
+import ka.follow.app.Retrofit.ApiInterface;
+import ka.follow.app.Retrofit.UserCoin;
 import ka.follow.app.databinding.ActivityMainBinding;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static ka.follow.app.App.Base_URL;
 import static ka.follow.app.App.requestQueue;
+import static ka.follow.app.Retrofit.ApiClient.retrofit;
 
 public class MainActivity extends AppCompatActivity implements PurchaseInterface,
         DirectPrchaseInterface,
@@ -88,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     private String currentSKU;
     private boolean isSuccessShop = false;
     public static BillingProcessor mNivadBilling;
+    private ApiInterface apiInterface;
 
     public static void globalLoadAd(Context context, final String zoneId, final int catchType) {
         if (MainActivity.ad == null) {
@@ -197,6 +206,9 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         progressDialog = new ProgressDialog(this);
         App.context = this;
         App.currentActivity=this;
+        ApiClient.getClient();
+        apiInterface = retrofit.create(ApiInterface.class);
+
         loadAd(App.TapSelZoneId, TapsellAdRequestOptions.CACHE_TYPE_CACHED);
         //Bottom navigation
         binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
@@ -235,6 +247,8 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
             return true;
         });
         handlerCheckCoin = new Handler();
+        FirebaseApp.initializeApp(this);
+
 
         handlerCheckCoin.postDelayed(runnableCheckCoin = new Runnable() {  /// TODO HAndler that checks coins
             public void run() {
@@ -251,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         Tapsell.setRewardListener((tapsellAd, b) -> {
             if (b) {
                 Toast.makeText(this, "2 سکه لایک به شما افزوده شد", Toast.LENGTH_SHORT).show();
-                addCoin(0, 2);
+                addCoin(0, 2,apiInterface);
 
             } else {
             }
@@ -279,8 +293,8 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
             boolean success = mNivadBilling.consumePurchase(Config.SKUSpecialBanner);
             {
                 if (success) {
-                    addCoin(0, Config.bannerLikeCoinCount);
-                    addCoin(1, Config.bannerFollowCoin);
+                    addCoin(0, Config.bannerLikeCoinCount, apiInterface);
+                    addCoin(1, Config.bannerFollowCoin, apiInterface);
                     Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
                     sendBroadcast(intent);
                     Toast.makeText(MainActivity.this, "با تشکر از خرید شما", Toast.LENGTH_SHORT).show();
@@ -433,7 +447,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
             boolean success = mNivadBilling.consumePurchase(Config.shopSku);
             {
                 if (success) {
-                    addCoin(Config.shopType, Config.shopCounts);
+                    addCoin(Config.shopType, Config.shopCounts, apiInterface);
 
                 }
             }
@@ -442,53 +456,41 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     }
 
 
-
-    private void addCoin(int i, int o) {
-
-
-        final String requestBody = JsonManager.addCoin(i, String.valueOf(o));
-
-        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/add_coin", response1 -> {
-            if (response1 != null) {
-                try {
-                    JSONObject jsonRootObject = new JSONObject(response1);
-                    if (jsonRootObject.optBoolean("status")) {
-                        App.followCoin = jsonRootObject.getInt("follow_coin");
-                        App.likeCoin = jsonRootObject.getInt("like_coin");
-                        Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
-                        Toast.makeText(this, "سکه های شما افزایش یافت..", Toast.LENGTH_SHORT).show();
-                        sendBroadcast(intent);
-                        shopItemAmount = 0;
-                        shopItemType = 0;
+    private void addCoin(int i, int o, ApiInterface apiInterface) {
 
 
+        byte[] data = new byte[0];
+        try {
+            data = String.valueOf(o).getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String base64 = android.util.Base64.encodeToString(data, android.util.Base64.DEFAULT);
+        apiInterface.AddCoin(App.UUID, App.Api_Token, String.valueOf(i), base64).enqueue(new Callback<UserCoin>() {
+            @Override
+            public void onResponse(Call<UserCoin> call, Response<UserCoin> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().getStatus()) {
+                            App.followCoin = response.body().getFollowCoin();
+                            App.likeCoin = response.body().getLikeCoin();
+                            Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
+                            Toast.makeText(MainActivity.this, "سکه های شما افزایش یافت..", Toast.LENGTH_SHORT).show();
+                            sendBroadcast(intent);
+                        }
                     }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-
-
-            }
-        }, error -> {
-            Log.i("volley", "onErrorResponse: " + error.toString());
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
             }
 
             @Override
-            public byte[] getBody() throws AuthFailureError {
-                return requestBody == null ? null : requestBody.getBytes();
+            public void onFailure(Call<UserCoin> call, Throwable t) {
+
             }
-        };
-        request.setTag(this);
-        requestQueue.add(request);
+        });
+
+
     }
+
 
     private void setVariables() {
         fm = getSupportFragmentManager();
@@ -618,87 +620,66 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     public void IABPurchase(ShopItem shopItem) {
 
     }
-
     private void increaseBeforeOrder(int type, int count) {
 
 
-        final String requestBody = JsonManager.addCoin(type, String.valueOf(count * 2));
-
-        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/add_coin", response1 -> {
-            if (response1 != null) {
-                try {
-                    JSONObject jsonRootObject = new JSONObject(response1);
-                    if (jsonRootObject.optBoolean("status")) {
-                        purchaseAfterIncrease(type, count);
-
-
+        byte[] data = new byte[0];
+        try {
+            data = String.valueOf(count).getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String base64 = android.util.Base64.encodeToString(data, android.util.Base64.DEFAULT);
+        apiInterface.AddCoin(App.UUID, App.Api_Token, String.valueOf(type), base64).enqueue(new Callback<UserCoin>() {
+            @Override
+            public void onResponse(Call<UserCoin> call, Response<UserCoin> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().getStatus()) {
+                            purchaseAfterIncrease(type, count,apiInterface);
+                        }
                     }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-
-
-            }
-        }, error -> {
-            Log.i("volley", "onErrorResponse: " + error.toString());
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
             }
 
             @Override
-            public byte[] getBody() throws AuthFailureError {
-                return requestBody == null ? null : requestBody.getBytes();
+            public void onFailure(Call<UserCoin> call, Throwable t) {
+
             }
-        };
-        request.setTag(this);
-        requestQueue.add(request);
+        });
+
 
     }
 
-    private void purchaseAfterIncrease(int type, int count) {
-        final String requestBody = JsonManager.submitOrder(type, directOrderItemId, directOrderItemURL, count);
+    private void purchaseAfterIncrease(int type, int count, ApiInterface apiInterface) {
 
-        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "transaction/set", response1 -> {
-            if (response1 != null) {
-                try {
-                    JSONObject jsonRootObject = new JSONObject(response1);
-                    if (jsonRootObject.optBoolean("status")) {
-                        Toast.makeText(this, "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+        apiInterface.SetOrder(App.UUID,App.Api_Token,type,directOrderItemId,count,count,directOrderItemURL).enqueue(new Callback<UserCoin>() {
+            @Override
+            public void onResponse(Call<UserCoin> call, Response<UserCoin> response) {
+                if (response.isSuccessful())
+                {
+                    if (response.body()!=null)
+                    {
+                        if (response.body().getStatus())
+                        {
+                            Toast.makeText(MainActivity.this, "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
 
+                        }
                     }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-
-
-            }
-        }, error -> {
-            Log.i("volley", "onErrorResponse: " + error.toString());
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
             }
 
             @Override
-            public byte[] getBody() throws AuthFailureError {
-                return requestBody == null ? null : requestBody.getBytes();
+            public void onFailure(Call<UserCoin> call, Throwable t) {
+
             }
-        };
-        request.setTag(this);
-        requestQueue.add(request);
+        });
+
+
 
     }
+
+
 
 
 
@@ -746,7 +727,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
     @Override
     public void addCoinMultipleAccount(int type) {
-        addCoin(0, 1);
+        addCoin(0, 1,apiInterface);
 
     }
 

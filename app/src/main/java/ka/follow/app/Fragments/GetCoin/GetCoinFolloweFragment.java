@@ -19,29 +19,31 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.toolbox.StringRequest;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import ka.follow.app.App;
 import ka.follow.app.Interface.AddCoinMultipleAccount;
+import ka.follow.app.Manager.Config;
 import ka.follow.app.Manager.DataBaseHelper;
-import ka.follow.app.Manager.JsonManager;
 import ka.follow.app.Models.User;
 import ka.follow.app.R;
+import ka.follow.app.Retrofit.ApiClient;
+import ka.follow.app.Retrofit.ApiInterface;
+import ka.follow.app.Retrofit.SimpleResult;
+import ka.follow.app.Retrofit.Transaction;
+import ka.follow.app.Retrofit.UserCoin;
 import ka.follow.app.databinding.FragmentGetCoinFollowerBinding;
 import ka.follow.app.instaAPI.InstaApiException;
 import ka.follow.app.instaAPI.InstagramApi;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-import static ka.follow.app.App.requestQueue;
+import static ka.follow.app.Retrofit.ApiClient.retrofit;
 
 
 @SuppressLint("ValidFragment")
@@ -59,8 +61,10 @@ public class GetCoinFolloweFragment extends Fragment {
     private AddCoinMultipleAccount addCoinMultipleAccount;
     private int step = 0;
     private CountDownTimer cTimer = null;
-    private boolean isAvailable=false;
-
+    private boolean isAvailable = false;
+    private Handler handlerCheckCoin;
+    private Runnable runnableCheckCoin;
+    private int retryCount = 0;
 
     public GetCoinFolloweFragment(AddCoinMultipleAccount addCoinMultipleAccount) {
         this.addCoinMultipleAccount = addCoinMultipleAccount;
@@ -72,7 +76,10 @@ public class GetCoinFolloweFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_get_coin_follower, container, false);
+
         view = binding.getRoot();
+        handlerCheckCoin = new Handler();
+
         getLikeOrder();
         binding.tvFollowerCoinCount.setText(App.followCoin + "");
 
@@ -101,19 +108,21 @@ public class GetCoinFolloweFragment extends Fragment {
         binding.btnDoFollow.setOnClickListener(b -> {
             if (!isAvailable)
                 return;
-            if (userId == null)
+            if (userId == null || userId.equals("0"))
                 return;
             likeInProgress();
             try {
                 InstagramApi.getInstance().Follow(userId, new InstagramApi.ResponseHandler() {
                     @Override
                     public void OnSuccess(JSONObject response) {
+                        binding.imvPic.setImageResource(R.drawable.ic_user_avatar);
                         submit();
                         likeFinished();
                     }
 
                     @Override
                     public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                        binding.imvPic.setImageResource(R.drawable.ic_user_avatar);
                         submit();
                         likeFinished();
                     }
@@ -135,43 +144,7 @@ public class GetCoinFolloweFragment extends Fragment {
         return view;
 
     }
-    private void report() {
 
-        final String requestBody = JsonManager.report(transactionId);
-
-        StringRequest request = new StringRequest(Request.Method.POST, App.Base_URL + "message/report/set", response -> {
-            assert response == null;
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                if (jsonObject.getBoolean("status")) {
-                    Toast.makeText(getContext(), "با تشکر از گزارش شما", Toast.LENGTH_SHORT).show();
-                    getLikeOrder();
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        },
-                error -> {
-                    Toast.makeText(getContext(), "خطا", Toast.LENGTH_SHORT).show();
-
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                return requestBody == null ? null : requestBody.getBytes();
-            }
-        };
-        request.setTag(this);
-        requestQueue.add(request);
-    }
 
     private void likeInProgress() {
         binding.btnDoFollow.setVisibility(View.INVISIBLE);
@@ -182,128 +155,159 @@ public class GetCoinFolloweFragment extends Fragment {
         binding.btnDoFollow.setVisibility(View.VISIBLE);
         binding.prg.setVisibility(View.GONE);
     }
-
     private void getLikeOrder() {
-        final String requestBody = JsonManager.getOrders(1);
-        StringRequest request = new StringRequest(Request.Method.POST, App.Base_URL + "transaction/get", response -> {
-            if (response == null || response.equals("")) {
+        if (retryCount == 5) {
+            handlerCheckCoin.removeCallbacks(runnableCheckCoin);
+            Toast.makeText(App.currentActivity, "سفارشی موجود نیست", Toast.LENGTH_SHORT).show();
+            retryCount = 0;
+            binding.imvPic.setImageResource(R.drawable.ic_user_avatar);
+            return;
+
+        }
+        ApiClient.getClient();
+
+        ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+
+        apiInterface.getOrder(App.UUID, App.Api_Token, 1).enqueue(new Callback<Transaction>() {
+            @Override
+            public void onResponse(Call<Transaction> call, Response<Transaction> response) {
+                if (response.code() == 204) {
+                    Toast.makeText(App.currentActivity, "موردی موجود نیست", Toast.LENGTH_SHORT).show();
+                    handlerCheckCoin.removeCallbacks(runnableCheckCoin);
+                    return;
+                }
+
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().getStatus()) {
+                            Picasso.get().load(response.body().getImagePath()).into(binding.imvPic);
+                            userId = response.body().getTypeId();
+                            transactionId = response.body().getTransactionId();
+                            isAvailable = true;
+                            binding.btnDoFollow.setEnabled(true);
+                            binding.btnAutoFollow.setAlpha(1f);
+                            binding.btnDoFollow.setAlpha(1f);
+                            binding.btnFollowWithAll.setAlpha(1f);
+                            retryCount = 0;
+                            handlerCheckCoin.removeCallbacks(runnableCheckCoin);
+
+
+                        } else {
+                            isAvailable = false;
+                            binding.btnDoFollow.setEnabled(false);
+                            binding.btnAutoFollow.setAlpha(0.5f);
+                            binding.btnDoFollow.setAlpha(0.5f);
+                            binding.btnFollowWithAll.setAlpha(0.5f);
+                            userId = "0";
+                            retryCount++;
+                            binding.imvPic.setImageResource(R.drawable.ic_user_avatar);
+                            final Handler handler = new Handler();
+                            handlerCheckCoin.postDelayed(runnableCheckCoin = new Runnable() {  /// TODO HAndler that checks coins
+                                public void run() {
+                                    getLikeOrder();
+                                }
+                            }, Config.delayGetOrder);
+
+                            return;
+                        }
+                    }
+                } else {
+                    isAvailable = false;
+                    binding.btnDoFollow.setEnabled(false);
+                    userId = "0";
+                    binding.btnAutoFollow.setAlpha(0.5f);
+                    binding.btnDoFollow.setAlpha(0.5f);
+                    binding.btnFollowWithAll.setAlpha(0.5f);
+                    binding.imvPic.setImageResource(R.drawable.ic_image_black);
+                    if (autoLike) {
+                        progressDialog.dismiss();
+                        autoLike = false;
+                        h.removeCallbacks(runnable); //stop handler
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Transaction> call, Throwable t) {
                 isAvailable = false;
+                binding.btnDoFollow.setEnabled(false);
                 binding.btnAutoFollow.setAlpha(0.5f);
                 binding.btnDoFollow.setAlpha(0.5f);
                 binding.btnFollowWithAll.setAlpha(0.5f);
-                binding.imvPic.setImageResource(R.drawable.ic_user_avatar);
-
+                binding.imvPic.setImageResource(R.drawable.ic_image_black);
                 if (autoLike) {
                     progressDialog.dismiss();
                     autoLike = false;
                     h.removeCallbacks(runnable); //stop handler
                 }
-                return;
             }
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                if (!jsonObject.getBoolean("status")) {
-                    isAvailable = false;
-                    binding.btnAutoFollow.setAlpha(0.5f);
-                    binding.btnDoFollow.setAlpha(0.5f);
-                    binding.btnFollowWithAll.setAlpha(0.5f);
-                    userId = null;
-                    transactionId = 0;
-                    Picasso.get().load(R.drawable.ic_user_avatar).into(binding.imvPic);
-                    getLikeOrder();
-                    return;
-                }
-                isAvailable = true;
-                binding.btnAutoFollow.setAlpha(1f);
-                binding.btnDoFollow.setAlpha(1f);
-                binding.btnFollowWithAll.setAlpha(1f);
-                Picasso.get().load(jsonObject.getString("image_path")).into(binding.imvPic);
-                userId = jsonObject.getString("type_id");
-                transactionId = jsonObject.getInt("transaction_id");
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                isAvailable = false;
-                binding.btnAutoFollow.setAlpha(0.5f);
-                binding.btnDoFollow.setAlpha(0.5f);
-                binding.btnFollowWithAll.setAlpha(0.5f);
-            }
-
-        },
-                error -> {
-                    if (autoLike) {
-                        progressDialog.dismiss();
-                        autoLike = false;
-                        isAvailable = false;
-                        binding.btnAutoFollow.setAlpha(0.5f);
-                        binding.btnDoFollow.setAlpha(0.5f);
-                        binding.btnFollowWithAll.setAlpha(0.5f);
-                        h.removeCallbacks(runnable); //stop handler
-                    }
-                }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-
-            @Override
-            public byte[] getBody() {
-                return requestBody == null ? null : requestBody.getBytes();
-            }
-        };
-        request.setTag(this);
-        requestQueue.add(request);
-
+        });
 
     }
 
-    private void submit() {
+    private void report() {
+        if (userId == null || userId.equals("0"))
+            return;
+        ApiClient.getClient();
 
-        final String requestBody = JsonManager.setSubmit(1, transactionId);
-
-        StringRequest request = new StringRequest(Request.Method.POST, App.Base_URL + "transaction/submit", response -> {
-            assert response == null;
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                if (jsonObject.getBoolean("status")) {
-                    App.followCoin = jsonObject.getInt("follow_coin");
-                    binding.tvFollowerCoinCount.setText(App.followCoin + "");
-                    getLikeOrder();
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        },
-                error -> {
-                    if (autoLike) {
-                        progressDialog.dismiss();
-                        autoLike = false;
-                        h.removeCallbacks(runnable); //stop handler
+        ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+        String title = "گزارش محتوای نادرست";
+        String message = "پست شماره : " + transactionId;
+        apiInterface.Report(App.UUID, App.Api_Token, message, title).enqueue(new Callback<SimpleResult>() {
+            @Override
+            public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().getStatus()) {
+                        Toast.makeText(App.currentActivity, "با تشکر از گزارش شما", Toast.LENGTH_SHORT).show();
+                        getLikeOrder();
                     }
-                }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
+                }
             }
 
             @Override
-            public byte[] getBody() {
-                return requestBody == null ? null : requestBody.getBytes();
+            public void onFailure(Call<SimpleResult> call, Throwable t) {
+
             }
-        };
-        request.setTag(this);
-        requestQueue.add(request);
+        });
+    }
+
+    private void submit() {
+        ApiClient.getClient();
+
+        final ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+
+        apiInterface.SubmitOrder(App.UUID, App.Api_Token, 1, String.valueOf(transactionId)).enqueue(new Callback<UserCoin>() {
+            @Override
+            public void onResponse(Call<UserCoin> call, Response<UserCoin> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().getStatus()) {
+                            App.followCoin = response.body().getFollowCoin();
+                            binding.tvFollowerCoinCount.setText(App.followCoin + "");
+                            transactionId = 0;
+                            binding.btnNext.performClick();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserCoin> call, Throwable t) {
+                if (autoLike) {
+                    progressDialog.dismiss();
+                    autoLike = false;
+                    h.removeCallbacks(runnable);
+                }
+            }
+        });
+
+
     }
 
     public void ProgressDialog(String progressMessage) {
         autoLike = true;
-        progressDialog = new Dialog(getContext());
+        progressDialog = new Dialog(App.currentActivity);
         progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         progressDialog.setCancelable(false);
         progressDialog.setContentView(R.layout.dialog_auto_like_follow);
@@ -322,9 +326,9 @@ public class GetCoinFolloweFragment extends Fragment {
 
     private void likeWithAllAccounts() {
         InstagramApi tempApi = new InstagramApi();
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(App.currentActivity);
         if (dataBaseHelper.getAllUsers().size() == 1) {
-            Toast.makeText(getContext(), "شما تنها یک حساب دارید ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "شما تنها یک حساب دارید ", Toast.LENGTH_SHORT).show();
             progressDialog.dismiss();
         } else if (step >= dataBaseHelper.getAllUsers().size()) { // اگر step  بزرگتر از سایز کاربرا بود یعنی تموم شده و باید با اکانت اصلی لاگین کنه
             for (User user : dataBaseHelper.getAllUsers()) {
@@ -402,7 +406,7 @@ public class GetCoinFolloweFragment extends Fragment {
                             public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
                                 try {
                                     if (errorResponse.getString("error_type").contains("checkpoint_challenge_required")) {
-                                        Toast.makeText(getContext(), "حساب شما به محدودیت رسید. دقایقی دیگر مجددا تلاش کنید", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(App.currentActivity, "حساب شما به محدودیت رسید. دقایقی دیگر مجددا تلاش کنید", Toast.LENGTH_SHORT).show();
                                         loginWithMainAccount();
                                         progressDialog.cancel();
                                     }
@@ -419,7 +423,7 @@ public class GetCoinFolloweFragment extends Fragment {
     }
 
     private void loginWithMainAccount() {
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(getContext());
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(App.currentActivity);
         for (User user : dataBaseHelper.getAllUsers()) {
             if (user.getIsActive() == 1) {
                 InstagramApi.getInstance().Login(user.getUserName(), user.getPassword(), new InstagramApi.ResponseHandler() {
@@ -437,6 +441,13 @@ public class GetCoinFolloweFragment extends Fragment {
                 });
             }
         }
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        handlerCheckCoin.removeCallbacks(runnableCheckCoin);
     }
 
 }

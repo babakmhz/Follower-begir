@@ -12,6 +12,15 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.Toast;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
@@ -24,15 +33,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import ka.follow.app.Adapters.TicketsAnswerAdapter;
+import ka.follow.app.App;
 import ka.follow.app.Manager.JsonManager;
 import ka.follow.app.Models.Messages;
 import ka.follow.app.R;
@@ -58,7 +60,7 @@ public class TicketAnswerDialog extends DialogFragment {
         final Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_ticket_answers, null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_ticket_answers, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -145,7 +147,7 @@ public class TicketAnswerDialog extends DialogFragment {
         StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        TicketsAnswerAdapter adapter = new TicketsAnswerAdapter(getContext(), messageList);
+        TicketsAnswerAdapter adapter = new TicketsAnswerAdapter(App.currentActivity, messageList);
         binding.rcvMessages.setLayoutManager(mLayoutManager);
         binding.rcvMessages.setItemAnimator(new DefaultItemAnimator());
         binding.rcvMessages.setAdapter(adapter);
@@ -170,7 +172,7 @@ public class TicketAnswerDialog extends DialogFragment {
 
     private void send() {
         if (TextUtils.isEmpty(binding.edtNewMessage.getText().toString())) {
-            Toast.makeText(getContext(), "متن ر وارد کنید", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "متن ر وارد کنید", Toast.LENGTH_SHORT).show();
             return;
         }
         final String requestBody = JsonManager.reply(binding.ticketTitle.getText().toString(), binding.edtNewMessage.getText().toString(), ticketId);
@@ -185,11 +187,11 @@ public class TicketAnswerDialog extends DialogFragment {
 
 
                     } else
-                        Toast.makeText(getContext(), "خطا در ارسال پیام", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(App.currentActivity, "خطا در ارسال پیام", Toast.LENGTH_SHORT).show();
 
 
                 } catch (JSONException e) {
-                    Toast.makeText(getContext(), "خطا در ارسال پیام", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(App.currentActivity, "خطا در ارسال پیام", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
 

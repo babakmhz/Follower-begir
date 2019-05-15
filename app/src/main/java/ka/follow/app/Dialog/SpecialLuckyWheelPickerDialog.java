@@ -82,7 +82,7 @@ public class SpecialLuckyWheelPickerDialog extends DialogFragment {
                         break;
                 }
 
-                Toast.makeText(getContext(), "شما برنده " + data.get(index).topText + " سکه " + type + " شدید ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(App.currentActivity, "شما برنده " + data.get(index).topText + " سکه " + type + " شدید ", Toast.LENGTH_SHORT).show();
                 setStatus(data.get(index));
             }
         });
@@ -206,7 +206,7 @@ public class SpecialLuckyWheelPickerDialog extends DialogFragment {
                         new SharedPreferences(getActivity()).setSpeccialWhhel(false);
                         Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
                         getActivity().sendBroadcast(intent);
-                        BroadcastManager.sendBroadcast(getContext());
+                        BroadcastManager.sendBroadcast(App.currentActivity);
                         dismiss();
                     }
 

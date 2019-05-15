@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import ka.follow.app.App;
 import ka.follow.app.Interface.AccountTransferInfoInterface;
 import ka.follow.app.Models.User;
 import ka.follow.app.R;
@@ -41,7 +42,7 @@ public class AccountTransferChooserAdapter extends RecyclerView.Adapter<AccountT
     @NonNull
     @Override
     public Item onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        this.context = parent.getContext();
+        this.context = App.currentActivity;
         View row = LayoutInflater.from(context).inflate(R.layout.cell_account_management_v2, parent, false);
         return new AccountTransferChooserAdapter.Item(row);
 

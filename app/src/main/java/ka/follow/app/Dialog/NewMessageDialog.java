@@ -21,6 +21,8 @@ import java.util.Map;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+
+import ka.follow.app.App;
 import ka.follow.app.Interface.NewMessageSubmittedInterface;
 import ka.follow.app.Manager.JsonManager;
 import ka.follow.app.R;
@@ -52,7 +54,7 @@ public class NewMessageDialog extends DialogFragment {
         final Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_new_message, null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_new_message, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -89,18 +91,18 @@ public class NewMessageDialog extends DialogFragment {
                 try {
                     JSONObject jsonRootObject = new JSONObject(response1);
                     if (jsonRootObject.optBoolean("status")) {
-                        Toast.makeText(getContext(), "پیام شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(App.currentActivity, "پیام شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
                         if (callback != null)
                             callback.sumbited(true);
                         dismiss();
 
 
                     } else
-                        Toast.makeText(getContext(), "خطا در ارسال پیام", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(App.currentActivity, "خطا در ارسال پیام", Toast.LENGTH_SHORT).show();
 
 
                 } catch (JSONException e) {
-                    Toast.makeText(getContext(), "خطا در ارسال پیام", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(App.currentActivity, "خطا در ارسال پیام", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
 

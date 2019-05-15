@@ -63,7 +63,7 @@ public class AccountStatisticsDialog extends DialogFragment {
         final Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_account_statistics, null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_account_statistics, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -108,7 +108,7 @@ public class AccountStatisticsDialog extends DialogFragment {
         ConnectivityManager cm = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork == null) {
-            App.Toast(getContext(), "خطای عدم اتصال! دستگاه خود را به اینترنت متصل کنید.");
+            App.Toast(App.currentActivity, "خطای عدم اتصال! دستگاه خود را به اینترنت متصل کنید.");
             binding.prg.setVisibility(View.GONE);
 
         } else {

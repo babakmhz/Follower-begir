@@ -53,7 +53,7 @@ public class TicketDialog extends DialogFragment implements NewMessageSubmittedI
         final Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_support, null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_support, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -129,7 +129,7 @@ public class TicketDialog extends DialogFragment implements NewMessageSubmittedI
         StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        TicketsAdapter adapter = new TicketsAdapter(getContext(), messageList,getChildFragmentManager());
+        TicketsAdapter adapter = new TicketsAdapter(App.currentActivity, messageList,getChildFragmentManager());
         binding.rcvMessages.setLayoutManager(mLayoutManager);
         binding.rcvMessages.setItemAnimator(new DefaultItemAnimator());
         binding.rcvMessages.setAdapter(adapter);

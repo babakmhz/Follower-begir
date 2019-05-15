@@ -47,7 +47,7 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
         final Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_transfer_coin, null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.fragment_transfer_coin, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -98,11 +98,11 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
 
     public void exchangeLikeToFollowerCoin() {
         if (TextUtils.isEmpty(binding.edtCoinAmountLiketoFollower.getText().toString())) {
-            Toast.makeText(getContext(), "تعداد سکه را مشخص کنید", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "تعداد سکه را مشخص کنید", Toast.LENGTH_SHORT).show();
             return;
         }
         if (App.likeCoin < Integer.parseInt(binding.edtCoinAmountLiketoFollower.getText().toString())) {
-            Toast.makeText(getContext(), "عدم موجودی کافی", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "عدم موجودی کافی", Toast.LENGTH_SHORT).show();
             return;
         }
         final String requestBody = JsonManager.exchangeCoins(binding.edtCoinAmountLiketoFollower.getText().toString(), 0);
@@ -114,10 +114,10 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
                     if (jsonRootObject.getBoolean("status")) {
                         App.followCoin = Integer.parseInt(jsonRootObject.getString("follow_coin"));
                         App.likeCoin = Integer.parseInt(jsonRootObject.getString("like_coin"));
-                        Toast.makeText(getContext(), "تبدیل با موفیت انجام شد", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(App.currentActivity, "تبدیل با موفیت انجام شد", Toast.LENGTH_SHORT).show();
                         binding.edtCoinAmountLiketoFollower.setText("");
                     } else {
-                        Toast.makeText(getContext(), "خطا در انتقال", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(App.currentActivity, "خطا در انتقال", Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -153,11 +153,11 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
 
     public void exchangeFollowToLikeCoins() {
         if (TextUtils.isEmpty(binding.edtCoinAmountliketoFollower2.getText().toString())) {
-            Toast.makeText(getContext(), "تعداد سکه را مشخص کنید", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "تعداد سکه را مشخص کنید", Toast.LENGTH_SHORT).show();
             return;
         }
         if (App.followCoin < Integer.parseInt(binding.edtCoinAmountliketoFollower2.getText().toString())) {
-            Toast.makeText(getContext(), "عدم موجودی کافی", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "عدم موجودی کافی", Toast.LENGTH_SHORT).show();
             return;
         }
         final String requestBody = JsonManager.exchangeCoins(binding.edtCoinAmountliketoFollower2.getText().toString(), 1);
@@ -169,11 +169,11 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
                     if (jsonRootObject.getBoolean("status")) {
                         App.followCoin = Integer.parseInt(jsonRootObject.getString("follow_coin"));
                         App.likeCoin = Integer.parseInt(jsonRootObject.getString("like_coin"));
-                        Toast.makeText(getContext(), "تبدیل با موفیت انجام شد", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(App.currentActivity, "تبدیل با موفیت انجام شد", Toast.LENGTH_SHORT).show();
                         binding.edtCoinAmountliketoFollower2.setText("");
 
                     } else {
-                        Toast.makeText(getContext(), "خطا در انتقال", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(App.currentActivity, "خطا در انتقال", Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -209,22 +209,22 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
 
     public void transferCoin() {
         if (TextUtils.isEmpty(binding.edtCoinAmount.getText().toString()) || binding.edtCoinAmount.getText().toString().equals("0")) {
-            Toast.makeText(getContext(), "تعداد سکه را مشخص کنید", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "تعداد سکه را مشخص کنید", Toast.LENGTH_SHORT).show();
             return;
         }
         if (receiverUUID == null) {
-            Toast.makeText(getContext(), "گیرنده سکه را مشخص کنید", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "گیرنده سکه را مشخص کنید", Toast.LENGTH_SHORT).show();
             return;
         }
         if (!binding.rvFollowerCoin.isChecked() && !binding.rvLikeCoin.isChecked()) {
-            Toast.makeText(getContext(), "نوع انتقال را مشخص کنید ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "نوع انتقال را مشخص کنید ", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (binding.rvLikeCoin.isChecked()) {
             type = 0;
             if (App.likeCoin < Integer.parseInt(binding.edtCoinAmount.getText().toString())) {
-                Toast.makeText(getContext(), "عدم موجودی", Toast.LENGTH_SHORT).show();
+                Toast.makeText(App.currentActivity, "عدم موجودی", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -232,7 +232,7 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
         if (binding.rvFollowerCoin.isChecked()) {
             type = 1;
             if (App.followCoin < Integer.parseInt(binding.edtCoinAmount.getText().toString())) {
-                Toast.makeText(getContext(), "عدم موجودی", Toast.LENGTH_SHORT).show();
+                Toast.makeText(App.currentActivity, "عدم موجودی", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
@@ -245,7 +245,7 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
                     JSONObject jsonRootObject = new JSONObject(response1);
                     if (jsonRootObject.getBoolean("status")) {
                         Log.i(TAG, "transferCoin: " + response1);
-                        Toast.makeText(getContext(), "انتقال با موفقیت انجام شد", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(App.currentActivity, "انتقال با موفقیت انجام شد", Toast.LENGTH_SHORT).show();
                         binding.edtCoinAmount.setText("");
                         if (binding.rvLikeCoin.isChecked()) {
                             App.likeCoin = jsonRootObject.getInt("like_coin");
@@ -255,7 +255,7 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
                         //follow_coin     ya like_coin
 
                     } else if (!jsonRootObject.getBoolean("status")) {
-                        Toast.makeText(getContext(), jsonRootObject.getString("error_message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(App.currentActivity, jsonRootObject.getString("error_message"), Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -291,7 +291,7 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
     public void setUUID(String UUID, String receiverProfilePic) {
         Log.d(TAG, "setUUID: " + UUID);
         if (App.profilePicURl.equals(receiverProfilePic)) {
-            Toast.makeText(getContext(), "انتقال به اکانت یکسان مجاز نمی باشد", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "انتقال به اکانت یکسان مجاز نمی باشد", Toast.LENGTH_SHORT).show();
         } else {
             Picasso.get().load(receiverProfilePic).into(binding.imgProfileImage);
             receiverUUID = UUID;

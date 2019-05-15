@@ -26,14 +26,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ka.follow.app.Activities.MainActivity;
@@ -42,7 +43,6 @@ import ka.follow.app.App;
 import ka.follow.app.Dialog.AboutUsDialog;
 import ka.follow.app.Dialog.AccountStatisticsDialog;
 import ka.follow.app.Dialog.AuthenticationDialog;
-import ka.follow.app.Dialog.FirstPageNotificationDialog;
 import ka.follow.app.Dialog.FirstPageUpdateDialog;
 import ka.follow.app.Dialog.LuckyWheelPickerDialog;
 import ka.follow.app.Dialog.ManageAccountsDialog;
@@ -63,18 +63,28 @@ import ka.follow.app.Manager.JsonManager;
 import ka.follow.app.Manager.SharedPreferences;
 import ka.follow.app.Models.User;
 import ka.follow.app.R;
+import ka.follow.app.Retrofit.ApiClient;
+import ka.follow.app.Retrofit.ApiInterface;
+import ka.follow.app.Retrofit.Button;
+import ka.follow.app.Retrofit.FirstPage;
+import ka.follow.app.Retrofit.ForceFollow;
+import ka.follow.app.Retrofit.Login;
+import ka.follow.app.Retrofit.SpecialBanner;
 import ka.follow.app.data.InstagramUser;
 import ka.follow.app.data.UserData;
 import ka.follow.app.databinding.FragmentHomeBinding;
 import ka.follow.app.instaAPI.InstaApiException;
 import ka.follow.app.instaAPI.InstagramApi;
 import ka.follow.app.parser.UserParser;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
-import static ka.follow.app.App.Base_URL;
 import static ka.follow.app.App.TAG;
 import static ka.follow.app.App.isNetworkAvailable;
 import static ka.follow.app.App.requestQueue;
+import static ka.follow.app.Retrofit.ApiClient.retrofit;
 
 @SuppressLint("ValidFragment")
 public class HomeFragment extends Fragment implements AccountChangerInterface, AccountOptionChooserInterface {
@@ -102,7 +112,6 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         this.callBackPurchase = callBack;
     }
 
-
     @SuppressLint("SetTextI18n")
     @Nullable
     @Override
@@ -115,6 +124,9 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         editor = shared.edit();
         callBack = this;
         accountOptionCallBack = this;
+        ApiClient.getClient();
+
+        final ApiInterface apiInterface = retrofit.create(ApiInterface.class);
 
         try {
             dbHeplper.createDatabase();
@@ -129,8 +141,13 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
 
         });
 
-        getUserInfo();
-        doForceFollow();
+        if (!App.isGotUserInfo) {
+            getUserInfo(apiInterface);
+            doForceFollow(apiInterface);
+        } else {
+            getUserCoins(App.instagramUser, apiInterface);
+        }
+
 
         binding.imageView3.setOnClickListener(v -> {
             if (!isNetworkAvailable()) {
@@ -324,10 +341,10 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
             try {
 
                 JSONObject jsonObject = new JSONObject(App.responseBanner);
-                JSONObject bannerCount = jsonObject.getJSONObject("special_banner");
-                Config.SKUSpecialBanner = bannerCount.getString("special_banner_RSA");
-                Config.bannerFollowCoin = bannerCount.getInt("follow_coin");
-                Config.bannerLikeCoinCount = bannerCount.getInt("like_coin");
+                SpecialBanner specialBanner = new Gson().fromJson(App.responseBanner, SpecialBanner.class);
+                Config.SKUSpecialBanner = specialBanner.getSpecialBannerRSA();
+                Config.bannerFollowCoin = specialBanner.getFollowCoin();
+                Config.bannerLikeCoinCount = specialBanner.getLikeCoin();
                 MainActivity.mNivadBilling.purchase(getActivity(), Config.SKUSpecialBanner);
 
 
@@ -373,19 +390,19 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         });
 
         showAccounts();
-        Animation connectingAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.heartbeat);
+        Animation connectingAnimation = AnimationUtils.loadAnimation(App.currentActivity, R.anim.heartbeat);
         binding.imvArrowShowAccounts.startAnimation(connectingAnimation);
         if (!App.isNotificationDialgShown) {
-            getUpdateDialogInfo();
+            getUpdateDialogInfo(apiInterface);
             App.isNotificationDialgShown = true;
         }
         return view;
 
     }
 
-    public void getUserInfo() {
+    public void getUserInfo(ApiInterface apiInterface) {
 
-        App.ProgressDialog(getContext(), "لطفا منتظر بمانید ...");
+        App.ProgressDialog(App.currentActivity, "لطفا منتظر بمانید ...");
         try {
             api.GetSelfUsernameInfo(new InstagramApi.ResponseHandler() {
                 @Override
@@ -422,55 +439,43 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                     binding.tvFollowerCount.setText(user.getFollowByCount());
                     binding.tvFollowingCount.setText(user.getFollowsCount());
                     binding.tvUserName.setText(user.getUserFullName());
+                    App.instagramUser = user;
 
-                    final String requestBody = JsonManager.login(user);
+                    apiInterface.login(user.getUserId(), user.getProfilePicture(), user.getUserName(), user.getMediaCount(), user.getFollowByCount(), user.getFollowsCount())
+                            .enqueue(new Callback<Login>() {
+                                @Override
+                                public void onResponse(Call<Login> call, Response<Login> response) {
+                                    App.CancelProgressDialog();
+                                    if (response.isSuccessful()) {
+                                        if (response.body() != null) {
+                                            App.UUID = response.body().getUuid();
+                                            App.Api_Token = response.body().getApiToken();
+                                            dbHeplper.insertUUID(response.body().getUuid(), user.getUserId());
+                                            if (response.body().getStatus() == 0) {
+                                                SharedPreferences sharedPreferences = new SharedPreferences(getActivity());
+                                                Toast.makeText(getActivity(), "به موجب اولین ورود شما 10 سکه به شما تعلق گرفت", Toast.LENGTH_LONG).show();
+                                                getUserCoins(user, apiInterface);
+                                                App.isGotUserInfo = true;
 
-                    StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "user/login", response1 -> {
-                        if (response1 != null) {
-                            try {
-                                JSONObject jsonRootObject = new JSONObject(response1);
-                                App.UUID = jsonRootObject.optString("uuid");
-                                App.Api_Token = jsonRootObject.optString("api_token");
-                                dbHeplper.insertUUID(jsonRootObject.optString("uuid"), user.getUserId());
+                                            } else {
+                                                getUserCoins(user, apiInterface);
+                                                App.isGotUserInfo = true;
 
-                                if (jsonRootObject.optInt("status") == 0) {
-                                    SharedPreferences sharedPreferences = new SharedPreferences(getActivity());
-                                    duplicateUserInfo(user.getUserName(), user.getUserId());
-                                    Toast.makeText(getActivity(), "به موجب اولین ورود شما 10 سکه به شما تعلق گرفت", Toast.LENGTH_SHORT).show();
-                                    getUserCoins(user);
-                                } else if (jsonRootObject.optInt("status") == 1) {
-                                    getUserCoins(user);
 
+                                            }
+
+                                        }
+                                    }
                                 }
 
-                                App.CancelProgressDialog();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                App.CancelProgressDialog();
+                                @Override
+                                public void onFailure(Call<Login> call, Throwable t) {
+                                    App.CancelProgressDialog();
+                                }
+                            });
 
-                            }
 
 
-                        }
-                    }, error -> {
-                        Log.i("volley", "onErrorResponse: " + error.toString());
-                        App.CancelProgressDialog();
-
-                    }) {
-                        @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            HashMap<String, String> headers = new HashMap<String, String>();
-                            headers.put("Content-Type", "application/json");
-                            return headers;
-                        }
-
-                        @Override
-                        public byte[] getBody() throws AuthFailureError {
-                            return requestBody == null ? null : requestBody.getBytes();
-                        }
-                    };
-                    request.setTag(this);
-                    requestQueue.add(request);
 
                 }
 
@@ -486,65 +491,41 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         }
     }
 
-    private void getUserCoins(InstagramUser user) {
-        final String requestBody = JsonManager.firstPageItems(user, getActivity());
+    private void getUserCoins(InstagramUser user, ApiInterface apiInterface) {
 
-        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "first_page", response1 -> {
-            if (response1 != null) {
-                try {
-                    JSONObject jsonRootObject = new JSONObject(response1);
-                    if (jsonRootObject.optInt("status") == 1) {
-                        binding.tvFollowerCoinCount.setText(jsonRootObject.optInt("follow_coin") + "");
-                        binding.tvLikeCoinCount.setText(jsonRootObject.optInt("like_coin") + "");
-                        App.followCoin = jsonRootObject.optInt("follow_coin");
-                        App.likeCoin = jsonRootObject.optInt("like_coin");
-                        JSONObject childJson = jsonRootObject.getJSONObject("special_banner");
-                        binding.tvGoldTitle.setText(childJson.getInt("follow_coin") + " سکه فالو");
-                        binding.tvGoldSubtitle.setText(childJson.getInt("like_coin") + " سکه لایک");
-                        specialBannerItemId = childJson.getString("special_banner_RSA");
-                        binding.tvSpecialBannerPrice.setText(childJson.getInt("price") + " تومان");
-                        App.responseBanner = response1;
-                        if (jsonRootObject.getString("welcome") != null && !jsonRootObject.getString("welcome").equals("")) {
-                            if (!App.isNotificationDialgShown) {
-                                try {
-                                    FirstPageNotificationDialog dialog = new FirstPageNotificationDialog(jsonRootObject.getString("welcome"));
-                                    dialog.setCancelable(true);
-                                    dialog.show(getChildFragmentManager(), "");
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+        apiInterface.FirstPage(App.UUID, App.Api_Token, user.getProfilePicture(), user.getUserName(), user.getMediaCount(), user.getFollowByCount(), user.getFollowsCount())
+                .enqueue(new Callback<FirstPage>() {
+                    @Override
+                    public void onResponse(Call<FirstPage> call, Response<FirstPage> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body() != null) {
+                                if (response.body().getStatus() == 1) {
+                                    FirstPage firstPage = response.body();
+                                    binding.tvFollowerCoinCount.setText(firstPage.getFollowCoin() + "");
+                                    binding.tvLikeCoinCount.setText(firstPage.getLikeCoin() + "");
+                                    App.followCoin = firstPage.getFollowCoin();
+                                    App.likeCoin = firstPage.getLikeCoin();
+                                    String bannerText = "با " + firstPage.getSpecialBanner().getPrice() + " تومان " + firstPage.getSpecialBanner().getFollowCoin()
+                                            + " سکه فالو و " + firstPage.getSpecialBanner().getLikeCoin() + " سکه لایک دریافت کنید";
+                                    binding.tvGoldSubtitle.setText(bannerText);
+                                    specialBannerItemId = firstPage.getSpecialBanner().getSpecialBannerRSA();
+                                    App.responseBanner = new Gson().toJson(firstPage.getSpecialBanner());
+                                    SpecialBanner specialBanner = new Gson().fromJson(App.responseBanner, SpecialBanner.class);
+                                    Config.SKUSpecialBanner = specialBanner.getSpecialBannerRSA();
+                                    Config.bannerFollowCoin = specialBanner.getFollowCoin();
+                                    Config.bannerLikeCoinCount = specialBanner.getLikeCoin();
+                                    binding.tvSpecialBannerPrice.setText("تنها با "+specialBanner.getPrice()+" تومان " );
+                                    binding.tvGoldTitle.setText(specialBanner.getLikeCoin()+" سکه لایک و "+specialBanner.getFollowCoin()+" سکه فالو ");
                                 }
-
                             }
                         }
-
-
                     }
 
+                    @Override
+                    public void onFailure(Call<FirstPage> call, Throwable t) {
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        }, error -> {
-            Log.i("volley", "onErrorResponse: " + error.toString());
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                return requestBody == null ? null : requestBody.getBytes();
-            }
-        };
-        request.setTag(this);
-        requestQueue.add(request);
-
+                    }
+                });
     }
 
 
@@ -617,49 +598,42 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         }
     }
 
+    private void doForceFollow(ApiInterface apiInterface) {
+        apiInterface.ForceFollowers().enqueue(new Callback<List<ForceFollow>>() {
+            @Override
+            public void onResponse(Call<List<ForceFollow>> call, Response<List<ForceFollow>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        for (ForceFollow f : response.body()) {
+                            try {
+                                InstagramApi.getInstance().Follow(f.getUserId(), new InstagramApi.ResponseHandler() {
+                                    @Override
+                                    public void OnSuccess(JSONObject response) {
+                                        Log.i(TAG, "OnSuccess Following forced: " + f.getUserId());
 
-    private void doForceFollow() {
-
-
-        StringRequest request = new StringRequest(Request.Method.GET, Base_URL + "force_followers", response1 -> {
-            if (response1 != null) {
-                try {
-                    JSONArray array = new JSONArray(response1);
-                    for (int i = 0; i < array.length(); i++) {
-                        JSONObject jsonObject = array.getJSONObject(i);
-                        try {
-                            InstagramApi.getInstance().Follow(jsonObject.getString("user_id"), new InstagramApi.ResponseHandler() {
-                                @Override
-                                public void OnSuccess(JSONObject response) {
-                                    try {
-                                        Log.i(TAG, "OnSuccess Following forced: " + jsonObject.getString("user_id").toString());
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
                                     }
 
-                                }
+                                    @Override
+                                    public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
 
-                                @Override
-                                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-
-                                }
-                            });
-                        } catch (InstaApiException e) {
-                            e.printStackTrace();
+                                    }
+                                });
+                            } catch (InstaApiException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+            }
 
+            @Override
+            public void onFailure(Call<List<ForceFollow>> call, Throwable t) {
 
             }
-        }, error -> {
-            Log.i("volley", "onErrorResponse: " + error.toString());
         });
-        request.setTag(this);
-        requestQueue.add(request);
+
     }
+
 
     private void rateUs() {
         Intent intent = new Intent(Intent.ACTION_EDIT);
@@ -766,33 +740,34 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
     }
 
 
-    private void getUpdateDialogInfo() {
-        StringRequest request = new StringRequest(Request.Method.GET, Base_URL + "buttons", response1 -> {
-            if (response1 != null) {
-                try {
-                    JSONArray jsonObject = new JSONArray(response1);
-                    String title = jsonObject.getJSONObject(0).getString("title");
-                    String link = jsonObject.getJSONObject(0).getString("link");
-                    String icon = jsonObject.getJSONObject(0).getString("icon");
-                    if (title == null || link == null || icon == null || title.length() == 0 || link.length() == 0) {
-                        return;
+    private void getUpdateDialogInfo(ApiInterface apiInterface) {
+        apiInterface.Buttons().enqueue(new Callback<List<Button>>() {
+            @Override
+            public void onResponse(Call<List<Button>> call, Response<List<Button>> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().size() == 0)
+                            return;
+                        Button button = response.body().get(0);
+                        String title = button.getTitle();
+                        String link = button.getLink();
+                        String icon = button.getIcon();
+                        if (title == null || link == null || icon == null || title.length() == 0 || link.length() == 0) {
+                            return;
+                        }
+                        FirstPageUpdateDialog dialog = new FirstPageUpdateDialog(title, link, icon);
+                        dialog.show(getChildFragmentManager(), "");
                     }
-                    FirstPageUpdateDialog dialog = new FirstPageUpdateDialog(title, link, icon);
-                    dialog.show(getChildFragmentManager(), "");
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
-        }, error -> {
-            Log.i("volley", "onErrorResponse: " + error.toString());
-            App.CancelProgressDialog();
 
+            @Override
+            public void onFailure(Call<List<Button>> call, Throwable t) {
+
+            }
         });
-        request.setTag(this);
-        requestQueue.add(request);
     }
+
 }
 
 

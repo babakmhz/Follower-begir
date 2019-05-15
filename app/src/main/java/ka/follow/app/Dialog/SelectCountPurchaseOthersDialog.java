@@ -51,7 +51,7 @@ public class SelectCountPurchaseOthersDialog extends DialogFragment {
         final Dialog dialog = new Dialog(getActivity());
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_select_count_purchase_others, null, false);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_select_count_purchase_others, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -90,10 +90,10 @@ public class SelectCountPurchaseOthersDialog extends DialogFragment {
     private void submitOrder() {
 
         if (App.likeCoin <= 0) {
-            Toast.makeText(getContext(), "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "سکه کافی ندارید ", Toast.LENGTH_SHORT).show();
 
         } else if (binding.seekBar.getProgress() == 0) {
-            Toast.makeText(getContext(), "تعداد سفارش را مشخص کنید", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "تعداد سفارش را مشخص کنید", Toast.LENGTH_SHORT).show();
         } else {
             final String requestBody = JsonManager.submitOrder(type, itemId, imageAdsress, binding.seekBar.getProgress());
 
@@ -103,7 +103,7 @@ public class SelectCountPurchaseOthersDialog extends DialogFragment {
                         JSONObject jsonRootObject = new JSONObject(response1);
                         if (jsonRootObject.optBoolean("status")) {
                             App.likeCoin = Integer.parseInt(jsonRootObject.getString("like_coin"));
-                            Toast.makeText(getContext(), "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(App.currentActivity, "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
                             binding.seekBar.setProgress(0);
                             dismiss();
 

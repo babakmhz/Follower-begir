@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 
 import java.util.List;
 
+import ka.follow.app.App;
 import ka.follow.app.R;
 
 public class LuckyWheelView extends RelativeLayout implements PielView.PieRotateListener {
@@ -61,10 +62,10 @@ public class LuckyWheelView extends RelativeLayout implements PielView.PieRotate
         if (attrs != null) {
             TypedArray typedArray = ctx.obtainStyledAttributes(attrs, R.styleable.LuckyWheelView);
             mBackgroundColor = typedArray.getColor(R.styleable.LuckyWheelView_lkwBackgroundColor, 0xffcc0000);
-            mTopTextSize = typedArray.getDimensionPixelSize(R.styleable.LuckyWheelView_lkwTopTextSize, (int) LuckyWheelUtils.convertDpToPixel(10f, getContext()));
-            mSecondaryTextSize = typedArray.getDimensionPixelSize(R.styleable.LuckyWheelView_lkwSecondaryTextSize, (int) LuckyWheelUtils.convertDpToPixel(20f, getContext()));
+            mTopTextSize = typedArray.getDimensionPixelSize(R.styleable.LuckyWheelView_lkwTopTextSize, (int) LuckyWheelUtils.convertDpToPixel(10f, App.currentActivity));
+            mSecondaryTextSize = typedArray.getDimensionPixelSize(R.styleable.LuckyWheelView_lkwSecondaryTextSize, (int) LuckyWheelUtils.convertDpToPixel(20f, App.currentActivity));
             mTextColor = typedArray.getColor(R.styleable.LuckyWheelView_lkwTopTextColor, 0);
-            mTopTextPadding = typedArray.getDimensionPixelSize(R.styleable.LuckyWheelView_lkwTopTextPadding, (int) LuckyWheelUtils.convertDpToPixel(10f, getContext())) + (int) LuckyWheelUtils.convertDpToPixel(10f, getContext());
+            mTopTextPadding = typedArray.getDimensionPixelSize(R.styleable.LuckyWheelView_lkwTopTextPadding, (int) LuckyWheelUtils.convertDpToPixel(10f, App.currentActivity)) + (int) LuckyWheelUtils.convertDpToPixel(10f, App.currentActivity);
             mCursorImage = typedArray.getDrawable(R.styleable.LuckyWheelView_lkwCursor);
             mCenterImage = typedArray.getDrawable(R.styleable.LuckyWheelView_lkwCenterImage);
             mEdgeWidth = typedArray.getInt(R.styleable.LuckyWheelView_lkwEdgeWidth, 10);
@@ -72,7 +73,7 @@ public class LuckyWheelView extends RelativeLayout implements PielView.PieRotate
             typedArray.recycle();
         }
 
-        LayoutInflater inflater = LayoutInflater.from(getContext());
+        LayoutInflater inflater = LayoutInflater.from(App.currentActivity);
         FrameLayout frameLayout = (FrameLayout) inflater.inflate(R.layout.lucky_wheel_layout, this, false);
 
         pielView = frameLayout.findViewById(R.id.pieView);

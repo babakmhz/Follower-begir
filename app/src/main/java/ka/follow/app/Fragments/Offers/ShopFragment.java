@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -47,6 +48,7 @@ import ka.follow.app.Manager.Config;
 import ka.follow.app.Manager.JsonManager;
 import ka.follow.app.Models.Offers;
 import ka.follow.app.R;
+import ka.follow.app.Retrofit.SpecialBanner;
 import ka.follow.app.databinding.FragmentShopBinding;
 
 import static ka.follow.app.App.Base_URL;
@@ -96,6 +98,14 @@ public class ShopFragment extends Fragment {
         binding.tvFollowerCoinCount.setText(App.followCoin + "");
         binding.tvLikeCoinCount.setText(App.likeCoin + "");
         binding.tvUserName.setText(App.user.getUserName());
+
+
+        SpecialBanner specialBanner = new Gson().fromJson(App.responseBanner, SpecialBanner.class);
+        Config.SKUSpecialBanner = specialBanner.getSpecialBannerRSA();
+        Config.bannerFollowCoin = specialBanner.getFollowCoin();
+        Config.bannerLikeCoinCount = specialBanner.getLikeCoin();
+        binding.tvSpecialBannerPrice.setText("تنها با "+specialBanner.getPrice()+" تومان " );
+        binding.tvGoldTitle.setText(specialBanner.getLikeCoin()+" سکه لایک و "+specialBanner.getFollowCoin()+" سکه فالو ");
 
         JSONObject jsonRootObject = null;
         try {
@@ -178,7 +188,7 @@ public class ShopFragment extends Fragment {
         StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
-        OffersAdapter adapter = new OffersAdapter(getContext(), offers, callBackShopItem);
+        OffersAdapter adapter = new OffersAdapter(App.currentActivity, offers, callBackShopItem);
         binding.rcvOffers.setLayoutManager(mLayoutManager);
         binding.rcvOffers.setItemAnimator(new DefaultItemAnimator());
         binding.rcvOffers.setAdapter(adapter);
@@ -203,7 +213,7 @@ public class ShopFragment extends Fragment {
 
     private void validateGiftCode() {
         if (TextUtils.isEmpty(binding.edtGiftCode.getText().toString())) {
-            Toast.makeText(getContext(), "گد را وارد کنید", Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.currentActivity, "گد را وارد کنید", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -214,18 +224,18 @@ public class ShopFragment extends Fragment {
                 try {
                     JSONObject jsonRootObject = new JSONObject(response1);
                     if (!jsonRootObject.optBoolean("status")) {
-                        Toast.makeText(getContext(), "کد وارد شده معتبر نیست", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(App.currentActivity, "کد وارد شده معتبر نیست", Toast.LENGTH_SHORT).show();
                     } else if (jsonRootObject.getBoolean("status")) {
                         if (jsonRootObject.getInt("type") == 0) {
-                            Toast.makeText(getContext(), "تبریک!‌به سکه های شما " + jsonRootObject.getInt("amount") + " سکه لایک اضافه شد ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(App.currentActivity, "تبریک!‌به سکه های شما " + jsonRootObject.getInt("amount") + " سکه لایک اضافه شد ", Toast.LENGTH_SHORT).show();
                         } else if (jsonRootObject.getInt("type") == 1) {
-                            Toast.makeText(getContext(), "تبریک!‌به سکه های شما " + jsonRootObject.getInt("amount") + " سکه فالو اضافه شد ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(App.currentActivity, "تبریک!‌به سکه های شما " + jsonRootObject.getInt("amount") + " سکه فالو اضافه شد ", Toast.LENGTH_SHORT).show();
                         }
 
                         App.followCoin = jsonRootObject.getInt("follow_coin");
                         App.likeCoin = jsonRootObject.getInt("like_coin");
 
-                        BroadcastManager.sendBroadcast(getContext());
+                        BroadcastManager.sendBroadcast(App.currentActivity);
 
                     }
 
@@ -257,7 +267,7 @@ public class ShopFragment extends Fragment {
     }
 
     public void ProgressDialog(String progressMessage) {
-        progressDialog = new Dialog(getContext());
+        progressDialog = new Dialog(App.currentActivity);
         progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         progressDialog.setCancelable(false);
         progressDialog.setContentView(R.layout.dialog_get_offers);

@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import ka.follow.app.App;
 import ka.follow.app.Models.TopUsers;
 import ka.follow.app.R;
 
@@ -31,7 +32,7 @@ public class TopUsersAdapter extends RecyclerView.Adapter<TopUsersAdapter.Item> 
     @NonNull
     @Override
     public Item onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        this.context = parent.getContext();
+        this.context = App.currentActivity;
         View row = LayoutInflater.from(context).inflate(R.layout.cell_top_users, parent, false);
         return new TopUsersAdapter.Item(row);
 

@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import ka.follow.app.App;
 import ka.follow.app.Interface.RecievedImageFromAdapterInterface;
 import ka.follow.app.Models.PictureModel;
 import ka.follow.app.R;
@@ -42,7 +44,7 @@ public class SelectPicAdapter extends RecyclerView.Adapter<SelectPicAdapter.Item
     @NonNull
     @Override
     public Item onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        this.context = parent.getContext();
+        this.context = App.currentActivity;
         View row = LayoutInflater.from(context).inflate(R.layout.row_select_pic, parent, false);
         return new Item(row);
     }

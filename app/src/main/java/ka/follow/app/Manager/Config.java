@@ -61,6 +61,7 @@ public class Config {
     public static String shopSku;
     public static int shopType;
     public static int shopCounts;
+    public static long delayGetOrder=1000;
 
 
     public static void setupShopItems() {

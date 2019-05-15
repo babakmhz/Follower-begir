@@ -3,41 +3,39 @@ package ka.follow.app.Dialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.toolbox.StringRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import ka.follow.app.App;
 import ka.follow.app.Manager.BroadcastManager;
-import ka.follow.app.Manager.JsonManager;
 import ka.follow.app.R;
+import ka.follow.app.Retrofit.ApiClient;
+import ka.follow.app.Retrofit.ApiInterface;
+import ka.follow.app.Retrofit.SimpleResult;
 import ka.follow.app.WheelPiclerView.LuckyItem;
 import ka.follow.app.WheelPiclerView.LuckyWheelView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-import static ka.follow.app.App.Base_URL;
-import static ka.follow.app.App.requestQueue;
+import static ka.follow.app.Retrofit.ApiClient.retrofit;
 
 public class LuckyWheelPickerDialog extends DialogFragment {
     List<LuckyItem> data = new ArrayList<>();
     private Button btnStart;
+    private ApiInterface apiInterface;
+
 
 
     @NonNull
@@ -54,7 +52,10 @@ public class LuckyWheelPickerDialog extends DialogFragment {
         btnStart = dialog.findViewById(R.id.start);
         btnStart.setEnabled(false);
 
-        checkStatus();
+        ApiClient.getClient();
+
+        apiInterface = retrofit.create(ApiInterface.class);
+        checkStatus(apiInterface);
         setData(luckyWheelView);
 
         btnStart.setOnClickListener(view -> {
@@ -74,13 +75,13 @@ public class LuckyWheelPickerDialog extends DialogFragment {
                     break;
             }
             if (data.get(index).topText.equals("0")) {
-                Toast.makeText(getContext(), "شانس با شما یار نبود !‌ ایشالا فردا ...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(App.currentActivity, "شانس با شما یار نبود !‌ ایشالا فردا ...", Toast.LENGTH_SHORT).show();
 
             } else {
-                Toast.makeText(getContext(), "شما برنده " + data.get(index).topText + " سکه " + type + " شدید ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(App.currentActivity, "شما برنده " + data.get(index).topText + " سکه " + type + " شدید ", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
                 getActivity().sendBroadcast(intent);
-                BroadcastManager.sendBroadcast(getContext());
+                BroadcastManager.sendBroadcast(App.currentActivity);
 
             }
             setStatus(data.get(index));
@@ -185,80 +186,48 @@ public class LuckyWheelPickerDialog extends DialogFragment {
     }
 
 
-    private void checkStatus() {
-        final String requestBody = JsonManager.simpleJson();
-
-        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "lucky_arrow/get", response1 -> {
-            if (response1 != null) {
-                try {
-                    JSONObject jsonRootObject = new JSONObject(response1);
-                    if (!jsonRootObject.optBoolean("status")) {
-                        Toast.makeText(getContext(), "استفاده از این سرویس در هر روز فقط یک بار امکان پذیر می باشد", Toast.LENGTH_LONG).show();
-                        dismiss();
-                    } else btnStart.setEnabled(true);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+    private void checkStatus(ApiInterface apiInterface) {
+        apiInterface.GetLuckyArrow(App.UUID, App.Api_Token).enqueue(new Callback<SimpleResult>() {
+            @Override
+            public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (!response.body().getStatus()) {
+                            Toast.makeText(App.currentActivity, "استفاده از این سرویس در هر روز فقط یک بار امکان پذیر می باشد", Toast.LENGTH_LONG).show();
+                            dismiss();
+                        } else btnStart.setEnabled(true);
+                    }
                 }
-
-
-            }
-        }, error -> {
-            Log.i("volley", "onErrorResponse: " + error.toString());
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
             }
 
             @Override
-            public byte[] getBody() throws AuthFailureError {
-                return requestBody == null ? null : requestBody.getBytes();
+            public void onFailure(Call<SimpleResult> call, Throwable t) {
+
             }
-        };
-        request.setTag(this);
-        requestQueue.add(request);
+        });
+
     }
 
 
     private void setStatus(LuckyItem luckyItem) {
-        final String requestBody = JsonManager.setLuckyWheel(luckyItem);
-
-        StringRequest request = new StringRequest(Request.Method.POST, Base_URL + "lucky_arrow/set", response1 -> {
-            if (response1 != null) {
-                try {
-                    JSONObject jsonRootObject = new JSONObject(response1);
-                    if (!jsonRootObject.optBoolean("status")) {
-                        Toast.makeText(getContext(), "خطا در ثبت اطلاعات", Toast.LENGTH_LONG).show();
-
-                    } else
-                        dismiss();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        apiInterface.SetLuckyArrow(App.UUID, App.Api_Token, luckyItem.type, luckyItem.topText).enqueue(new Callback<SimpleResult>() {
+            @Override
+            public void onResponse(Call<SimpleResult> call, Response<SimpleResult> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().getStatus()) {
+                            dismiss();
+                        }
+                    }
                 }
-
-
-            }
-        }, error -> {
-            Log.i("volley", "onErrorResponse: " + error.toString());
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
             }
 
             @Override
-            public byte[] getBody() throws AuthFailureError {
-                return requestBody == null ? null : requestBody.getBytes();
+            public void onFailure(Call<SimpleResult> call, Throwable t) {
+
             }
-        };
-        request.setTag(this);
-        requestQueue.add(request);
+        });
+
     }
 
     private int getRandomIndex() {
