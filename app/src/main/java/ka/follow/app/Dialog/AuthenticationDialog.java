@@ -62,7 +62,7 @@ public class AuthenticationDialog extends DialogFragment {
 
     }
 
-    public static void clearCookies(Context context) {
+    private static void clearCookies(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             CookieManager.getInstance().removeAllCookies(null);
             CookieManager.getInstance().flush();
@@ -77,6 +77,7 @@ public class AuthenticationDialog extends DialogFragment {
         }
     }
 
+
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
@@ -85,24 +86,24 @@ public class AuthenticationDialog extends DialogFragment {
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //dialog.setContentView(R.layout.dialog_authenticate);
-        dbHeplper = new DataBaseHelper(App.currentActivity);
-        binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_authenticate, null, false);
+        dbHeplper = new DataBaseHelper(getContext());
+        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_authenticate, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         //endregion
         handler = new Handler(getActivity().getMainLooper());
         loginWebView = binding.webViewAuthenticate;
-        AuthenticationDialog.LoginWebClient client = new AuthenticationDialog.LoginWebClient();
+        LoginWebClient client = new LoginWebClient();
         shared = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
         editor = shared.edit();
         loginWebView.getSettings().setJavaScriptEnabled(true);
-        loginWebView.addJavascriptInterface(new AuthenticationDialog.MyJavaScriptInterface(), "MYOBJECT");
+        loginWebView.addJavascriptInterface(new MyJavaScriptInterface(), "MYOBJECT");
         loginWebView.setWebViewClient(client);
         loginWebView.clearCache(true);
         loginWebView.clearHistory();
         loginWebView.getSettings().setSaveFormData(false);
-        clearCookies(App.currentActivity);
+        clearCookies(getContext());
         if (isRedirectd) {
             logOut();
             OnCredentialsEntered(userName, password);
@@ -113,7 +114,6 @@ public class AuthenticationDialog extends DialogFragment {
 
         return dialog;
     }
-
     private void OnCredentialsEntered(String username, String password) {
         binding.prg.setVisibility(View.VISIBLE);
         api = InstagramApi.getInstance();
@@ -205,11 +205,12 @@ public class AuthenticationDialog extends DialogFragment {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url.contains("instagram.com/accounts/login/?force_classic_login")) {
                 view.loadUrl(url);
-            } else if (url.contains("instagram.com/accounts/password/reset")) {
+            } else if (url.contains("password/reset")) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
                 getActivity().startActivity(intent);
-            }
+            } else if (url.contains("challenge"))
+                view.loadUrl(url);
             return true;
         }
 
@@ -279,6 +280,5 @@ public class AuthenticationDialog extends DialogFragment {
             });
         }
     }
-
 
 }

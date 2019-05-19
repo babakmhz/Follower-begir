@@ -197,6 +197,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return result != 0;
     }
 
+    public boolean deleteUuid(String uuid) {
+        openDatabase();
+        int result = myDataBase.delete("userInfo", "uuid =?", new String[]{uuid});
+        myDataBase.close();
+        return result != 0;
+    }
+
     public Long setAllValueNotActive() {
         ContentValues contentValues = new ContentValues();
         contentValues.put("isActive", 0);

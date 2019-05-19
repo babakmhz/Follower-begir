@@ -40,7 +40,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp"
             android:gravity="center"
-            android:text="اکانت شما نیاز به تایید دارد . اکانت خود را در نرم افزار اصلی ایسنتاگرام  تایید کنید"
+            android:text="اکانت شما نیاز به تایید دارد . اکانت خود را در نرم افزار اصلی اینستاگرام  تایید کنید"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

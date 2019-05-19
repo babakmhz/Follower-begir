@@ -25,6 +25,7 @@ import ka.follow.app.Models.User;
 import ka.follow.app.R;
 
 import static ka.follow.app.App.TAG;
+import static ka.follow.app.App.user;
 
 public class AccountsListAdapter extends RecyclerView.Adapter<AccountsListAdapter.Item> {
 
@@ -64,7 +65,9 @@ public class AccountsListAdapter extends RecyclerView.Adapter<AccountsListAdapte
                 @Override
                 public void onClick(View v) {
                     AccountActionsDialog dialog = new AccountActionsDialog(usersList.get(position).getProfilePicture(), usersList.get(position).getUserName()
-                            , usersList.get(position).getIsActive(), callBack, usersList.get(position).getPassword());
+                            , usersList.get(position).getIsActive(), callBack, usersList.get(position).getPassword(),usersList.get(position).getUserId(),
+                            usersList.get(position).getUuid()
+                            );
                     dialog.setCancelable(true);
                     dialog.show(childFragmentManager, "");
                 }

@@ -120,7 +120,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                 inflater, R.layout.fragment_home, container, false);
         view = binding.getRoot();
         dbHeplper = new DataBaseHelper(App.context);
-        shared = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        shared = App.currentActivity.getSharedPreferences("UserPrefs", MODE_PRIVATE);
         editor = shared.edit();
         callBack = this;
         accountOptionCallBack = this;
@@ -140,13 +140,9 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
             binding.tvFollowerCoinCount.setText(App.followCoin + "");
 
         });
+        getUserInfo(apiInterface);
+        doForceFollow(apiInterface);
 
-        if (!App.isGotUserInfo) {
-            getUserInfo(apiInterface);
-            doForceFollow(apiInterface);
-        } else {
-            getUserCoins(App.instagramUser, apiInterface);
-        }
 
 
         binding.imageView3.setOnClickListener(v -> {
@@ -274,11 +270,12 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                 dialog.show(getChildFragmentManager(), "");
                 return;
             }
-            if (new SharedPreferences(getActivity()).getSpecialWheel()) {
+
+            if (new SharedPreferences(App.currentActivity).getSpecialWheel()) {
                 SpecialLuckyWheelPickerDialog dialog = new SpecialLuckyWheelPickerDialog();
                 dialog.show(getChildFragmentManager(), "Spc");
             } else {
-                MainActivity.mNivadBilling.purchase(getActivity(), App.SkuSpecialWheel);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, App.SkuSpecialWheel);
             }
         });
 
@@ -342,10 +339,9 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
 
                 JSONObject jsonObject = new JSONObject(App.responseBanner);
                 SpecialBanner specialBanner = new Gson().fromJson(App.responseBanner, SpecialBanner.class);
-                Config.SKUSpecialBanner = specialBanner.getSpecialBannerRSA();
                 Config.bannerFollowCoin = specialBanner.getFollowCoin();
                 Config.bannerLikeCoinCount = specialBanner.getLikeCoin();
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.SKUSpecialBanner);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.SKUSpecialBanner);
 
 
             } catch (JSONException e) {
@@ -407,7 +403,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
             api.GetSelfUsernameInfo(new InstagramApi.ResponseHandler() {
                 @Override
                 public void OnSuccess(JSONObject response) {
-                    DataBaseHelper dbelper = new DataBaseHelper(getActivity());
+                    DataBaseHelper dbelper = new DataBaseHelper(App.currentActivity);
 
                     final InstagramUser user = new UserParser().parsUser(response, false);
                     user.setToken(userData.getSelf_user().getToken());
@@ -450,9 +446,9 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                                         if (response.body() != null) {
                                             App.UUID = response.body().getUuid();
                                             App.Api_Token = response.body().getApiToken();
+                                            Picasso.get().load(user.getProfilePicture()).fit().centerCrop().into(binding.profileImage);
                                             dbHeplper.insertUUID(response.body().getUuid(), user.getUserId());
                                             if (response.body().getStatus() == 0) {
-                                                SharedPreferences sharedPreferences = new SharedPreferences(getActivity());
                                                 Toast.makeText(getActivity(), "به موجب اولین ورود شما 10 سکه به شما تعلق گرفت", Toast.LENGTH_LONG).show();
                                                 getUserCoins(user, apiInterface);
                                                 App.isGotUserInfo = true;
@@ -510,10 +506,10 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                                     binding.tvGoldSubtitle.setText(bannerText);
                                     specialBannerItemId = firstPage.getSpecialBanner().getSpecialBannerRSA();
                                     App.responseBanner = new Gson().toJson(firstPage.getSpecialBanner());
-                                    SpecialBanner specialBanner = new Gson().fromJson(App.responseBanner, SpecialBanner.class);
-                                    Config.SKUSpecialBanner = specialBanner.getSpecialBannerRSA();
+                                    SpecialBanner specialBanner = firstPage.getSpecialBanner();
                                     Config.bannerFollowCoin = specialBanner.getFollowCoin();
                                     Config.bannerLikeCoinCount = specialBanner.getLikeCoin();
+                                    Config.SKUSpecialBanner=specialBanner.getSpecialBannerRSA();
                                     binding.tvSpecialBannerPrice.setText("تنها با "+specialBanner.getPrice()+" تومان " );
                                     binding.tvGoldTitle.setText(specialBanner.getLikeCoin()+" سکه لایک و "+specialBanner.getFollowCoin()+" سکه فالو ");
                                 }
@@ -653,11 +649,11 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
     }
 
     private void showAccounts() {
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(App.currentActivity);
         HorizontalAccountsListAdapter adapter = new HorizontalAccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager(), accountOptionCallBack);
 
-        DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, true);
+        DividerItemDecoration decoration = new DividerItemDecoration(App.currentActivity, DividerItemDecoration.VERTICAL);
+        @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(App.currentActivity, LinearLayoutManager.HORIZONTAL, true);
 
         binding.rcvAccounts.setLayoutManager(mLayoutManager);
         binding.rcvAccounts.setItemAnimator(new DefaultItemAnimator());
@@ -688,6 +684,12 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
 
     }
 
+    @Override
+    public void onDelete(boolean isDeleted) {
+        showAccounts();
+
+    }
+
     private void authenticate() {
         // startActivity(new Intent(this,ActivityLoginWebview.class));
         AuthenticationDialog dialog = new AuthenticationDialog(false, null, null);
@@ -698,6 +700,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
     }
 
     private void showOrHideAccountsLayout() {
+        showAccounts();
         if (binding.llAccounts.getVisibility() == View.VISIBLE) {
             binding.llAccounts.setVisibility(View.GONE);
             binding.imvArrowShowAccounts.setImageResource(R.drawable.ic_arrow_down_black);

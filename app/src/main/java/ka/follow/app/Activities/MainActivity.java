@@ -259,7 +259,6 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
 
 
-
         Log.d(TAG, "Starting setup.");
 
         Tapsell.setRewardListener((tapsellAd, b) -> {

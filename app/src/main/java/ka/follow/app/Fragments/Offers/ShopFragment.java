@@ -14,6 +14,17 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
@@ -26,17 +37,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import ka.follow.app.Activities.MainActivity;
 import ka.follow.app.Adapters.OffersAdapter;
@@ -101,9 +101,7 @@ public class ShopFragment extends Fragment {
 
 
         SpecialBanner specialBanner = new Gson().fromJson(App.responseBanner, SpecialBanner.class);
-        Config.SKUSpecialBanner = specialBanner.getSpecialBannerRSA();
-        Config.bannerFollowCoin = specialBanner.getFollowCoin();
-        Config.bannerLikeCoinCount = specialBanner.getLikeCoin();
+
         binding.tvSpecialBannerPrice.setText("تنها با "+specialBanner.getPrice()+" تومان " );
         binding.tvGoldTitle.setText(specialBanner.getLikeCoin()+" سکه لایک و "+specialBanner.getFollowCoin()+" سکه فالو ");
 
@@ -121,17 +119,8 @@ public class ShopFragment extends Fragment {
 
 
         binding.secondContainer.setOnClickListener(v -> {
-            try {
-                JSONObject jsonObject = new JSONObject(App.responseBanner);
-                JSONObject bannerCount = jsonObject.getJSONObject("special_banner");
-                Config.SKUSpecialBanner = bannerCount.getString("special_banner_RSA");
-                Config.bannerFollowCoin=bannerCount.getInt("follow_coin");
-                Config.bannerLikeCoinCount=bannerCount.getInt("like_coin");
-                MainActivity.mNivadBilling.purchase(getActivity(),Config.SKUSpecialBanner);
+            MainActivity.mNivadBilling.purchase(getActivity(),Config.SKUSpecialBanner);
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         });
 
         binding.btnCheckGiftCode.setOnClickListener(v -> validateGiftCode());

@@ -9,13 +9,14 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 
-import com.squareup.picasso.Picasso;
-
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.squareup.picasso.Picasso;
+
 import ka.follow.app.Adapters.AccountsListAdapter;
 import ka.follow.app.App;
 import ka.follow.app.Interface.AccountChangerInterface;
@@ -51,6 +52,20 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
         //endregion
         internalCallback = this;
         Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+
+        showUsers();
+        binding.imvAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                authenticate();
+            }
+        });
+
+        return dialog;
+    }
+
+    private void showUsers() {
+
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
         AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager(), internalCallback);
 
@@ -78,22 +93,13 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
             }
         });
 
-
-        binding.imvAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                authenticate();
-            }
-        });
-
-        return dialog;
     }
 
     private void authenticate() {
         // startActivity(new Intent(this,ActivityLoginWebview.class));
         AuthenticationDialog dialog = new AuthenticationDialog(false, null, null);
         dialog.setCancelable(true);
-        dialog.show(getFragmentManager(), ":");
+        dialog.show(getChildFragmentManager(), ":");
 
 
     }
@@ -103,5 +109,13 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
     public void changedInfo(String username, String password) {
         externalCallBack.selectToChange(username, password);
         dismiss();
+    }
+
+    @Override
+    public void onDelete(boolean isDeleted) {
+        if (isDeleted) {
+            showUsers();
+
+        }
     }
 }

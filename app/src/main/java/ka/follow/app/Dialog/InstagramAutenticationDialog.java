@@ -61,7 +61,8 @@ public class InstagramAutenticationDialog extends DialogFragment {
 
     }
 
-    public static void clearCookies(Context context) {
+
+    private static void clearCookies(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             CookieManager.getInstance().removeAllCookies(null);
             CookieManager.getInstance().flush();
@@ -204,11 +205,14 @@ public class InstagramAutenticationDialog extends DialogFragment {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             if (url.contains("instagram.com/accounts/login/?force_classic_login")) {
                 view.loadUrl(url);
-            } else if (url.contains("instagram.com/accounts/password/reset")) {
+            } else if (url.contains("password/reset")) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
                 getActivity().startActivity(intent);
             }
+
+            else if (url.contains("challenge"))
+                view.loadUrl(url);
             return true;
         }
 

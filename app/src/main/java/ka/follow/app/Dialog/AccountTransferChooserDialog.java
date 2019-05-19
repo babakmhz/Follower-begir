@@ -2,17 +2,18 @@ package ka.follow.app.Dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.squareup.picasso.Picasso;
 
@@ -92,7 +93,7 @@ public class AccountTransferChooserDialog extends DialogFragment implements Acco
 
     private void authenticate() {
         // startActivity(new Intent(this,ActivityLoginWebview.class));
-        InstagramAutenticationDialog dialog = new InstagramAutenticationDialog(false, null, null);
+        AuthenticationDialog dialog = new AuthenticationDialog(false, null, null);
         dialog.setCancelable(true);
         dialog.show(getFragmentManager(), ":");
 

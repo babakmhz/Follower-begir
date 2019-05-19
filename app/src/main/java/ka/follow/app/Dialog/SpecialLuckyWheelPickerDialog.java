@@ -55,17 +55,14 @@ public class SpecialLuckyWheelPickerDialog extends DialogFragment {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         final LuckyWheelView luckyWheelView = (LuckyWheelView) dialog.findViewById(R.id.luckyWheel);
         btnStart = dialog.findViewById(R.id.start);
-        btnStart.setEnabled(false);
+        btnStart.setEnabled(true);
 
         checkStatus();
         setData(luckyWheelView);
 
-        btnStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int index = getRandomIndex();
-                luckyWheelView.startLuckyWheelWithTargetIndex(index);
-            }
+        btnStart.setOnClickListener(view -> {
+            int index = getRandomIndex();
+            luckyWheelView.startLuckyWheelWithTargetIndex(index);
         });
 
 
@@ -203,7 +200,7 @@ public class SpecialLuckyWheelPickerDialog extends DialogFragment {
                     if (jsonRootObject.optBoolean("status")) {
                         App.followCoin = jsonRootObject.getInt("follow_coin");
                         App.likeCoin = jsonRootObject.getInt("like_coin");
-                        new SharedPreferences(getActivity()).setSpeccialWhhel(false);
+                        new SharedPreferences(App.currentActivity).setSpeccialWhhel(false);
                         Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
                         getActivity().sendBroadcast(intent);
                         BroadcastManager.sendBroadcast(App.currentActivity);

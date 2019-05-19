@@ -62,7 +62,7 @@ public class HorizontalAccountsListAdapter extends RecyclerView.Adapter<Horizont
                 @Override
                 public void onClick(View v) {
                     AccountActionsDialog dialog = new AccountActionsDialog(usersList.get(position).getProfilePicture(), usersList.get(position).getUserName()
-                            , usersList.get(position).getIsActive(), callBack, usersList.get(position).getPassword());
+                            , usersList.get(position).getIsActive(), callBack, usersList.get(position).getPassword(), usersList.get(position).getUserId(), usersList.get(position).getUuid());
                     dialog.setCancelable(true);
                     dialog.show(childFragmentManager, "");
                 }
