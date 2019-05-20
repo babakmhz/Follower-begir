@@ -8,7 +8,7 @@
     android:padding="10dp"
     tools:context=".Activities.MainActivity">
 
-    <ka.follow.app.WheelPiclerView.LuckyWheelView
+    <ka.follow.app2.WheelPiclerView.LuckyWheelView
         android:id="@+id/luckyWheel"
         android:layout_width="200dp"
         android:layout_height="200dp"

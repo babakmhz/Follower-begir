@@ -18,7 +18,7 @@ repositories {
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "ka.follow.app"
+        applicationId "ka.follow.app2"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1002
@@ -26,7 +26,7 @@ android {
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        buildConfigField "String", "BAZAR_RSA", "\"MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwDB1YN8n11QuwWpL+XHqqqdGKgYG9d4FLglhJqfLEeV7FFXShc06oA1qbu6cFBLSqd31aK1k57ctyuitaZVOm3gPXlB2kYhfGbVz6R33G0h0o5HqRXgyavf3JvP5YMBvTJa4anxPa1CcOjxjPwazLvsc0w/aUf/Xg++q1OUVAc/Ib46kChsZmJ/D1o8WHsxi37hW+aKud18WDfBoeNdvOnMpAu7t6qX6pNW2uMgQlUCAwEAAQ==\""
+        buildConfigField "String", "BAZAR_RSA", "\"MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwDkKGfySruthB9EIBWO6/ejzFfwbM9o1S9695aRKBINSW9oYEFaTa0GKuG/oixAx+bG4fclpY0A6pn+Q7U06UY1KNIbOwDm1kt4G3IMbIe2BjquqJmnNrTk4zQ8B5iv6K8GEs7CwM5/DPVheEZ8KPkpBph7tqbTVlMa9u3IJGRx6+d9hkj3moIqbOOW5JHNV41Y7LaySfm4S81G6ChxTE5JkjgW51dBvJC4I/05DVcCAwEAAQ==\""
     }
     dataBinding {
         enabled = true
