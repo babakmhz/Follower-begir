@@ -4,12 +4,15 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -24,9 +27,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import ka.follow.app.App;
 import ka.follow.app.Manager.BroadcastManager;
 import ka.follow.app.Manager.JsonManager;
@@ -202,7 +202,7 @@ public class SpecialLuckyWheelPickerDialog extends DialogFragment {
                         App.likeCoin = jsonRootObject.getInt("like_coin");
                         new SharedPreferences(App.currentActivity).setSpeccialWhhel(false);
                         Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
-                        getActivity().sendBroadcast(intent);
+                        App.currentActivity.sendBroadcast(intent);
                         BroadcastManager.sendBroadcast(App.currentActivity);
                         dismiss();
                     }

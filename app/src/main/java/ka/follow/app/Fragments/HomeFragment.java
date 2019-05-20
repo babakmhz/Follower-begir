@@ -125,7 +125,8 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         callBack = this;
         accountOptionCallBack = this;
         ApiClient.getClient();
-
+        //ToDo Remove
+        //new SharedPreferences(App.currentActivity).setSpeccialWhhel(true);
         final ApiInterface apiInterface = retrofit.create(ApiInterface.class);
 
         try {
