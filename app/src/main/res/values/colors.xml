@@ -20,6 +20,8 @@
     <color name="darkYellow">#fdc80a</color>
     <color name="lightYellow">#ffe072</color>
     <color name="lightBlue">#7faeff</color>
+    <color name="yellow">#ffdc61</color>
+    <color name="greyNew">#C2C2C2</color>
 
 
 </resources>

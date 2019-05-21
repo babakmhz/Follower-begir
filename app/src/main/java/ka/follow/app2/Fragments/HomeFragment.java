@@ -427,7 +427,6 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                         dbelper.addUser(_user);
                     }
                     Picasso.get().load(user.getProfilePicture()).error(R.drawable.app_logo).into(binding.profileImage);
-                    Picasso.get().load(user.getProfilePicture()).error(R.drawable.app_logo).into(binding.imageView2);
                     profilePicURL = user.getProfilePicture();
                     App.profilePicURl = user.getProfilePicture();
                     App.userId = user.getUserId();
@@ -773,7 +772,3 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
     }
 
 }
-
-
-
-

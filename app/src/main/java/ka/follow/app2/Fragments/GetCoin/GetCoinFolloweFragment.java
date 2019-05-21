@@ -81,7 +81,7 @@ public class GetCoinFolloweFragment extends Fragment {
         handlerCheckCoin = new Handler();
 
         getLikeOrder();
-        binding.tvFollowerCoinCount.setText(App.followCoin + "");
+        binding.tvLikeCoinCounts.setText(App.followCoin + "");
 
         binding.tvUserName.setText(App.user.getUserName());
         Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);

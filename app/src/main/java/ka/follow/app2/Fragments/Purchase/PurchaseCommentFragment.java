@@ -86,7 +86,7 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
             SearchDialog dialog = new SearchDialog();
             dialog.show(getFragmentManager(), "");
         });
-        binding.tvLikeCoinCounts.setText(App.likeCoin + "");
+        binding.tvLikeCoinCounts.setText("سکه لایک : "+App.likeCoin + "");
         binding.tvLikeExpenseCount.setText(0 + "");
         binding.tvLikeOrderCount.setText("0");
         binding.seekBar.setProgress(0);

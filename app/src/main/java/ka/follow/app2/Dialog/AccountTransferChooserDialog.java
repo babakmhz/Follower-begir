@@ -87,7 +87,7 @@ public class AccountTransferChooserDialog extends DialogFragment implements Acco
                 authenticate();
             }
         });
-        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        Picasso.get().load(App.profilePicURl).into(binding.profileImage);
         return dialog;
     }
 

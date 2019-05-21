@@ -61,8 +61,8 @@ public class SearchDialog extends DialogFragment {
             }
             return false;
         });
-        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
-        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
+        Picasso.get().load(App.profilePicURl).into(binding.profileImage);
+        binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
 
         return dialog;
     }

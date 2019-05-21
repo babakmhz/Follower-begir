@@ -29,7 +29,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/orangeTextColor"
+            android:background="@color/blueFirst"
             android:gravity="center"
             android:paddingTop="@dimen/_10sdp"
             android:paddingBottom="@dimen/_10sdp"

@@ -226,7 +226,7 @@ public class GetCoinCommentFragment extends Fragment {
         handlerCheckCoin = new Handler();
 
         getCommentOrders();
-        binding.tvLikeCoin.setText(App.likeCoin + "");
+        binding.tvLikeCoinCounts.setText(App.likeCoin + "");
         binding.tvUserName.setText(App.user.getUserName());
         Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
 

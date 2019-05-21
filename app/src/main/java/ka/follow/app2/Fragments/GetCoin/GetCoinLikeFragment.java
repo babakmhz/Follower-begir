@@ -82,7 +82,7 @@ public class GetCoinLikeFragment extends Fragment {
         handlerCheckCoin = new Handler();
 
         view = binding.getRoot();
-        binding.tvLikeCoinCount.setText("" + App.likeCoin);
+        binding.tvLikeCoinCounts.setText("" + App.likeCoin);
         binding.btnNext.setOnClickListener(v -> {
             getLikeOrder();
         });
