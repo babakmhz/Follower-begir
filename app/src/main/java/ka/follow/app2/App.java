@@ -31,7 +31,7 @@ public class App extends Application {
     public static final String TAG = "MyFollower";
     public static final String TapSellKey = "ochrbcjrfccsfalaregqmfllemsmfolhnjcrdabnkdpjbpctfprjlrrpiboahhktlbolcc";
     public static final String TapSelZoneId = "5ce2fc2b3cb98c0001ff0f13";
-    public static String Base_URL = "https://kafollow.ir/api/v1/";
+    public static String Base_URL = "https://kafollow2.ir/api/v1/";
     public static Activity currentActivity;
     public static LayoutInflater inflater;
     public static Dialog progressDialog;

@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    public static final String BASE_URL = "https://kafollow.ir/";
+    public static final String BASE_URL = "https://kafollow2.ir/";
     private static final String TOKEN_APP = "EDMQFLDW-T2LUGDX5-4XLWDQ6H-V9A99K4H";
     private static final String Content_Type = "application/json";
     public static Retrofit retrofit = null;
