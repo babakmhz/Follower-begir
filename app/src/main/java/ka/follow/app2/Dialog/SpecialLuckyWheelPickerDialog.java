@@ -10,6 +10,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
@@ -21,11 +25,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import ka.follow.app2.App;
 import ka.follow.app2.Manager.BroadcastManager;
 import ka.follow.app2.Manager.JsonManager;
@@ -45,8 +47,8 @@ public class SpecialLuckyWheelPickerDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        Dialog dialog = new Dialog(getActivity());
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        Dialog dialog = new Dialog(App.currentActivity);
+        Objects.requireNonNull(dialog.getWindow()).setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_wheel_picker);
@@ -201,7 +203,7 @@ public class SpecialLuckyWheelPickerDialog extends DialogFragment {
                         App.likeCoin = jsonRootObject.getInt("like_coin");
                         new SharedPreferences(App.currentActivity).setSpeccialWhhel(false);
                         Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
-                        getActivity().sendBroadcast(intent);
+                        App.currentActivity.sendBroadcast(intent);
                         BroadcastManager.sendBroadcast(App.currentActivity);
                         dismiss();
                     }
