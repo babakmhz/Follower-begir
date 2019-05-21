@@ -34,13 +34,6 @@
         <item name="android:windowExitAnimation">@anim/slide_out_right</item>
     </style>
 
-    <style name="activeTabBar">
-        <item name="android:background">@drawable/active_tab</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textStyle">bold</item>
-
-    </style>
-
     <style name="globalTextStyle">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">16sp</item>

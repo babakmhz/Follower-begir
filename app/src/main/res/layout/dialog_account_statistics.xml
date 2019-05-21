@@ -326,7 +326,7 @@
                     android:drawableEnd="@drawable/ic_arrow_left"
                     android:drawableRight="@drawable/ic_arrow_left"
                     android:gravity="center_vertical"
-                    android:text="من فالو تکرده ام"
+                    android:text="من فالو نکرده ام"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
 

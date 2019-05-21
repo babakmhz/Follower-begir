@@ -68,7 +68,7 @@ public class LuckyWheelView extends RelativeLayout implements PielView.PieRotate
             typedArray.recycle();
         }
 
-        LayoutInflater inflater = LayoutInflater.from(getContext());
+        LayoutInflater inflater = LayoutInflater.from(App.currentActivity);
         FrameLayout frameLayout = (FrameLayout) inflater.inflate(R.layout.lucky_wheel_layout, this, false);
 
         pielView = (PielView) frameLayout.findViewById(R.id.pieView);

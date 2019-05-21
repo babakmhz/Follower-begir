@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="تهیه توسط تیم مجازی شو"
+            android:text="جهت اعلام کد های هدیه به کانال تلگرام ما سر بزنید:"
             android:layout_margin="5dp"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp" />
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="http://t.me/majisho_ir"
+            android:text="http://t.me/follow_ab"
             android:layout_margin="5dp"
             android:textColor="@color/black"
             android:textSize="@dimen/_14ssp" />
@@ -48,7 +48,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="mohammad.ghonchegi@gmail.com"
+            android:text="ایمیل پشتیبانی:"
+            android:layout_margin="5dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=" nsoltani3024@gmail.com"
+            android:layout_margin="5dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Telegram: @follow_ac"
             android:layout_margin="5dp"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp" />

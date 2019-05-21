@@ -60,7 +60,6 @@
 
 
     <LinearLayout
-        android:id="@+id/llFollowerCounts"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
