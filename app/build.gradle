@@ -18,7 +18,7 @@ repositories {
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "ka.follow.app2"
+        applicationId "ka.follow.v4"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1002
