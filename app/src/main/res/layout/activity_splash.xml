@@ -6,12 +6,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@drawable/newbg"
         android:layout_height="match_parent">
-        <ImageView
-            android:layout_width="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/bg"
-            android:layout_height="match_parent" />
+
 
         <ImageView
             android:id="@+id/imageView4"

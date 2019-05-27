@@ -137,8 +137,8 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         }
         db = dbHeplper.getWritableDatabase();
         ValueUpdaterBroadCast.bindListener(() -> {
-            binding.tvLikeCoinCount.setText(App.likeCoin + "");
-            binding.tvFollowerCoinCount.setText(App.followCoin + "");
+            binding.tvLikeCoinCount.setText("سکه لایک : "+App.likeCoin + "");
+            binding.tvFollowerCoinCount.setText("سکه فالو : "+App.followCoin + "");
 
         });
         getUserInfo(apiInterface);
@@ -427,7 +427,6 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                         dbelper.addUser(_user);
                     }
                     Picasso.get().load(user.getProfilePicture()).error(R.drawable.app_logo).into(binding.profileImage);
-                    Picasso.get().load(user.getProfilePicture()).error(R.drawable.app_logo).into(binding.imageView2);
                     profilePicURL = user.getProfilePicture();
                     App.profilePicURl = user.getProfilePicture();
                     App.userId = user.getUserId();
@@ -498,21 +497,20 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                             if (response.body() != null) {
                                 if (response.body().getStatus() == 1) {
                                     FirstPage firstPage = response.body();
-                                    binding.tvFollowerCoinCount.setText(firstPage.getFollowCoin() + "");
-                                    binding.tvLikeCoinCount.setText(firstPage.getLikeCoin() + "");
+
+                                    binding.tvFollowerCoinCount.setText("سکه فالو : "+firstPage.getFollowCoin() + "");
+                                    binding.tvLikeCoinCount.setText("سکه لایک : "+firstPage.getLikeCoin() + "");
                                     App.followCoin = firstPage.getFollowCoin();
                                     App.likeCoin = firstPage.getLikeCoin();
                                     String bannerText = "با " + firstPage.getSpecialBanner().getPrice() + " تومان " + firstPage.getSpecialBanner().getFollowCoin()
                                             + " سکه فالو و " + firstPage.getSpecialBanner().getLikeCoin() + " سکه لایک دریافت کنید";
-                                    binding.tvGoldSubtitle.setText(bannerText);
                                     specialBannerItemId = firstPage.getSpecialBanner().getSpecialBannerRSA();
                                     App.responseBanner = new Gson().toJson(firstPage.getSpecialBanner());
                                     SpecialBanner specialBanner = firstPage.getSpecialBanner();
                                     Config.bannerFollowCoin = specialBanner.getFollowCoin();
                                     Config.bannerLikeCoinCount = specialBanner.getLikeCoin();
                                     Config.SKUSpecialBanner=specialBanner.getSpecialBannerRSA();
-                                    binding.tvSpecialBannerPrice.setText("تنها با "+specialBanner.getPrice()+" تومان " );
-                                    binding.tvGoldTitle.setText(specialBanner.getLikeCoin()+" سکه لایک و "+specialBanner.getFollowCoin()+" سکه فالو ");
+                                    binding.tvGoldTitle.setText(bannerText);
                                 }
                             }
                         }

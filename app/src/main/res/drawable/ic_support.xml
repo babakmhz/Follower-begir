@@ -5,42 +5,42 @@
     android:height="24dp">
     <path
         android:pathData="M46 25H42a7 7 0 0 1 -5.54 -2.73A5 5 0 0 1 32 25H18V23a14 14 0 0 1 28 0Zm-9 -7a5 5 0 0 0 5 5h2a12 12 0 0 0 -24 0H32a3 3 0 0 0 3 -3V18Z"
-        android:fillColor="@color/mainColorFirst" />
+        android:fillColor="@color/white" />
     <path
         android:pathData="M22 34H17.28A2.28 2.28 0 0 1 15 31.72V25.28A2.28 2.28 0 0 1 17.28 23H22Zm-4.72 -9a0.29 0.29 0 0 0 -0.28 0.28v6.44a0.29 0.29 0 0 0 0.28 0.28H20V25Z"
-        android:fillColor="@color/mainColorFirst" />
+        android:fillColor="@color/white" />
     <path
         android:pathData="M46.72 34H42V23h4.72A2.28 2.28 0 0 1 49 25.28v6.44A2.28 2.28 0 0 1 46.72 34ZM44 32h2.72a0.29 0.29 0 0 0 0.28 -0.28V25.28a0.29 0.29 0 0 0 -0.28 -0.28H44Z"
-        android:fillColor="@color/mainColorFirst" />
+        android:fillColor="@color/white" />
     <path
         android:pathData="M47 24H45V21a13 13 0 0 0 -26 0v3H17V21a15 15 0 0 1 30 0Z"
-        android:fillColor="@color/mainColorFirst" />
+        android:fillColor="@color/white" />
     <path
         android:pathData="M32 41.5a9.93 9.93 0 0 1 -6 -2 7.93 7.93 0 0 1 -0.67 -0.54 14.74 14.74 0 0 1 -3.74 -4.75A15.08 15.08 0 0 1 20 27.5V23H32a3 3 0 0 0 3 -3V18h2a5 5 0 0 0 5 5h2v4.5A14.93 14.93 0 0 1 38.64 39a7.6 7.6 0 0 1 -0.66 0.52A9.88 9.88 0 0 1 32 41.5ZM22 25v2.5a13 13 0 0 0 1.38 5.81 12.8 12.8 0 0 0 3.26 4.14 6.55 6.55 0 0 0 0.54 0.44 8 8 0 0 0 9.62 0 4.71 4.71 0 0 0 0.53 -0.43A12.92 12.92 0 0 0 42 27.5V25a7 7 0 0 1 -5.54 -2.73A5 5 0 0 1 32 25Z"
-        android:fillColor="@color/mainColorFirst" />
+        android:fillColor="@color/white" />
     <path
         android:pathData="M32 48.41l-7 -7V36l1.67 1.49a5.17 5.17 0 0 0 0.51 0.42 8 8 0 0 0 9.62 0 4.71 4.71 0 0 0 0.53 -0.43L39 36v5.43Zm-5 -7.82l5 5 5 -5v-0.43a10.15 10.15 0 0 1 -10 0Z"
-        android:fillColor="@color/mainColorFirst" />
+        android:fillColor="@color/white" />
     <path
         android:pathData="M59 59H5V58A15 15 0 0 1 20 43h4v7.3l8 -4.44 8 4.44V43h4A15 15 0 0 1 59 58ZM7 57H57A13 13 0 0 0 44 45H42v8.7L32 48.14 22 53.7V45H20A13 13 0 0 0 7 57Z"
-        android:fillColor="@color/mainColorFirst" />
+        android:fillColor="@color/white" />
     <path
         android:pathData="M22 53.7V43.59l4 -4 7.64 7.64Zm2 -9.29V50.3l6.36 -3.53L26 42.41Z"
-        android:fillColor="@color/mainColorFirst" />
+        android:fillColor="@color/white" />
     <path
         android:pathData="M42 53.7L30.36 47.23 38 39.59l4 4Zm-8.36 -6.93L40 50.3V44.41l-2 -2Z"
-        android:fillColor="@color/mainColorFirst" />
+        android:fillColor="@color/white" />
     <path
         android:pathData="M42 38H33a1 1 0 0 1 0 -2h9a3 3 0 0 0 3 -3 1 1 0 0 1 2 0A5 5 0 0 1 42 38Z"
-        android:fillColor="@color/mainColorFirst" />
+        android:fillColor="@color/white" />
     <path
         android:pathData="M29 59a1 1 0 0 1 -1 -1V49a1 1 0 0 1 2 0v9A1 1 0 0 1 29 59Z"
-        android:fillColor="@color/mainColorFirst" />
+        android:fillColor="@color/white" />
     <path
         android:pathData="M35 59a1 1 0 0 1 -1 -1V49a1 1 0 0 1 2 0v9A1 1 0 0 1 35 59Z"
-        android:fillColor="@color/mainColorFirst" />
+        android:fillColor="@color/white" />
     <path
         android:pathData="M31 35H33A1 1 0 0 1 34 36V37A1 1 0 0 1 33 38H31A1 1 0 0 1 30 37V36A1 1 0 0 1 31 35Z"
-        android:fillColor="@color/mainColorFirst" />
+        android:fillColor="@color/white" />
 
 </vector>
