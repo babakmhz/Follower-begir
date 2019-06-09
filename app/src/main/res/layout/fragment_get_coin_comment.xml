@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blueFirst"
+        android:background="@drawable/bg"
         android:layoutDirection="ltr">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -89,6 +89,7 @@
             android:layout_marginRight="8dp"
             android:gravity="center"
             android:orientation="horizontal"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintEnd_toStartOf="@+id/guideLine4"
             app:layout_constraintStart_toStartOf="@id/guideLine3"
             app:layout_constraintTop_toBottomOf="@id/guideLine2">
@@ -139,7 +140,7 @@
             android:layout_height="42dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:background="@drawable/rounded_grey_border"
@@ -165,7 +166,7 @@
             android:id="@+id/btnAutoLike"
             android:layout_width="0dp"
             android:layout_height="42dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/rounded_grey_border"
             android:text="@string/autoComment"
             android:textColor="@color/darkerGrey"
@@ -180,7 +181,7 @@
             android:id="@+id/btnConfirmAndPay"
             android:layout_width="0dp"
             android:layout_height="42dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/rounded_orange"
             android:text="@string/commentWithAllAccounts"
             android:textColor="@color/white"

@@ -12,7 +12,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blueFirst"
+            android:background="@drawable/bg"
             android:layoutDirection="ltr">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -91,6 +91,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:gravity="center"
+                app:layout_constraintHorizontal_bias="0"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toStartOf="@+id/guideLine4"
                 app:layout_constraintStart_toStartOf="@id/guideLine3"
@@ -158,7 +159,7 @@
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="@+id/btnDoLike"
                 app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintBottom_toTopOf="@id/btnConfirmAndPay"
+                android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="@+id/btnDoLike"
                 app:layout_constraintTop_toBottomOf="@+id/btnDoLike"
                 app:layout_goneMarginStart="10dp" />
@@ -172,12 +173,12 @@
                 android:text="@string/likeWithAllAccounts"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="10dp"
+
                 app:layout_constraintEnd_toEndOf="@+id/btnAutoLike"
                 app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="@+id/btnAutoLike"
-                app:layout_constraintTop_toBottomOf="@+id/btnAutoLike"
-                app:layout_goneMarginStart="10dp" />
+                app:layout_constraintTop_toBottomOf="@+id/btnAutoLike"/>
             <me.cheshmak.android.sdk.advertise.CheshmakBannerAd
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnConfirmAndPay"

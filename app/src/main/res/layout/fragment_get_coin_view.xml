@@ -12,8 +12,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:background="@color/blueFirst"
-            android:layout_height="match_parent"
+            android:background="@drawable/bg"
+            android:layout_height="wrap_content"
             android:layoutDirection="ltr">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -75,7 +75,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/curved"
-                android:src="@drawable/ic_image_black"
+                app:srcCompat="@drawable/ic_image_black"
                 android:scaleType="fitXY"
                 app:layout_constraintBottom_toBottomOf="@id/guideLine2"
                 app:layout_constraintEnd_toEndOf="@id/guideLine4"
@@ -92,6 +92,7 @@
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:orientation="horizontal"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintBottom_toTopOf="@+id/btnDoLike"
                 app:layout_constraintEnd_toStartOf="@+id/guideLine4"
                 app:layout_constraintStart_toStartOf="@id/guideLine3"

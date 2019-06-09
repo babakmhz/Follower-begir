@@ -26,6 +26,7 @@
             android:background="@drawable/rounded_right_orange"
             android:paddingStart="30dp"
             android:paddingTop="10dp"
+            android:textColor="@color/white"
             android:paddingEnd="30dp"
             android:paddingBottom="10dp"
             android:text="1" />

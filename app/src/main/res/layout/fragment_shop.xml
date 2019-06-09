@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/blueFirst"
+        android:background="@drawable/bg"
         android:orientation="vertical">
 
 
@@ -239,113 +239,63 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/secondContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@color/roundPurpleInner"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_banner"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView">
 
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/rounded_left_purple_v2"
-                        android:paddingStart="4dp"
-                        android:paddingLeft="4dp"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/appCompatImageView"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:scaleType="fitXY"
-                            android:padding="10dp"
-                            android:src="@drawable/star"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
-                            android:gravity="center"
-                            android:text="پیشنهاد های \n جذابمون"
-                            android:textColor="@color/blueFirst"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/appCompatImageView"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imvGolds"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:id="@+id/appCompatImageView"
+                        android:layout_width="@dimen/_90sdp"
+                        android:layout_height="@dimen/_90sdp"
                         android:padding="10dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/golds"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:src="@drawable/coin_bag"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/tvSpecialBannerPrice"
+
+                        android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
+                        android:layout_margin="10dp"
+                        android:gravity="center"
+                        android:text="پیشنهاد های ویژه"
                         android:textColor="@color/white"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toStartOf="@+id/tvGoldSubtitle"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/appCompatImageView"
+                        app:layout_constraintHorizontal_bias="0.8"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/imvGolds" />
+                        app:layout_constraintTop_toTopOf="parent" />
+
 
                     <TextView
                         android:id="@+id/tvGoldTitle"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/rounded_both_main_color"
+                        android:gravity="center"
+                        android:textSize="14sp"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
-                        app:layout_constraintStart_toEndOf="@+id/imvGolds"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvGoldSubtitle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:paddingEnd="20sp"
-                        android:paddingRight="10sp"
+                        android:padding="4dp"
                         android:textColor="@color/white"
-                        android:textSize="13sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
-                        app:layout_constraintStart_toEndOf="@+id/imvGolds"
-                        app:layout_constraintTop_toBottomOf="@id/tvGoldTitle" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/appCompatImageView"
+                        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
@@ -353,13 +303,13 @@
                     android:layout_height="wrap_content"
                     android:background="@color/mainColorFirst"
                     android:gravity="center"
+                    android:layout_margin="10dp"
                     android:orientation="vertical"
-                    android:padding="10dp">
+                    android:padding="5dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="کد هدیه ات رو وارد کن وسکه رایگان دریافت کن!"
                         android:textColor="@color/white"
@@ -374,7 +324,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="70dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:padding="5dp"
                         android:hint="کد هدیه"
                         android:gravity="center"
@@ -386,7 +336,7 @@
                         android:id="@+id/btnCheckGiftCode"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="5dp"
                         android:background="@color/transparent"
                         android:scaleType="centerInside"
                         app:civ_border_color="@color/white"

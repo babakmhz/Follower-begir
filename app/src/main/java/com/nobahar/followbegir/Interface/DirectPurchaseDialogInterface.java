@@ -1,0 +1,5 @@
+package com.nobahar.followbegir.Interface;
+
+public interface DirectPurchaseDialogInterface {
+    void directPurchase(String sku, int requestCode, String imageUrl, String postId,int count);
+}

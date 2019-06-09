@@ -12,14 +12,12 @@
     <color name="lightGrey">#dfdfdf</color>
     <color name="darkGrey">#414141</color>
     <color name="transparent">#00f9f9f9</color>
-    <color name="roundPurpleInner">#9579ef</color>
     <color name="mainColorFirst">#ee3259</color>
     <color name="blueFirst">#98277d</color>
     <color name="blueFirstDark">#041B44</color>
     <color name="goldOne">#ffdc60</color>
-    <color name="darkYellow">#fdc80a</color>
-    <color name="lightYellow">#ffe072</color>
     <color name="lightBlue">#7faeff</color>
+    <color name="green" >#4CAF50</color>
 
 
 </resources>

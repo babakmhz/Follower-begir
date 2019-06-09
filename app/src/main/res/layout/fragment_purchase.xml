@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -12,7 +11,7 @@
         android:id="@+id/llTabBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blueFirst"
+        android:background="@color/grey"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="5dp"
@@ -28,8 +27,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:paddingTop="3dp"
-            android:textColor="@color/white"
-
+            android:textColor="@color/black"
+            android:textStyle="bold"
             android:paddingBottom="3dp"
             android:text="@string/like" />
 
@@ -37,8 +36,8 @@
             android:id="@+id/tvComment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/white"
+            android:layout_weight="1" android:textColor="@color/black"
+            android:textStyle="bold"
             android:gravity="center"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
@@ -51,7 +50,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
+            android:textStyle="bold"
 
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
@@ -64,7 +64,8 @@
             android:layout_weight="1"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
+            android:textStyle="bold"
 
             android:gravity="center"
             android:text="@string/view" />
