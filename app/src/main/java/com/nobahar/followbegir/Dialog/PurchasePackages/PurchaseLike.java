@@ -46,7 +46,7 @@ public class PurchaseLike extends DialogFragment {
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
         //region Dialog
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(App.currentActivity);
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         switch (type) {
@@ -98,7 +98,7 @@ public class PurchaseLike extends DialogFragment {
         bindingView.llLikeOne.setOnClickListener(v -> {
             if (validate()) {
 
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFirstVIew);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuFirstVIew);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -106,7 +106,7 @@ public class PurchaseLike extends DialogFragment {
         });
         bindingView.llLikeTwo.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuSecondView);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuSecondView);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -114,7 +114,7 @@ public class PurchaseLike extends DialogFragment {
         });
         bindingView.llLikeThree.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuThirdView);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuThirdView);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -124,7 +124,7 @@ public class PurchaseLike extends DialogFragment {
     private void initCommentSubmit() {
         bindingComment.llLikeOne.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFirstComment);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuFirstComment);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -132,7 +132,7 @@ public class PurchaseLike extends DialogFragment {
         });
         bindingComment.llLikeTwo.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuSecondComment);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuSecondComment);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -140,7 +140,7 @@ public class PurchaseLike extends DialogFragment {
         });
         bindingComment.llLikeThree.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuThirdComment);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuThirdComment);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -151,7 +151,7 @@ public class PurchaseLike extends DialogFragment {
     private void initSubmitFollower() {
         bindingFollow.llLikeOne.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFirstFollow);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuFirstFollow);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -159,7 +159,7 @@ public class PurchaseLike extends DialogFragment {
         });
         bindingFollow.llLikeTwo.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuSecondFollow);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuSecondFollow);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -167,7 +167,7 @@ public class PurchaseLike extends DialogFragment {
         });
         bindingFollow.llLikeThree.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuThirdFollow);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuThirdFollow);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -175,7 +175,7 @@ public class PurchaseLike extends DialogFragment {
         });
         bindingFollow.llLikeFour.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFourthFollow);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuFourthFollow);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -183,7 +183,7 @@ public class PurchaseLike extends DialogFragment {
         });
         bindingFollow.llLikeFive.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFifthFollow);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuFifthFollow);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -194,7 +194,7 @@ public class PurchaseLike extends DialogFragment {
     private void initSubmitLike() {
         bindingLike.llLikeOne.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFirstLike);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuFirstLike);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -202,7 +202,7 @@ public class PurchaseLike extends DialogFragment {
         });
         bindingLike.llLikeTwo.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuSecondLike);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuSecondLike);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -210,7 +210,7 @@ public class PurchaseLike extends DialogFragment {
         });
         bindingLike.llLikeThree.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuThirdLike);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuThirdLike);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -218,7 +218,7 @@ public class PurchaseLike extends DialogFragment {
         });
         bindingLike.llLikeFour.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFourthLike);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuFourthLike);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }
@@ -226,7 +226,7 @@ public class PurchaseLike extends DialogFragment {
         });
         bindingLike.llLikeFive.setOnClickListener(v -> {
             if (validate()) {
-                MainActivity.mNivadBilling.purchase(getActivity(), Config.skuFifthLike);
+                MainActivity.mNivadBilling.purchase(App.currentActivity, Config.skuFifthLike);
                 MainActivity.directOrderItemId = itemId;
                 MainActivity.directOrderItemURL = selectedPicURl;
             }

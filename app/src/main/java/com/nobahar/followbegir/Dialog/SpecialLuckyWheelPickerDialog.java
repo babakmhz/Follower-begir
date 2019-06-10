@@ -186,7 +186,7 @@ public class SpecialLuckyWheelPickerDialog extends DialogFragment {
 
     private void checkStatus() {
 
-        if (!new SharedPreferences(getActivity()).getSpecialWheel()) {
+        if (!new SharedPreferences(App.currentActivity).getSpecialWheel()) {
             dismiss();
         }
     }

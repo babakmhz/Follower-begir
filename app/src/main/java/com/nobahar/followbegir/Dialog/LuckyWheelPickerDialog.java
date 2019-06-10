@@ -41,7 +41,7 @@ public class LuckyWheelPickerDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        Dialog dialog = new Dialog(getActivity());
+        Dialog dialog = new Dialog(App.currentActivity);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -80,7 +80,7 @@ public class LuckyWheelPickerDialog extends DialogFragment {
             } else {
                 Toast.makeText(App.currentActivity, "شما برنده " + data.get(index).topText + " سکه " + type + " شدید ", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent("com.journaldev.broadcastreceiver.Update");
-                getActivity().sendBroadcast(intent);
+                App.currentActivity.sendBroadcast(intent);
                 BroadcastManager.sendBroadcast(App.currentActivity);
 
             }

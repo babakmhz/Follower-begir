@@ -13,7 +13,6 @@
         android:id="@+id/llTabBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/grey"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="5dp"
@@ -26,6 +25,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_margin="2dp"
+            android:background="@drawable/rounded_main_un_selected"
             android:gravity="center"
             android:paddingTop="3dp"
             android:textColor="@color/black"
@@ -40,12 +41,16 @@
             android:gravity="center"
             android:textColor="@color/black"
             android:paddingTop="3dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/rounded_main_un_selected"
             android:paddingBottom="3dp"
             android:text="@string/comment" />
 
         <TextView
             android:id="@+id/tvFollower"
             android:layout_width="0dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/rounded_main_un_selected"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
@@ -56,6 +61,8 @@
         <TextView
             android:id="@+id/tvView"
             android:layout_width="0dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/rounded_main_un_selected"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"

@@ -44,7 +44,7 @@ public class ReviewOrdersDialog extends DialogFragment {
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
         //region Dialog
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(App.currentActivity);
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_review_orders, null, false);
@@ -98,11 +98,11 @@ public class ReviewOrdersDialog extends DialogFragment {
 
         try {
 
-            DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-            @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            DividerItemDecoration decoration = new DividerItemDecoration(App.currentActivity, DividerItemDecoration.VERTICAL);
+            @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(App.currentActivity, LinearLayoutManager.VERTICAL, false);
             StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-            //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
-            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+            //decoration.setDrawable(ContextCompat.getDrawable(App.currentActivity, R.drawable.divider_vertical));
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(App.currentActivity, 3);
             OrdersAdapter adapter = new OrdersAdapter(App.currentActivity, orders, getChildFragmentManager());
 
             binding.rcvOrders.setLayoutManager(mLayoutManager);

@@ -35,7 +35,7 @@ public class FirstPageUpdateDialog extends DialogFragment {
 
         //region Dialog
         App.isNotificationDialgShown = true;
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(App.currentActivity);
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         bindingLike = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_first_page_update_notice, null, false);

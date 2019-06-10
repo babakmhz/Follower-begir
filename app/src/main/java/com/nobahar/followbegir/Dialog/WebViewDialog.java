@@ -40,7 +40,7 @@ public class WebViewDialog extends DialogFragment {
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
         //region Dialog
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(App.currentActivity);
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_web_view, null, false);

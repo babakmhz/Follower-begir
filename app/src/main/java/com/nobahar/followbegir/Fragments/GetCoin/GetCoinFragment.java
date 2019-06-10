@@ -139,10 +139,10 @@ public class GetCoinFragment extends Fragment {
         binding.tvFollower.setTypeface(binding.tvComment.getTypeface(), Typeface.NORMAL);
         binding.tvView.setTypeface(binding.tvComment.getTypeface(), Typeface.NORMAL);
 
-        binding.tvLike.setBackground(null);
-        binding.tvComment.setBackground(null);
-        binding.tvFollower.setBackground(null);
-        binding.tvView.setBackground(null);
+        binding.tvLike.setBackground(getResources().getDrawable(R.drawable.rounded_main_un_selected));
+        binding.tvComment.setBackground(getResources().getDrawable(R.drawable.rounded_main_un_selected));
+        binding.tvFollower.setBackground(getResources().getDrawable(R.drawable.rounded_main_un_selected));
+        binding.tvView.setBackground(getResources().getDrawable(R.drawable.rounded_main_un_selected));
         binding.tvLike.setTextColor(getResources().getColor(R.color.black));
         binding.tvComment.setTextColor(getResources().getColor(R.color.black));
         binding.tvFollower.setTextColor(getResources().getColor(R.color.black));

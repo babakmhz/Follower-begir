@@ -40,7 +40,7 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
         //region Dialog
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(App.currentActivity);
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_manage_accounts, null, false);
@@ -66,12 +66,12 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
 
     private void showUsers() {
 
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(App.currentActivity);
         AccountsListAdapter adapter = new AccountsListAdapter(dataBaseHelper.getAllUsers(), getChildFragmentManager(), internalCallback);
 
 
-        DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        DividerItemDecoration decoration = new DividerItemDecoration(App.currentActivity, DividerItemDecoration.VERTICAL);
+        @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(App.currentActivity, LinearLayoutManager.VERTICAL, false);
 
         binding.rcvAccounts.setLayoutManager(mLayoutManager);
         binding.rcvAccounts.setItemAnimator(new DefaultItemAnimator());

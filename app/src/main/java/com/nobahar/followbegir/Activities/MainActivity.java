@@ -15,18 +15,6 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
-
-import java.io.UnsupportedEncodingException;
-
-import io.nivad.iab.BillingProcessor;
-import io.nivad.iab.MarketName;
-import io.nivad.iab.TransactionDetails;
-import ir.tapsell.sdk.Tapsell;
-import ir.tapsell.sdk.TapsellAd;
-import ir.tapsell.sdk.TapsellAdRequestListener;
-import ir.tapsell.sdk.TapsellAdRequestOptions;
-import ir.tapsell.sdk.TapsellAdShowListener;
-import ir.tapsell.sdk.TapsellShowOptions;
 import com.nobahar.followbegir.App;
 import com.nobahar.followbegir.BuildConfig;
 import com.nobahar.followbegir.Dialog.PurchasePackages.DirectPrchaseInterface;
@@ -48,6 +36,18 @@ import com.nobahar.followbegir.Retrofit.ApiClient;
 import com.nobahar.followbegir.Retrofit.ApiInterface;
 import com.nobahar.followbegir.Retrofit.UserCoin;
 import com.nobahar.followbegir.databinding.ActivityMainBinding;
+
+import java.io.UnsupportedEncodingException;
+
+import io.nivad.iab.BillingProcessor;
+import io.nivad.iab.MarketName;
+import io.nivad.iab.TransactionDetails;
+import ir.tapsell.sdk.Tapsell;
+import ir.tapsell.sdk.TapsellAd;
+import ir.tapsell.sdk.TapsellAdRequestListener;
+import ir.tapsell.sdk.TapsellAdRequestOptions;
+import ir.tapsell.sdk.TapsellAdShowListener;
+import ir.tapsell.sdk.TapsellShowOptions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -240,13 +240,18 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         FirebaseApp.initializeApp(this);
 
 
-        handlerCheckCoin.postDelayed(runnableCheckCoin = new Runnable() {  /// TODO HAndler that checks coins
-            public void run() {
-                BroadcastManager.sendBroadcast(MainActivity.this);
-                handlerCheckCoin.postDelayed(runnableCheckCoin, delay);
-            }
+        /// TODO HAndler that checks coins
+        handlerCheckCoin.postDelayed(runnableCheckCoin = () -> {
+            BroadcastManager.sendBroadcast(MainActivity.this);
+            handlerCheckCoin.postDelayed(runnableCheckCoin, delay);
         }, delay);
 
+
+        binding.llHome.setOnClickListener(v -> setActive(0));
+        binding.llPurchase.setOnClickListener(v -> setActive(1));
+        binding.llGetCoin.setOnClickListener(v -> setActive(2));
+        binding.llShop.setOnClickListener(v -> setActive(3));
+        binding.llAds.setOnClickListener(v -> setActive(4));
 
 
         Log.d(TAG, "Starting setup.");
@@ -266,6 +271,58 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                 "diccSIckkVeKvFleRhejZHiAzDZWRMNbLQv1YNtvkp0gqjp2aDiXOcBFyuKIig9A", MarketName.CAFE_BAZAAR, this); // مقدار دهی در انتهای onCreate
         Log.i(TAG, "onCreate: ");
     }
+
+    private void setActive(int position) {
+        switch (position) {
+            case 0:
+                reset();
+                binding.llHome.setBackground(getResources().getDrawable(R.drawable.rounded_white_border));
+                binding.tvHome.setTextColor(getResources().getColor(R.color.white));
+                binding.bottomNavigation.setSelectedItemId(R.id.action_home);
+                break;
+            case 1:
+                reset();
+                binding.llPurchase.setBackground(getResources().getDrawable(R.drawable.rounded_white_border));
+                binding.tvPurchase.setTextColor(getResources().getColor(R.color.white));
+                binding.bottomNavigation.setSelectedItemId(R.id.action_purchase);
+                break;
+            case 2:
+                reset();
+                binding.llGetCoin.setBackground(getResources().getDrawable(R.drawable.rounded_white_border));
+                binding.tvGetCoin.setTextColor(getResources().getColor(R.color.white));
+                binding.bottomNavigation.setSelectedItemId(R.id.action_navigation);
+
+                break;
+            case 3:
+                reset();
+                binding.llShop.setBackground(getResources().getDrawable(R.drawable.rounded_white_border));
+                binding.tvShop.setTextColor(getResources().getColor(R.color.white));
+                binding.bottomNavigation.setSelectedItemId(R.id.action_shopping);
+
+                break;
+            case 4:
+                reset();
+                binding.llAds.setBackground(getResources().getDrawable(R.drawable.rounded_white_border));
+                binding.tvAds.setTextColor(getResources().getColor(R.color.white));
+                binding.bottomNavigation.setSelectedItemId(R.id.action_advertise);
+
+                break;
+        }
+    }
+
+    private void reset() {
+        binding.llHome.setBackground(getResources().getDrawable(R.drawable.rounded_main_un_selected));
+        binding.llAds.setBackground(getResources().getDrawable(R.drawable.rounded_main_un_selected));
+        binding.llGetCoin.setBackground(getResources().getDrawable(R.drawable.rounded_main_un_selected));
+        binding.llPurchase.setBackground(getResources().getDrawable(R.drawable.rounded_main_un_selected));
+        binding.llShop.setBackground(getResources().getDrawable(R.drawable.rounded_main_un_selected));
+        binding.tvAds.setTextColor(getResources().getColor(R.color.black));
+        binding.tvHome.setTextColor(getResources().getColor(R.color.black));
+        binding.tvGetCoin.setTextColor(getResources().getColor(R.color.black));
+        binding.tvPurchase.setTextColor(getResources().getColor(R.color.black));
+        binding.tvShop.setTextColor(getResources().getColor(R.color.black));
+    }
+
 
     private void checkNivadOrder(String sku, TransactionDetails transactionDetails) {
 

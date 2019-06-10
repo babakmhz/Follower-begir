@@ -9,6 +9,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:layoutDirection="ltr"
+        android:background="@drawable/newbg"
         android:orientation="vertical">
 
 
@@ -16,16 +17,153 @@
             android:id="@+id/fragmentHolder"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+            app:layout_constraintBottom_toTopOf="@id/constraintBottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintBottom"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:id="@+id/llHome"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:background="@drawable/rounded_white_border"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/llPurchase">
+
+
+                <TextView
+                    android:id="@+id/tvHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="صفحه اصلی"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_9ssp"
+
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llPurchase"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_main_un_selected"
+                app:layout_constraintEnd_toStartOf="@id/llHome"
+                app:layout_constraintStart_toEndOf="@id/llGetCoin">
+
+                <TextView
+                    android:id="@+id/tvPurchase"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="ثبت سفارش"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9ssp"
+
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llGetCoin"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:background="@drawable/rounded_main_un_selected"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@id/llPurchase"
+                app:layout_constraintStart_toEndOf="@id/llShop">
+
+
+                <TextView
+                    android:id="@+id/tvGetCoin"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="سکه بگیر"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9ssp"
+
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llShop"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:background="@drawable/rounded_main_un_selected"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@id/llGetCoin"
+                app:layout_constraintStart_toEndOf="@id/llAds">
+
+
+                <TextView
+                    android:id="@+id/tvShop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="فروشگاه"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9ssp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llAds"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:background="@drawable/rounded_main_un_selected"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@id/llShop"
+                app:layout_constraintStart_toStartOf="parent">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="تبلیغ ببین"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_9ssp"
+                    android:id="@+id/tvAds"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_gravity="start"
+            android:visibility="gone"
             android:background="@color/lightGrey"
             android:layoutDirection="rtl"
             app:layout_constraintBottom_toBottomOf="parent"

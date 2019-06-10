@@ -84,7 +84,7 @@ public class AuthenticationDialog extends DialogFragment {
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
         //region Dialog
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(App.currentActivity);
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //dialog.setContentView(R.layout.dialog_authenticate);
@@ -94,10 +94,10 @@ public class AuthenticationDialog extends DialogFragment {
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         //endregion
-        handler = new Handler(getActivity().getMainLooper());
+        handler = new Handler(App.currentActivity.getMainLooper());
         loginWebView = binding.webViewAuthenticate;
         LoginWebClient client = new LoginWebClient();
-        shared = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        shared = App.currentActivity.getSharedPreferences("UserPrefs", MODE_PRIVATE);
         editor = shared.edit();
         loginWebView.getSettings().setJavaScriptEnabled(true);
         loginWebView.addJavascriptInterface(new MyJavaScriptInterface(), "MYOBJECT");
@@ -131,10 +131,10 @@ public class AuthenticationDialog extends DialogFragment {
                 }
 
 
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                getActivity().startActivity(intent);
+                Intent intent = new Intent(App.currentActivity, MainActivity.class);
+                App.currentActivity.startActivity(intent);
                 dismiss();
-                getActivity().finish();
+                App.currentActivity.finish();
 
             }
 
@@ -148,10 +148,10 @@ public class AuthenticationDialog extends DialogFragment {
                             dialog.show(getChildFragmentManager(), "");
                             break;
                         case "bad_password":
-                            Toast.makeText(getActivity(), "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
+                            Toast.makeText(App.currentActivity, "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
                             break;
                         case "invalid_user":
-                            Toast.makeText(getActivity(), "چنین کاربری وجود ندارد", Toast.LENGTH_LONG).show();
+                            Toast.makeText(App.currentActivity, "چنین کاربری وجود ندارد", Toast.LENGTH_LONG).show();
                             break;
                     }
 
@@ -210,7 +210,7 @@ public class AuthenticationDialog extends DialogFragment {
             } else if (url.contains("password/reset")) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
-                getActivity().startActivity(intent);
+                App.currentActivity.startActivity(intent);
             } else if (url.contains("challenge"))
                 view.loadUrl(url);
             return true;
@@ -220,7 +220,7 @@ public class AuthenticationDialog extends DialogFragment {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             if (url.equalsIgnoreCase("https://www.instagram.com/")) {
                 view.stopLoading();
-                clearCookies(getActivity());
+                clearCookies(App.currentActivity);
                 return;
             }
             binding.prg.setVisibility(View.VISIBLE);

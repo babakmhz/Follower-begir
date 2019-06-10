@@ -53,7 +53,7 @@ public class SelectPictureDialog extends DialogFragment implements RecievedImage
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
         //region Dialog
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(App.currentActivity);
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_select_pic);
@@ -69,11 +69,11 @@ public class SelectPictureDialog extends DialogFragment implements RecievedImage
 
     private void setView() {
 
-        DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        DividerItemDecoration decoration = new DividerItemDecoration(App.currentActivity, DividerItemDecoration.VERTICAL);
+        @SuppressLint("WrongConstant") LinearLayoutManager mLayoutManager = new LinearLayoutManager(App.currentActivity, LinearLayoutManager.VERTICAL, false);
         StaggeredGridLayoutManager layoutManager2 = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-        //decoration.setDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.divider_vertical));
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
+        //decoration.setDrawable(ContextCompat.getDrawable(App.currentActivity, R.drawable.divider_vertical));
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(App.currentActivity, 3);
         SelectPicAdapter adapter = new SelectPicAdapter(App.currentActivity, pictureModelArrayList, localCallBack,isWebView);
 
         rcvPics.setLayoutManager(layoutManager);
@@ -186,7 +186,7 @@ public class SelectPictureDialog extends DialogFragment implements RecievedImage
     private void fetchUserMediasFinish() {
         App.CancelProgressDialog();
         try {
-            getActivity().runOnUiThread(new Runnable() {
+            App.currentActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     setView();

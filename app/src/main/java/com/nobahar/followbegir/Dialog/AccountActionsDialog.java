@@ -52,7 +52,7 @@ public class AccountActionsDialog extends DialogFragment {
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
         //region Dialog
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(App.currentActivity);
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_account_action, null, false);
@@ -125,7 +125,7 @@ public class AccountActionsDialog extends DialogFragment {
 
             android.content.SharedPreferences shared;
             android.content.SharedPreferences.Editor editor;
-            shared = Objects.requireNonNull(getActivity()).getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            shared = Objects.requireNonNull(App.currentActivity).getSharedPreferences("UserPrefs", MODE_PRIVATE);
             editor = shared.edit();
 
             InstagramApi api = InstagramApi.getInstance();

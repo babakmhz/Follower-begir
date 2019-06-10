@@ -22,6 +22,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        App.currentActivity=this;
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
         if (!App.isNetworkAvailable()) {

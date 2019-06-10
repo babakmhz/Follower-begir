@@ -60,7 +60,7 @@ public class AccountStatisticsDialog extends DialogFragment {
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
         //region Dialog
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(App.currentActivity);
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_account_statistics, null, false);
@@ -70,17 +70,17 @@ public class AccountStatisticsDialog extends DialogFragment {
         binding.prg.setVisibility(View.VISIBLE);
         binding.tvUserName.setText(App.user.getUserName());
 
-        getActivity().runOnUiThread(new Runnable() {
+        App.currentActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                App.ProgressDialog(getActivity(), "در حال دریافت پست ها، لطفا صبور باشید ...");
+                App.ProgressDialog(App.currentActivity, "در حال دریافت پست ها، لطفا صبور باشید ...");
 
             }
         });
 
 
         //endregion
-        shared = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        shared = App.currentActivity.getSharedPreferences("UserPrefs", MODE_PRIVATE);
         editor = shared.edit();
         dbHeplper = new DataBaseHelper(App.context);
         try {
@@ -337,9 +337,9 @@ public class AccountStatisticsDialog extends DialogFragment {
         ConnectivityManager cm = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork == null) {
-            App.Toast(getActivity(), "دستگاه خود را به اینترنت متصل کنید !");
+            App.Toast(App.currentActivity, "دستگاه خود را به اینترنت متصل کنید !");
         } else {
-            progressDoalog = new ProgressDialog(getActivity());
+            progressDoalog = new ProgressDialog(App.currentActivity);
             progressDoalog.setMax(100);
             progressDoalog.setMessage("در حال دریافت لیست فالوینگ و فالوور ها از اینستاگرام ، لطفا صبور باشید...");
             progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -391,7 +391,7 @@ public class AccountStatisticsDialog extends DialogFragment {
 
                 @Override
                 public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                    getActivity().runOnUiThread(new Runnable() {
+                    App.currentActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             reloadFail();
@@ -439,7 +439,7 @@ public class AccountStatisticsDialog extends DialogFragment {
 
                     @Override
                     public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                        getActivity().runOnUiThread(new Runnable() {
+                        App.currentActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 reloadFail();
@@ -488,7 +488,7 @@ public class AccountStatisticsDialog extends DialogFragment {
 
                 @Override
                 public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                    getActivity().runOnUiThread(new Runnable() {
+                    App.currentActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             reloadFail();
@@ -514,7 +514,7 @@ public class AccountStatisticsDialog extends DialogFragment {
             editor.putLong("last_reload_time", System.currentTimeMillis());
             editor.apply();
             try {
-                getActivity().runOnUiThread(new Runnable() {
+                App.currentActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         progressDoalog.dismiss();
@@ -555,7 +555,7 @@ public class AccountStatisticsDialog extends DialogFragment {
                         fetchNextFollowing();
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        getActivity().runOnUiThread(new Runnable() {
+                        App.currentActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 reloadFail();
@@ -568,7 +568,7 @@ public class AccountStatisticsDialog extends DialogFragment {
 
                 @Override
                 public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                    getActivity().runOnUiThread(new Runnable() {
+                    App.currentActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             reloadFail();
@@ -594,8 +594,8 @@ public class AccountStatisticsDialog extends DialogFragment {
         if (progressDoalog != null) {
             progressDoalog.dismiss();
         }
-        App.Toast(getActivity(), "بروزرسانی اطلاعات با شکست مواجه شد ، لطفا مجددا تلاش نمایید");
-//        final Dialog dialog = new Dialog(getActivity());
+        App.Toast(App.currentActivity, "بروزرسانی اطلاعات با شکست مواجه شد ، لطفا مجددا تلاش نمایید");
+//        final Dialog dialog = new Dialog(App.currentActivity);
 //        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 //        dialog.setCancelable(false);
 //        dialog.setContentView(R.layout.dialog);

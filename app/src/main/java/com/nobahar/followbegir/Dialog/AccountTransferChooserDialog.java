@@ -40,7 +40,7 @@ public class AccountTransferChooserDialog extends DialogFragment implements Acco
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
         //region Dialog
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new Dialog(App.currentActivity);
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimationFromDownToDown;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         binding = DataBindingUtil.inflate(LayoutInflater.from(App.currentActivity), R.layout.dialog_manage_accounts, null, false);
@@ -50,11 +50,11 @@ public class AccountTransferChooserDialog extends DialogFragment implements Acco
         //endregion
         internalCallback = this;
         binding.imvAdd.setVisibility(View.GONE);
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(App.currentActivity);
         AccountTransferChooserAdapter adapter = new AccountTransferChooserAdapter(dataBaseHelper.getAllUsers(), internalCallback,dialog);
 
-        DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        DividerItemDecoration decoration = new DividerItemDecoration(App.currentActivity, DividerItemDecoration.VERTICAL);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(App.currentActivity, LinearLayoutManager.VERTICAL, false);
         binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
         binding.tvUserName.setText(App.user.getUserName());
 
@@ -82,7 +82,7 @@ public class AccountTransferChooserDialog extends DialogFragment implements Acco
         binding.imvAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataBaseHelper dataBaseHelper1 = new DataBaseHelper(getActivity());
+                DataBaseHelper dataBaseHelper1 = new DataBaseHelper(App.currentActivity);
                 dataBaseHelper.setAllValueNotActive();
                 authenticate();
             }

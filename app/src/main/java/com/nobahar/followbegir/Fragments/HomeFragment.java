@@ -259,7 +259,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                 dialog.show(getChildFragmentManager(), "");
                 return;
             }
-            MainActivity.globalShowAd(getActivity());
+            MainActivity.globalShowAd(App.currentActivity);
 
         });
 
@@ -449,7 +449,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                                             Picasso.get().load(user.getProfilePicture()).fit().centerCrop().into(binding.profileImage);
                                             dbHeplper.insertUUID(response.body().getUuid(), user.getUserId());
                                             if (response.body().getStatus() == 0) {
-                                                Toast.makeText(getActivity(), "به موجب اولین ورود شما 10 سکه به شما تعلق گرفت", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(App.currentActivity, "به موجب اولین ورود شما 10 سکه به شما تعلق گرفت", Toast.LENGTH_LONG).show();
                                                 getUserCoins(user, apiInterface);
                                                 App.isGotUserInfo = true;
 
@@ -632,7 +632,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
 
     private void rateUs() {
         Intent intent = new Intent(Intent.ACTION_EDIT);
-        intent.setData(Uri.parse("bazaar://details?id=" + getActivity().getApplicationContext().getPackageName()));
+        intent.setData(Uri.parse("bazaar://details?id=" + App.currentActivity.getApplicationContext().getPackageName()));
         intent.setPackage("com.farsitel.bazaar");
         startActivity(intent);
     }
@@ -640,7 +640,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
     private void shareApp() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = "بهترین نرم افزایش فالوئر واقعی " + "  https://cafebazaar.ir/app/" + getActivity().getApplicationContext().getPackageName();
+        String shareBody = "بهترین نرم افزایش فالوئر واقعی " + "  https://cafebazaar.ir/app/" + App.currentActivity.getApplicationContext().getPackageName();
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share App");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));

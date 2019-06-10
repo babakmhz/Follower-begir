@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:background="@drawable/bg"
+        android:background="@drawable/newbg"
         android:layout_height="match_parent"
         android:layoutDirection="ltr">
 
