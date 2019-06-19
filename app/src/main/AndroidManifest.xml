@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.nobahar.followbegir">
+    package="ir.novahar.followerbegir">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,7 +11,7 @@
 
     <application
 
-        android:name="com.nobahar.followbegir.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,13 +21,13 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="com.nobahar.followbegir.Activities.MainActivity"
+            android:name=".Activities.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
 
         </activity>
         <activity
-            android:name="com.nobahar.followbegir.Activities.SplashActivity"
+            android:name=".Activities.SplashActivity"
             android:label="فالوئر بگیر"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenStyle"
@@ -42,13 +42,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.nobahar.followbegir.Activities.ActivityLoginWebview" />
+        <activity android:name=".Activities.ActivityLoginWebview" />
         <activity
             android:name="ir.tapsell.sdk.TapsellAdActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"></activity>
-        <activity android:name="com.nobahar.followbegir.Activities.NetworkErrorActivity" />
+        <activity android:name=".Activities.NetworkErrorActivity" />
 
-        <receiver android:name="com.nobahar.followbegir.Interface.ValueUpdaterBroadCast">
+        <receiver android:name=".Interface.ValueUpdaterBroadCast">
             <intent-filter>
                 <action android:name="com.journaldev.broadcastreceiver.Update" />
             </intent-filter>

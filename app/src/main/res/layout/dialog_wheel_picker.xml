@@ -6,9 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    tools:context=".Activities.MainActivity">
+    tools:context="ir.novahar.followerbegir.Activities.MainActivity">
 
-    <com.nobahar.followbegir.WheelPiclerView.LuckyWheelView
+    <ir.novahar.followerbegir.WheelPiclerView.LuckyWheelView
         android:id="@+id/luckyWheel"
         android:layout_width="200dp"
         android:layout_height="200dp"
