@@ -180,9 +180,9 @@ public class GetCoinViewFragment extends Fragment implements WebViewLoadedInterf
                             transactionId = response.body().getTransactionId();
                             isAvailable = true;
                             binding.btnDoLike.setEnabled(true);
-                            binding.btnAutoLike.setAlpha(1f);
-                            binding.btnDoLike.setAlpha(1f);
-                            binding.btnConfirmAndPay.setAlpha(1f);
+                            binding.btnAutoLike.setAlpha(0.9f);
+                            binding.btnDoLike.setAlpha(0.9f);
+                            binding.btnConfirmAndPay.setAlpha(0.9f);
                             retryCount = 0;
                             handlerCheckCoin.removeCallbacks(runnableCheckCoin);
 

@@ -185,9 +185,9 @@ public class GetCoinFolloweFragment extends Fragment {
                             transactionId = response.body().getTransactionId();
                             isAvailable = true;
                             binding.btnDoFollow.setEnabled(true);
-                            binding.btnAutoFollow.setAlpha(1f);
-                            binding.btnDoFollow.setAlpha(1f);
-                            binding.btnFollowWithAll.setAlpha(1f);
+                            binding.btnAutoFollow.setAlpha(0.9f);
+                            binding.btnDoFollow.setAlpha(0.9f);
+                            binding.btnFollowWithAll.setAlpha(0.9f);
                             retryCount = 0;
                             handlerCheckCoin.removeCallbacks(runnableCheckCoin);
 
