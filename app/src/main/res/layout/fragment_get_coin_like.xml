@@ -17,14 +17,12 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgProfileImage"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
                 app:civ_border_color="@color/blueFirst"
                 app:civ_border_width="1dp"
-                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

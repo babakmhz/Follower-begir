@@ -389,14 +389,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginBottom="8dp"
                         android:background="@drawable/rounded_both_main_color"
                         android:gravity="center"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:padding="4dp"
                         android:textColor="@color/white"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:textSize="@dimen/_8ssp"
+                        android:padding="10dp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/appCompatImageView"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
 

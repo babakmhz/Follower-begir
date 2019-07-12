@@ -16,6 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
+
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -25,8 +28,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.DialogFragment;
 import ir.novahar.followerbegir.App;
 import ir.novahar.followerbegir.Manager.DataBaseHelper;
 import ir.novahar.followerbegir.R;
@@ -262,9 +263,14 @@ public class AccountStatisticsDialog extends DialogFragment {
         }
         try {
             Cursor cursor = db.rawQuery("SELECT * FROM posts ORDER BY like_count DESC LIMIT 10", null);
-            cursor.moveToFirst();
-            binding.tvMostLikedCount.setText(cursor.getInt(cursor.getColumnIndex("like_count")) + "");
-            Picasso.get().load(cursor.getString(cursor.getColumnIndex("url"))).into(binding.imvMostLiked);
+            if (cursor.moveToFirst())
+                do {
+                    binding.tvMostLikedCount.setText(cursor.getInt(cursor.getColumnIndex("like_count")) + "");
+                    Picasso.get().load(cursor.getString(cursor.getColumnIndex("url"))).into(binding.imvMostLiked);
+
+                }
+                while (cursor.moveToFirst());
+
 
             cursor.close();
         } catch (SQLiteException ignored) {
