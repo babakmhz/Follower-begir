@@ -19,14 +19,12 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.crashlytics.android.Crashlytics;
 
+import co.ronash.pushe.Pushe;
 import io.fabric.sdk.android.Fabric;
-import ir.novahar.followerbegir.data.InstagramUser;
-import ir.tapsell.sdk.Tapsell;
 import ir.novahar.followerbegir.Manager.Config;
 import ir.novahar.followerbegir.Manager.VolleyManager;
-
-import ir.novahar.followerbegir.R;
-
+import ir.novahar.followerbegir.data.InstagramUser;
+import ir.tapsell.sdk.Tapsell;
 import me.cheshmak.android.sdk.core.Cheshmak;
 
 public class App extends Application {
@@ -51,7 +49,7 @@ public class App extends Application {
     public static String userId = null;
     public static InstagramUser user;
     public static String responseBanner;
-    public static String SkuSpecialWheel = "Item1";
+    public static String SkuSpecialWheel = "LuckyWheel";
     public static boolean isNotificationDialgShown= false;
     public static boolean isBazarInstalled=true;
     public static boolean IsBazarExists;
@@ -101,7 +99,7 @@ public class App extends Application {
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         context = getApplicationContext();
 
-        //   Pushe.initialize(this, false);
+        Pushe.initialize(this, false);
         inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         requestQueue = VolleyManager.getRequestQueue(getBaseContext());
         requestQueue.start();
