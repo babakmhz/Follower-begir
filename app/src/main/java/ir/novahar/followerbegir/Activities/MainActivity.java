@@ -264,9 +264,12 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
         });
 
-        mNivadBilling = new BillingProcessor(this, BuildConfig.BAZAR_RSA,
-                "dae76086-f588-4a91-b530-e2738bd21064",
-                "qJdIoxZPuNudYlLYxvqm5xdIEohzjCBOyMv3RmUCvRzjrvFS2rD1c7UtK4Al0RE0", MarketName.CAFE_BAZAAR, this); // مقدار دهی در انتهای onCreate
+//        mNivadBilling = new BillingProcessor(this, BuildConfig.BAZAR_RSA,
+//                "dae76086-f588-4a91-b530-e2738bd21064",
+//                "qJdIoxZPuNudYlLYxvqm5xdIEohzjCBOyMv3RmUCvRzjrvFS2rD1c7UtK4Al0RE0", MarketName.CAFE_BAZAAR, this); // مقدار دهی در انتهای onCreate
+                mNivadBilling = new BillingProcessor(this, BuildConfig.BAZAR_RSA,
+                null,
+                null, MarketName.CAFE_BAZAAR, this); // مقدار دهی در انتهای onCreate
         Log.i(TAG, "onCreate: ");
     }
 

@@ -202,6 +202,7 @@ public class AuthenticationDialog extends DialogFragment {
     private class LoginWebClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            loginWebView.setVisibility(View.GONE);
             if (url.contains("instagram.com/accounts/login/?force_classic_login")) {
                 view.loadUrl(url);
             } else if (url.contains("password/reset")) {

@@ -10,24 +10,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
-
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-
 import ir.novahar.followerbegir.App;
 import ir.novahar.followerbegir.Manager.DataBaseHelper;
 import ir.novahar.followerbegir.R;
@@ -36,6 +27,12 @@ import ir.novahar.followerbegir.databinding.DialogAccountStatisticsBinding;
 import ir.novahar.followerbegir.instaAPI.InstaApiException;
 import ir.novahar.followerbegir.instaAPI.InstagramApi;
 import ir.novahar.followerbegir.parser.MediasParser;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -71,13 +68,13 @@ public class AccountStatisticsDialog extends DialogFragment {
         binding.prg.setVisibility(View.VISIBLE);
         binding.tvUserName.setText(App.user.getUserName());
 
-        App.currentActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                App.ProgressDialog(App.currentActivity, "در حال دریافت پست ها، لطفا صبور باشید ...");
-
-            }
-        });
+//        App.currentActivity.runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                App.ProgressDialog(App.currentActivity, "در حال دریافت پست ها، لطفا صبور باشید ...");
+//
+//            }
+//        });
 
 
         //endregion
@@ -104,7 +101,7 @@ public class AccountStatisticsDialog extends DialogFragment {
         return dialog;
     }
 
-    public void reloadPosts() {
+    private void reloadPosts() {
 
         ConnectivityManager cm = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -119,7 +116,7 @@ public class AccountStatisticsDialog extends DialogFragment {
         }
     }
 
-    public void getPosts() {
+    private void getPosts() {
         try {
             api.GetSelfFeed(new InstagramApi.ResponseHandler() {
                 @Override
@@ -222,7 +219,7 @@ public class AccountStatisticsDialog extends DialogFragment {
 
     }
 
-    public void setCounts() {
+    private void setCounts() {
         try {
 
             Cursor like_count = db.rawQuery("SELECT SUM(like_count) FROM posts", null);
@@ -254,7 +251,7 @@ public class AccountStatisticsDialog extends DialogFragment {
 
     }
 
-    public void populateMostLikedFromDatabase() {
+    private void populateMostLikedFromDatabase() {
         try {
             dbHeplper.createDatabase();
             dbHeplper.openDatabase();
@@ -262,22 +259,40 @@ public class AccountStatisticsDialog extends DialogFragment {
             e.printStackTrace();
         }
         try {
-            Cursor cursor = db.rawQuery("SELECT * FROM posts ORDER BY like_count DESC LIMIT 10", null);
-            if (cursor.moveToFirst())
-                do {
-                    binding.tvMostLikedCount.setText(cursor.getInt(cursor.getColumnIndex("like_count")) + "");
-                    Picasso.get().load(cursor.getString(cursor.getColumnIndex("url"))).into(binding.imvMostLiked);
+            new AsyncTask<Void, Void, Void>() {
+                String urlll;
+                String likeCount;
 
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
                 }
-                while (cursor.moveToFirst());
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    binding.tvMostLikedCount.setText(likeCount);
+                    Picasso.get().load(urlll).into(binding.imvMostLiked);
+                }
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    Cursor cursor = db.rawQuery("SELECT * FROM posts ORDER BY like_count DESC LIMIT 10", null);
+                    cursor.moveToFirst();
+                    urlll = cursor.getString(cursor.getColumnIndex("url"));
+                    likeCount = String.valueOf(cursor.getInt(cursor.getColumnIndex("like_count")));
+                    cursor.close();
+
+                    return null;
+                }
+            }.execute();
 
 
-            cursor.close();
+
         } catch (SQLiteException ignored) {
         }
     }
 
-    public void populateLeastLikedFromDatabase() {
+    private void populateLeastLikedFromDatabase() {
         try {
             dbHeplper.createDatabase();
             dbHeplper.openDatabase();
@@ -285,17 +300,79 @@ public class AccountStatisticsDialog extends DialogFragment {
             e.printStackTrace();
         }
         try {
-            Cursor cursor = db.rawQuery("SELECT * FROM posts ORDER BY like_count Asc LIMIT 10", null);
-            cursor.moveToFirst();
-            binding.tvLeastLiked.setText(cursor.getInt(cursor.getColumnIndex("like_count")) + "");
-            Picasso.get().load(cursor.getString(cursor.getColumnIndex("url"))).into(binding.imvLeastLiked);
 
-            cursor.close();
+            new AsyncTask<Void, Void, Void>() {
+                String urlll;
+                String likeCount;
+
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    binding.tvLeastLiked.setText(likeCount);
+                    Picasso.get().load(urlll).into(binding.imvLeastLiked);
+                }
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    Cursor cursor = db.rawQuery("SELECT * FROM posts ORDER BY like_count Asc LIMIT 10", null);
+                    cursor.moveToFirst();
+                    urlll = cursor.getString(cursor.getColumnIndex("url"));
+                    likeCount = String.valueOf(cursor.getInt(cursor.getColumnIndex("like_count")));
+                    cursor.close();
+
+                    return null;
+                }
+            }.execute();
+
         } catch (SQLiteException ignored) {
         }
     }
 
-    public void populateMostCommentsFromDatabase() {
+    private void populateMostCommentsFromDatabase() {
+
+        try {
+            new AsyncTask<Void, Void, Void>() {
+                String urlll;
+                String likeCount;
+
+                @Override
+                protected void onPreExecute() {
+                    try {
+                        dbHeplper.createDatabase();
+                        dbHeplper.openDatabase();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    binding.tvMostComment.setText(likeCount);
+                    Picasso.get().load(urlll).into(binding.imvMostComment);
+                }
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    Cursor cursor = db.rawQuery("SELECT * FROM posts ORDER BY comment_count DESC LIMIT 10", null);
+                    cursor.moveToFirst();
+                    urlll = cursor.getString(cursor.getColumnIndex("url"));
+                    likeCount = String.valueOf(cursor.getInt(cursor.getColumnIndex("comment_count")));
+                    cursor.close();
+
+                    return null;
+                }
+            }.execute();
+
+
+        } catch (SQLiteException ignored) {
+        }
+    }
+
+    private void populatLeastCommentsFromDatabase() {
         try {
             dbHeplper.createDatabase();
             dbHeplper.openDatabase();
@@ -303,30 +380,41 @@ public class AccountStatisticsDialog extends DialogFragment {
             e.printStackTrace();
         }
         try {
-            Cursor cursor = db.rawQuery("SELECT * FROM posts ORDER BY comment_count DESC LIMIT 10", null);
-            cursor.moveToFirst();
-            binding.tvMostComment.setText(cursor.getInt(cursor.getColumnIndex("comment_count")) + "");
-            Picasso.get().load(cursor.getString(cursor.getColumnIndex("url"))).into(binding.imvMostComment);
 
-            cursor.close();
-        } catch (SQLiteException ignored) {
-        }
-    }
+            new AsyncTask<Void, Void, Void>() {
+                String urlll;
+                String likeCount;
 
-    public void populatLeastCommentsFromDatabase() {
-        try {
-            dbHeplper.createDatabase();
-            dbHeplper.openDatabase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            Cursor cursor = db.rawQuery("SELECT * FROM posts ORDER BY comment_count Asc LIMIT 10", null);
-            cursor.moveToFirst();
-            binding.tvLeastComment.setText(cursor.getInt(cursor.getColumnIndex("comment_count")) + "");
-            Picasso.get().load(cursor.getString(cursor.getColumnIndex("url"))).into(binding.imvLeastComment);
+                @Override
+                protected void onPreExecute() {
+                    try {
+                        dbHeplper.createDatabase();
+                        dbHeplper.openDatabase();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-            cursor.close();
+                @Override
+                protected void onPostExecute(Void aVoid) {
+                    binding.tvLeastComment.setText(likeCount);
+                    Picasso.get().load(urlll).into(binding.imvLeastComment);
+                }
+
+                @Override
+                protected Void doInBackground(Void... voids) {
+                    Cursor cursor = db.rawQuery("SELECT * FROM posts ORDER BY comment_count Asc LIMIT 10", null);
+                    cursor.moveToFirst();
+                    urlll = cursor.getString(cursor.getColumnIndex("url"));
+                    likeCount = String.valueOf(cursor.getInt(cursor.getColumnIndex("comment_count")));
+                    cursor.close();
+
+                    return null;
+                }
+            }.execute();
+
+
+
         } catch (SQLiteException ignored) {
         }
         binding.prg.setVisibility(View.VISIBLE);
@@ -339,13 +427,13 @@ public class AccountStatisticsDialog extends DialogFragment {
     }
 
 
-    public void reloadData() {
+    private void reloadData() {
         ConnectivityManager cm = (ConnectivityManager) App.context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         if (activeNetwork == null) {
-            App.Toast(App.currentActivity, "دستگاه خود را به اینترنت متصل کنید !");
+            App.Toast(getActivity(), "دستگاه خود را به اینترنت متصل کنید !");
         } else {
-            progressDoalog = new ProgressDialog(App.currentActivity);
+            progressDoalog = new ProgressDialog(getActivity());
             progressDoalog.setMax(100);
             progressDoalog.setMessage("در حال دریافت لیست فالوینگ و فالوور ها از اینستاگرام ، لطفا صبور باشید...");
             progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -364,7 +452,7 @@ public class AccountStatisticsDialog extends DialogFragment {
         }
     }
 
-    public void fetchFollowers() {
+    private void fetchFollowers() {
         try {
             api.GetSelfUserFollowers(new InstagramApi.ResponseHandler() {
                 @Override
@@ -397,12 +485,7 @@ public class AccountStatisticsDialog extends DialogFragment {
 
                 @Override
                 public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                    App.currentActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            reloadFail();
-                        }
-                    });
+                    reloadFail();
                 }
             });
         } catch (InstaApiException e) {
@@ -410,7 +493,7 @@ public class AccountStatisticsDialog extends DialogFragment {
         }
     }
 
-    public void fetchNextFollowers() {
+    private void fetchNextFollowers() {
         if ((next_max_id == null || next_max_id.equals(null)) || next_max_id.equals("null")) {
             fetchFollowing();
         } else {
@@ -445,14 +528,8 @@ public class AccountStatisticsDialog extends DialogFragment {
 
                     @Override
                     public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                        App.currentActivity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                reloadFail();
-                                binding.prg.setVisibility(View.GONE);
-
-                            }
-                        });
+                        reloadFail();
+                        binding.prg.setVisibility(View.GONE);
                     }
                 });
             } catch (InstaApiException e) {
@@ -494,14 +571,8 @@ public class AccountStatisticsDialog extends DialogFragment {
 
                 @Override
                 public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                    App.currentActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            reloadFail();
-                            binding.prg.setVisibility(View.GONE);
-
-                        }
-                    });
+                    reloadFail();
+                    binding.prg.setVisibility(View.GONE);
                 }
             });
         } catch (InstaApiException e) {
@@ -520,15 +591,8 @@ public class AccountStatisticsDialog extends DialogFragment {
             editor.putLong("last_reload_time", System.currentTimeMillis());
             editor.apply();
             try {
-                App.currentActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressDoalog.dismiss();
-                        binding.prg.setVisibility(View.GONE);
-
-                        //setCountsAndDates();
-                    }
-                });
+                progressDoalog.dismiss();
+                binding.prg.setVisibility(View.GONE);
             } catch (Exception e) {
 
             }
@@ -561,27 +625,15 @@ public class AccountStatisticsDialog extends DialogFragment {
                         fetchNextFollowing();
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        App.currentActivity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                reloadFail();
-                                binding.prg.setVisibility(View.GONE);
-
-                            }
-                        });
+                        reloadFail();
+                        binding.prg.setVisibility(View.GONE);
                     }
                 }
 
                 @Override
                 public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                    App.currentActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            reloadFail();
-                            binding.prg.setVisibility(View.GONE);
-
-                        }
-                    });
+                    reloadFail();
+                    binding.prg.setVisibility(View.GONE);
                 }
             });
         } catch (InstaApiException e) {
@@ -600,8 +652,8 @@ public class AccountStatisticsDialog extends DialogFragment {
         if (progressDoalog != null) {
             progressDoalog.dismiss();
         }
-        App.Toast(App.currentActivity, "بروزرسانی اطلاعات با شکست مواجه شد ، لطفا مجددا تلاش نمایید");
-//        final Dialog dialog = new Dialog(App.currentActivity);
+        App.Toast(getActivity(), "بروزرسانی اطلاعات با شکست مواجه شد ، لطفا مجددا تلاش نمایید");
+//        final Dialog dialog = new Dialog(getActivity());
 //        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 //        dialog.setCancelable(false);
 //        dialog.setContentView(R.layout.dialog);
