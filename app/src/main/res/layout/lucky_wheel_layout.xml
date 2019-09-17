@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ir.novahar.followerbegir.WheelPiclerView.PielView
+    <com.follow.nobahar.WheelPiclerView.PielView
         android:id="@+id/pieView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

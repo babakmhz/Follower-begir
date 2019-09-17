@@ -11,7 +11,7 @@
 
     <application
 
-        android:name=".App"
+        android:name="com.follow.nobahar.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,13 +21,13 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".Activities.MainActivity"
+            android:name="com.follow.nobahar.Activities.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
 
         </activity>
         <activity
-            android:name=".Activities.SplashActivity"
+            android:name="com.follow.nobahar.Activities.SplashActivity"
             android:label="فالوئر بگیر"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenStyle"
@@ -42,13 +42,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.ActivityLoginWebview" />
+        <activity android:name="com.follow.nobahar.Activities.ActivityLoginWebview" />
         <activity
             android:name="ir.tapsell.sdk.TapsellAdActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"></activity>
-        <activity android:name=".Activities.NetworkErrorActivity" />
+        <activity android:name="com.follow.nobahar.Activities.NetworkErrorActivity" />
 
-        <receiver android:name=".Interface.ValueUpdaterBroadCast">
+        <receiver android:name="com.follow.nobahar.Interface.ValueUpdaterBroadCast">
             <intent-filter>
                 <action android:name="com.journaldev.broadcastreceiver.Update" />
             </intent-filter>
@@ -57,7 +57,13 @@
             android:name="io.fabric.ApiKey"
             android:value="c3a46b2f2b01b95cfbcd785cd749a42c35d9af8c" />
 
-        <meta-data android:name="co.ronash.pushe.token" android:value="PUSHE_69374938482"/>
+        <meta-data android:name="co.ronash.pushe.token" android:value="PUSHE_173584929153"/>
+
+        <service android:name="com.follow.nobahar.CheckUnFollowService" />
+        <service
+            android:name="me.cheshmak.android.sdk.core.push.CheshmakFirebaseMessagingService"
+            tools:node="remove" />
+
     </application>
 
 </manifest>
