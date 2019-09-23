@@ -31,7 +31,7 @@ import com.follow.nobahar.instaAPI.InstagramApi;
 import com.follow.nobahar.parser.MediasParser;
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 import com.follow.nobahar.data.InstagramMedia;
 
 import static com.follow.nobahar.App.TAG;

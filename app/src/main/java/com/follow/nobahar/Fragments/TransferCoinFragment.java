@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 
 public class TransferCoinFragment extends Fragment {

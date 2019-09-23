@@ -26,8 +26,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.DialogSelectCountPurchaseOthersBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.DialogSelectCountPurchaseOthersBinding;
 
 @SuppressLint("ValidFragment")
 public class SelectCountPurchaseOthersDialog extends DialogFragment {

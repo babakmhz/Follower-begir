@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import java.util.List;
 
 import com.follow.nobahar.App;
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 public class LuckyWheelView extends RelativeLayout implements PielView.PieRotateListener {
     private int mBackgroundColor;

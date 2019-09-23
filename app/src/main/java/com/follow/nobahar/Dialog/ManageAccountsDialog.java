@@ -23,8 +23,8 @@ import com.squareup.picasso.Picasso;
 
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.DialogManageAccountsBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.DialogManageAccountsBinding;
 
 @SuppressLint("ValidFragment")
 public class ManageAccountsDialog extends DialogFragment implements AccountOptionChooserInterface {

@@ -44,9 +44,9 @@ import java.util.Map;
 
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 import com.follow.nobahar.data.InstagramMedia;
-import ir.novahar.followerbegir.databinding.DialogTestBinding;
+import com.follow.nobahar.databinding.DialogTestBinding;
 
 import static com.follow.nobahar.App.Base_URL;
 import static com.follow.nobahar.App.TAG;

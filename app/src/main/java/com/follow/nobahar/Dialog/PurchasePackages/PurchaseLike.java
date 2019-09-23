@@ -16,11 +16,11 @@ import com.follow.nobahar.Interface.DirectPurchaseDialogInterface;
 import com.follow.nobahar.Manager.Config;
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.DialogDirectCommentPurchaseBinding;
-import ir.novahar.followerbegir.databinding.DialogDirectFollowerPurchaseBinding;
-import ir.novahar.followerbegir.databinding.DialogDirectLikePurchaseBinding;
-import ir.novahar.followerbegir.databinding.DialogDirectPurchaseViewBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.DialogDirectCommentPurchaseBinding;
+import com.follow.nobahar.databinding.DialogDirectFollowerPurchaseBinding;
+import com.follow.nobahar.databinding.DialogDirectLikePurchaseBinding;
+import com.follow.nobahar.databinding.DialogDirectPurchaseViewBinding;
 
 @SuppressLint("ValidFragment")
 public class PurchaseLike extends DialogFragment {

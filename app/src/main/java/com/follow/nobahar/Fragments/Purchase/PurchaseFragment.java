@@ -16,7 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.follow.nobahar.Interface.DirectPurchaseDialogInterface;
 import com.follow.nobahar.Adapters.PurchaseViewPagerDapter;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 
 @SuppressLint("ValidFragment")

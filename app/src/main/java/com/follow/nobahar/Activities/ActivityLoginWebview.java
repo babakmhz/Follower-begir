@@ -26,7 +26,7 @@ import org.json.JSONObject;
 
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 
 public class ActivityLoginWebview extends AppCompatActivity {

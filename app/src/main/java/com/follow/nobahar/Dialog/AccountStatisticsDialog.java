@@ -26,9 +26,9 @@ import com.follow.nobahar.parser.MediasParser;
 import com.squareup.picasso.Picasso;
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 import com.follow.nobahar.data.InstagramMedia;
-import ir.novahar.followerbegir.databinding.DialogAccountStatisticsBinding;
+import com.follow.nobahar.databinding.DialogAccountStatisticsBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;

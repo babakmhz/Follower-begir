@@ -25,7 +25,7 @@ import com.follow.nobahar.data.InstagramUser;
 import co.ronash.pushe.Pushe;
 import io.fabric.sdk.android.Fabric;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 import ir.tapsell.sdk.Tapsell;
 import me.cheshmak.android.sdk.core.Cheshmak;

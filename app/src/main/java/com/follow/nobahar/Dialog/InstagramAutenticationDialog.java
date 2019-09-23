@@ -36,8 +36,8 @@ import com.follow.nobahar.instaAPI.InstaApiException;
 import com.follow.nobahar.instaAPI.InstagramApi;
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.DialogAuthenticateBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.DialogAuthenticateBinding;
 
 import static android.content.Context.MODE_PRIVATE;
 

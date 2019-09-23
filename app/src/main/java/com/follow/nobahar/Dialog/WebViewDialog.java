@@ -17,8 +17,8 @@ import androidx.fragment.app.DialogFragment;
 import com.follow.nobahar.Interface.WebViewLoadedInterface;
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.DialogWebViewBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.DialogWebViewBinding;
 
 import static com.crashlytics.android.beta.Beta.TAG;
 

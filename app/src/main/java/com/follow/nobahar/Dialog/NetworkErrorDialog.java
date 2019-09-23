@@ -10,8 +10,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
 import com.follow.nobahar.App;
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.DialogNetworkErrorBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.DialogNetworkErrorBinding;
 
 public class NetworkErrorDialog extends DialogFragment {
 

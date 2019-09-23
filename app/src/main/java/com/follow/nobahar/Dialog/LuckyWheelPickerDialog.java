@@ -26,7 +26,7 @@ import java.util.Random;
 
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

@@ -27,12 +27,12 @@ import com.follow.nobahar.Dialog.PurchasePackages.PurchaseLike;
 import com.follow.nobahar.Dialog.SearchDialog;
 import com.follow.nobahar.Dialog.SelectPictureDialog;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 import com.follow.nobahar.Retrofit.ApiClient;
 import com.follow.nobahar.Retrofit.ApiInterface;
 import com.follow.nobahar.Retrofit.UserCoin;
 import com.follow.nobahar.data.InstagramUser;
-import ir.novahar.followerbegir.databinding.FragmentPurchaseCommentBinding;
+import com.follow.nobahar.databinding.FragmentPurchaseCommentBinding;
 
 import retrofit2.Call;
 import retrofit2.Callback;

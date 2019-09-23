@@ -21,7 +21,7 @@ import com.follow.nobahar.App;
 import com.follow.nobahar.Dialog.TestDialog;
 import com.follow.nobahar.data.InstagramUser;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 public class UserSearchAdapter extends RecyclerView.Adapter<UserSearchAdapter.Item> {
 

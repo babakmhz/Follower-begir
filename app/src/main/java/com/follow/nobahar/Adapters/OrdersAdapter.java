@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.follow.nobahar.App;
 import com.follow.nobahar.Dialog.NewMessageDialog;
 import com.follow.nobahar.Models.Orders;
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.Item> {
     FragmentManager fm;

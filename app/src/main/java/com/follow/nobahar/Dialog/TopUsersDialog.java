@@ -35,8 +35,8 @@ import java.util.ArrayList;
 
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.DialogTopUsersBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.DialogTopUsersBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

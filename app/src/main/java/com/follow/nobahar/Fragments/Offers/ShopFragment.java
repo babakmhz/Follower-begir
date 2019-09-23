@@ -47,9 +47,9 @@ import com.follow.nobahar.Manager.BroadcastManager;
 import com.follow.nobahar.Manager.Config;
 import com.follow.nobahar.Manager.JsonManager;
 import com.follow.nobahar.Models.Offers;
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 import com.follow.nobahar.Retrofit.SpecialBanner;
-import ir.novahar.followerbegir.databinding.FragmentShopBinding;
+import com.follow.nobahar.databinding.FragmentShopBinding;
 
 @SuppressLint("ValidFragment")
 public class ShopFragment extends Fragment {

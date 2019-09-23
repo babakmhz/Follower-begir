@@ -22,7 +22,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import com.follow.nobahar.App;
 import com.follow.nobahar.Models.User;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 public class AccountTransferChooserAdapter extends RecyclerView.Adapter<AccountTransferChooserAdapter.Item> {
 

@@ -37,8 +37,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.follow.nobahar.Adapters.TicketsAdapter;
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.DialogSupportBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.DialogSupportBinding;
 
 public class TicketDialog extends DialogFragment implements NewMessageSubmittedInterface {
 

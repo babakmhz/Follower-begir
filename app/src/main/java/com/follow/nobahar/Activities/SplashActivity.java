@@ -10,8 +10,8 @@ import androidx.databinding.DataBindingUtil;
 import com.follow.nobahar.App;
 import com.follow.nobahar.Dialog.AuthenticationDialog;
 import com.follow.nobahar.Manager.DataBaseHelper;
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.ActivitySplashBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.ActivitySplashBinding;
 import com.follow.nobahar.instaAPI.InstagramApi;
 
 public class SplashActivity extends AppCompatActivity implements View.OnClickListener {

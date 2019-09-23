@@ -23,7 +23,7 @@ import com.follow.nobahar.App;
 import com.follow.nobahar.Dialog.AccountActionsDialog;
 import com.follow.nobahar.Models.User;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 public class AccountsListAdapter extends RecyclerView.Adapter<AccountsListAdapter.Item> {
 

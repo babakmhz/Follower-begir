@@ -17,8 +17,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.follow.nobahar.Adapters.GetCoinViewPagerAdapter;
 import com.follow.nobahar.Interface.AddCoinMultipleAccount;
 
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.FragmentGetCoinBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.FragmentGetCoinBinding;
 
 
 @SuppressLint("ValidFragment")

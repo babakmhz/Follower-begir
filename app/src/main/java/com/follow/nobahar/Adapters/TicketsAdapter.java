@@ -17,7 +17,7 @@ import com.follow.nobahar.App;
 import com.follow.nobahar.Dialog.TicketAnswerDialog;
 import com.follow.nobahar.Models.Messages;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 public class TicketsAdapter extends RecyclerView.Adapter<TicketsAdapter.Item> {
 

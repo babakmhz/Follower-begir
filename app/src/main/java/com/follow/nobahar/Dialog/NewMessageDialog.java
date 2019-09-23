@@ -26,8 +26,8 @@ import androidx.fragment.app.DialogFragment;
 
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.DialogNewMessageBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.DialogNewMessageBinding;
 
 @SuppressLint("ValidFragment")
 public class NewMessageDialog extends DialogFragment {

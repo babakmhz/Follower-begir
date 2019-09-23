@@ -24,8 +24,8 @@ import java.util.Objects;
 
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.DialogAccountActionBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.DialogAccountActionBinding;
 
 import static android.content.Context.MODE_PRIVATE;
 

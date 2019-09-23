@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.follow.nobahar.App;
 import com.follow.nobahar.Models.PictureModel;
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 
 public class SelectPicAdapter extends RecyclerView.Adapter<SelectPicAdapter.Item> {

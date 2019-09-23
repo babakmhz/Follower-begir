@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import com.follow.nobahar.App;
 import com.follow.nobahar.Dialog.SelectCountPurchaseOthersDialog;
 import com.follow.nobahar.Models.PictureModel;
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 
 public class SelectPicOrderOthersAdapter extends RecyclerView.Adapter<SelectPicOrderOthersAdapter.Item> {

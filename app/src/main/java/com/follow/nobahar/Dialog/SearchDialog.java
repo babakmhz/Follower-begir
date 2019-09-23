@@ -28,9 +28,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.follow.nobahar.App;
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 import com.follow.nobahar.data.InstagramUser;
-import ir.novahar.followerbegir.databinding.DialogSearchBinding;
+import com.follow.nobahar.databinding.DialogSearchBinding;
 
 @SuppressLint("ValidFragment")
 public class SearchDialog extends DialogFragment {

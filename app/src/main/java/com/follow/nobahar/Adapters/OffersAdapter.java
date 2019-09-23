@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.Item> {
     private final ShopItemInterface callBackShopItem;

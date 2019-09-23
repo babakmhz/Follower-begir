@@ -10,8 +10,8 @@ import android.view.Window;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import com.follow.nobahar.App;
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.DialogFirstPageOffersBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.DialogFirstPageOffersBinding;
 
 @SuppressLint("ValidFragment")
 public class FirstPageNotificationDialog extends DialogFragment {

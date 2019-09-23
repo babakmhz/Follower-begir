@@ -27,8 +27,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.FragmentTransferCoinBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.FragmentTransferCoinBinding;
 
 public class TransferCoinDialog extends DialogFragment implements ExternalAccountTransferChooserInsterface {
 

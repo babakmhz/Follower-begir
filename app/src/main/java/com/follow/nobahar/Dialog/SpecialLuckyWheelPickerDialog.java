@@ -35,7 +35,7 @@ import java.util.Random;
 
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 public class SpecialLuckyWheelPickerDialog extends DialogFragment {
     List<LuckyItem> data = new ArrayList<>();

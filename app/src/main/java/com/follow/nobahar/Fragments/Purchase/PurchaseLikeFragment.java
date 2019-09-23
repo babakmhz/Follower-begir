@@ -27,11 +27,11 @@ import com.follow.nobahar.Dialog.PurchasePackages.PurchaseLike;
 import com.follow.nobahar.Dialog.SearchDialog;
 import com.follow.nobahar.Dialog.SelectPictureDialog;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 import com.follow.nobahar.Retrofit.ApiClient;
 import com.follow.nobahar.Retrofit.ApiInterface;
 import com.follow.nobahar.Retrofit.UserCoin;
-import ir.novahar.followerbegir.databinding.FragmentPurchaseLikeBinding;
+import com.follow.nobahar.databinding.FragmentPurchaseLikeBinding;
 
 import retrofit2.Call;
 import retrofit2.Callback;

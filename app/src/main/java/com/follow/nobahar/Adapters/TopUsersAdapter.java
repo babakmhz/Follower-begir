@@ -17,7 +17,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import com.follow.nobahar.App;
 import com.follow.nobahar.Models.TopUsers;
 
-import ir.novahar.followerbegir.R;
+import com.follow.nobahar.R;
 
 public class TopUsersAdapter extends RecyclerView.Adapter<TopUsersAdapter.Item> {
 

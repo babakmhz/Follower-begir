@@ -38,8 +38,8 @@ import java.util.Map;
 
 import com.follow.nobahar.App;
 
-import ir.novahar.followerbegir.R;
-import ir.novahar.followerbegir.databinding.DialogTicketAnswersBinding;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.DialogTicketAnswersBinding;
 
 @SuppressLint("ValidFragment")
 public class TicketAnswerDialog extends DialogFragment {
