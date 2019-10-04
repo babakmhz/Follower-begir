@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    tools:context="com.follow.nobahar.com.novahar.followerbegir.Activities.MainActivity">
+    tools:context=".Activities.MainActivity">
 
     <com.follow.nobahar.WheelPiclerView.LuckyWheelView
         android:id="@+id/luckyWheel"
@@ -26,6 +26,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginEnd="60dp"
         android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
         android:background="@drawable/rounded_orange"
         android:layout_alignParentTop="true"
         android:layout_marginTop="250dp"

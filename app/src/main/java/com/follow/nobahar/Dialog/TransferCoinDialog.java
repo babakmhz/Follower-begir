@@ -10,11 +10,17 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.follow.nobahar.App;
 import com.follow.nobahar.Interface.ExternalAccountTransferChooserInsterface;
 import com.follow.nobahar.Manager.JsonManager;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.FragmentTransferCoinBinding;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -22,13 +28,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.DialogFragment;
-import com.follow.nobahar.App;
-
-import com.follow.nobahar.R;
-import com.follow.nobahar.databinding.FragmentTransferCoinBinding;
 
 public class TransferCoinDialog extends DialogFragment implements ExternalAccountTransferChooserInsterface {
 
@@ -58,8 +57,11 @@ public class TransferCoinDialog extends DialogFragment implements ExternalAccoun
 
         //endregion
 
-        Picasso.get().load(App.profilePicURl).into(binding.imvProfilePic);
-        binding.imvArrowLeft.setOnClickListener(v -> dismiss());
+        Picasso.get().load(App.profilePicURl).into(binding.profileImage);
+        binding.tvUserName.setText(App.user.getUserName());
+        binding.tvLikeCoinCount.setText(App.likeCoin + "");
+        binding.tvFollowCoinCount.setText(App.followCoin + "");
+        binding.imvBack.setOnClickListener(v -> dismiss());
 
         binding.btnLikeToFollower.setOnClickListener(new View.OnClickListener() {
             @Override

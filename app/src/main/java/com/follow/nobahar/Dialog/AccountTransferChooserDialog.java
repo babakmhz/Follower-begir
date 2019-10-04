@@ -16,15 +16,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.follow.nobahar.Adapters.AccountTransferChooserAdapter;
+import com.follow.nobahar.App;
 import com.follow.nobahar.Interface.AccountTransferInfoInterface;
 import com.follow.nobahar.Interface.ExternalAccountTransferChooserInsterface;
 import com.follow.nobahar.Manager.DataBaseHelper;
-import com.squareup.picasso.Picasso;
-
-import com.follow.nobahar.App;
-
 import com.follow.nobahar.R;
 import com.follow.nobahar.databinding.DialogManageAccountsBinding;
+import com.squareup.picasso.Picasso;
 
 @SuppressLint("ValidFragment")
 public class AccountTransferChooserDialog extends DialogFragment implements AccountTransferInfoInterface {
@@ -56,7 +54,7 @@ public class AccountTransferChooserDialog extends DialogFragment implements Acco
 
         DividerItemDecoration decoration = new DividerItemDecoration(App.currentActivity, DividerItemDecoration.VERTICAL);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(App.currentActivity, LinearLayoutManager.VERTICAL, false);
-        binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
+        binding.imvBack.setOnClickListener(v -> dialog.dismiss());
         binding.tvUserName.setText(App.user.getUserName());
 
         binding.rcvAccounts.setLayoutManager(mLayoutManager);
@@ -88,7 +86,10 @@ public class AccountTransferChooserDialog extends DialogFragment implements Acco
                 authenticate();
             }
         });
-        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        Picasso.get().load(App.profilePicURl).into(binding.profileImage);
+        binding.tvUserName.setText(App.user.getUserName());
+        binding.tvLikeCoinCount.setText(App.likeCoin + "");
+        binding.tvFollowCoinCount.setText(App.followCoin + "");
         return dialog;
     }
 

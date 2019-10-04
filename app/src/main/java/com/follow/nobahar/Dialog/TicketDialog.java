@@ -10,12 +10,25 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.follow.nobahar.Adapters.TicketsAdapter;
+import com.follow.nobahar.App;
 import com.follow.nobahar.Interface.NewMessageSubmittedInterface;
 import com.follow.nobahar.Manager.JsonManager;
 import com.follow.nobahar.Models.Messages;
+import com.follow.nobahar.R;
+import com.follow.nobahar.databinding.DialogSupportBinding;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -25,20 +38,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import com.follow.nobahar.Adapters.TicketsAdapter;
-import com.follow.nobahar.App;
-
-import com.follow.nobahar.R;
-import com.follow.nobahar.databinding.DialogSupportBinding;
 
 public class TicketDialog extends DialogFragment implements NewMessageSubmittedInterface {
 
@@ -56,8 +55,9 @@ public class TicketDialog extends DialogFragment implements NewMessageSubmittedI
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
-        binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
-        binding.tvUserName.setText(App.user.getUserName());
+        binding.imvBack.setOnClickListener(v -> dialog.dismiss());
+        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+
         callback = this;
         //endregion
 

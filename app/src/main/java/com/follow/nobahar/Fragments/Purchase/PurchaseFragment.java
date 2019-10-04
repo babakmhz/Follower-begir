@@ -13,9 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.follow.nobahar.Interface.DirectPurchaseDialogInterface;
 import com.follow.nobahar.Adapters.PurchaseViewPagerDapter;
-
+import com.follow.nobahar.Interface.DirectPurchaseDialogInterface;
 import com.follow.nobahar.R;
 
 
@@ -110,28 +109,29 @@ public class PurchaseFragment extends Fragment {
                 reset();
                 setViewPager(0);
                 tvLike.setBackground(getResources().getDrawable(R.drawable.active_tab));
-                tvLike.setTextColor(getResources().getColor(R.color.white));
+                tvLike.setTextColor(getResources().getColor(R.color.black));
                 break;
             case 1:
                 reset();
                 setViewPager(1);
                 tvComment.setBackground(getResources().getDrawable(R.drawable.active_tab));
-                tvComment.setTextColor(getResources().getColor(R.color.white));
+                tvComment.setTextColor(getResources().getColor(R.color.black));
                 break;
             case 2:
                 reset();
                 setViewPager(2);
                 tvFollow.setBackground(getResources().getDrawable(R.drawable.active_tab));
-                tvFollow.setTextColor(getResources().getColor(R.color.white));
+                tvFollow.setTextColor(getResources().getColor(R.color.black));
                 break;
             case 3:
                 reset();
                 setViewPager(3);
                 tvRobotLike.setBackground(getResources().getDrawable(R.drawable.active_tab));
-                tvRobotLike.setTextColor(getResources().getColor(R.color.white));
+                tvRobotLike.setTextColor(getResources().getColor(R.color.black));
                 break;
         }
     }
+
 
     private void setViewPager(int index) {
         viewPager.setCurrentItem(index);

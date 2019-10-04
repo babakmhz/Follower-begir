@@ -6,17 +6,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@drawable/newbg"
+        android:background="@drawable/splash_"
+
         android:layout_height="match_parent">
-
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/ic_logo" />
-
-
 
 
         <Button
@@ -32,7 +24,7 @@
             android:background="@drawable/rounded_both_main_color"
             android:paddingEnd="30dp"
             android:text="ورود از طریق اینستاگرام"
-            android:textColor="@color/white"
+            android:textColor="@color/blueFirst"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideLine2"
             app:layout_constraintStart_toStartOf="@+id/guideLine" />

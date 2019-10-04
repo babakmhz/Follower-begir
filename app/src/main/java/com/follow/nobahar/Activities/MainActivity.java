@@ -13,14 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.FirebaseApp;
-
-import java.io.UnsupportedEncodingException;
-
-import io.nivad.iab.BillingProcessor;
-import io.nivad.iab.MarketName;
-import io.nivad.iab.TransactionDetails;
 import com.follow.nobahar.App;
 import com.follow.nobahar.BuildConfig;
 import com.follow.nobahar.CheckUnFollowService;
@@ -44,6 +36,14 @@ import com.follow.nobahar.Retrofit.ApiClient;
 import com.follow.nobahar.Retrofit.ApiInterface;
 import com.follow.nobahar.Retrofit.UserCoin;
 import com.follow.nobahar.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
+
+import java.io.UnsupportedEncodingException;
+
+import io.nivad.iab.BillingProcessor;
+import io.nivad.iab.MarketName;
+import io.nivad.iab.TransactionDetails;
 import ir.tapsell.sdk.Tapsell;
 import ir.tapsell.sdk.TapsellAd;
 import ir.tapsell.sdk.TapsellAdRequestListener;
@@ -278,38 +278,37 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
             startService(intent);
         }
     }
-
     private void setActive(int position) {
         switch (position) {
             case 0:
                 reset();
-                binding.llHome.setBackground(getResources().getDrawable(R.drawable.rounded_white_border));
+                binding.llHome.setBackground(getResources().getDrawable(R.drawable.rounded_nav_selected));
                 binding.tvHome.setTextColor(getResources().getColor(R.color.white));
                 binding.bottomNavigation.setSelectedItemId(R.id.action_home);
                 break;
             case 1:
                 reset();
-                binding.llPurchase.setBackground(getResources().getDrawable(R.drawable.rounded_white_border));
+                binding.llPurchase.setBackground(getResources().getDrawable(R.drawable.rounded_nav_selected));
                 binding.tvPurchase.setTextColor(getResources().getColor(R.color.white));
                 binding.bottomNavigation.setSelectedItemId(R.id.action_purchase);
                 break;
             case 2:
                 reset();
-                binding.llGetCoin.setBackground(getResources().getDrawable(R.drawable.rounded_white_border));
+                binding.llGetCoin.setBackground(getResources().getDrawable(R.drawable.rounded_nav_selected));
                 binding.tvGetCoin.setTextColor(getResources().getColor(R.color.white));
                 binding.bottomNavigation.setSelectedItemId(R.id.action_navigation);
 
                 break;
             case 3:
                 reset();
-                binding.llShop.setBackground(getResources().getDrawable(R.drawable.rounded_white_border));
+                binding.llShop.setBackground(getResources().getDrawable(R.drawable.rounded_nav_selected));
                 binding.tvShop.setTextColor(getResources().getColor(R.color.white));
                 binding.bottomNavigation.setSelectedItemId(R.id.action_shopping);
 
                 break;
             case 4:
                 reset();
-                binding.llAds.setBackground(getResources().getDrawable(R.drawable.rounded_white_border));
+                binding.llAds.setBackground(getResources().getDrawable(R.drawable.rounded_nav_selected));
                 binding.tvAds.setTextColor(getResources().getColor(R.color.white));
                 binding.bottomNavigation.setSelectedItemId(R.id.action_advertise);
 
@@ -318,17 +317,18 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     }
 
     private void reset() {
-        binding.llHome.setBackground(getResources().getDrawable(R.drawable.rounded_main_un_selected));
-        binding.llAds.setBackground(getResources().getDrawable(R.drawable.rounded_main_un_selected));
-        binding.llGetCoin.setBackground(getResources().getDrawable(R.drawable.rounded_main_un_selected));
-        binding.llPurchase.setBackground(getResources().getDrawable(R.drawable.rounded_main_un_selected));
-        binding.llShop.setBackground(getResources().getDrawable(R.drawable.rounded_main_un_selected));
+        binding.llHome.setBackground(getResources().getDrawable(R.drawable.rounded_nav_unselected));
+        binding.llAds.setBackground(getResources().getDrawable(R.drawable.rounded_nav_unselected));
+        binding.llGetCoin.setBackground(getResources().getDrawable(R.drawable.rounded_nav_unselected));
+        binding.llPurchase.setBackground(getResources().getDrawable(R.drawable.rounded_nav_unselected));
+        binding.llShop.setBackground(getResources().getDrawable(R.drawable.rounded_nav_unselected));
         binding.tvAds.setTextColor(getResources().getColor(R.color.black));
         binding.tvHome.setTextColor(getResources().getColor(R.color.black));
         binding.tvGetCoin.setTextColor(getResources().getColor(R.color.black));
         binding.tvPurchase.setTextColor(getResources().getColor(R.color.black));
         binding.tvShop.setTextColor(getResources().getColor(R.color.black));
     }
+
 
 
     private void checkNivadOrder(String sku, TransactionDetails transactionDetails) {

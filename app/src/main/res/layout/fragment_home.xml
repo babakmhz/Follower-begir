@@ -11,7 +11,6 @@
         android:background="@color/transparent"
         android:paddingBottom="10dp">
 
-
         <LinearLayout
             android:id="@+id/llAccounts"
             android:layout_width="0dp"
@@ -44,134 +43,129 @@
 
         </LinearLayout>
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/topContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
+            android:layout_height="@dimen/_130sdp"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@drawable/rounded_top_info"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/llAccounts">
 
             <LinearLayout
-                android:id="@+id/layoutProfilePic"
+                android:id="@+id/layoutSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/rounded_profile_pic"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/topmain_bg_gradient_left"
                 android:gravity="center"
-                android:orientation="vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/_4sdp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <com.mikhaellopez.circularimageview.CircularImageView
-                    android:id="@+id/profile_image"
-                    android:layout_width="@dimen/_60sdp"
-                    android:layout_height="@dimen/_60sdp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/transparent"
-                    android:scaleType="centerInside"
-                    app:civ_background_color="@color/transparent"
-                    app:civ_border_color="@color/white"
-                    app:civ_border_width="2dp"
-
-                    app:srcCompat="@drawable/ic_user" />
-
-                <TextView
-                    android:id="@+id/tvUserName"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imvSearch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_search_" />
 
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_9ssp"
+                <TextView
+                    android:id="@+id/tvSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+                    app:layout_constraintTop_toBottomOf="@+id/imvSearch" />
+
+
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/conCoins"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/layoutSignOut"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5sdp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/rounded_both"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                app:layout_constraintEnd_toStartOf="@+id/layoutProfilePic"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/topmain_bg_gradient"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/_4sdp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/layoutProfilePic">
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.5" />
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/tvLikeCoinCount"
+                    android:id="@+id/tvLogOut"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_heart_coin"
-                    android:drawableRight="@drawable/ic_heart_coin"
-                    android:drawablePadding="10dp"
-                    android:gravity="center"
-                    android:textColor="@color/darkGrey"
-                    android:textSize="@dimen/_8ssp"
+                    android:text="@string/logOut"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/guid"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/imvLogOut" />
 
-                <TextView
-                    android:id="@+id/tvFollowerCoinCount"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imvLogOut"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_team"
-                    android:drawableRight="@drawable/ic_team"
-                    android:drawablePadding="10dp"
-                    android:gravity="center"
-                    android:textColor="@color/darkGrey"
-                    android:textSize="@dimen/_8ssp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/guid"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="@dimen/_10sdp"
-                    android:background="@color/darkGrey"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintEnd_toEndOf="@+id/tvLogOut"
+                    app:layout_constraintStart_toStartOf="@+id/tvLogOut"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_shut_down" />
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                app:civ_border_color="@color/colorAccent"
+                app:civ_border_width="1dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_user_avatar" />
+
+            <TextView
+                android:id="@+id/tvUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_both_main_color"
+                android:textColor="@color/skyBlue"
+                android:padding="@dimen/_2sdp"
+                android:textSize="@dimen/_6ssp"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="@+id/profile_image"
+                app:layout_constraintStart_toStartOf="@+id/profile_image"
+                app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
             <LinearLayout
                 android:id="@+id/constraintLayout3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rounded_both"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="5dp"
-                app:layout_constraintEnd_toStartOf="@+id/layoutProfilePic"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/conCoins">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/profile_image"
+                app:layout_constraintStart_toStartOf="parent">
 
 
                 <LinearLayout
@@ -192,7 +186,7 @@
                         android:background="@drawable/rounded_both_main_color"
                         android:gravity="center"
                         android:text="1212"
-                        android:textColor="@color/white"
+                        android:textColor="@color/skyBlue"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -202,7 +196,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="پست \nPosts"
-                        android:textColor="@color/darkGrey"
+                        android:textColor="@color/darkerGrey"
                         android:textSize="@dimen/_8ssp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -226,7 +220,7 @@
                         android:background="@drawable/rounded_both_main_color"
                         android:gravity="center"
                         android:text="1212"
-                        android:textColor="@color/white"
+                        android:textColor="@color/skyBlue"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -236,7 +230,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="فالوئر \nfollower"
-                        android:textColor="@color/darkGrey"
+                        android:textColor="@color/darkerGrey"
                         android:textSize="@dimen/_8ssp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -259,7 +253,7 @@
                         android:background="@drawable/rounded_both_main_color"
                         android:gravity="center"
                         android:text="1212"
-                        android:textColor="@color/white"
+                        android:textColor="@color/skyBlue"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -269,7 +263,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="فالویینگ \nfollowing"
-                        android:textColor="@color/darkGrey"
+                        android:textColor="@color/darkerGrey"
                         android:textSize="@dimen/_8ssp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -278,50 +272,122 @@
             </LinearLayout>
 
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imvLogOut"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/layoutCoinCounts"
+                android:layout_width="@dimen/_130sdp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/constraintLayout3"
-                app:layout_constraintEnd_toEndOf="@+id/tvLogOut"
-                app:layout_constraintStart_toStartOf="@+id/tvLogOut"
-                app:srcCompat="@drawable/ic_logout" />
+                android:layout_margin="@dimen/_5sdp"
+                android:baselineAligned="false"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                app:layout_constraintEnd_toStartOf="@+id/profile_image"
+                app:layout_constraintStart_toEndOf="@+id/layoutSignOut"
+                app:layout_constraintTop_toTopOf="@+id/profile_image">
 
-            <TextView
-                android:id="@+id/tvLogOut"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:text="@string/logOut"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imvLogOut" />
 
-            <TextView
-                android:id="@+id/tvSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@+id/imvSearch"
-                app:layout_constraintStart_toStartOf="@+id/imvSearch"
-                app:layout_constraintTop_toBottomOf="@+id/imvSearch" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:weightSum="2">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imvSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                app:layout_constraintEnd_toEndOf="@+id/constraintLayout3"
-                app:layout_constraintTop_toBottomOf="@id/constraintLayout3"
-                app:srcCompat="@drawable/ic_search_people" />
+                    <ImageView
+                        android:id="@+id/imvMs"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:background="@drawable/rounded_stroke"
+                        android:padding="@dimen/_5sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_heart_" />
+
+                    <TextView
+                        android:id="@+id/tvLikeCoinCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="1212"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@+id/tvvv"
+                        app:layout_constraintStart_toStartOf="@+id/tvvv"
+                        app:layout_constraintTop_toBottomOf="@id/tvvv" />
+
+                    <TextView
+                        android:id="@+id/tvvv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/likeCoin"
+                        android:layout_margin="@dimen/_3sdp"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@id/imvMs"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+
+                    <ImageView
+                        android:id="@+id/imvMale"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:background="@drawable/rounded_stroke"
+                        android:padding="@dimen/_5sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_male" />
+
+                    <TextView
+                        android:id="@+id/tvFollowerCoinCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="1212"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@+id/tvv"
+                        app:layout_constraintStart_toStartOf="@+id/tvv"
+                        app:layout_constraintTop_toBottomOf="@id/tvv" />
+
+                    <TextView
+                        android:id="@+id/tvv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_margin="@dimen/_2sdp"
+                        android:text="@string/followerCoin"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/imvMale"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <ImageView
             android:id="@+id/imvArrowShowAccounts"
@@ -344,202 +410,239 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/secondContainer"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/bg_banner"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView">
-
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/appCompatImageView"
-                        android:layout_width="@dimen/_90sdp"
-                        android:layout_height="@dimen/_90sdp"
-                            android:padding="10dp"
-                            android:scaleType="fitXY"
-                        android:src="@drawable/coin_bag"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:gravity="center"
-                        android:text="پیشنهاد های ویژه"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_14ssp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/appCompatImageView"
-                        app:layout_constraintHorizontal_bias="0.8"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-
-                    <TextView
-                        android:id="@+id/tvGoldTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/rounded_both_main_color"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_8ssp"
-                        android:padding="10dp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/appCompatImageView"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
                 <LinearLayout
-                    android:id="@+id/imageView3"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_100sdp"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/gradient_wheel_picker_free"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toStartOf="@+id/guide_half_inner"
-                    app:layout_constraintTop_toBottomOf="@id/fourthContainer">
-
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:padding="20dp"
-                        android:src="@drawable/lucky" />
-
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="گردونه شانس"
-                            android:gravity="center"
-                            android:textColor="@color/blueFirst"
-                            android:textSize="@dimen/_14ssp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_wheel"
-                            android:padding="3dp"
-                            android:text="0 تا ۱۰۰ سکه"
-                            android:textColor="@color/goldOne"
-                            android:textSize="@dimen/_9ssp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/imageView"
-                    android:layout_height="@dimen/_100sdp"
-                    android:layout_width="0dp"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/gradient_wheel_picker"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:weightSum="2"
-                    app:layout_constraintEnd_toEndOf="@id/guide_half_inner"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:padding="20dp"
-                        android:src="@drawable/lucky" />
-
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" گردونه شانس ویژه"
-                            android:textColor="@color/goldOne"
-                            android:gravity="center"
-                            android:textSize="@dimen/_14ssp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_wheel"
-                            android:padding="3dp"
-                            android:text="100 تا 1000 سکه"
-                            android:textColor="@color/goldOne"
-                            android:textSize="@dimen/_9ssp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:visibility="gone"
-                    android:id="@+id/fourthContainer"
+                    android:id="@+id/centerContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/lightBlue"
-                    android:foregroundGravity="center"
-                    android:gravity="center"
+                    android:layout_margin="@dimen/_5sdp"
                     android:orientation="horizontal"
-                    android:padding="5dp"
+
+                    android:weightSum="4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginRight="10dp"
-                        android:text="کلیپ ببین ، سکه رایگان دریافت کن"
-                        android:textColor="@color/blueFirst"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:id="@+id/imageView"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_200sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/gradient_wheel_picker_free"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:weightSum="2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_weight="1"
+                        app:layout_constraintStart_toStartOf="@+id/guide_half_inner"
+                        app:layout_constraintTop_toBottomOf="@id/secondContainer">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_tv" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_150sdp"
+                            android:background="@drawable/rounded_lucky_wheel"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingTop="@dimen/_15sdp"
+                            android:paddingBottom="@dimen/_10sdp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_50sdp"
+                                android:layout_weight="1"
+                                android:padding="@dimen/_10sdp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/luckwheel" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:gravity="center"
+                                android:text="گردونه شانس ویژه"
+                                android:textColor="@color/yellow"
+                                android:textSize="@dimen/_8ssp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:background="@drawable/rounded_both_blue_dark"
+                            android:gravity="center"
+                            android:padding="@dimen/_3sdp"
+                            android:text="100 تا 1000 سکه"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_8ssp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_200sdp"
+                        android:layout_weight="2"
+                        android:orientation="vertical"
+                        android:weightSum="2">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/secondContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_banner"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/centerContainer">
+
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/appCompatImageView"
+                                android:layout_width="@dimen/_40sdp"
+                                android:layout_height="@dimen/_40sdp"
+                                android:scaleType="centerCrop"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/textView4"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/coin_bag" />
+
+
+                            <TextView
+
+                                android:id="@+id/textView4"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:gravity="center"
+                                android:text="پیشنهاد های ویژه"
+                                android:textColor="@color/skyBlue"
+                                android:textSize="@dimen/_10ssp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                            <TextView
+                                android:id="@+id/tvGoldTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginBottom="8dp"
+                                android:gravity="center"
+                                android:padding="10dp"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_7ssp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/appCompatImageView"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <LinearLayout
+                            android:id="@+id/fourthContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:alpha="0.8"
+                            android:background="@drawable/gradient_wheel_picker_watch_video"
+                            android:foregroundGravity="center"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="5dp"
+                            android:visibility="visible"
+                            app:layout_constraintTop_toBottomOf="@id/imageView3">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="@dimen/_40sdp"
+                                android:layout_height="@dimen/_40sdp"
+                                app:srcCompat="@drawable/ic_play_button" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginRight="10dp"
+                                android:gravity="center"
+                                android:text="کلیپ ببین ، سکه رایگان دریافت کن"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_7ssp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/imageView3"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_200sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/gradient_wheel_picker_free"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:weightSum="2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_weight="1"
+                        app:layout_constraintStart_toStartOf="@+id/guide_half_inner"
+                        app:layout_constraintTop_toBottomOf="@id/secondContainer">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_150sdp"
+                            android:background="@drawable/rounded_lucky_wheel_free"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingTop="@dimen/_15sdp"
+                            android:paddingBottom="@dimen/_10sdp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_50sdp"
+                                android:layout_weight="1"
+                                android:padding="@dimen/_10sdp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/luckwheel_free" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:gravity="center"
+                                android:text="گردونه شانس رایگان"
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/_8ssp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:background="@drawable/rounded_both_blue_dark"
+                            android:gravity="center"
+                            android:padding="@dimen/_3sdp"
+                            android:text="0 تا 100 سکه"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_8ssp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
+
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
@@ -547,14 +650,14 @@
                     android:layout_margin="10dp"
                     android:padding="10dp"
                     app:cardBackgroundColor="@color/transparent"
-                    app:cardCornerRadius="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/secondContainer">
+                    app:layout_constraintTop_toBottomOf="@id/centerContainer">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_home_card"
+                        android:layout_height="match_parent"
                         android:padding="5dp">
 
                         <androidx.constraintlayout.widget.Guideline
@@ -564,323 +667,313 @@
                             android:orientation="vertical"
                             app:layout_constraintGuide_percent="0.5" />
 
-
-                        <TextView
+                        <LinearLayout
                             android:id="@+id/tvOrders"
-                            style="@style/mainPageBottomTextStyles"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginLeft="8dp"
-                            android:background="@drawable/rounded_whte"
-                            android:gravity="center"
-                            android:minWidth="@dimen/_80sdp"
-                            android:text="پیگیری سفارش"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_9ssp"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:background="@drawable/gradient_wheel_picker_premium"
+                            android:gravity="right"
+                            android:orientation="horizontal"
                             app:layout_constraintEnd_toStartOf="@+id/guideInnerHalf"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent">
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cardOrders"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginRight="8dp"
-                            android:padding="@dimen/_5sdp"
-                            app:cardBackgroundColor="@color/blueFirst"
-                            app:cardCornerRadius="15dp"
-                            app:layout_constraintBottom_toBottomOf="@id/tvOrders"
-                            app:layout_constraintEnd_toStartOf="@+id/guideInnerHalf"
-                            app:layout_constraintTop_toTopOf="@id/tvOrders">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:minWidth="@dimen/_80sdp"
+                                android:text="پیگیری سفارش"
+                                android:layout_margin="@dimen/_5sdp"
+                                android:textColor="@color/darkerGrey"
+                                android:textSize="@dimen/_9ssp" />
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="@dimen/_24sdp"
-                                android:layout_height="@dimen/_24sdp"
-                                android:padding="5dp"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_both_sky_blue"
+                                android:padding="@dimen/_5sdp"
                                 app:srcCompat="@drawable/ic_orders" />
 
-                        </androidx.cardview.widget.CardView>
 
-                        <TextView
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:id="@+id/tvTransferCoin"
-                            style="@style/mainPageBottomTextStyles"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_whte"
-                            android:gravity="center"
-                            android:minWidth="@dimen/_80sdp"
-                            android:text="@string/transferCoin"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_9ssp"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:gravity="right"
+                            android:background="@drawable/gradient_wheel_picker_premium"
+                            android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/guideInnerHalf"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:cardBackgroundColor="@color/blueFirst"
-                            app:cardCornerRadius="15dp"
-                            app:layout_constraintBottom_toBottomOf="@id/tvTransferCoin"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/tvTransferCoin"
-                            app:layout_constraintTop_toTopOf="@id/tvTransferCoin">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:minWidth="@dimen/_80sdp"
+                                android:text="@string/transferCoin"
+                                android:layout_margin="@dimen/_5sdp"
+                                android:textColor="@color/darkerGrey"
+                                android:textSize="@dimen/_9ssp" />
+
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="@dimen/_24sdp"
-                                android:layout_height="@dimen/_24sdp"
-                                android:padding="5dp"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_both_sky_blue"
+                                android:padding="@dimen/_5sdp"
                                 app:srcCompat="@drawable/ic_pay" />
 
-                        </androidx.cardview.widget.CardView>
 
+                        </LinearLayout>
 
-                        <TextView
+                        <LinearLayout
                             android:id="@+id/tvAccountInfo"
-                            style="@style/mainPageBottomTextStyles"
                             android:layout_width="0dp"
-                            android:layout_height="44dp"
-                            android:background="@drawable/rounded_whte"
-                            android:gravity="center"
-                            android:text="@string/accountInfo"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_9ssp"
-                            app:layout_constraintEnd_toEndOf="@id/tvOrders"
-                            app:layout_constraintStart_toStartOf="@id/tvOrders"
-                            app:layout_constraintTop_toBottomOf="@id/tvTransferCoin" />
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginRight="5dp"
-                            android:padding="@dimen/_5sdp"
-                            app:cardBackgroundColor="@color/blueFirst"
-                            app:cardCornerRadius="15dp"
-                            app:layout_constraintBottom_toBottomOf="@id/tvAccountInfo"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:gravity="right"
+                            android:background="@drawable/gradient_wheel_picker_free"
+                            android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="@id/guideInnerHalf"
-                            app:layout_constraintStart_toEndOf="@id/tvAccountInfo"
-                            app:layout_constraintTop_toTopOf="@id/tvAccountInfo">
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tvTransferCoin">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:minWidth="@dimen/_80sdp"
+                                android:text="@string/accountInfo"
+                                android:textColor="@color/darkerGrey"
+                                android:layout_margin="@dimen/_5sdp"
+                                android:textSize="@dimen/_9ssp"
+                                app:layout_constraintEnd_toEndOf="@id/tvOrders"
+                                app:layout_constraintStart_toStartOf="@id/tvOrders"
+                                app:layout_constraintTop_toBottomOf="@id/tvTransferCoin" />
+
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="@dimen/_24sdp"
-                                android:layout_height="@dimen/_24sdp"
-                                android:padding="5dp"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_both_sky_blue"
+                                android:padding="@dimen/_5sdp"
                                 app:srcCompat="@drawable/ic_statistics" />
 
-                        </androidx.cardview.widget.CardView>
+                        </LinearLayout>
 
-                        <TextView
+                        <LinearLayout
                             android:id="@+id/tvManageAccounts"
-                            style="@style/mainPageBottomTextStyles"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_whte"
-                            android:gravity="center"
-                            android:text="@string/manageAccount"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_9ssp"
-                            app:layout_constraintEnd_toEndOf="@id/tvTransferCoin"
-                            app:layout_constraintStart_toStartOf="@id/tvTransferCoin"
-                            app:layout_constraintTop_toBottomOf="@id/tvTransferCoin" />
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginRight="5dp"
-                            android:padding="@dimen/_5sdp"
-                            app:cardBackgroundColor="@color/blueFirst"
-                            app:cardCornerRadius="15dp"
-                            app:layout_constraintBottom_toBottomOf="@id/tvManageAccounts"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:gravity="right"
+                            android:background="@drawable/gradient_wheel_picker_premium"
+                            android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/tvManageAccounts"
-                            app:layout_constraintTop_toTopOf="@id/tvManageAccounts">
+                            app:layout_constraintStart_toEndOf="@id/guideInnerHalf"
+                            app:layout_constraintTop_toBottomOf="@id/tvTransferCoin">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:minWidth="@dimen/_80sdp"
+                                android:text="@string/manageAccount"
+                                android:layout_margin="@dimen/_5sdp"
+
+                                android:textColor="@color/darkerGrey"
+                                android:textSize="@dimen/_9ssp" />
+
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="@dimen/_24sdp"
-                                android:layout_height="@dimen/_24sdp"
-                                android:padding="5dp"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_both_sky_blue"
+                                android:padding="@dimen/_5sdp"
                                 app:srcCompat="@drawable/ic_manage" />
 
-                        </androidx.cardview.widget.CardView>
 
-                        <TextView
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:id="@+id/tvTopUsers"
-                            style="@style/mainPageBottomTextStyles"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_whte"
-                            android:gravity="center"
-                            android:text="@string/topUsers"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_9ssp"
-                            app:layout_constraintEnd_toEndOf="@id/tvOrders"
-                            app:layout_constraintStart_toStartOf="@id/tvOrders"
-                            app:layout_constraintTop_toBottomOf="@id/tvAccountInfo" />
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginRight="5dp"
-                            android:padding="@dimen/_5sdp"
-                            app:cardBackgroundColor="@color/blueFirst"
-                            app:cardCornerRadius="15dp"
-                            app:layout_constraintBottom_toBottomOf="@id/tvTopUsers"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:background="@drawable/gradient_wheel_picker_free"
+                            android:gravity="right"
+                            android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="@id/guideInnerHalf"
-                            app:layout_constraintStart_toEndOf="@id/tvTopUsers"
-                            app:layout_constraintTop_toTopOf="@id/tvTopUsers">
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tvAccountInfo">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:minWidth="@dimen/_80sdp"
+                                android:layout_margin="@dimen/_5sdp"
+
+                                android:text="@string/topUsers"
+                                android:textColor="@color/darkerGrey"
+                                android:textSize="@dimen/_9ssp"
+                                app:layout_constraintEnd_toEndOf="@id/tvOrders"
+                                app:layout_constraintStart_toStartOf="@id/tvOrders"
+                                app:layout_constraintTop_toBottomOf="@id/tvTransferCoin" />
+
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="@dimen/_24sdp"
-                                android:layout_height="@dimen/_24sdp"
-                                android:padding="5dp"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_both_sky_blue"
+                                android:padding="@dimen/_5sdp"
                                 app:srcCompat="@drawable/ic_bests" />
 
-                        </androidx.cardview.widget.CardView>
+                        </LinearLayout>
 
-                        <TextView
+                        <LinearLayout
                             android:id="@+id/tvRateUs"
-                            style="@style/mainPageBottomTextStyles"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_whte"
-                            android:text="@string/rateUs"
-                            android:textColor="@color/black"
-                            android:gravity="center"
-                            android:textSize="@dimen/_9ssp"
-                            app:layout_constraintEnd_toEndOf="@id/tvTransferCoin"
-                            app:layout_constraintStart_toStartOf="@id/tvTransferCoin"
-                            app:layout_constraintTop_toBottomOf="@id/tvManageAccounts" />
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginRight="5dp"
-                            android:padding="@dimen/_5sdp"
-                            app:cardBackgroundColor="@color/blueFirst"
-                            app:cardCornerRadius="15dp"
-                            app:layout_constraintBottom_toBottomOf="@id/tvRateUs"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:gravity="right"
+                            android:background="@drawable/gradient_wheel_picker_premium"
+                            android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/tvRateUs"
-                            app:layout_constraintTop_toTopOf="@id/tvRateUs">
+                            app:layout_constraintStart_toEndOf="@id/guideInnerHalf"
+                            app:layout_constraintTop_toBottomOf="@id/tvManageAccounts">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:minWidth="@dimen/_80sdp"
+                                android:layout_margin="@dimen/_5sdp"
+
+                                android:text="@string/rateUs"
+                                android:textColor="@color/darkerGrey"
+                                android:textSize="@dimen/_9ssp" />
+
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="@dimen/_24sdp"
-                                android:layout_height="@dimen/_24sdp"
-                                android:padding="5dp"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_both_sky_blue"
+                                android:padding="@dimen/_5sdp"
                                 app:srcCompat="@drawable/ic_rate" />
 
-                        </androidx.cardview.widget.CardView>
 
-                        <TextView
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:id="@+id/tvShareApp"
-                            style="@style/mainPageBottomTextStyles"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_whte"
-                            android:gravity="center"
-                            android:text="@string/shareApp"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_9ssp"
-                            app:layout_constraintEnd_toEndOf="@id/tvOrders"
-                            app:layout_constraintStart_toStartOf="@id/tvOrders"
-                            app:layout_constraintTop_toBottomOf="@id/tvTopUsers" />
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginRight="5dp"
-                            android:padding="@dimen/_5sdp"
-                            app:cardBackgroundColor="@color/blueFirst"
-                            app:cardCornerRadius="15dp"
-                            app:layout_constraintBottom_toBottomOf="@id/tvShareApp"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:background="@drawable/gradient_wheel_picker_premium"
+                            android:gravity="right"
+                            android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="@id/guideInnerHalf"
-                            app:layout_constraintStart_toEndOf="@id/tvShareApp"
-                            app:layout_constraintTop_toTopOf="@id/tvShareApp">
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tvTopUsers">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:minWidth="@dimen/_80sdp"
+                                android:text="@string/shareApp"
+                                android:layout_margin="@dimen/_5sdp"
+
+                                android:textColor="@color/darkerGrey"
+                                android:textSize="@dimen/_9ssp"
+                                app:layout_constraintEnd_toEndOf="@id/tvOrders"
+                                app:layout_constraintStart_toStartOf="@id/tvOrders"
+                                app:layout_constraintTop_toBottomOf="@id/tvTransferCoin" />
+
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="@dimen/_24sdp"
-                                android:layout_height="@dimen/_24sdp"
-                                android:padding="5dp"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_both_sky_blue"
+                                android:padding="@dimen/_5sdp"
                                 app:srcCompat="@drawable/ic_share_ico" />
 
-                        </androidx.cardview.widget.CardView>
+                        </LinearLayout>
 
-                        <TextView
+                        <LinearLayout
                             android:id="@+id/tvAboutUs"
-                            style="@style/mainPageBottomTextStyles"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/rounded_whte"
-                            android:text="@string/aboutUs"
-                            android:textColor="@color/black"
-                            android:gravity="center"
-                            android:textSize="@dimen/_9ssp"
-                            app:layout_constraintEnd_toEndOf="@id/tvTransferCoin"
-                            app:layout_constraintStart_toStartOf="@id/tvTransferCoin"
-                            app:layout_constraintTop_toBottomOf="@id/tvRateUs" />
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginRight="5dp"
-                            android:padding="@dimen/_5sdp"
-                            app:cardBackgroundColor="@color/blueFirst"
-                            app:cardCornerRadius="15dp"
-                            app:layout_constraintBottom_toBottomOf="@id/tvAboutUs"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:gravity="right"
+                            android:background="@drawable/gradient_wheel_picker_free"
+                            android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/tvAboutUs"
-                            app:layout_constraintTop_toTopOf="@id/tvAboutUs">
+                            app:layout_constraintStart_toEndOf="@id/guideInnerHalf"
+                            app:layout_constraintTop_toBottomOf="@id/tvRateUs">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:minWidth="@dimen/_80sdp"
+                                android:layout_margin="@dimen/_5sdp"
+
+                                android:text="@string/aboutUs"
+                                android:textColor="@color/darkerGrey"
+                                android:textSize="@dimen/_9ssp" />
+
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="@dimen/_24sdp"
-                                android:layout_height="@dimen/_24sdp"
-                                android:padding="5dp"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_both_sky_blue"
+                                android:padding="@dimen/_5sdp"
                                 app:srcCompat="@drawable/ic_about_us" />
 
-                        </androidx.cardview.widget.CardView>
 
-                        <TextView
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:id="@+id/tvSupport"
-                            style="@style/mainPageBottomTextStyles"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:layout_marginTop="8dp"
-                            android:background="@drawable/rounded_whte"
+                            android:layout_margin="@dimen/_5sdp"
                             android:gravity="center"
-                            android:text="@string/support"
-                            android:textColor="@color/black"
+                            android:background="@drawable/gradient_wheel_picker_watch_video"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_5sdp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvAboutUs" />
+                            app:layout_constraintTop_toBottomOf="@id/tvAboutUs">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginRight="5dp"
-                            android:padding="@dimen/_5sdp"
-                            app:cardBackgroundColor="@color/blueFirst"
-                            app:cardCornerRadius="15dp"
-                            app:layout_constraintBottom_toBottomOf="@id/tvSupport"
-                            app:layout_constraintEnd_toEndOf="@id/tvSupport"
-                            app:layout_constraintTop_toTopOf="@id/tvSupport">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:minWidth="@dimen/_80sdp"
+                                android:text="@string/support"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/_9ssp"
+                                app:layout_constraintEnd_toEndOf="@id/tvOrders"
+                                app:layout_constraintStart_toStartOf="@id/tvOrders"
+                                app:layout_constraintTop_toBottomOf="@id/tvTransferCoin" />
+
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:layout_width="@dimen/_24sdp"
-                                android:layout_height="@dimen/_24sdp"
-                                android:padding="5dp"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
                                 app:srcCompat="@drawable/ic_support" />
 
-                        </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

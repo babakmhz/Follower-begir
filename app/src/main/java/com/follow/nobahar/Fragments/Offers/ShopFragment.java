@@ -27,11 +27,19 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
-import com.google.gson.Gson;
 import com.follow.nobahar.Activities.MainActivity;
+import com.follow.nobahar.Adapters.OffersAdapter;
+import com.follow.nobahar.App;
 import com.follow.nobahar.Interface.PurchaseInterface;
 import com.follow.nobahar.Interface.ShopItemInterface;
-import com.squareup.picasso.Picasso;
+import com.follow.nobahar.Manager.BroadcastManager;
+import com.follow.nobahar.Manager.Config;
+import com.follow.nobahar.Manager.JsonManager;
+import com.follow.nobahar.Models.Offers;
+import com.follow.nobahar.R;
+import com.follow.nobahar.Retrofit.SpecialBanner;
+import com.follow.nobahar.databinding.FragmentShopBinding;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,16 +48,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.follow.nobahar.Adapters.OffersAdapter;
-import com.follow.nobahar.App;
-import com.follow.nobahar.Manager.BroadcastManager;
-import com.follow.nobahar.Manager.Config;
-import com.follow.nobahar.Manager.JsonManager;
-import com.follow.nobahar.Models.Offers;
-import com.follow.nobahar.R;
-import com.follow.nobahar.Retrofit.SpecialBanner;
-import com.follow.nobahar.databinding.FragmentShopBinding;
 
 @SuppressLint("ValidFragment")
 public class ShopFragment extends Fragment {
@@ -91,10 +89,10 @@ public class ShopFragment extends Fragment {
 
     private void init() {
 
-        Picasso.get().load(App.profilePicURl).into(binding.profileImage);
-        binding.tvFollowerCoinCount.setText(App.followCoin + "");
-        binding.tvLikeCoinCount.setText(App.likeCoin + "");
+
         binding.tvUserName.setText(App.user.getUserName());
+        binding.tvLikeCoinCounts.setText(App.likeCoin + "");
+        binding.tvFollowerCoin.setText(App.followCoin + "");
 
 
         SpecialBanner specialBanner = new Gson().fromJson(App.responseBanner, SpecialBanner.class);

@@ -19,15 +19,18 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.follow.nobahar.App;
 import com.follow.nobahar.Interface.AddCoinMultipleAccount;
 import com.follow.nobahar.Manager.Config;
 import com.follow.nobahar.Manager.DataBaseHelper;
 import com.follow.nobahar.Models.User;
+import com.follow.nobahar.R;
 import com.follow.nobahar.Retrofit.ApiClient;
 import com.follow.nobahar.Retrofit.ApiInterface;
 import com.follow.nobahar.Retrofit.SimpleResult;
 import com.follow.nobahar.Retrofit.Transaction;
 import com.follow.nobahar.Retrofit.UserCoin;
+import com.follow.nobahar.databinding.FragmentGetCoinLikeBinding;
 import com.follow.nobahar.instaAPI.InstaApiException;
 import com.follow.nobahar.instaAPI.InstagramApi;
 import com.squareup.picasso.Picasso;
@@ -36,10 +39,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import com.follow.nobahar.App;
-
-import com.follow.nobahar.R;
-import com.follow.nobahar.databinding.FragmentGetCoinLikeBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -81,7 +80,11 @@ public class GetCoinLikeFragment extends Fragment {
         handlerCheckCoin = new Handler();
 
         view = binding.getRoot();
-        binding.tvLikeCoinCount.setText("" + App.likeCoin);
+        binding.tvLikeCoinCounts.setText("" + App.likeCoin);
+        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        binding.tvUserName.setText(App.user.getUserName());
+        binding.tvLikeCoinCounts.setText(App.likeCoin + "");
+        binding.tvFollowerCoin.setText(App.followCoin + "");
         binding.btnNext.setOnClickListener(v -> {
             getLikeOrder();
         });
@@ -199,7 +202,7 @@ public class GetCoinLikeFragment extends Fragment {
                     if (response.body() != null) {
                         if (response.body().getStatus()) {
                             App.likeCoin = response.body().getLikeCoin();
-                            binding.tvLikeCoinCount.setText(App.likeCoin + "");
+                            binding.tvLikeCoinCounts.setText(App.likeCoin + "");
                             transactionId = 0;
                             binding.btnNext.performClick();
 

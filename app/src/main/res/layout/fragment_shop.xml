@@ -9,7 +9,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/newbg"
+        android:background="@color/transparent"
+
+
+
         android:orientation="vertical">
 
 
@@ -28,202 +31,129 @@
                 android:alpha="0.4"
                 android:visibility="gone"
                 android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="@id/topContainer"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/topContainer"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:alpha="0.7"
-                android:paddingBottom="10dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/rounded_both_blue_dark"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    android:id="@+id/layoutProfilePic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/rounded_profile_pic"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.mikhaellopez.circularimageview.CircularImageView
-                        android:id="@+id/profile_image"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@color/transparent"
-                        android:scaleType="centerInside"
-                        app:civ_background_color="@color/transparent"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="2dp"
-
-                        app:srcCompat="@drawable/ic_user" />
-
-                    <TextView
-                        android:id="@+id/tvUserName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_9ssp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
-                </LinearLayout>
-
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layoutLikeCoin"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/rounded_both"
-                    android:paddingStart="35dp"
-                    android:paddingLeft="35dp"
-                    android:paddingTop="2dp"
-                    android:paddingEnd="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="2dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/layoutProfilePic"
-                    app:layout_constraintEnd_toStartOf="@+id/layoutProfilePic"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/layoutProfilePic">
+                    android:layout_weight="1">
 
-
-                    <TextView
-                        android:id="@+id/tvLikeCoin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="@string/likeCoin"
-                        android:textColor="@color/black"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvLikeCoinCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/mainColorFirst"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
+                    <ImageView
+                        android:id="@+id/imvMs"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginEnd="@dimen/_10ssp"
+                        android:layout_marginRight="@dimen/_10ssp"
+                        android:background="@drawable/rounded_stroke_dark_blue"
+                        android:padding="@dimen/_5sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/tvLikeCoin"
-                        app:layout_constraintStart_toStartOf="@+id/tvLikeCoin"
-                        app:layout_constraintTop_toBottomOf="@+id/tvLikeCoin" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/mainColorFirst"
-                    app:cardBackgroundColor="@color/mainColorFirst"
-                    app:cardCornerRadius="10dp"
-                    app:layout_constraintBottom_toBottomOf="@id/layoutLikeCoin"
-                    app:layout_constraintLeft_toLeftOf="@id/layoutLikeCoin"
-                    app:layout_constraintTop_toTopOf="@id/layoutLikeCoin">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imvLikeCoin"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_margin="3dp"
-                        app:srcCompat="@drawable/ic_heart_coin" />
-
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layoutFollowerCoin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="@drawable/rounded_both"
-                    android:paddingStart="15dp"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="2dp"
-                    android:paddingEnd="35dp"
-                    android:paddingRight="35dp"
-                    android:paddingBottom="2dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/layoutProfilePic"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/layoutProfilePic"
-                    app:layout_constraintTop_toTopOf="@+id/layoutProfilePic">
-
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_male_white" />
 
                     <TextView
                         android:id="@+id/tvFollowerCoin"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:text="@string/followerCoin"
-                        android:textColor="@color/black"
-
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvFollowerCoinCount"
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/mainColorFirst"
+                        android:layout_height="0dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/white"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/tvFollowerCoin"
-                        app:layout_constraintStart_toStartOf="@+id/tvFollowerCoin"
-                        app:layout_constraintTop_toBottomOf="@+id/tvFollowerCoin" />
+                        app:layout_constraintEnd_toEndOf="@+id/tvvv"
+                        app:layout_constraintStart_toStartOf="@+id/tvvv"
+                        app:layout_constraintTop_toBottomOf="@id/tvvv" />
 
-
+                    <TextView
+                        android:id="@+id/tvvv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/followerCoin"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@id/imvMs"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="wrap_content"
+
+                <TextView
+                    android:id="@+id/tvUserName"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@color/mainColorFirst"
-                    app:cardBackgroundColor="@color/mainColorFirst"
-                    app:cardCornerRadius="10dp"
-                    app:layout_constraintBottom_toBottomOf="@id/layoutFollowerCoin"
-                    app:layout_constraintRight_toRightOf="@id/layoutFollowerCoin"
-                    app:layout_constraintTop_toTopOf="@id/layoutFollowerCoin">
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/mainColorFirst" />
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imvFollowerCoin"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_margin="3dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginLeft="10dp"
-                        app:srcCompat="@drawable/ic_team" />
-                </androidx.cardview.widget.CardView>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ImageView
+                        android:id="@+id/imvMss"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginEnd="@dimen/_10ssp"
+                        android:layout_marginRight="@dimen/_10ssp"
+                        android:background="@drawable/rounded_stroke_dark_blue"
+                        android:padding="@dimen/_5sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_heart_white_" />
+
+                    <TextView
+                        android:id="@+id/tvLikeCoinCounts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@+id/tvvvv"
+                        app:layout_constraintStart_toStartOf="@+id/tvvvv"
+                        app:layout_constraintTop_toBottomOf="@id/tvvvv" />
+
+                    <TextView
+                        android:id="@+id/tvvvv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/likeCoin"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/imvMss"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -248,19 +178,19 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:background="@drawable/bg_banner"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView">
 
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/appCompatImageView"
-                        android:layout_width="@dimen/_90sdp"
-                        android:layout_height="@dimen/_90sdp"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
                         android:padding="10dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/coin_bag"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/textView4"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
@@ -274,8 +204,7 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_14ssp"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@+id/appCompatImageView"
-                        app:layout_constraintHorizontal_bias="0.8"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -285,7 +214,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:background="@drawable/rounded_both_main_color"
                         android:gravity="center"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -301,7 +229,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/mainColorFirst"
+                    android:background="@drawable/bg_banner"
                     android:gravity="center"
                     android:layout_margin="10dp"
                     android:orientation="vertical"
@@ -332,19 +260,17 @@
                         android:layout_marginEnd="70dp"
                         android:background="@drawable/rounded_whte" />
 
-                    <com.mikhaellopez.circularimageview.CircularImageView
+                    <Button
                         android:id="@+id/btnCheckGiftCode"
-                        android:layout_width="40dp"
+                        android:layout_width="wrap_content"
+                        android:text="بررسی کد هدیه"
                         android:layout_height="40dp"
                         android:layout_marginTop="5dp"
+                        android:textColor="@color/white"
                         android:background="@color/transparent"
-                        android:scaleType="centerInside"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="2dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_give_gift" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
                 </LinearLayout>

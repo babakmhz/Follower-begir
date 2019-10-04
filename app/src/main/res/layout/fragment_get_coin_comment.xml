@@ -1,224 +1,323 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <ScrollView
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:fillViewport="true"
-        android:fitsSystemWindows="true"
-        android:layout_height="match_parent">
+        android:fitsSystemWindows="true">
 
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/newbg"
-        android:layoutDirection="ltr">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgProfileImage"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            app:civ_border_color="@color/blueFirst"
-            app:civ_border_width="1dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <LinearLayout
-            android:id="@+id/linearLayout5"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:background="@drawable/rounded_both"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            app:layout_constraintBottom_toTopOf="@id/guideLine"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgProfileImage">
+            android:background="@color/transparent"
 
-            <androidx.appcompat.widget.AppCompatImageView
+            android:layoutDirection="ltr">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgProfileImage"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                app:civ_border_color="@color/blueFirst"
+                app:civ_border_width="1dp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/rounded_both_blue_dark"
                 android:gravity="center"
-                android:textColor="@color/mainColorFirst"
-                app:srcCompat="@drawable/ic_heart_main_color" />
+                android:orientation="horizontal"
+                android:weightSum="3"
+                app:layout_constraintBottom_toTopOf="@id/guideLine"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-            <TextView
-                android:id="@+id/tvUserName"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imvMs"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginEnd="@dimen/_10ssp"
+                        android:layout_marginRight="@dimen/_10ssp"
+                        android:background="@drawable/rounded_stroke_dark_blue"
+                        android:padding="@dimen/_5sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_male_white" />
+
+                    <TextView
+                        android:id="@+id/tvFollowerCoin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@+id/tvvv"
+                        app:layout_constraintStart_toStartOf="@+id/tvvv"
+                        app:layout_constraintTop_toBottomOf="@id/tvvv" />
+
+                    <TextView
+                        android:id="@+id/tvvv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/followerCoin"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@id/imvMs"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <TextView
+                    android:id="@+id/tvUserName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/mainColorFirst" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imvMss"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginEnd="@dimen/_10ssp"
+                        android:layout_marginRight="@dimen/_10ssp"
+                        android:background="@drawable/rounded_stroke_dark_blue"
+                        android:padding="@dimen/_5sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_heart_white_" />
+
+                    <TextView
+                        android:id="@+id/tvLikeCoinCounts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@+id/tvvvv"
+                        app:layout_constraintStart_toStartOf="@+id/tvvvv"
+                        app:layout_constraintTop_toBottomOf="@id/tvvvv" />
+
+                    <TextView
+                        android:id="@+id/tvvvv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/likeCoin"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/imvMss"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imvPic"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:civ_border_color="@color/skyBlue"
+                app:civ_border_width="1dp"
+                app:layout_constraintBottom_toBottomOf="@id/guideLine2"
+                app:layout_constraintEnd_toEndOf="@id/guideLine4"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/guideLine3"
+                app:layout_constraintTop_toTopOf="@id/guideLine"
+                app:layout_constraintVertical_bias="0.0" />
+
+
+            <LinearLayout
+                android:id="@+id/linear"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginTop="15sp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:gravity="center"
-                android:textColor="@color/mainColorFirst" />
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="@id/guideLine3"
+                app:layout_constraintTop_toBottomOf="@id/guideLine2">
 
-            <TextView
-                android:id="@+id/tvLikeCoin"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/mainColorFirst" />
+                <Button
+                    android:id="@+id/btnNext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/rounded_five_roundness_grey"
+                    android:text="بعدی"
 
-        </LinearLayout>
-        <ImageView
-            android:id="@+id/imvPic"
-            android:layout_width="0dp"
-            app:srcCompat="@drawable/ic_image_black"
-            android:layout_height="0dp"
-            android:scaleType="fitXY"
-            android:background="@drawable/curved"
-            app:layout_constraintBottom_toBottomOf="@id/guideLine2"
-            app:layout_constraintEnd_toEndOf="@id/guideLine4"
-            app:layout_constraintStart_toStartOf="@id/guideLine3"
-            app:layout_constraintTop_toTopOf="@id/guideLine" />
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
-        <LinearLayout
-            android:id="@+id/linear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15sp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine4"
-            app:layout_constraintStart_toStartOf="@id/guideLine3"
-            app:layout_constraintTop_toBottomOf="@id/guideLine2">
+                <Button
+                    android:id="@+id/btnReport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/rounded_five_roundness"
+                    android:text="گزارش"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
 
             <Button
-                android:id="@+id/btnNext"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/rounded_five_roundness_grey"
-                android:text="بعدی"
+                android:id="@+id/btnDoLike"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/shape_do"
+                android:text="@string/doComment"
+                android:textColor="@color/blueFirst"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+                app:layout_constraintStart_toStartOf="@+id/guideLine3"
+                app:layout_constraintTop_toBottomOf="@+id/linear" />
 
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+            <ProgressBar
+                android:id="@+id/prg"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="@+id/guideLine3"
+                app:layout_constraintTop_toBottomOf="@+id/linear" />
 
             <Button
-                android:id="@+id/btnReport"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:background="@drawable/rounded_five_roundness"
-                android:text="گزارش"
+                android:id="@+id/btnAutoLike"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/shape_do_auto"
+                android:text="@string/autoComment"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="@id/guideLine3"
+                app:layout_constraintTop_toBottomOf="@+id/btnDoLike" />
 
-        </LinearLayout>
+            <Button
+                android:id="@+id/btnConfirmAndPay"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:background="@drawable/shape_do_auto"
+                android:text="@string/commentWithAllAccounts"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="@+id/guideLine3"
+                app:layout_constraintTop_toBottomOf="@+id/btnAutoLike" />
+
+            <EditText
+                android:id="@+id/edtCommentText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="متن کامنت"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="@+id/guideLine3"
+                app:layout_constraintTop_toBottomOf="@+id/btnConfirmAndPay" />
+
+            <me.cheshmak.android.sdk.advertise.CheshmakBannerAd
+                android:id="@+id/cheshmak_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                app:banner_size="SMART_BANNER"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnConfirmAndPay" />
 
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.24" />
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
 
-        <EditText
-            android:id="@+id/edtCommentText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="متن کامنت"
-            android:textColor="@color/black"
-            android:textColorHint="@color/grey"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine4"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@+id/guideLine3"
-            app:layout_constraintTop_toBottomOf="@+id/linear" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.15" />
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.85" />
 
-        <Button
-            android:id="@+id/btnDoLike"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/rounded_grey_border"
-            android:text="@string/doComment"
-            android:textColor="@color/darkerGrey"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine4"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@+id/guideLine3"
-            app:layout_constraintTop_toBottomOf="@+id/edtCommentText"
-            app:layout_goneMarginStart="10dp" />
-        <ProgressBar
-            android:id="@+id/prg"
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine4"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@+id/guideLine3"
-            app:layout_constraintTop_toBottomOf="@+id/linear"
-            />
-        <Button
-            android:id="@+id/btnAutoLike"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/rounded_grey_border"
-            android:text="@string/autoComment"
-            android:textColor="@color/darkerGrey"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/btnDoLike"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@+id/btnDoLike"
-            app:layout_constraintTop_toBottomOf="@+id/btnDoLike"
-            app:layout_goneMarginStart="10dp" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineHalf"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
 
-        <Button
-            android:id="@+id/btnConfirmAndPay"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/rounded_orange"
-            android:text="@string/commentWithAllAccounts"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="@+id/btnAutoLike"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="@+id/btnAutoLike"
-            app:layout_constraintTop_toBottomOf="@+id/btnAutoLike"
-            app:layout_goneMarginStart="10dp" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.2" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.2" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.8" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
 </layout>

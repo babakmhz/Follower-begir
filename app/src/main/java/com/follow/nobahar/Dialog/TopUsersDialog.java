@@ -20,23 +20,22 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.crashlytics.android.Crashlytics;
 import com.follow.nobahar.Adapters.TopUsersAdapter;
+import com.follow.nobahar.App;
 import com.follow.nobahar.Models.TopUsers;
+import com.follow.nobahar.R;
 import com.follow.nobahar.Retrofit.ApiClient;
 import com.follow.nobahar.Retrofit.ApiInterface;
 import com.follow.nobahar.Retrofit.Bests;
 import com.follow.nobahar.Retrofit.Comment;
 import com.follow.nobahar.Retrofit.Follow;
 import com.follow.nobahar.Retrofit.Like;
+import com.follow.nobahar.databinding.DialogTopUsersBinding;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-import com.follow.nobahar.App;
-
-import com.follow.nobahar.R;
-import com.follow.nobahar.databinding.DialogTopUsersBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,8 +55,11 @@ public class TopUsersDialog extends DialogFragment {
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
-        binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
+        Picasso.get().load(App.profilePicURl).into(binding.profileImage);
+        binding.tvUserName.setText(App.user.getUserName());
+        binding.tvLikeCoinCount.setText(App.likeCoin + "");
+        binding.tvFollowCoinCount.setText(App.followCoin + "");
+        binding.imvBack.setOnClickListener(v -> dialog.dismiss());
         binding.tvUserName.setText(App.user.getUserName());
         //endregion
         ApiClient.getClient();

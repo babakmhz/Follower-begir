@@ -17,7 +17,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorAccent"
+            android:background="@color/skyBlue"
             android:gravity="center"
             android:minWidth="@dimen/_250sdp"
             android:paddingTop="@dimen/_20sdp"

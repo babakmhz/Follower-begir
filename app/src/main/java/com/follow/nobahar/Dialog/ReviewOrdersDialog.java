@@ -19,19 +19,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.follow.nobahar.Adapters.OrdersAdapter;
+import com.follow.nobahar.App;
 import com.follow.nobahar.Models.Orders;
+import com.follow.nobahar.R;
 import com.follow.nobahar.Retrofit.ApiClient;
 import com.follow.nobahar.Retrofit.ApiInterface;
 import com.follow.nobahar.Retrofit.Order;
+import com.follow.nobahar.databinding.DialogReviewOrdersBinding;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.follow.nobahar.App;
-
-import com.follow.nobahar.R;
-import com.follow.nobahar.databinding.DialogReviewOrdersBinding;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,8 +49,11 @@ public class ReviewOrdersDialog extends DialogFragment {
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
-        binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
+        Picasso.get().load(App.profilePicURl).into(binding.profileImage);
+        binding.tvUserName.setText(App.user.getUserName());
+        binding.tvLikeCoinCount.setText(App.likeCoin + "");
+        binding.tvFollowCoinCount.setText(App.followCoin + "");
+        binding.imvBack.setOnClickListener(v -> dialog.dismiss());
         binding.tvUserName.setText(App.user.getUserName());
         ApiClient.getClient();
 

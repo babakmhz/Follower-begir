@@ -14,15 +14,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.follow.nobahar.Activities.MainActivity;
+import com.follow.nobahar.App;
 import com.follow.nobahar.Interface.ShopItemInterface;
 import com.follow.nobahar.Manager.Config;
 import com.follow.nobahar.Models.Offers;
+import com.follow.nobahar.R;
 
 import java.util.ArrayList;
-
-import com.follow.nobahar.App;
-
-import com.follow.nobahar.R;
 
 public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.Item> {
     private final ShopItemInterface callBackShopItem;
@@ -46,12 +44,12 @@ public class OffersAdapter extends RecyclerView.Adapter<OffersAdapter.Item> {
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull Item holder, int position) {
-        colorChecker(holder.root, position);
+        // colorChecker(holder.root, position);
         Offers offers = orders.get(position);
         if (offers.getType() == 1) {
             holder.imvCoin.setImageResource(R.drawable.ic_follower_coin);
         } else {
-            holder.imvCoin.setImageResource(R.drawable.ic_heart_coin);
+            holder.imvCoin.setImageResource(R.drawable.ic_heart_coin_white);
         }
         holder.tvDiscount.setText(offers.getPrice_discount() + " سکه");
         holder.tvDiscount.setPaintFlags(holder.tvDiscount.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);

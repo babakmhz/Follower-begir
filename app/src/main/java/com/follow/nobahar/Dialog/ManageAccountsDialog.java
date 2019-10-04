@@ -16,15 +16,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.follow.nobahar.Adapters.AccountsListAdapter;
+import com.follow.nobahar.App;
 import com.follow.nobahar.Interface.AccountChangerInterface;
 import com.follow.nobahar.Interface.AccountOptionChooserInterface;
 import com.follow.nobahar.Manager.DataBaseHelper;
-import com.squareup.picasso.Picasso;
-
-import com.follow.nobahar.App;
-
 import com.follow.nobahar.R;
 import com.follow.nobahar.databinding.DialogManageAccountsBinding;
+import com.squareup.picasso.Picasso;
 
 @SuppressLint("ValidFragment")
 public class ManageAccountsDialog extends DialogFragment implements AccountOptionChooserInterface {
@@ -48,11 +46,15 @@ public class ManageAccountsDialog extends DialogFragment implements AccountOptio
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        binding.tvReturn.setOnClickListener(v -> dialog.dismiss());
         binding.tvUserName.setText(App.user.getUserName());
         //endregion
         internalCallback = this;
-        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        Picasso.get().load(App.profilePicURl).into(binding.profileImage);
+        binding.tvUserName.setText(App.user.getUserName());
+        binding.tvLikeCoinCount.setText(App.likeCoin + "");
+        binding.tvFollowCoinCount.setText(App.followCoin + "");
+        binding.imvBack.setOnClickListener(v -> dialog.dismiss());
+
 
         showUsers();
         binding.imvAdd.setOnClickListener(new View.OnClickListener() {

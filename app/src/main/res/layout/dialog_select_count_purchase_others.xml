@@ -9,6 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/newbggg"
         android:minWidth="@dimen/_270sdp"
         android:orientation="vertical">
 

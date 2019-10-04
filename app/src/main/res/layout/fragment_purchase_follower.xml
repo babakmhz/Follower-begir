@@ -1,81 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:background="@color/transparent"
+
         android:layout_height="match_parent"
-        android:background="@drawable/newbg"
         android:layoutDirection="ltr">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgProfileImage"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            app:civ_border_color="#c3c3c3"
-            app:civ_border_width="1dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvOrderForOther"
-            app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/tvOrderForOther"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_40sdp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="@dimen/_40sdp"
-            android:background="@drawable/rounded_both_main_color"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="ثبت سفارش برای دیگران"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:background="@drawable/rounded_both"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            app:layout_constraintBottom_toTopOf="@id/guideLine"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/mainColorFirst"
-                app:srcCompat="@drawable/ic_team_main_color_small" />
-
-            <TextView
-                android:id="@+id/tvUserName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/mainColorFirst" />
-
-            <TextView
-                android:id="@+id/tvFollowCoinCount"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/mainColorFirst" />
-
-        </LinearLayout>
 
         <ImageView
             android:id="@+id/imvSelectedPic"
@@ -88,146 +22,342 @@
 
             />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
 
-        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/constraintLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/_10sdp"
-            app:srcCompat="@drawable/ic_team_main_color"
-            app:layout_constraintBottom_toTopOf="@+id/guideLine2"
-            app:layout_constraintEnd_toStartOf="@+id/guideLine4"
-            app:layout_constraintStart_toStartOf="@+id/guideLine3"
-            app:layout_constraintTop_toTopOf="@+id/guideLine" />
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_select_image"
+            app:layout_constraintBottom_toBottomOf="@id/guideLine2"
+            app:layout_constraintEnd_toEndOf="@id/guideLine4"
+            app:layout_constraintStart_toStartOf="@id/guideLine3"
+            app:layout_constraintTop_toTopOf="@id/guideNewCenter">
 
 
-        <androidx.cardview.widget.CardView
+            <TextView
+                android:id="@+id/tvSelectPic"
+                style="@style/globalTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text="@string/chooseImage"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imvPickImage" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imvPickImage"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/rounded_circle"
+                android:padding="5dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/ic_add" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imvSelectPic"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_sky_blue"
+            android:padding="@dimen/_20sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideLine"
+            app:srcCompat="@drawable/ic_noun_add_user" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="@id/guideLine4"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@id/guideLine3"
+            android:background="@color/transparent"
             app:layout_constraintTop_toBottomOf="@id/guideLine2">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+
+            <LinearLayout
+                android:id="@+id/linear"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_margin="15sp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    android:id="@+id/linear"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tvLikeOrderCount"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15sp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/tvLikeOrderCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="0"
-                        android:textColor="@color/black"
-                        android:textSize="14sp"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imvHeart"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        app:srcCompat="@drawable/ic_person" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        app:srcCompat="@drawable/ic_arrow_forward" />
-
-                    <TextView
-                        android:id="@+id/tvLikeExpenseCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="0"
-                        android:textColor="@color/orangeTextColor"
-                        android:textSize="14sp"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imvFollower"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        app:srcCompat="@drawable/ic_team" />
-
-                </LinearLayout>
-
-                <SeekBar
-                    android:id="@+id/seekBar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-
-                    app:layout_constraintTop_toBottomOf="@id/linear" />
-
-
-                <Button
-                    android:id="@+id/btnConfirm"
-                    android:layout_width="0dp"
-                    android:layout_height="42dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/rounded_grey"
-                    android:text="@string/purchaseWithCoin"
+                    android:text="500"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btnConfirmAndPay"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/seekBar"
-                    app:layout_goneMarginStart="10dp" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/btnConfirmAndPay"
-                    android:layout_width="0dp"
-                    android:layout_height="42dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/rounded_orange"
-                    android:text="@string/purchase"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imvHeart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    app:srcCompat="@drawable/ic_heart_white" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    app:srcCompat="@drawable/ic_arrow_forward" />
+
+                <TextView
+                    android:id="@+id/tvLikeExpenseCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="500"
                     android:textColor="@color/white"
                     android:textSize="14sp"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imvFollower"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@drawable/ic_heart_coin_white" />
+
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/linear" />
+
+
+            <Button
+                android:id="@+id/btnConfirm"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_yellow"
+                android:text="@string/purchaseWithCoin"
+                android:textColor="@color/blueFirst"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnConfirmAndPay"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seekBar"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_goneMarginStart="10dp" />
+
+            <Button
+                android:id="@+id/btnConfirmAndPay"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_orange"
+                android:text="@string/purchase"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/btnConfirm"
+                app:layout_constraintTop_toBottomOf="@+id/seekBar"
+                app:layout_goneMarginStart="10dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/tvOrderForOther"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_40sdp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/_40sdp"
+            android:background="@drawable/roundedorder_for_other"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="ثبت سفارش برای دیگران"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgProfileImage"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="0dp"
+            app:civ_border_color="#c3c3c3"
+            app:civ_border_width="1dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvOrderForOther"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@drawable/rounded_both_blue_dark"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app:layout_constraintBottom_toTopOf="@id/guideLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/imvMs"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginEnd="@dimen/_10ssp"
+                    android:layout_marginRight="@dimen/_10ssp"
+                    android:background="@drawable/rounded_stroke_dark_blue"
+                    android:padding="@dimen/_5sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_constraintStart_toEndOf="@+id/btnConfirm"
-                    app:layout_constraintTop_toBottomOf="@+id/seekBar"
-                    app:layout_goneMarginStart="10dp" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_male_white" />
 
+                <TextView
+                    android:id="@+id/tvFollowerCoin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@+id/tvvv"
+                    app:layout_constraintStart_toStartOf="@+id/tvvv"
+                    app:layout_constraintTop_toBottomOf="@id/tvvv" />
+
+                <TextView
+                    android:id="@+id/tvvv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/followerCoin"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_8ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/imvMs"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
 
+
+            <TextView
+                android:id="@+id/tvUserName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textColor="@color/mainColorFirst" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/imvMss"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginEnd="@dimen/_10ssp"
+                    android:layout_marginRight="@dimen/_10ssp"
+                    android:background="@drawable/rounded_stroke_dark_blue"
+                    android:padding="@dimen/_5sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_heart_white_" />
+
+                <TextView
+                    android:id="@+id/tvLikeCoinCounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@+id/tvvvv"
+                    app:layout_constraintStart_toStartOf="@+id/tvvvv"
+                    app:layout_constraintTop_toBottomOf="@id/tvvvv" />
+
+                <TextView
+                    android:id="@+id/tvvvv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/likeCoin"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_8ssp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/imvMss"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideLine"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.2" />
+            app:layout_constraintGuide_percent="0.25" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideNewCenter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.35" />
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideLine2"
             android:layout_width="match_parent"
@@ -248,5 +378,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.9" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

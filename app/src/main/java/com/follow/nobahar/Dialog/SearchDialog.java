@@ -10,7 +10,17 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.follow.nobahar.Adapters.UserSearchAdapter;
+import com.follow.nobahar.App;
+import com.follow.nobahar.R;
+import com.follow.nobahar.data.InstagramUser;
+import com.follow.nobahar.databinding.DialogSearchBinding;
 import com.follow.nobahar.instaAPI.InstaApiException;
 import com.follow.nobahar.instaAPI.InstagramApi;
 import com.squareup.picasso.Picasso;
@@ -20,17 +30,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.follow.nobahar.App;
-import com.follow.nobahar.R;
-import com.follow.nobahar.data.InstagramUser;
-import com.follow.nobahar.databinding.DialogSearchBinding;
 
 @SuppressLint("ValidFragment")
 public class SearchDialog extends DialogFragment {
@@ -63,7 +62,8 @@ public class SearchDialog extends DialogFragment {
             return false;
         });
         Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
-        binding.imvArrowLeft.setOnClickListener(v -> dialog.dismiss());
+        binding.imvBack.setOnClickListener(v -> dialog.dismiss());
+
 
         return dialog;
     }

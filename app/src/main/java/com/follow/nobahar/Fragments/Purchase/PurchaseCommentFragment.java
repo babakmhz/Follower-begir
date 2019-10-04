@@ -18,21 +18,19 @@ import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.follow.nobahar.Interface.DirectPurchaseDialogInterface;
-import com.follow.nobahar.Interface.ImagePickerInterface;
-import com.squareup.picasso.Picasso;
-
 import com.follow.nobahar.App;
 import com.follow.nobahar.Dialog.PurchasePackages.PurchaseLike;
 import com.follow.nobahar.Dialog.SearchDialog;
 import com.follow.nobahar.Dialog.SelectPictureDialog;
-
+import com.follow.nobahar.Interface.DirectPurchaseDialogInterface;
+import com.follow.nobahar.Interface.ImagePickerInterface;
 import com.follow.nobahar.R;
 import com.follow.nobahar.Retrofit.ApiClient;
 import com.follow.nobahar.Retrofit.ApiInterface;
 import com.follow.nobahar.Retrofit.UserCoin;
 import com.follow.nobahar.data.InstagramUser;
 import com.follow.nobahar.databinding.FragmentPurchaseCommentBinding;
+import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,7 +59,11 @@ public class PurchaseCommentFragment extends Fragment implements ImagePickerInte
                 inflater, R.layout.fragment_purchase_comment, container, false);
         callback = this;
         View view = binding.getRoot();
+        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
         binding.tvUserName.setText(App.user.getUserName());
+        binding.tvLikeCoinCounts.setText(App.likeCoin + "");
+        binding.tvFollowerCoin.setText(App.followCoin + "");
+
         Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
 
 

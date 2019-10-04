@@ -5,58 +5,101 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@drawable/newbg"
+        android:background="@drawable/newbggg"
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/topNavigation"
+            android:visibility="visible"
             app:layout_constraintTop_toTopOf="parent">
+
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imgProfileImage"
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_60sdp"
-                android:layout_margin="10dp"
-                app:civ_border_color="#c3c3c3"
+                android:id="@+id/profileImage"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                app:civ_border_color="@color/blueFirst"
                 app:civ_border_width="1dp"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageView
+                android:id="@+id/imvAdd"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/profileImage"
+                app:srcCompat="@drawable/ic_noun_add_user" />
+
 
             <LinearLayout
                 android:id="@+id/linearLayout5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                android:background="@drawable/rounded_both"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/rounded_sky_blue_top_navigation"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:weightSum="3"
-                app:layout_constraintBottom_toTopOf="@id/guideLine"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imgProfileImage">
+                app:layout_constraintTop_toBottomOf="@id/profileImage">
 
-                <TextView
-                    android:id="@+id/tvReturn"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="برگشت"
-                    android:textStyle="bold"
-                    android:drawableStart="@drawable/ic_arrow_left_main_color"
-                    android:textColor="@color/mainColorFirst"
-                    android:drawableLeft="@drawable/ic_arrow_left_main_color" />
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imvMs"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginEnd="@dimen/_10ssp"
+                        android:layout_marginRight="@dimen/_10ssp"
+                        android:background="@drawable/rounded_stroke_dark_blue"
+                        android:padding="@dimen/_5sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_male_white" />
+
+                    <TextView
+                        android:id="@+id/tvFollowCoinCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@+id/tvvv"
+                        app:layout_constraintStart_toStartOf="@+id/tvvv"
+                        app:layout_constraintTop_toBottomOf="@id/tvvv" />
+
+                    <TextView
+                        android:id="@+id/tvvv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/followerCoin"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@id/imvMs"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <TextView
                     android:id="@+id/tvUserName"
@@ -66,37 +109,84 @@
                     android:gravity="center"
                     android:textColor="@color/mainColorFirst" />
 
-                <TextView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableEnd="@drawable/ic_arrow_down_main_color"
-                    android:drawableRight="@drawable/ic_arrow_down_main_color"
-                    android:gravity="center"
-                    android:text="مدیریت حساب"
-                    android:textColor="@color/mainColorFirst"
-                    android:textStyle="bold" />
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imvMss"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginEnd="@dimen/_10ssp"
+                        android:layout_marginRight="@dimen/_10ssp"
+                        android:background="@drawable/rounded_stroke_dark_blue"
+                        android:padding="@dimen/_5sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_heart_white_" />
+
+                    <TextView
+                        android:id="@+id/tvLikeCoinCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@+id/tvvvv"
+                        app:layout_constraintStart_toStartOf="@+id/tvvvv"
+                        app:layout_constraintTop_toBottomOf="@id/tvvvv" />
+
+                    <TextView
+                        android:id="@+id/tvvvv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/likeCoin"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/imvMss"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imvAdd"
+            <Button
+                android:id="@+id/imvBack"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="5dp"
-                android:background="@drawable/rounded_orange"
-                app:srcCompat="@drawable/ic_add" />
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:background="@drawable/rounded_stroke_dark_blue_return"
+                android:text="@string/ret"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_8ssp"
+                app:layout_constraintStart_toStartOf="@id/linearLayout5"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout5" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:background="@drawable/rounded_stroke_dark_blue_return"
+                android:text="@string/manageAccount"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_8ssp"
+                app:layout_constraintEnd_toEndOf="@id/linearLayout5"
+                app:layout_constraintTop_toBottomOf="@id/linearLayout5" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcvAccounts"
             android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/constraintLayout4"
+            app:layout_constraintTop_toBottomOf="@id/topNavigation"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_height="0dp" />
 

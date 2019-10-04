@@ -2,8 +2,8 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="10dp"
+    app:cardBackgroundColor="@color/transparent"
+    app:cardCornerRadius="@dimen/_25sdp"
     android:layout_margin="10dp"
     android:layout_height="wrap_content"
 
@@ -13,127 +13,148 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layoutDirection="ltr"
-        android:padding="5dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imvPic"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:background="@color/transparent">
 
-        <View
-            android:id="@+id/viewSeparator"
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:layout_margin="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@color/orangeTextColor"
-            app:layout_constraintBottom_toBottomOf="@id/imvPic"
-            app:layout_constraintEnd_toStartOf="@id/imvPic"
-            app:layout_constraintTop_toTopOf="@id/imvPic" />
-
-        <TextView
-            android:id="@+id/tvReportTitle"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainContainer"
+            android:layout_width="match_parent"
+            android:background="@drawable/rounded_order_cell_item"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="تعداد ۱۴ نقر  فال"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/viewSeparator"
-            app:layout_constraintTop_toTopOf="@+id/imvPic" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layoutDirection="ltr"
+            android:padding="5dp">
 
-        <TextView
-            android:id="@+id/tvTrackingCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/mainColorFirst"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/viewSeparator"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDateTime" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imvPic"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                app:civ_border_width="1dp"
+                android:layout_margin="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/llInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="@id/imvPic"
-            app:layout_constraintTop_toBottomOf="@id/imvPic">
+
+            <View
+                android:id="@+id/viewSeparator"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/white"
+                app:layout_constraintBottom_toBottomOf="@id/imvPic"
+                app:layout_constraintEnd_toStartOf="@id/imvPic"
+                app:layout_constraintTop_toTopOf="@id/imvPic" />
 
             <TextView
-                android:id="@+id/tvDoneReport"
+                android:id="@+id/tvReportTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="@string/doneOrder"
-                android:textColor="@color/black"
-                android:textSize="11sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
-                android:padding="5dp"
-                android:text="گزارش :"
+                android:layout_margin="5dp"
+                android:text="تعداد ۱۴ نقر  فال"
                 android:textColor="@color/white"
-                android:textSize="11sp" />
-        </LinearLayout>
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/viewSeparator"
+                app:layout_constraintTop_toTopOf="@+id/imvPic" />
 
-        <TextView
-            android:id="@+id/tvDateTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:text="۱۱:۵۵ سه شتبه ۱۷ اردیبهشت"
-            android:textColor="@color/orangeTextColor"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@+id/tvReportTitle"
-            app:layout_constraintTop_toBottomOf="@+id/tvReportTitle" />
+            <TextView
+                android:id="@+id/tvTrackingCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/viewSeparator"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDateTime" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/grey"
-            android:text="پشتیبانی"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/imvPic"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvReportTitle" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@id/imvPic"
+                app:layout_constraintTop_toBottomOf="@id/imvPic">
+
+                <TextView
+                    android:id="@+id/tvDoneReport"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:padding="5dp"
+                    android:text="@string/doneOrder"
+                    android:visibility="gone"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_select_user"
+                    android:padding="@dimen/_5sdp"
+                    android:textColor="@color/white"
+                    android:text="گزارش :"
+                    android:visibility="gone"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="۱۱:۵۵ سه شتبه ۱۷ اردیبهشت"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/tvReportTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvReportTitle" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/grey"
+                android:text="پشتیبانی"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/imvPic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvReportTitle" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <Button
             android:id="@+id/btnReOrder"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_margin="5dp"
             android:layout_marginEnd="8dp"
+            android:layout_margin="@dimen/_10sdp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/rounded_both_main_color"
+            android:layout_marginStart="@dimen/_20sdp"
             android:text="پشتیبانی"
+            android:layout_marginLeft="@dimen/_20sdp"
             android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/btn_report"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/llInfo" />
+            app:layout_constraintTop_toBottomOf="@id/mainContainer" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.cardview.widget.CardView>

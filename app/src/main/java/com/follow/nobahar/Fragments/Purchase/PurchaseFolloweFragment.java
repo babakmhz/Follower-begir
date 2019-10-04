@@ -15,18 +15,16 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.follow.nobahar.Interface.DirectPurchaseDialogInterface;
-import com.squareup.picasso.Picasso;
-
 import com.follow.nobahar.App;
 import com.follow.nobahar.Dialog.PurchasePackages.PurchaseLike;
 import com.follow.nobahar.Dialog.SearchDialog;
-
+import com.follow.nobahar.Interface.DirectPurchaseDialogInterface;
 import com.follow.nobahar.R;
 import com.follow.nobahar.Retrofit.ApiClient;
 import com.follow.nobahar.Retrofit.ApiInterface;
 import com.follow.nobahar.Retrofit.UserCoin;
 import com.follow.nobahar.databinding.FragmentPurchaseFollowerBinding;
+import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -53,7 +51,10 @@ public class PurchaseFolloweFragment extends Fragment {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_purchase_follower, container, false);
         view = binding.getRoot();
-        binding.tvFollowCoinCount.setText(App.followCoin + "");
+        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        binding.tvUserName.setText(App.user.getUserName());
+        binding.tvLikeCoinCounts.setText(App.likeCoin + "");
+        binding.tvFollowerCoin.setText(App.followCoin + "");
 
         binding.tvUserName.setText(App.user.getUserName());
         Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
@@ -119,7 +120,7 @@ public class PurchaseFolloweFragment extends Fragment {
                         if (response.body() != null) {
                             if (response.body().getStatus()) {
                                 App.followCoin = response.body().getFollowCoin();
-                                binding.tvFollowCoinCount.setText(App.followCoin + "");
+                                binding.tvFollowerCoin.setText(App.followCoin + "");
                                 Toast.makeText(App.currentActivity, "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
                                 binding.seekBar.setProgress(0);
                             }

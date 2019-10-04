@@ -16,7 +16,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.follow.nobahar.Adapters.GetCoinViewPagerAdapter;
 import com.follow.nobahar.Interface.AddCoinMultipleAccount;
-
 import com.follow.nobahar.R;
 import com.follow.nobahar.databinding.FragmentGetCoinBinding;
 
@@ -134,6 +133,7 @@ public class GetCoinFragment extends Fragment {
     }
 
 
+
     private void reset() {
         binding.tvLike.setTypeface(binding.tvComment.getTypeface(), Typeface.NORMAL);
         binding.tvComment.setTypeface(binding.tvComment.getTypeface(), Typeface.NORMAL);
@@ -158,30 +158,29 @@ public class GetCoinFragment extends Fragment {
                 reset();
                 setViewPager(0);
                 binding.tvLike.setBackground(getResources().getDrawable(R.drawable.active_tab));
-                binding.tvLike.setTextColor(getResources().getColor(R.color.white));
+                binding.tvLike.setTextColor(getResources().getColor(R.color.black));
                 break;
             case 1:
                 reset();
                 setViewPager(1);
                 binding.tvComment.setBackground(getResources().getDrawable(R.drawable.active_tab));
-                binding.tvComment.setTextColor(getResources().getColor(R.color.white));
+                binding.tvComment.setTextColor(getResources().getColor(R.color.black));
                 break;
             case 2:
                 reset();
                 setViewPager(2);
                 binding.tvFollower.setBackground(getResources().getDrawable(R.drawable.active_tab));
-                binding.tvFollower.setTextColor(getResources().getColor(R.color.white));
+                binding.tvFollower.setTextColor(getResources().getColor(R.color.black));
                 break;
             case 3:
                 reset();
                 setViewPager(3);
                 binding.tvView.setBackground(getResources().getDrawable(R.drawable.active_tab));
-                binding.tvView.setTextColor(getResources().getColor(R.color.white));
+                binding.tvView.setTextColor(getResources().getColor(R.color.black));
                 break;
 
         }
     }
-
     private void setViewPager(int index) {
 //        binding.viewPagerGetCoin.setCurrentItem(index);
 

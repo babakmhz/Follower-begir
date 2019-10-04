@@ -12,7 +12,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/newbg"
+            android:background="@color/transparent"
+
             android:layoutDirection="ltr">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -33,22 +34,62 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                android:background="@drawable/rounded_both"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:gravity="center"
                 android:orientation="horizontal"
+                android:background="@drawable/rounded_both_blue_dark"
                 android:weightSum="3"
                 app:layout_constraintBottom_toTopOf="@id/guideLine"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imgProfileImage">
+                app:layout_constraintStart_toStartOf="parent">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="@color/mainColorFirst"
-                    app:srcCompat="@drawable/ic_heart_main_color" />
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imvMs"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginEnd="@dimen/_10ssp"
+                        android:layout_marginRight="@dimen/_10ssp"
+                        android:background="@drawable/rounded_stroke_dark_blue"
+                        android:padding="@dimen/_5sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_male_white" />
+
+                    <TextView
+                        android:id="@+id/tvFollowerCoin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@+id/tvvv"
+                        app:layout_constraintStart_toStartOf="@+id/tvvv"
+                        app:layout_constraintTop_toBottomOf="@id/tvvv" />
+
+                    <TextView
+                        android:id="@+id/tvvv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/followerCoin"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@id/imvMs"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <TextView
                     android:id="@+id/tvUserName"
@@ -58,33 +99,73 @@
                     android:gravity="center"
                     android:textColor="@color/mainColorFirst" />
 
-                <TextView
-                    android:id="@+id/tvLikeCoinCount"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textColor="@color/mainColorFirst" />
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imvMss"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginEnd="@dimen/_10ssp"
+                        android:layout_marginRight="@dimen/_10ssp"
+                        android:background="@drawable/rounded_stroke_dark_blue"
+                        android:padding="@dimen/_5sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_heart_white_" />
+
+                    <TextView
+                        android:id="@+id/tvLikeCoinCounts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_margin="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="@+id/tvvvv"
+                        app:layout_constraintStart_toStartOf="@+id/tvvvv"
+                        app:layout_constraintTop_toBottomOf="@id/tvvvv" />
+
+                    <TextView
+                        android:id="@+id/tvvvv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/likeCoin"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_8ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toStartOf="@+id/imvMss"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
 
-            <ImageView
+
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imvPic"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/curved"
-                android:scaleType="fitXY"
+                app:civ_border_color="@color/skyBlue"
+                app:civ_border_width="1dp"
                 app:layout_constraintBottom_toBottomOf="@id/guideLine2"
                 app:layout_constraintEnd_toEndOf="@id/guideLine4"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/guideLine3"
                 app:layout_constraintTop_toTopOf="@id/guideLine"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/ic_image_black" />
+                app:layout_constraintVertical_bias="0.0" />
+
 
             <LinearLayout
                 android:id="@+id/linear"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15sp"
                 android:layout_marginEnd="8dp"
@@ -124,19 +205,16 @@
                 android:id="@+id/btnDoLike"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_25sdp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/rounded_grey_border"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/shape_do"
                 android:text="@string/doLike"
-                android:textColor="@color/darkerGrey"
+                android:textColor="@color/blueFirst"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideLine4"
-                app:layout_constraintHorizontal_weight="1"
                 app:layout_constraintStart_toStartOf="@+id/guideLine3"
-                app:layout_constraintTop_toBottomOf="@+id/linear"
-                 />
+                app:layout_constraintTop_toBottomOf="@+id/linear" />
             <ProgressBar
                 android:id="@+id/prg"
                 android:layout_width="wrap_content"
@@ -152,32 +230,35 @@
                 android:id="@+id/btnAutoLike"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_25sdp"
-                android:background="@drawable/rounded_grey_border"
+                android:layout_marginStart="@dimen/_15sdp"
                 android:text="@string/autoLike"
-                android:textColor="@color/darkerGrey"
+                android:textColor="@color/white"
                 android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="@+id/btnDoLike"
-                app:layout_constraintHorizontal_weight="1"
                 android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="@+id/btnDoLike"
-                app:layout_constraintTop_toBottomOf="@+id/btnDoLike"
-                app:layout_goneMarginStart="10dp" />
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/shape_do_auto"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine4"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toStartOf="@id/guideLine3"
+                app:layout_constraintTop_toBottomOf="@+id/btnDoLike" />
 
             <Button
                 android:id="@+id/btnConfirmAndPay"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_25sdp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/rounded_orange"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:background="@drawable/shape_do_auto"
                 android:text="@string/likeWithAllAccounts"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:layout_marginTop="10dp"
 
-                app:layout_constraintEnd_toEndOf="@+id/btnAutoLike"
+                app:layout_constraintEnd_toStartOf="@+id/guideLine4"
                 app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintStart_toStartOf="@+id/btnAutoLike"
-                app:layout_constraintTop_toBottomOf="@+id/btnAutoLike"/>
+                android:layout_marginRight="@dimen/_15sdp"
+                app:layout_constraintStart_toStartOf="@+id/guideLine3"
+                app:layout_constraintTop_toBottomOf="@+id/btnAutoLike" />
             <me.cheshmak.android.sdk.advertise.CheshmakBannerAd
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btnConfirmAndPay"
@@ -194,7 +275,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.3" />
+                app:layout_constraintGuide_percent="0.24" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideLine2"
@@ -208,14 +289,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.2" />
+                app:layout_constraintGuide_percent="0.15" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideLine4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.8" />
+                app:layout_constraintGuide_percent="0.85" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineHalf"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

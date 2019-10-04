@@ -16,19 +16,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
+import com.follow.nobahar.App;
 import com.follow.nobahar.Manager.DataBaseHelper;
+import com.follow.nobahar.R;
+import com.follow.nobahar.data.InstagramMedia;
+import com.follow.nobahar.databinding.DialogAccountStatisticsBinding;
 import com.follow.nobahar.instaAPI.InstaApiException;
 import com.follow.nobahar.instaAPI.InstagramApi;
 import com.follow.nobahar.parser.MediasParser;
 import com.squareup.picasso.Picasso;
-import com.follow.nobahar.App;
-
-import com.follow.nobahar.R;
-import com.follow.nobahar.data.InstagramMedia;
-import com.follow.nobahar.databinding.DialogAccountStatisticsBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -93,8 +93,11 @@ public class AccountStatisticsDialog extends DialogFragment {
 
         }
         db = dbHeplper.getWritableDatabase();
-        Picasso.get().load(picURl).into(binding.imgProfileImage);
-        binding.tvReturn.setOnClickListener(new View.OnClickListener() {
+        Picasso.get().load(App.profilePicURl).into(binding.profileImage);
+        binding.tvUserName.setText(App.user.getUserName());
+        binding.tvLikeCoinCount.setText(App.likeCoin + "");
+        binding.tvFollowCoinCount.setText(App.followCoin + "");
+        binding.imvBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();

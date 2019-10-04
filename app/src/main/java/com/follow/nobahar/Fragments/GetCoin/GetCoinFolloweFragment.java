@@ -19,14 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.follow.nobahar.Interface.AddCoinMultipleAccount;
-import com.squareup.picasso.Picasso;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
 import com.follow.nobahar.App;
+import com.follow.nobahar.Interface.AddCoinMultipleAccount;
 import com.follow.nobahar.Manager.Config;
 import com.follow.nobahar.Manager.DataBaseHelper;
 import com.follow.nobahar.Models.User;
@@ -39,6 +33,12 @@ import com.follow.nobahar.Retrofit.UserCoin;
 import com.follow.nobahar.databinding.FragmentGetCoinFollowerBinding;
 import com.follow.nobahar.instaAPI.InstaApiException;
 import com.follow.nobahar.instaAPI.InstagramApi;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -81,7 +81,11 @@ public class GetCoinFolloweFragment extends Fragment {
         handlerCheckCoin = new Handler();
 
         getLikeOrder();
-        binding.tvFollowerCoinCount.setText(App.followCoin + "");
+        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        binding.tvUserName.setText(App.user.getUserName());
+        binding.tvLikeCoinCounts.setText(App.likeCoin + "");
+        binding.tvFollowerCoin.setText(App.followCoin + "");
+        binding.tvFollowerCoin.setText(App.followCoin + "");
 
         binding.tvUserName.setText(App.user.getUserName());
         Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
@@ -285,7 +289,7 @@ public class GetCoinFolloweFragment extends Fragment {
                     if (response.body() != null) {
                         if (response.body().getStatus()) {
                             App.followCoin = response.body().getFollowCoin();
-                            binding.tvFollowerCoinCount.setText(App.followCoin + "");
+                            binding.tvFollowerCoin.setText(App.followCoin + "");
                             transactionId = 0;
                             binding.btnNext.performClick();
                         }

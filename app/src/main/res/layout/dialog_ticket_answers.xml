@@ -9,8 +9,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/newbg"
         android:layoutDirection="ltr"
+        android:background="@drawable/newbggg"
+
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
@@ -192,10 +193,9 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@id/edtNewMessage"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
-            app:layout_constraintVertical_bias="0.4" />
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
         <LinearLayout
             android:id="@+id/llNoMessage"
@@ -226,7 +226,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="پاسخی داده نشده"
-                android:textColor="@color/mainColorFirst"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp" />
         </LinearLayout>
 

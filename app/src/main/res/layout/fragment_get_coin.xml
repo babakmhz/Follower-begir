@@ -6,6 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:background="@color/transparent"
+
         android:layoutDirection="ltr"
         android:orientation="vertical">
 
@@ -16,6 +18,8 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="5dp"
+        android:layout_margin="@dimen/_2sdp"
+        android:background="@drawable/rounded_top_blue_stroke"
 
         android:weightSum="4"
         app:layout_constraintTop_toTopOf="parent">
@@ -25,7 +29,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_margin="2dp"
+            android:layout_margin="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
             android:background="@drawable/rounded_main_un_selected"
             android:gravity="center"
             android:paddingTop="3dp"
@@ -41,7 +46,8 @@
             android:gravity="center"
             android:textColor="@color/black"
             android:paddingTop="3dp"
-            android:layout_margin="2dp"
+            android:layout_margin="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
             android:background="@drawable/rounded_main_un_selected"
             android:paddingBottom="3dp"
             android:text="@string/comment" />
@@ -49,11 +55,12 @@
         <TextView
             android:id="@+id/tvFollower"
             android:layout_width="0dp"
-            android:layout_margin="2dp"
+            android:layout_margin="@dimen/_5sdp"
             android:background="@drawable/rounded_main_un_selected"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:padding="@dimen/_5sdp"
             android:paddingTop="3dp"
             android:textColor="@color/black"
             android:paddingBottom="3dp"
@@ -61,7 +68,9 @@
         <TextView
             android:id="@+id/tvView"
             android:layout_width="0dp"
-            android:layout_margin="2dp"
+            android:layout_margin="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+
             android:background="@drawable/rounded_main_un_selected"
             android:layout_height="wrap_content"
             android:layout_weight="1"

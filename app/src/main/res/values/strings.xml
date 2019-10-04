@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">فالوئر بگیر حرفه ای اینستاگرام</string>
+    <string name="app_name">فالوئر بگیر ایرانی</string>
     <string name="followerCoin">سکه فالوئر</string>
     <string name="likeCoin">سکه لایک</string>
     <string name="logOut">خروج از حساب</string>
-    <string name="search">جست و جو</string>
+    <string name="search">جستجو کاربران</string>
     <string name="support">پشتیبانی</string>
     <string name="aboutUs">درباره ما</string>
     <string name="shareApp">اشتراک برنامه</string>
@@ -15,7 +15,7 @@
     <string name="comment">کامنت</string>
     <string name="follower">فالوئر</string>
     <string name="chooseImage">انتخاب عکس</string>
-    <string name="purchase">ثبت سفارش</string>
+    <string name="purchase">ثبت سفارش مستقیم</string>
     <string name="purchaseWithCoin">ثبت سفارش با سکه</string>
     <string name="doLike">لایک کن</string>
     <string name="autoLike">لایک خودکار</string>
@@ -36,4 +36,5 @@
     <string name="rateUs">به ما امتیاز دهید</string>
     <string name="view">ویو</string>
     <string name="doView">ویو کن</string>
+    <string name="ret">بازگشت</string>
 </resources>

@@ -20,15 +20,18 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.follow.nobahar.App;
 import com.follow.nobahar.Interface.AddCoinMultipleAccount;
 import com.follow.nobahar.Manager.Config;
 import com.follow.nobahar.Manager.DataBaseHelper;
 import com.follow.nobahar.Models.User;
+import com.follow.nobahar.R;
 import com.follow.nobahar.Retrofit.ApiClient;
 import com.follow.nobahar.Retrofit.ApiInterface;
 import com.follow.nobahar.Retrofit.SimpleResult;
 import com.follow.nobahar.Retrofit.Transaction;
 import com.follow.nobahar.Retrofit.UserCoin;
+import com.follow.nobahar.databinding.FragmentGetCoinCommentBinding;
 import com.follow.nobahar.instaAPI.InstaApiException;
 import com.follow.nobahar.instaAPI.InstagramApi;
 import com.squareup.picasso.Picasso;
@@ -37,10 +40,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import com.follow.nobahar.App;
-
-import com.follow.nobahar.R;
-import com.follow.nobahar.databinding.FragmentGetCoinCommentBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -104,7 +103,7 @@ public class GetCoinCommentFragment extends Fragment {
                     if (response.body() != null) {
                         if (response.body().getStatus()) {
                             App.likeCoin = response.body().getLikeCoin();
-                            binding.tvLikeCoin.setText(App.likeCoin + "");
+                            binding.tvLikeCoinCounts.setText(App.likeCoin + "");
                             transactionId = 0;
                             getCommentOrders();
                         }
@@ -223,9 +222,12 @@ public class GetCoinCommentFragment extends Fragment {
                 inflater, R.layout.fragment_get_coin_comment, container, false);
         view = binding.getRoot();
         handlerCheckCoin = new Handler();
-
+        Picasso.get().load(App.profilePicURl).into(binding.imgProfileImage);
+        binding.tvUserName.setText(App.user.getUserName());
+        binding.tvLikeCoinCounts.setText(App.likeCoin + "");
+        binding.tvFollowerCoin.setText(App.followCoin + "");
         getCommentOrders();
-        binding.tvLikeCoin.setText(App.likeCoin + "");
+        binding.tvLikeCoinCounts.setText(App.likeCoin + "");
         binding.tvUserName.setText(App.user.getUserName());
         Picasso.get().load(App.profilePicURl).fit().centerCrop().into(binding.imgProfileImage);
 
