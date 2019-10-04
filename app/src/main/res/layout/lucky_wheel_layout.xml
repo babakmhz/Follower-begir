@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.follow.nobahar.WheelPiclerView.PielView
+    <com.follow.irani.WheelPiclerView.PielView
         android:id="@+id/pieView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

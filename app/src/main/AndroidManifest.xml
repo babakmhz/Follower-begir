@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.follow.nobahar">
+    package="com.follow.irani">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,7 +11,7 @@
 
     <application
 
-        android:name="com.follow.nobahar.App"
+        android:name="com.follow.irani.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,13 +21,13 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".Activities.MainActivity"
+            android:name="com.follow.irani.Activities.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
 
         </activity>
         <activity
-            android:name=".Activities.SplashActivity"
+            android:name="com.follow.irani.Activities.SplashActivity"
             android:label="فالوئر بگیر"
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenStyle"
@@ -42,13 +42,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.follow.nobahar.Activities.ActivityLoginWebview" />
+        <activity android:name="com.follow.irani.Activities.ActivityLoginWebview" />
         <activity
             android:name="ir.tapsell.sdk.TapsellAdActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"></activity>
-        <activity android:name="com.follow.nobahar.Activities.NetworkErrorActivity" />
+        <activity android:name="com.follow.irani.Activities.NetworkErrorActivity" />
 
-        <receiver android:name="com.follow.nobahar.Interface.ValueUpdaterBroadCast">
+        <receiver android:name="com.follow.irani.Interface.ValueUpdaterBroadCast">
             <intent-filter>
                 <action android:name="com.journaldev.broadcastreceiver.Update" />
             </intent-filter>
@@ -57,9 +57,9 @@
             android:name="io.fabric.ApiKey"
             android:value="c3a46b2f2b01b95cfbcd785cd749a42c35d9af8c" />
 
-        <meta-data android:name="co.ronash.pushe.token" android:value="PUSHE_173584929153"/>
+        <meta-data android:name="co.ronash.pushe.token" android:value="PUSHE_744024323840"/>
 
-        <service android:name="com.follow.nobahar.CheckUnFollowService" />
+        <service android:name="com.follow.irani.CheckUnFollowService" />
         <service
             android:name="me.cheshmak.android.sdk.core.push.CheshmakFirebaseMessagingService"
             tools:node="remove" />
