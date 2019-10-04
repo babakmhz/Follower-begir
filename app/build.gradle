@@ -20,8 +20,8 @@ android {
     defaultConfig {
         applicationId "com.follow.nobahar"
         minSdkVersion 16
-        targetSdkVersion 31
-        versionCode 51
+        targetSdkVersion 32
+        versionCode 52
         versionName "1.0.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
