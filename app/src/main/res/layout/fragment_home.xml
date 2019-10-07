@@ -47,7 +47,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/topContainer"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_130sdp"
+            android:minHeight="@dimen/_130sdp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/_5sdp"
             android:background="@drawable/rounded_top_info"
             app:layout_constraintEnd_toEndOf="parent"
@@ -158,14 +159,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginTop="10dp"
                 android:background="@drawable/rounded_both"
                 android:gravity="center"
+                app:layout_constraintVertical_bias="1"
                 android:orientation="horizontal"
                 android:padding="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/profile_image"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutCoinCounts">
 
 
                 <LinearLayout
@@ -181,7 +183,6 @@
                         android:id="@+id/tvMediaCount"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_margin="2dp"
                         android:layout_weight="1"
                         android:background="@drawable/rounded_both_main_color"
                         android:gravity="center"
@@ -197,7 +198,7 @@
                         android:gravity="center"
                         android:text="پست \nPosts"
                         android:textColor="@color/darkerGrey"
-                        android:textSize="@dimen/_8ssp"
+                        android:textSize="@dimen/_7ssp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -215,7 +216,6 @@
                         android:id="@+id/tvFollowerCount"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_margin="2dp"
                         android:layout_weight="1"
                         android:background="@drawable/rounded_both_main_color"
                         android:gravity="center"
@@ -231,7 +231,7 @@
                         android:gravity="center"
                         android:text="فالوئر \nfollower"
                         android:textColor="@color/darkerGrey"
-                        android:textSize="@dimen/_8ssp"
+                        android:textSize="@dimen/_7ssp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -248,7 +248,6 @@
                         android:id="@+id/tvFollowingCount"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_margin="2dp"
                         android:layout_weight="1"
                         android:background="@drawable/rounded_both_main_color"
                         android:gravity="center"
@@ -264,7 +263,7 @@
                         android:gravity="center"
                         android:text="فالویینگ \nfollowing"
                         android:textColor="@color/darkerGrey"
-                        android:textSize="@dimen/_8ssp"
+                        android:textSize="@dimen/_7ssp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -274,9 +273,8 @@
 
             <LinearLayout
                 android:id="@+id/layoutCoinCounts"
-                android:layout_width="@dimen/_130sdp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5sdp"
                 android:baselineAligned="false"
                 android:gravity="center"
                 android:orientation="horizontal"

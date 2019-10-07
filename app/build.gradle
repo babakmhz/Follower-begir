@@ -21,12 +21,12 @@ android {
         applicationId "com.follow.irani"
         minSdkVersion 16
         targetSdkVersion 32
-        versionCode 52
+        versionCode 53
         versionName "1.0.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        buildConfigField "String", "BAZAR_RSA", "\"MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwDmFsOa1d4lSLwCRxh2NgBJ8BrOuCOMYqIOLvAeOTHLnGBP9Xd6q2/XjLPaW+XZsmnuuVS+xhiP24GbknFHwHYZDJpsniOPMFd3NE6QTv3ubaeCHIJauGJY1cgJPwCnJZ8qeejSsBPEVbZq7+cVYtgoBqcIkrj+6pGjsRI0zKZy7hZVxR2z3sZGcJnM3PoheypJMNUGhyyCxr02/yMN3mosk1bewa67gC0kIUr2HFkCAwEAAQ==\""
+        buildConfigField "String", "BAZAR_RSA", "\"MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwDE+7IsOVunD2fkwUG1s0LtRhZ+hc3zPQFKEqdWcl8srT40Ls3asTEnPopg9RGEzAUWutuV5kzKLDlJ4+d4AFaamO5cWkd3PG4N3LwAKoHgYQG3o7aQn8cS2F4UgN/qYE+Tt9kzReRfNIevPkkdGGNpDd3oNolDEPspsrk2MHXDdxwzrRb50JhjLMVds8QvUCmUA1fGZklvMFdGVVSl8etm5Njg6T2n56r+gRcUdnECAwEAAQ==\""
     }
     dataBinding {
         enabled = true
