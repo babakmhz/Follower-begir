@@ -123,6 +123,9 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         shared = App.currentActivity.getSharedPreferences("UserPrefs", MODE_PRIVATE);
         editor = shared.edit();
         callBack = this;
+//        api.setUuid("a513e071-6f55-4098-97eb-250b7b08ed94");
+//        api.getUserAuthentication().setToken("zahrakoohi1989");
+//        api.getUserAuthentication().setUuid("a513e071-6f55-4098-97eb-250b7b08ed94");
         accountOptionCallBack = this;
         ApiClient.getClient();
         //ToDo Remove

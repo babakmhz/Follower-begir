@@ -45,6 +45,67 @@ public class InstagramApi {
     private String deviceId;
     private AsyncHttpClient httpClient;
 
+
+    public static String getEXPERIMENTS() {
+        return EXPERIMENTS;
+    }
+
+    public static String getUserAgent() {
+        return USER_AGENT;
+    }
+
+    public static String getIgSigKey() {
+        return IG_SIG_KEY;
+    }
+
+    public static String getKeyVersion() {
+        return KEY_VERSION;
+    }
+
+    public static String getBaseUrl() {
+        return BASE_URL;
+    }
+
+    public static InstagramApi get_instance() {
+        return _instance;
+    }
+
+    public static void set_instance(InstagramApi _instance) {
+        InstagramApi._instance = _instance;
+    }
+
+    public UserAuthentication getUserAuthentication() {
+        return userAuthentication;
+    }
+
+    public void setUserAuthentication(UserAuthentication userAuthentication) {
+        this.userAuthentication = userAuthentication;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public AsyncHttpClient getHttpClient() {
+        return httpClient;
+    }
+
+    public void setHttpClient(AsyncHttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
+
     public InstagramApi() {
         userAuthentication = UserAuthentication.FromFile();
         if (userAuthentication.uuid != null) {
