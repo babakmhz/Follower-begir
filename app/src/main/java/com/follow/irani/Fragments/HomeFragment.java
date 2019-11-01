@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.follow.irani.Activities.MainActivity;
 import com.follow.irani.Adapters.HorizontalAccountsListAdapter;
 import com.follow.irani.App;
@@ -66,7 +67,6 @@ import com.follow.irani.instaAPI.InstaApiException;
 import com.follow.irani.instaAPI.InstagramApi;
 import com.follow.irani.parser.UserParser;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -154,6 +154,10 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         });
         getUserInfo(apiInterface);
         doForceFollow(apiInterface);
+        Glide.with(getActivity()).load(R.drawable.coin_bag).centerCrop().into(binding.appCompatImageView);
+        Glide.with(getActivity()).load(R.drawable.luckwheel_free).centerCrop().into(binding.luckWheelRed);
+        Glide.with(getActivity()).load(R.drawable.luckwheel).centerCrop().into(binding.luckyWheelYellow);
+        Glide.with(getActivity()).load(R.drawable.ic_play_button).centerCrop().into(binding.playButton);
 
 
 
@@ -179,6 +183,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         });
 
         binding.tvOrders.setOnClickListener(v -> {
+
             if (!isNetworkAvailable()) {
                 NetworkErrorDialog dialog = new NetworkErrorDialog();
                 dialog.setCancelable(false);
@@ -438,7 +443,9 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                     } else {
                         dbelper.addUser(_user);
                     }
-                    Picasso.get().load(user.getProfilePicture()).error(R.drawable.app_logo).into(binding.profileImage);
+
+                    Glide.with(getActivity()).load(user.getProfilePicture()).into(binding.profileImage);
+//                    Picasso.get().load(user.getProfilePicture()).error(R.drawable.app_logo).into(binding.profileImage);
                     profilePicURL = user.getProfilePicture();
                     App.profilePicURl = user.getProfilePicture();
                     App.userId = user.getUserId();
@@ -458,7 +465,8 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
                                         if (response.body() != null) {
                                             App.UUID = response.body().getUuid();
                                             App.Api_Token = response.body().getApiToken();
-                                            Picasso.get().load(user.getProfilePicture()).fit().centerCrop().into(binding.profileImage);
+                                            Glide.with(getActivity()).load(user.getProfilePicture()).into(binding.profileImage);
+//                                            Picasso.get().load(user.getProfilePicture()).fit().centerCrop().into(binding.profileImage);
                                             dbHeplper.insertUUID(response.body().getUuid(), user.getUserId());
                                             if (response.body().getStatus() == 0) {
                                                 Toast.makeText(App.currentActivity, "به موجب اولین ورود شما 10 سکه به شما تعلق گرفت", Toast.LENGTH_LONG).show();

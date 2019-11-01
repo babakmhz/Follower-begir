@@ -444,12 +444,12 @@
                             android:paddingBottom="@dimen/_10sdp">
 
                             <ImageView
+                                android:id="@+id/luckyWheelYellow"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/_50sdp"
                                 android:layout_weight="1"
                                 android:padding="@dimen/_10sdp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/luckwheel" />
+                                android:scaleType="centerCrop" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -508,7 +508,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/textView4"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/coin_bag" />
+                                />
 
 
                             <TextView
@@ -562,9 +562,9 @@
                             app:layout_constraintTop_toBottomOf="@id/imageView3">
 
                             <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/playButton"
                                 android:layout_width="@dimen/_40sdp"
-                                android:layout_height="@dimen/_40sdp"
-                                app:srcCompat="@drawable/ic_play_button" />
+                                android:layout_height="@dimen/_40sdp"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -607,12 +607,12 @@
                             android:paddingBottom="@dimen/_10sdp">
 
                             <ImageView
+                                android:id="@+id/luckWheelRed"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/_50sdp"
                                 android:layout_weight="1"
                                 android:padding="@dimen/_10sdp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/luckwheel_free" />
+                                android:scaleType="centerCrop"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
