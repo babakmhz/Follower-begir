@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -148,6 +149,7 @@ public class ActivityLoginWebview extends AppCompatActivity {
             sb.append("window.MYOBJECT.processHTML(JSON.stringify(values));");
             sb.append("return true;");
             sb.append("};");
+            Log.i("onPageFinished", "onPageFinished: "+sb.toString());
             view.loadUrl("javascript:" + sb.toString());
             try {
                 if (!url.equals("https://www.instagram.com/"))

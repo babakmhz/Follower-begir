@@ -75,6 +75,7 @@
         android:text="1000 تومان"
         android:textColor="@color/white"
         android:textStyle="bold"
+        android:textSize="@dimen/_8ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/constraintLayout5"
         app:layout_constraintStart_toStartOf="parent"

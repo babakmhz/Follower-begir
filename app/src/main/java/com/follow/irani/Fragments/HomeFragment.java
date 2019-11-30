@@ -154,10 +154,10 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
         });
         getUserInfo(apiInterface);
         doForceFollow(apiInterface);
-        Glide.with(getActivity()).load(R.drawable.coin_bag).centerCrop().into(binding.appCompatImageView);
-        Glide.with(getActivity()).load(R.drawable.luckwheel_free).centerCrop().into(binding.luckWheelRed);
-        Glide.with(getActivity()).load(R.drawable.luckwheel).centerCrop().into(binding.luckyWheelYellow);
-        Glide.with(getActivity()).load(R.drawable.ic_play_button).centerCrop().into(binding.playButton);
+        Glide.with(getActivity()).load(R.drawable.coin_bag).centerCrop().fitCenter().into(binding.appCompatImageView);
+        Glide.with(getActivity()).load(R.drawable.luckwheel_free).centerCrop().fitCenter().into(binding.luckWheelRed);
+        Glide.with(getActivity()).load(R.drawable.luckwheel).centerCrop().fitCenter().into(binding.luckyWheelYellow);
+        Glide.with(getActivity()).load(R.drawable.ic_play_button).centerCrop().fitCenter().into(binding.playButton);
 
 
 
