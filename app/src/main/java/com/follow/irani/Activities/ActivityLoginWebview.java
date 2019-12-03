@@ -30,6 +30,7 @@ import org.json.JSONObject;
 
 public class ActivityLoginWebview extends AppCompatActivity {
 
+    private static final String TAG = "ActivityLoginWebview";
     ProgressBar prg;
     private InstagramApi api;
     private Handler handler;
@@ -78,33 +79,33 @@ public class ActivityLoginWebview extends AppCompatActivity {
         loginWebView.loadUrl("https://www.instagram.com/accounts/login/?force_classic_login");
     }
 
-    private void OnCredentialsEntered(String username, String password) {
-        prg.setVisibility(View.VISIBLE);
-        api = InstagramApi.getInstance();
-        api.Login(username, password, new InstagramApi.ResponseHandler() {
-            @Override
-            public void OnSuccess(JSONObject response) {
-                Intent intent = new Intent(ActivityLoginWebview.this, MainActivity.class);
-                ActivityLoginWebview.this.startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                prg.setVisibility(View.GONE);
-                try {
-                    String errorMessage = "";
-                    try {
-                        errorMessage = errorResponse.getString("message");
-                    } catch (NullPointerException e) {
-                        e.printStackTrace();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+//    private void OnCredentialsEntered(String username, String password) {
+//        prg.setVisibility(View.VISIBLE);
+//        api = InstagramApi.getInstance();
+//        api.Login(username, password, new InstagramApi.ResponseHandler() {
+//            @Override
+//            public void OnSuccess(JSONObject response) {
+//                Intent intent = new Intent(ActivityLoginWebview.this, MainActivity.class);
+//                ActivityLoginWebview.this.startActivity(intent);
+//                finish();
+//            }
+//
+//            @Override
+//            public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+//                prg.setVisibility(View.GONE);
+//                try {
+//                    String errorMessage = "";
+//                    try {
+//                        errorMessage = errorResponse.getString("message");
+//                    } catch (NullPointerException e) {
+//                        e.printStackTrace();
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
 
     private class LoginWebClient extends WebViewClient {
         @Override
@@ -149,7 +150,8 @@ public class ActivityLoginWebview extends AppCompatActivity {
             sb.append("window.MYOBJECT.processHTML(JSON.stringify(values));");
             sb.append("return true;");
             sb.append("};");
-            Log.i("onPageFinished", "onPageFinished: "+sb.toString());
+            Log.i(TAG, "onPageFinished: ");
+            Log.i(TAG, "onPageFinished: " + sb.toString());
             view.loadUrl("javascript:" + sb.toString());
             try {
                 if (!url.equals("https://www.instagram.com/"))
@@ -177,10 +179,9 @@ public class ActivityLoginWebview extends AppCompatActivity {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
+                    Log.i(TAG, "run: " + username + ":" + password_final);
                     DataBaseHelper dataBaseHelper = new DataBaseHelper(getApplicationContext());
-                    
-
-                    OnCredentialsEntered(username, password_final);
+//                    OnCredentialsEntered(username, password_final);
                 }
             });
         }

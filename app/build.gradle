@@ -28,6 +28,9 @@ android {
         vectorDrawables.useSupportLibrary = true
         buildConfigField "String", "BAZAR_RSA", "\"MIHNMA0GCSqGSIb3DQEBAQUAA4G7ADCBtwKBrwDE+7IsOVunD2fkwUG1s0LtRhZ+hc3zPQFKEqdWcl8srT40Ls3asTEnPopg9RGEzAUWutuV5kzKLDlJ4+d4AFaamO5cWkd3PG4N3LwAKoHgYQG3o7aQn8cS2F4UgN/qYE+Tt9kzReRfNIevPkkdGGNpDd3oNolDEPspsrk2MHXDdxwzrRb50JhjLMVds8QvUCmUA1fGZklvMFdGVVSl8etm5Njg6T2n56r+gRcUdnECAwEAAQ==\""
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
     dataBinding {
         enabled = true
     }

@@ -2,6 +2,7 @@ package com.follow.irani.instaAPI;
 
 import android.content.Context;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.auth0.jwt.internal.org.apache.commons.codec.binary.Hex;
@@ -10,6 +11,7 @@ import com.follow.irani.data.InstagramUser;
 import com.follow.irani.data.UserData;
 import com.follow.irani.instaAPI.rawData.UserAuthentication;
 import com.follow.irani.parser.FriendShipUserParser;
+import com.google.gson.JsonObject;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
@@ -39,12 +41,28 @@ public class InstagramApi {
     private final static String IG_SIG_KEY = "9b3b9e55988c954e51477da115c58ae82dcae7ac01c735b4443a3c5923cb593a";
     private final static String KEY_VERSION = "4";
     private final static String BASE_URL = "https://i.instagram.com/api/v1/";
+    private static final String TAG = "InstagramApi";
     private static InstagramApi _instance;
     private UserAuthentication userAuthentication;
     private String uuid;
     private String deviceId;
     private AsyncHttpClient httpClient;
 
+
+    public InstagramApi() {
+        userAuthentication = UserAuthentication.FromFile();
+        if (userAuthentication.uuid != null) {
+            this.uuid = userAuthentication.uuid;
+        } else {
+            GenerateUUID(true);
+        }
+        try {
+            InitDeviceId();
+        } catch (Exception exc) {
+
+        }
+        BuildHttpClient();
+    }
 
     public static String getEXPERIMENTS() {
         return EXPERIMENTS;
@@ -72,6 +90,34 @@ public class InstagramApi {
 
     public static void set_instance(InstagramApi _instance) {
         InstagramApi._instance = _instance;
+    }
+
+    public static InstagramApi getInstance() {
+        if (_instance == null)
+            _instance = new InstagramApi();
+        return _instance;
+    }
+
+    public static String GetSignedData(String rawData) {
+        byte[] keyBytes = IG_SIG_KEY.getBytes();
+        SecretKey secretKey = new SecretKeySpec(keyBytes, "HmacSHA256");
+        Mac mac = null;
+        try {
+            mac = Mac.getInstance("HmacSHA256");
+            mac.init(secretKey);
+        } catch (Exception e) {
+
+        }
+        String signed = new String(Hex.encodeHex(mac.doFinal(rawData.getBytes())));
+        return signed;
+    }
+
+    public static RequestParams GetSignedRequestParams(String rawData) {
+        String signed = GetSignedData(rawData);
+        RequestParams params = new RequestParams();
+        params.put("ig_sig_key_version", KEY_VERSION);
+        params.put("signed_body", signed + "." + (rawData));
+        return params;
     }
 
     public UserAuthentication getUserAuthentication() {
@@ -106,49 +152,6 @@ public class InstagramApi {
         this.httpClient = httpClient;
     }
 
-    public InstagramApi() {
-        userAuthentication = UserAuthentication.FromFile();
-        if (userAuthentication.uuid != null) {
-            this.uuid = userAuthentication.uuid;
-        } else {
-            GenerateUUID(true);
-        }
-        try {
-            InitDeviceId();
-        } catch (Exception exc) {
-
-        }
-        BuildHttpClient();
-    }
-
-    public static InstagramApi getInstance() {
-        if (_instance == null)
-            _instance = new InstagramApi();
-        return _instance;
-    }
-
-    public static String GetSignedData(String rawData) {
-        byte[] keyBytes = IG_SIG_KEY.getBytes();
-        SecretKey secretKey = new SecretKeySpec(keyBytes, "HmacSHA256");
-        Mac mac = null;
-        try {
-            mac = Mac.getInstance("HmacSHA256");
-            mac.init(secretKey);
-        } catch (Exception e) {
-
-        }
-        String signed = new String(Hex.encodeHex(mac.doFinal(rawData.getBytes())));
-        return signed;
-    }
-
-    public static RequestParams GetSignedRequestParams(String rawData) {
-        String signed = GetSignedData(rawData);
-        RequestParams params = new RequestParams();
-        params.put("ig_sig_key_version", KEY_VERSION);
-        params.put("signed_body", signed + "." + (rawData));
-        return params;
-    }
-
     private String getToken() {
         return userAuthentication.GetToken();
     }
@@ -157,83 +160,158 @@ public class InstagramApi {
         return userAuthentication.IsLoggedIn();
     }
 
-    public void Login(final String username, final String password, final ResponseHandler handler) {
-        httpClient.get(BASE_URL + "si/fetch_headers/?challenge_type=signup&guid=" + GenerateUUID(false), new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        String csrToken = FindInHeaders(headers, "Set-Cookie");
-                        final int index = csrToken.indexOf(';');
-                        csrToken = csrToken.substring(0, index);
-                        JSONObject json = new JSONObject();
-                        try {
-                            json.put("phone_id", GenerateUUID(true));
-                            json.put("device_id", getDeviceId(App.context));
-                            json.put("guid", uuid);
-                            json.put("username", username);
-                            json.put("password", password);
-                            json.put("_csrftoken", csrToken);
-                            json.put("login_attempt_count", 0);
-                        } catch (Exception e) {
-                            handler.OnFailure(400, e, null);
-                            return;
-                        }
-                        httpClient.post(BASE_URL + "accounts/login/", GetSignedRequestParams(json.toString()), new JsonHttpResponseHandler() {
+    private String parseUserIdJson(JsonObject jsonObject) {
+        return jsonObject.getAsJsonObject("data").get("id").getAsString();
+    }
+
+    public void getUserid(String token) {
+        httpClient.get("https://api.instagram.com/v1/users/self/?access_token=" + token, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.i(TAG, "onSuccess: " + response);
+                try {
+                    Log.i(TAG, "onSuccess: " + response.getJSONObject("data").getString("id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    private void getUsernameAlongSideUserId(String user_id, String temp_token, GraphRequestResponseHandler result) {
+        httpClient.get(ApiConstants.getUserInfoUrlFromGraphApi(user_id, temp_token), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, final JSONObject response) {
+                Log.i(TAG, "onSuccess: " + response.toString());
+                result.onResult(response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.e(TAG, "onFailure: " + errorResponse.toString());
+            }
+
+        });
+    }
+
+    public void Login(String code, final ResponseHandler handler) {
+        if (!"".equals(code)) {
+            RequestParams requestParams = new RequestParams();
+            requestParams.add("app_id", ApiConstants.APP_ID);
+            requestParams.add("app_secret", ApiConstants.APP_SECRET);
+            requestParams.add("grant_type", "authorization_code");
+            requestParams.add("redirect_uri", ApiConstants.REDIRECT_URL);
+            requestParams.add("code", code);
+
+            httpClient.post(ApiConstants.USERID_URL, requestParams, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, final JSONObject response) {
+                    Log.i(TAG, "onSuccess: " + response.toString());
+                    try {
+                        String temp_token = response.getString("access_token");
+                        String user_id = response.getString("user_id");
+                        //it's better to change the way you request to server buddy :)
+                        // so many asynchronous functions, it's bad. i just created private function to keep code clean but it won't help a lot
+                        getUsernameAlongSideUserId(user_id, temp_token, response1 -> httpClient.get(BASE_URL + "si/fetch_headers/?challenge_type=signup&guid=" + GenerateUUID(false), new JsonHttpResponseHandler() {
                                     @Override
-                                    public void onSuccess(int statusCode, Header[] headers, final JSONObject response) {
+                                    public void onSuccess(int statusCode1, Header[] headers1, JSONObject response1) {
+                                        String csrToken = FindInHeaders(headers1, "Set-Cookie");
+                                        final int index = csrToken.indexOf(';');
+                                        csrToken = csrToken.substring(0, index);
+                                        JSONObject json = new JSONObject();
                                         try {
-                                            if (response.getString("status").equalsIgnoreCase("fail")) {
-                                                handler.OnFailure(statusCode, new InvalidKeyException(), response);
-                                                return;
-                                            }
+                                            json.put("phone_id", GenerateUUID(true));
+                                            json.put("device_id", getDeviceId(App.context));
+                                            json.put("guid", uuid);
+                                            String user_id = response1.getString("id");
+                                            String username = response1.getString("username");
+                                            json.put("_csrftoken", csrToken);
+                                            String csrToken2 = FindInHeaders(headers1, "Set-Cookie");
+                                            int index2 = csrToken2.indexOf(';');
+                                            csrToken2 = csrToken2.substring(0, index2);
+                                            userAuthentication.SetToken(csrToken2);
+                                            userAuthentication.uuid = uuid;
                                             userAuthentication.username = username;
-                                            userAuthentication.password = password;
-                                            userAuthentication.userId = response.getJSONObject("logged_in_user").getString("pk");
-                                        } catch (JSONException ignored) {
+                                            userAuthentication.userId = user_id;
+                                            userAuthentication.SaveToFile();
+                                            InstagramUser user = UserData.getInstance().getSelf_user();
+                                            if (user == null)
+                                                user = new InstagramUser();
+                                            user.setUserName(username);
+                                            user.setUserId(userAuthentication.userId);
+//                                        user.setPassword(password);// TODO: 12/3/19 comment or make it null
+                                            user.setToken(csrToken2);
+                                            UserData.getInstance().setSelf_user(user);
+                                            SyncFeatures(new SecureHttpApi.ResponseHandler() {
+                                                @Override
+                                                public void OnSuccess(JSONObject response2) {
+                                                    handler.OnSuccess(response1);
+                                                }
 
+                                                @Override
+                                                public void OnFailure(int statusCode1, Throwable throwable, JSONObject errorResponse) {
+
+                                                }
+                                            });
+                                        } catch (Exception e) {
+                                            handler.OnFailure(400, e, null);
+                                            return;
                                         }
-                                        String csrToken2 = FindInHeaders(headers, "Set-Cookie");
-                                        int index2 = csrToken2.indexOf(';');
-                                        csrToken2 = csrToken2.substring(0, index2);
-                                        userAuthentication.SetToken(csrToken2);
-                                        userAuthentication.uuid = uuid;
-                                        userAuthentication.SaveToFile();
-                                        InstagramUser user = UserData.getInstance().getSelf_user();
-                                        if (user == null)
-                                            user = new InstagramUser();
-                                        user.setUserName(username);
-                                        user.setUserId(userAuthentication.userId);
-                                        user.setPassword(password);
-                                        user.setToken(csrToken2);
-                                        UserData.getInstance().setSelf_user(user);
-                                        SyncFeatures(new SecureHttpApi.ResponseHandler() {
-                                            @Override
-                                            public void OnSuccess(JSONObject response2) {
-                                                handler.OnSuccess(response);
-                                            }
 
-                                            @Override
-                                            public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+//                                        // TODO: 12/3/19 change this
+//                                        httpClient.post(BASE_URL + "accounts/login/", GetSignedRequestParams(json.toString()), new JsonHttpResponseHandler() {
+//                                                    @Override
+//                                                    public void onSuccess(int statusCode1, Header[] headers1, final JSONObject response1) {
+//                                                        try {
+//                                                            if (response1.getString("status").equalsIgnoreCase("fail")) {
+//                                                                handler.OnFailure(statusCode1, new InvalidKeyException(), response1);
+//                                                                return;
+//                                                            }
+////                                            userAuthentication.username = username;
+////                                            userAuthentication.password = password;
+////                                                            userAuthentication.userId = response1.getJSONObject("logged_in_user").getString("pk");//this is user id pass it here
+//                                                        } catch (JSONException ignored) {
+//
+//                                                        }
+//
+//                                                    }
+//
+//                                                    @Override
+//                                                    public void onFailure(int statusCode1, Header[] headers1, Throwable throwable, JSONObject errorResponse) {
+//                                                        handler.OnFailure(statusCode1, throwable, errorResponse);
+//                                                    }
+//                                                }
+//                                        );
 
-                                            }
-                                        });
                                     }
 
                                     @Override
-                                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                                        handler.OnFailure(statusCode, throwable, errorResponse);
+                                    public void onFailure(int statusCode1, Header[] headers1, Throwable throwable, JSONObject errorResponse) {
+                                        if (errorResponse != null)
+                                            handler.OnFailure(statusCode1, throwable, errorResponse);
                                     }
                                 }
-                        );
-
+                        ));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "something shit happened in parsing Json!\n" + e.toString());
                     }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        if (errorResponse != null)
-                            handler.OnFailure(statusCode, throwable, errorResponse);
-                    }
                 }
-        );
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    handler.OnFailure(statusCode, throwable, errorResponse);
+                }
+
+            });
+// TODO: 12/3/19 you were here you should move below function to top function :)
+
+            //keep this piece
+
+        }
     }
 
     public void GetTimeLine(String MaxId, final ResponseHandler handler) {
@@ -786,6 +864,27 @@ public class InstagramApi {
         );
     }
 
+    public void GetUserFollowers(String userId, String maxId, final ResponseHandler handler) throws InstaApiException {
+        if (!IsLoggedIn()) {
+            throw new InstaApiException("Not Logged In", InstaApiException.REASON_NOTLOGGEDIN);
+        }
+        String url = BASE_URL + String.format("friendships/%s/followers/?max_id=%s&ig_sig_key_version=%s&rank_token=%s",
+                userId, maxId, IG_SIG_KEY, userAuthentication.GetRankToken(uuid)
+        );
+        httpClient.get(url, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                handler.OnSuccess(response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                ResetLoginIfRequired(statusCode, throwable, errorResponse);
+                handler.OnFailure(statusCode, throwable, errorResponse);
+            }
+        });
+    }
+
 //    public void GetUserRequesting(String userId,String maxId,final ResponseHandler handler) throws InstaApiException
 //    {
 //        if(!IsLoggedIn())
@@ -866,27 +965,6 @@ public class InstagramApi {
 //        });
 //
 //    }
-
-    public void GetUserFollowers(String userId, String maxId, final ResponseHandler handler) throws InstaApiException {
-        if (!IsLoggedIn()) {
-            throw new InstaApiException("Not Logged In", InstaApiException.REASON_NOTLOGGEDIN);
-        }
-        String url = BASE_URL + String.format("friendships/%s/followers/?max_id=%s&ig_sig_key_version=%s&rank_token=%s",
-                userId, maxId, IG_SIG_KEY, userAuthentication.GetRankToken(uuid)
-        );
-        httpClient.get(url, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                handler.OnSuccess(response);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                ResetLoginIfRequired(statusCode, throwable, errorResponse);
-                handler.OnFailure(statusCode, throwable, errorResponse);
-            }
-        });
-    }
 
     public void GetUserBlockers(String userId, String maxId, final ResponseHandler handler) throws InstaApiException {
         if (!IsLoggedIn()) {
@@ -1756,6 +1834,10 @@ public class InstagramApi {
         } catch (Exception e) {
 
         }
+    }
+
+    private interface GraphRequestResponseHandler {
+        void onResult(JSONObject response);
     }
 
     public interface ResponseHandler {

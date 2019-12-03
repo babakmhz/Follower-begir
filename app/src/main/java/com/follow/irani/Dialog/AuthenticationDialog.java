@@ -43,6 +43,11 @@ import static android.content.Context.MODE_PRIVATE;
 @SuppressLint("ValidFragment")
 public class AuthenticationDialog extends DialogFragment {
 
+    private static final String CLIENT_ID = "";
+    private static final String TAG = "AuthenticationDialog";
+    private static final String REDIRECT_URI = "https%3A%2F%2Finstagram.com%2F";
+    private static String REQUEST_URL = "";
+    private static final String APP_ID = "2158345234266561";
     DialogAuthenticateBinding binding;
     private InstagramApi api = InstagramApi.getInstance();
     private Handler handler;
@@ -77,7 +82,7 @@ public class AuthenticationDialog extends DialogFragment {
     }
 
 
-    @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
+    @SuppressLint({"SetJavaScriptEnabled"})
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
         //region Dialog
@@ -86,6 +91,7 @@ public class AuthenticationDialog extends DialogFragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //dialog.setContentView(R.layout.dialog_authenticate);
         dbHeplper = new DataBaseHelper(getContext());
+        REQUEST_URL = "https://api.instagram.com/oauth/authorize?app_id="+APP_ID+"&redirect_uri="+REDIRECT_URI+"&scope=user_profile,user_media&response_type=code";
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_authenticate, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
@@ -93,30 +99,39 @@ public class AuthenticationDialog extends DialogFragment {
         //endregion
         handler = new Handler(App.currentActivity.getMainLooper());
         loginWebView = binding.webViewAuthenticate;
-        LoginWebClient client = new LoginWebClient();
+//        LoginWebClient newLoginWebClient = new LoginWebClient();
+        newLoginWebClient newLoginWebClient = new newLoginWebClient();
         shared = App.currentActivity.getSharedPreferences("UserPrefs", MODE_PRIVATE);
         editor = shared.edit();
         loginWebView.getSettings().setJavaScriptEnabled(true);
-        loginWebView.addJavascriptInterface(new MyJavaScriptInterface(), "MYOBJECT");
-        loginWebView.setWebViewClient(client);
+        loginWebView.setWebViewClient(newLoginWebClient);
         loginWebView.clearCache(true);
         loginWebView.clearHistory();
         loginWebView.getSettings().setSaveFormData(false);
         clearCookies(App.currentActivity);
+
+        newLoginWebClient.setListener(new OnCodeReceived() {
+            @Override
+            public void onResult(String code) {
+                OnCredentialsEntered(code);
+            }
+        });
+
+
         if (isRedirectd) {
             logOut();
-            OnCredentialsEntered(userName, password);
-        } else
-            loginWebView.loadUrl("https://www.instagram.com/accounts/login/?force_classic_login");
+//            OnCredentialsEntered(userName, password);
+        } else {
+            loginWebView.loadUrl(REQUEST_URL);
+        }
         db = dbHeplper.getWritableDatabase();
-
-
         return dialog;
     }
-    private void OnCredentialsEntered(String username, String password) {
+
+    private void OnCredentialsEntered(String code) {
         binding.prg.setVisibility(View.VISIBLE);
         api = InstagramApi.getInstance();
-        api.Login(username, password, new InstagramApi.ResponseHandler() {
+        api.Login(code,new InstagramApi.ResponseHandler() {
             @Override
             public void OnSuccess(JSONObject response) {
                 Log.i(App.TAG, "OnSuccess: " + response);
@@ -199,60 +214,99 @@ public class AuthenticationDialog extends DialogFragment {
         }
     }
 
-    private class LoginWebClient extends WebViewClient {
+
+    private interface OnCodeReceived {
+        void onResult(String code);
+    }
+
+    private class newLoginWebClient extends WebViewClient {
+
+        private OnCodeReceived onTokenReceived;
+
+        void setListener(OnCodeReceived onTokenReceived) {
+            this.onTokenReceived = onTokenReceived;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            if (binding.prg.getVisibility() == View.VISIBLE)
+                binding.prg.setVisibility(View.GONE);
+            if (url.contains("code=")) {
+                Uri uri = Uri.parse(url);
+                String code = uri.getEncodedFragment();
+                code = code.substring(code.lastIndexOf("=") + 1,
+                        code.length()-2);
+                onTokenReceived.onResult(code);
+            }
+        }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            clearCookies(App.currentActivity);
+        }
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            loginWebView.setVisibility(View.GONE);
-            if (url.contains("instagram.com/accounts/login/?force_classic_login")) {
-                view.loadUrl(url);
-            } else if (url.contains("password/reset")) {
+            if (url.contains("password/reset")) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
                 App.currentActivity.startActivity(intent);
-            } else if (url.contains("challenge"))
-                view.loadUrl(url);
+            }
+            return true;
+        }
+
+        public OnCodeReceived getOnTokenReceived() {
+            return onTokenReceived;
+        }
+    }
+
+    private class LoginWebClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//            loginWebView.setVisibility(View.GONE);
+//            if (url.contains("instagram.com/accounts/login/?force_classic_login")) {
+//                view.loadUrl(url);
+//            } else if (url.contains("password/reset")) {
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setData(Uri.parse(url));
+//                App.currentActivity.startActivity(intent);
+//            } else if (url.contains("challenge"))
+//                view.loadUrl(url);
+
             return true;
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            if (url.equalsIgnoreCase("https://www.instagram.com/")) {
-                view.stopLoading();
-                clearCookies(App.currentActivity);
-                return;
-            }
-            binding.prg.setVisibility(View.VISIBLE);
-
+//            clearCookies(App.currentActivity);
             super.onPageStarted(view, url, favicon);
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            Log.i(TAG, "onPageFinished: " + url);
+//            binding.prg.setVisibility(View.GONE);
             StringBuilder sb = new StringBuilder();
-            sb.append("var values = { user:'' , pass:'' }; ");
-            sb.append("document.getElementsByTagName('form')[0].onsubmit = function () {");
-            sb.append("var objPWD, objAccount;var str = '';");
-            sb.append("var inputs = document.getElementsByTagName('input');");
-            sb.append("for (var i = 0; i < inputs.length; i++) {");
-            sb.append("if (inputs[i].name.toLowerCase() === 'password') {objPWD = inputs[i];}");
-            sb.append("else if (inputs[i].name.toLowerCase() === 'username') {objAccount = inputs[i];}");
-            sb.append("}");
-            sb.append("if (objAccount != null) " +
-                    "{values.user = objAccount.value;" +
-                    "}");
-            sb.append("if (objPWD != null) { values.pass = objPWD.value;}");
-            sb.append("window.MYOBJECT.processHTML(JSON.stringify(values));");
-            sb.append("return true;");
-            sb.append("};");
-            view.loadUrl("javascript:" + sb.toString());
-            try {
-                if (!url.equals("https://www.instagram.com/")) {
-                    binding.prg.setVisibility(View.GONE);
-                }
-            } catch (Exception ignored) {
-
-            }
+//            sb.append("var values = { user:'' , pass:'' }; ");
+//            sb.append("document.getElementsByTagName('form')[0].onsubmit = function () {");
+//            sb.append("var objPWD, objAccount;var str = '';");
+//            sb.append("var inputs = document.getElementsByTagName('input');");
+//            sb.append("for (var i = 0; i < inputs.length; i++) {");
+//            sb.append("if (inputs[i].name.toLowerCase() === 'password') {objPWD = inputs[i];}");
+//            sb.append("else if (inputs[i].name.toLowerCase() === 'username') {objAccount = inputs[i];}");
+//            sb.append("}");
+//            sb.append("if (objAccount != null) " +
+//                    "{values.user = objAccount.value;" +
+//                    "}");
+//            sb.append("if (objPWD != null) { values.pass = objPWD.value;}");
+//            sb.append("window.MYOBJECT.processHTML(JSON.stringify(values));");
+//            sb.append("return true;");
+//            sb.append("};");
+//            Log.i(TAG, "onPageFinished: " + sb.toString());
+//            view.loadUrl("javascript:" + sb.toString());
         }
     }
 
@@ -273,9 +327,8 @@ public class AuthenticationDialog extends DialogFragment {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-
-
-                    OnCredentialsEntered(username, password_final);
+                    Log.i(TAG, "run: " + username + ":" + ":" + password_final);
+//                    OnCredentialsEntered(username, password_final);
                 }
             });
         }

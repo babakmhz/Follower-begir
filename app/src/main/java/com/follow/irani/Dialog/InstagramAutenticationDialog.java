@@ -105,7 +105,7 @@ public class InstagramAutenticationDialog extends DialogFragment {
         clearCookies(App.currentActivity);
         if (isRedirectd) {
             logOut();
-            OnCredentialsEntered(userName, password);
+//            OnCredentialsEntered(userName, password);
         } else
             loginWebView.loadUrl("https://www.instagram.com/accounts/login/?force_classic_login");
         db = dbHeplper.getWritableDatabase();
@@ -114,51 +114,51 @@ public class InstagramAutenticationDialog extends DialogFragment {
         return dialog;
     }
 
-    private void OnCredentialsEntered(String username, String password) {
-        binding.prg.setVisibility(View.VISIBLE);
-        api = InstagramApi.getInstance();
-        api.Login(username, password, new InstagramApi.ResponseHandler() {
-            @Override
-            public void OnSuccess(JSONObject response) {
-                Log.i(App.TAG, "OnSuccess: " + response);
-                try {
-                    JSONObject jsonRootObject = new JSONObject(String.valueOf(response));
-                    JSONObject newObj = jsonRootObject.getJSONObject("logged_in_user");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-                Intent intent = new Intent(App.currentActivity, MainActivity.class);
-                App.currentActivity.startActivity(intent);
-                dismiss();
-                App.currentActivity.finish();
-
-            }
-
-            @Override
-            public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-                binding.prg.setVisibility(View.GONE);
-                try {
-                    switch (errorResponse.getString("error_type")) {
-                        case "checkpoint_challenge_required":
-                            AccountNeedsVerification dialog = new AccountNeedsVerification();
-                            dialog.show(getChildFragmentManager(), "");
-                            break;
-                        case "bad_password":
-                            Toast.makeText(App.currentActivity, "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
-                            break;
-                        case "invalid_user":
-                            Toast.makeText(App.currentActivity, "چنین کاربری وجود ندارد", Toast.LENGTH_LONG).show();
-                            break;
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+//    private void OnCredentialsEntered(String username, String password) {
+//        binding.prg.setVisibility(View.VISIBLE);
+//        api = InstagramApi.getInstance();
+//        api.Login(username, password, new InstagramApi.ResponseHandler() {
+//            @Override
+//            public void OnSuccess(JSONObject response) {
+//                Log.i(App.TAG, "OnSuccess: " + response);
+//                try {
+//                    JSONObject jsonRootObject = new JSONObject(String.valueOf(response));
+//                    JSONObject newObj = jsonRootObject.getJSONObject("logged_in_user");
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//                Intent intent = new Intent(App.currentActivity, MainActivity.class);
+//                App.currentActivity.startActivity(intent);
+//                dismiss();
+//                App.currentActivity.finish();
+//
+//            }
+//
+//            @Override
+//            public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+//                binding.prg.setVisibility(View.GONE);
+//                try {
+//                    switch (errorResponse.getString("error_type")) {
+//                        case "checkpoint_challenge_required":
+//                            AccountNeedsVerification dialog = new AccountNeedsVerification();
+//                            dialog.show(getChildFragmentManager(), "");
+//                            break;
+//                        case "bad_password":
+//                            Toast.makeText(App.currentActivity, "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
+//                            break;
+//                        case "invalid_user":
+//                            Toast.makeText(App.currentActivity, "چنین کاربری وجود ندارد", Toast.LENGTH_LONG).show();
+//                            break;
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
 
     private void logOut() {
         try {
@@ -277,7 +277,7 @@ public class InstagramAutenticationDialog extends DialogFragment {
                 public void run() {
 
 
-                    OnCredentialsEntered(username, password_final);
+//                    OnCredentialsEntered(username, password_final);
                 }
             });
         }

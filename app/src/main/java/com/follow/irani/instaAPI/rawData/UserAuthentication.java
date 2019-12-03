@@ -50,7 +50,7 @@ public class UserAuthentication {
                 authentication.loggedIn = authentication.token != null && authentication.token.isEmpty() == false;
                 InstagramUser user = new InstagramUser();
                 user.setUserName(authentication.username);
-                user.setPassword(authentication.password);
+                user.setPassword(authentication.password);// TODO: 12/3/19 comment this
                 user.setUserId(authentication.userId);
                 user.setToken(authentication.token);
                 UserData.getInstance().setSelf_user(user);
@@ -98,7 +98,7 @@ public class UserAuthentication {
             authentication = gson.fromJson(savedData, UserAuthentication.class);
             authentication.loggedIn = authentication.token != null && !authentication.token.isEmpty();
             InstagramUser user = new InstagramUser();
-            user.setUserName(authentication.username);
+            user.setUserName(authentication.username);// TODO: 12/3/19 comment it
             user.setPassword(authentication.password);
             user.setUserId(authentication.userId);
             user.setToken(authentication.token);
