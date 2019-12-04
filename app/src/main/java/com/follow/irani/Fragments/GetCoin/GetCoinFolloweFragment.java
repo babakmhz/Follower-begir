@@ -109,7 +109,7 @@ public class GetCoinFolloweFragment extends Fragment {
 
         });
 
-        binding.btnReport.setOnClickListener(v->report());
+        binding.btnReport.setOnClickListener(v -> report());
 
         binding.btnDoFollow.setOnClickListener(b -> {
             if (!isAvailable)
@@ -162,6 +162,7 @@ public class GetCoinFolloweFragment extends Fragment {
         binding.btnDoFollow.setVisibility(View.VISIBLE);
         binding.prg.setVisibility(View.GONE);
     }
+
     private void getLikeOrder() {
         if (retryCount == 5) {
             handlerCheckCoin.removeCallbacks(runnableCheckCoin);
@@ -340,38 +341,38 @@ public class GetCoinFolloweFragment extends Fragment {
         } else if (step >= dataBaseHelper.getAllUsers().size()) { // اگر step  بزرگتر از سایز کاربرا بود یعنی تموم شده و باید با اکانت اصلی لاگین کنه
             for (User user : dataBaseHelper.getAllUsers()) {
                 if (user.getIsActive() == 1) {
-//                    tempApi.Login(user.getUserName(), user.getPassword(), new InstagramApi.ResponseHandler() {
-//                        @Override
-//                        public void OnSuccess(JSONObject response) {
-//                            progressDialog.dismiss();
-//
-//                        }
-//
-//                        @Override
-//                        public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-//                            progressDialog.dismiss();
-//
-//                        }
-//                    });
+                    tempApi.LoginExistingUser(user, new InstagramApi.ResponseHandler() {
+                        @Override
+                        public void OnSuccess(JSONObject response) {
+                            progressDialog.dismiss();
+
+                        }
+
+                        @Override
+                        public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                            progressDialog.dismiss();
+
+                        }
+                    });
                 }
             }
         } else if (dataBaseHelper.getAllUsers().get(step).getIsActive() == 1 && step < dataBaseHelper.getAllUsers().size()) { // وقتی به اکانت فعال میرسه و ردش میکنه
             step++;
             likeWithAllAccounts();
         } else if (dataBaseHelper.getAllUsers().get(step).getIsActive() == 1 && step == dataBaseHelper.getAllUsers().size()) {  // اگر آخرین مورد اکانت فعال بود به اون لاگین میکنه
-//            tempApi.Login(dataBaseHelper.getAllUsers().get(step).getUserName(), dataBaseHelper.getAllUsers().get(step).getPassword(), new InstagramApi.ResponseHandler() {
-//                @Override
-//                public void OnSuccess(JSONObject response) {
-//                    Log.d(App.TAG, "OnSuccess: Login " + response);
-//                    step++;
-//                    likeWithAllAccounts();
-//                }
-//
-//                @Override
-//                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-//
-//                }
-//            });
+            tempApi.LoginExistingUser(dataBaseHelper.getAllUsers().get(step), new InstagramApi.ResponseHandler() {
+                @Override
+                public void OnSuccess(JSONObject response) {
+                    Log.d(App.TAG, "OnSuccess: Login " + response);
+                    step++;
+                    likeWithAllAccounts();
+                }
+
+                @Override
+                public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+                }
+            });
         } else { // لاگین با اکانت دیگه
             if (cTimer == null)
                 cTimer = new CountDownTimer(15 * 1000 + 1000, 1000) {
@@ -383,45 +384,45 @@ public class GetCoinFolloweFragment extends Fragment {
 
                     public void onFinish() {
                         cTimer = null;
-//                        tempApi.Login(dataBaseHelper.getAllUsers().get(step).getUserName(), dataBaseHelper.getAllUsers().get(step).getPassword(), new InstagramApi.ResponseHandler() {
-//                            @Override
-//                            public void OnSuccess(JSONObject response) {
-//                                Log.d(App.TAG, "OnSuccess: Login " + response);
-//                                try {
-//                                    tempApi.Follow(userId, new InstagramApi.ResponseHandler() {
-//                                        @Override
-//                                        public void OnSuccess(JSONObject response) {
-//                                            addCoinMultipleAccount.addCoinMultipleAccount(1);
-//
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-//
-//
-//                                        }
-//                                    });
-//                                } catch (InstaApiException e) {
-//                                    e.printStackTrace();
-//                                }
-//                                step++;
-//                                likeWithAllAccounts();
-//                            }
-//
-//                            @Override
-//                            public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-//                                try {
-//                                    if (errorResponse.getString("error_type").contains("checkpoint_challenge_required")) {
-//                                        Toast.makeText(App.currentActivity, "حساب شما به محدودیت رسید. دقایقی دیگر مجددا تلاش کنید", Toast.LENGTH_SHORT).show();
-//                                        loginWithMainAccount();
-//                                        progressDialog.cancel();
-//                                    }
-//                                } catch (Exception e) {
-//
-//                                }
-//                            }
-//                        });
+                        tempApi.LoginExistingUser(dataBaseHelper.getAllUsers().get(step), new InstagramApi.ResponseHandler() {
+                            @Override
+                            public void OnSuccess(JSONObject response) {
+                                Log.d(App.TAG, "OnSuccess: Login " + response);
+                                try {
+                                    tempApi.Follow(userId, new InstagramApi.ResponseHandler() {
+                                        @Override
+                                        public void OnSuccess(JSONObject response) {
+                                            addCoinMultipleAccount.addCoinMultipleAccount(1);
+
+
+                                        }
+
+                                        @Override
+                                        public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+
+
+                                        }
+                                    });
+                                } catch (InstaApiException e) {
+                                    e.printStackTrace();
+                                }
+                                step++;
+                                likeWithAllAccounts();
+                            }
+
+                            @Override
+                            public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                                try {
+                                    if (errorResponse.getString("error_type").contains("checkpoint_challenge_required")) {
+                                        Toast.makeText(App.currentActivity, "حساب شما به محدودیت رسید. دقایقی دیگر مجددا تلاش کنید", Toast.LENGTH_SHORT).show();
+                                        loginWithMainAccount();
+                                        progressDialog.cancel();
+                                    }
+                                } catch (Exception e) {
+
+                                }
+                            }
+                        });
                     }
                 }.start();
 
@@ -429,28 +430,28 @@ public class GetCoinFolloweFragment extends Fragment {
 
     }
 
-    private void showAuthenticationDialog(){
-        AuthenticationDialog authenticationDialog = new AuthenticationDialog(false,null,null);
-        authenticationDialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction(),"");
+    private void showAuthenticationDialog() {
+        AuthenticationDialog authenticationDialog = new AuthenticationDialog(false, null, null);
+        authenticationDialog.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager().beginTransaction(), "");
     }
 
     private void loginWithMainAccount() {
         DataBaseHelper dataBaseHelper = new DataBaseHelper(App.currentActivity);
         for (User user : dataBaseHelper.getAllUsers()) {
             if (user.getIsActive() == 1) {
-//                InstagramApi.getInstance().Login(user.getUserName(), user.getPassword(), new InstagramApi.ResponseHandler() {
-//                    @Override
-//                    public void OnSuccess(JSONObject response) {
-//                        progressDialog.dismiss();
-//
-//                    }
-//
-//                    @Override
-//                    public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
-//                        progressDialog.dismiss();
-//
-//                    }
-//                });
+                InstagramApi.getInstance().LoginExistingUser(user, new InstagramApi.ResponseHandler() {
+                    @Override
+                    public void OnSuccess(JSONObject response) {
+                        progressDialog.dismiss();
+
+                    }
+
+                    @Override
+                    public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                        progressDialog.dismiss();
+
+                    }
+                });
             }
         }
     }

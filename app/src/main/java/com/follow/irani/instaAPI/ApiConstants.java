@@ -8,6 +8,7 @@ public class ApiConstants {
     public static final String BASE_INSTA_GRAPH_URL="https://graph.instagram.com/";
     public static final String GRAPH_API_FIELDS="?fields=id,username&";
     public static final String ACCESS_TOKEN_KEY="access_token";
+    public static final String REDIRECT_URI = "https%3A%2F%2Finstagram.com%2F";
 
     public static String getUserInfoUrlFromGraphApi(String user_id,String temp_token){
         return BASE_INSTA_GRAPH_URL+user_id+GRAPH_API_FIELDS+ACCESS_TOKEN_KEY+"="+temp_token;

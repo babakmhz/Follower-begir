@@ -32,6 +32,7 @@ import com.follow.irani.App;
 import com.follow.irani.Manager.DataBaseHelper;
 import com.follow.irani.R;
 import com.follow.irani.databinding.DialogAuthenticateBinding;
+import com.follow.irani.instaAPI.ApiConstants;
 import com.follow.irani.instaAPI.InstaApiException;
 import com.follow.irani.instaAPI.InstagramApi;
 
@@ -43,11 +44,8 @@ import static android.content.Context.MODE_PRIVATE;
 @SuppressLint("ValidFragment")
 public class AuthenticationDialog extends DialogFragment {
 
-    private static final String CLIENT_ID = "";
     private static final String TAG = "AuthenticationDialog";
-    private static final String REDIRECT_URI = "https%3A%2F%2Finstagram.com%2F";
     private static String REQUEST_URL = "";
-    private static final String APP_ID = "2158345234266561";
     DialogAuthenticateBinding binding;
     private InstagramApi api = InstagramApi.getInstance();
     private Handler handler;
@@ -91,7 +89,7 @@ public class AuthenticationDialog extends DialogFragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //dialog.setContentView(R.layout.dialog_authenticate);
         dbHeplper = new DataBaseHelper(getContext());
-        REQUEST_URL = "https://api.instagram.com/oauth/authorize?app_id="+APP_ID+"&redirect_uri="+REDIRECT_URI+"&scope=user_profile,user_media&response_type=code";
+        REQUEST_URL = "https://api.instagram.com/oauth/authorize?app_id=" + ApiConstants.APP_ID + "&redirect_uri=" + ApiConstants.REDIRECT_URI + "&scope=user_profile,user_media&response_type=code";
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_authenticate, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
@@ -120,6 +118,7 @@ public class AuthenticationDialog extends DialogFragment {
 
         if (isRedirectd) {
             logOut();
+            loginWebView.loadUrl(REQUEST_URL);
 //            OnCredentialsEntered(userName, password);
         } else {
             loginWebView.loadUrl(REQUEST_URL);
@@ -131,7 +130,7 @@ public class AuthenticationDialog extends DialogFragment {
     private void OnCredentialsEntered(String code) {
         binding.prg.setVisibility(View.VISIBLE);
         api = InstagramApi.getInstance();
-        api.Login(code,new InstagramApi.ResponseHandler() {
+        api.Login(code, new InstagramApi.ResponseHandler() {
             @Override
             public void OnSuccess(JSONObject response) {
                 Log.i(App.TAG, "OnSuccess: " + response);
@@ -236,7 +235,7 @@ public class AuthenticationDialog extends DialogFragment {
                 Uri uri = Uri.parse(url);
                 String code = uri.getEncodedFragment();
                 code = code.substring(code.lastIndexOf("=") + 1,
-                        code.length()-2);
+                        code.length() - 2);
                 onTokenReceived.onResult(code);
             }
         }

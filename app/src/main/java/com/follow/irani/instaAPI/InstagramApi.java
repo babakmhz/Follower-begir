@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.auth0.jwt.internal.org.apache.commons.codec.binary.Hex;
 import com.follow.irani.App;
+import com.follow.irani.Models.User;
 import com.follow.irani.data.InstagramUser;
 import com.follow.irani.data.UserData;
 import com.follow.irani.instaAPI.rawData.UserAuthentication;
@@ -21,7 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -193,6 +193,25 @@ public class InstagramApi {
                 Log.e(TAG, "onFailure: " + errorResponse.toString());
             }
 
+        });
+    }
+
+    public void LoginExistingUser(User object, ResponseHandler handler) {
+        InstagramUser user = UserData.getInstance().getSelf_user();
+        user.setUserName(object.getUserName());
+        user.setUserId(object.getUserId());
+        user.setToken(object.getToken());
+        UserData.getInstance().setSelf_user(user);
+        SyncFeatures(new SecureHttpApi.ResponseHandler() {
+            @Override
+            public void OnSuccess(JSONObject response2) {
+                handler.OnSuccess(response2);
+            }
+
+            @Override
+            public void OnFailure(int statusCode1, Throwable throwable, JSONObject errorResponse) {
+                Log.e(TAG, "OnFailure: "+ errorResponse.toString());
+            }
         });
     }
 
