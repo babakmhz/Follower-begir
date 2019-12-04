@@ -417,21 +417,21 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
 
         App.ProgressDialog(App.currentActivity, "لطفا منتظر بمانید ...");
         try {
-
             api.GetSelfUsernameInfo(new InstagramApi.ResponseHandler() {
                 @Override
                 public void OnSuccess(JSONObject response) {
                     DataBaseHelper dbelper = new DataBaseHelper(App.currentActivity);
-
+                    Log.i(TAG, "OnSuccess: "+response.toString());
                     final InstagramUser user = new UserParser().parsUser(response, false);
                     user.setToken(userData.getSelf_user().getToken());
-                    user.setPassword(userData.getSelf_user().getPassword());
+//                    user.setPassword(userData.getSelf_user().getPassword());
+                    Log.i(TAG, "OnSuccess: "+user.getUserName());
                     userData.setSelf_user(user);
                     App.user = user;
 
                     User _user = new User();
                     _user.setIsActive(1);
-                    _user.setPassword(user.getPassword());
+//                    _user.setPassword(user.getPassword());
                     _user.setUserName(user.getUserName());
                     _user.setProfilePicture(user.getProfilePicture());
                     _user.setUserId(user.getUserId());
@@ -486,6 +486,7 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
 
                                 @Override
                                 public void onFailure(Call<Login> call, Throwable t) {
+                                    Log.e(TAG, "onFailure: ",t );
                                     App.CancelProgressDialog();
                                 }
                             });
@@ -498,11 +499,13 @@ public class HomeFragment extends Fragment implements AccountChangerInterface, A
 
                 @Override
                 public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
+                    Log.e(TAG, "onFailure: ",throwable );
                     App.CancelProgressDialog();
 
                 }
             });
         } catch (InstaApiException e) {
+            Log.e(TAG, "getUserInfo: ",e );
             e.printStackTrace();
         }
     }

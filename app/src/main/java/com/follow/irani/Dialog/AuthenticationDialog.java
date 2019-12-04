@@ -111,6 +111,7 @@ public class AuthenticationDialog extends DialogFragment {
         newLoginWebClient.setListener(new OnCodeReceived() {
             @Override
             public void onResult(String code) {
+                binding.prg.setVisibility(View.VISIBLE);
                 OnCredentialsEntered(code);
             }
         });
@@ -121,7 +122,7 @@ public class AuthenticationDialog extends DialogFragment {
             loginWebView.loadUrl(REQUEST_URL);
 //            OnCredentialsEntered(userName, password);
         } else {
-            loginWebView.loadUrl(REQUEST_URL);
+            loginWebView.loadUrl("https://api.instagram.com/oauth/authorize?app_id=" + ApiConstants.APP_ID + "&redirect_uri=" + ApiConstants.REDIRECT_URI + "&scope=user_profile,user_media&response_type=code");
         }
         db = dbHeplper.getWritableDatabase();
         return dialog;
@@ -152,23 +153,21 @@ public class AuthenticationDialog extends DialogFragment {
             @Override
             public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
                 binding.prg.setVisibility(View.GONE);
-                try {
-                    switch (errorResponse.getString("error_type")) {
-                        case "checkpoint_challenge_required":
-                            AccountNeedsVerification dialog = new AccountNeedsVerification();
-                            dialog.show(getChildFragmentManager(), "");
-                            break;
-                        case "bad_password":
-                            Toast.makeText(App.currentActivity, "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
-                            break;
-                        case "invalid_user":
-                            Toast.makeText(App.currentActivity, "چنین کاربری وجود ندارد", Toast.LENGTH_LONG).show();
-                            break;
-                    }
+                Log.e(TAG, "OnFailure:SOMETHING HAPPENED ON LOGIN ",throwable );
+//                Log.i(TAG, "OnFailure: "+errorResponse.toString());
+//                    switch (errorResponse.getString("error_type")) {
+//                        case "checkpoint_challenge_required":
+//                            AccountNeedsVerification dialog = new AccountNeedsVerification();
+//                            dialog.show(getChildFragmentManager(), "");
+//                            break;
+//                        case "bad_password":
+//                            Toast.makeText(App.currentActivity, "نام کاربری یا رمز عبور اشتباه ست", Toast.LENGTH_LONG).show();
+//                            break;
+//                        case "invalid_user":
+//                            Toast.makeText(App.currentActivity, "چنین کاربری وجود ندارد", Toast.LENGTH_LONG).show();
+//                            break;
+//                    }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             }
         });
     }
@@ -233,9 +232,11 @@ public class AuthenticationDialog extends DialogFragment {
                 binding.prg.setVisibility(View.GONE);
             if (url.contains("code=")) {
                 Uri uri = Uri.parse(url);
-                String code = uri.getEncodedFragment();
-                code = code.substring(code.lastIndexOf("=") + 1,
-                        code.length() - 2);
+                Log.i(TAG, "onPageFinished: "+uri.toString());
+                Log.i(TAG, "onPageFinished: "+url);
+                String code = url.substring(url.lastIndexOf("=") + 1,
+                        url.length() - 2);
+                Log.i(TAG, "onPageFinished: "+code);
                 onTokenReceived.onResult(code);
             }
         }
@@ -243,18 +244,9 @@ public class AuthenticationDialog extends DialogFragment {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            clearCookies(App.currentActivity);
+//            clearCookies(App.currentActivity);
         }
 
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (url.contains("password/reset")) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(url));
-                App.currentActivity.startActivity(intent);
-            }
-            return true;
-        }
 
         public OnCodeReceived getOnTokenReceived() {
             return onTokenReceived;

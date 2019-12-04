@@ -233,7 +233,7 @@ public class InstagramApi {
                         String user_id = response.getString("user_id");
                         //it's better to change the way you request to server buddy :)
                         // so many asynchronous functions, it's bad. i just created private function to keep code clean but it won't help a lot
-                        getUsernameAlongSideUserId(user_id, temp_token, response1 -> httpClient.get(BASE_URL + "si/fetch_headers/?challenge_type=signup&guid=" + GenerateUUID(false), new JsonHttpResponseHandler() {
+                        getUsernameAlongSideUserId(user_id, temp_token, response3 -> httpClient.get(BASE_URL + "si/fetch_headers/?challenge_type=signup&guid=" + GenerateUUID(false), new JsonHttpResponseHandler() {
                                     @Override
                                     public void onSuccess(int statusCode1, Header[] headers1, JSONObject response1) {
                                         String csrToken = FindInHeaders(headers1, "Set-Cookie");
@@ -244,8 +244,8 @@ public class InstagramApi {
                                             json.put("phone_id", GenerateUUID(true));
                                             json.put("device_id", getDeviceId(App.context));
                                             json.put("guid", uuid);
-                                            String user_id = response1.getString("id");
-                                            String username = response1.getString("username");
+                                            String user_id = response3.getString("id");
+                                            String username = response3.getString("username");
                                             json.put("_csrftoken", csrToken);
                                             String csrToken2 = FindInHeaders(headers1, "Set-Cookie");
                                             int index2 = csrToken2.indexOf(';');
@@ -260,7 +260,6 @@ public class InstagramApi {
                                                 user = new InstagramUser();
                                             user.setUserName(username);
                                             user.setUserId(userAuthentication.userId);
-//                                        user.setPassword(password);// TODO: 12/3/19 comment or make it null
                                             user.setToken(csrToken2);
                                             UserData.getInstance().setSelf_user(user);
                                             SyncFeatures(new SecureHttpApi.ResponseHandler() {
@@ -275,6 +274,7 @@ public class InstagramApi {
                                                 }
                                             });
                                         } catch (Exception e) {
+                                            Log.e(TAG, "SOMETHING ON  PARSING LOGIN JSON \n"+e.toString(),e );
                                             handler.OnFailure(400, e, null);
                                             return;
                                         }
@@ -519,13 +519,19 @@ public class InstagramApi {
         });
     }
 
-    public void GetUsernameInfo(String userId, final ResponseHandler handler) throws InstaApiException {
+    public void GetUsernameInfo(String username, final ResponseHandler handler) throws InstaApiException {
         if (!IsLoggedIn()) {
             throw new InstaApiException("Not Logged In", InstaApiException.REASON_NOTLOGGEDIN);
         }
-        httpClient.get(BASE_URL + String.format("users/%s/info/", userId), new JsonHttpResponseHandler() {
+//        String url = BASE_URL + "users/"+userId+"/info/";
+        String url  = String.format("https://www.instagram.com/%s/?__a=1",username);
+        Log.i(TAG, "GetUsernameInfo: "+username);
+        Log.i(TAG, "GetUsernameInfo: "+url);
+//        String.format("users/%s/info/", userId)
+        httpClient.get(url, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.i(TAG, "GetUsernameInfo: "+response.toString());
                 handler.OnSuccess(response);
             }
 
@@ -537,12 +543,14 @@ public class InstagramApi {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                Log.e(TAG, "GetUsernameInfo: "+throwable.toString());
                 handler.OnFailure(statusCode, throwable, null);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 JSONObject object = new JSONObject();
+                Log.e(TAG, "onFailure: ",throwable );
                 if (responseString != null)
                     try {
                         object.put("message", responseString);
@@ -560,7 +568,7 @@ public class InstagramApi {
     }
 
     public void GetSelfUsernameInfo(final ResponseHandler handler) throws InstaApiException {
-        GetUsernameInfo(userAuthentication.userId.toString(), handler);
+        GetUsernameInfo(userAuthentication.username.toString(), handler);
     }
 
     public void GetUserTags(String usernameId, final ResponseHandler handler) throws InstaApiException {
