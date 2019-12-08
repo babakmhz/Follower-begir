@@ -21,7 +21,6 @@ import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -89,7 +88,7 @@ public class AuthenticationDialog extends DialogFragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //dialog.setContentView(R.layout.dialog_authenticate);
         dbHeplper = new DataBaseHelper(getContext());
-        REQUEST_URL = "https://api.instagram.com/oauth/authorize?app_id=" + ApiConstants.APP_ID + "&redirect_uri=" + ApiConstants.REDIRECT_URI + "&scope=user_profile,user_media&response_type=code";
+        REQUEST_URL = "https://api.instagram.com/oauth/authorize?app_id=" + ApiConstants.APP_ID + "&redirect_uri=" + ApiConstants.REDIRECT_URI + "&scope=user_profile&response_type=code";
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_authenticate, null, false);
         dialog.setContentView(binding.getRoot());
         dialog.getWindow().setBackgroundDrawableResource(R.color.white);
@@ -122,7 +121,7 @@ public class AuthenticationDialog extends DialogFragment {
             loginWebView.loadUrl(REQUEST_URL);
 //            OnCredentialsEntered(userName, password);
         } else {
-            loginWebView.loadUrl("https://api.instagram.com/oauth/authorize?app_id=" + ApiConstants.APP_ID + "&redirect_uri=" + ApiConstants.REDIRECT_URI + "&scope=user_profile,user_media&response_type=code");
+            loginWebView.loadUrl(REQUEST_URL);
         }
         db = dbHeplper.getWritableDatabase();
         return dialog;
@@ -153,7 +152,7 @@ public class AuthenticationDialog extends DialogFragment {
             @Override
             public void OnFailure(int statusCode, Throwable throwable, JSONObject errorResponse) {
                 binding.prg.setVisibility(View.GONE);
-                Log.e(TAG, "OnFailure:SOMETHING HAPPENED ON LOGIN ",throwable );
+                Log.e(TAG, "OnFailure:SOMETHING HAPPENED ON LOGIN ", throwable);
 //                Log.i(TAG, "OnFailure: "+errorResponse.toString());
 //                    switch (errorResponse.getString("error_type")) {
 //                        case "checkpoint_challenge_required":
@@ -230,13 +229,14 @@ public class AuthenticationDialog extends DialogFragment {
             super.onPageFinished(view, url);
             if (binding.prg.getVisibility() == View.VISIBLE)
                 binding.prg.setVisibility(View.GONE);
+            Log.i(TAG, "onPageFinished: " + url);
             if (url.contains("code=")) {
                 Uri uri = Uri.parse(url);
-                Log.i(TAG, "onPageFinished: "+uri.toString());
-                Log.i(TAG, "onPageFinished: "+url);
+                Log.i(TAG, "onPageFinished: " + uri.toString());
+                Log.i(TAG, "onPageFinished: " + url);
                 String code = url.substring(url.lastIndexOf("=") + 1,
                         url.length() - 2);
-                Log.i(TAG, "onPageFinished: "+code);
+                Log.i(TAG, "onPageFinished: " + code);
                 onTokenReceived.onResult(code);
             }
         }
