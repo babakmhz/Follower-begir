@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     static final String TAG = "FollowerAPP";
     public static TapsellAd ad;
     public static ProgressDialog progressDialog;
+    public static String directOrderItemId = null, directOrderItemURL = null;
+    public static BillingProcessor mNivadBilling;
     static String SKU_PREMIUM = "Item1";
     static int RC_REQUEST = 1372;
     private static ShopItem currentShop;
@@ -73,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     private int iapFollowCoin;
     private int iapLikeCoin;
     private DirectPurchaseDialogInterface callBackDirectPurchaseDialog;
-    public static String directOrderItemId = null, directOrderItemURL = null;
     private int directOrderCount = 0;
     private ShopItemInterface callBackShopItem;
     private AddCoinMultipleAccount addCoinMultipleAccount;
@@ -85,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     private boolean doubleBackToExitPressedOnce = false;
     private String currentSKU;
     private boolean isSuccessShop = false;
-    public static BillingProcessor mNivadBilling;
     private ApiInterface apiInterface;
 
     public static void globalLoadAd(Context context, final String zoneId, final int catchType) {
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         currentItemId = R.id.action_home;
         progressDialog = new ProgressDialog(this);
         App.context = this;
-        App.currentActivity=this;
+        App.currentActivity = this;
         ApiClient.getClient();
         apiInterface = ApiClient.retrofit.create(ApiInterface.class);
 
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         Tapsell.setRewardListener((tapsellAd, b) -> {
             if (b) {
                 Toast.makeText(this, "2 سکه لایک به شما افزوده شد", Toast.LENGTH_SHORT).show();
-                addCoin(0, 2,apiInterface);
+                addCoin(0, 2, apiInterface);
 
             } else {
             }
@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 //        mNivadBilling = new BillingProcessor(this, BuildConfig.BAZAR_RSA,
 //                "dae76086-f588-4a91-b530-e2738bd21064",
 //                "qJdIoxZPuNudYlLYxvqm5xdIEohzjCBOyMv3RmUCvRzjrvFS2rD1c7UtK4Al0RE0", MarketName.CAFE_BAZAAR, this); // مقدار دهی در انتهای onCreate
-                mNivadBilling = new BillingProcessor(this, BuildConfig.BAZAR_RSA,
+        mNivadBilling = new BillingProcessor(this, BuildConfig.BAZAR_RSA,
                 null,
                 null, MarketName.CAFE_BAZAAR, this); // مقدار دهی در انتهای onCreate
         Log.i(TAG, "onCreate: ");
@@ -278,6 +278,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
             startService(intent);
         }
     }
+
     private void setActive(int position) {
         switch (position) {
             case 0:
@@ -328,7 +329,6 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         binding.tvPurchase.setTextColor(getResources().getColor(R.color.black));
         binding.tvShop.setTextColor(getResources().getColor(R.color.black));
     }
-
 
 
     private void checkNivadOrder(String sku, TransactionDetails transactionDetails) {
@@ -657,7 +657,6 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     }
 
 
-
     @Override
     public void buyItem(String sdk, int requestCode) {
         if (!App.isBazarInstalled) {
@@ -673,6 +672,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
     public void IABPurchase(ShopItem shopItem) {
 
     }
+
     private void increaseBeforeOrder(int type, int count) {
 
 
@@ -689,7 +689,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         if (response.body().getStatus()) {
-                            purchaseAfterIncrease(type, count,apiInterface);
+                            purchaseAfterIncrease(type, count, apiInterface);
                         }
                     }
                 }
@@ -706,15 +706,12 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
     private void purchaseAfterIncrease(int type, int count, ApiInterface apiInterface) {
 
-        apiInterface.SetOrder(App.UUID,App.Api_Token,type,directOrderItemId,count,count,directOrderItemURL).enqueue(new Callback<UserCoin>() {
+        apiInterface.SetOrder(App.UUID, App.Api_Token, type, directOrderItemId, count, count, directOrderItemURL).enqueue(new Callback<UserCoin>() {
             @Override
             public void onResponse(Call<UserCoin> call, Response<UserCoin> response) {
-                if (response.isSuccessful())
-                {
-                    if (response.body()!=null)
-                    {
-                        if (response.body().getStatus())
-                        {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        if (response.body().getStatus()) {
                             Toast.makeText(MainActivity.this, "سفارش شما با موفقیت ثبت شد", Toast.LENGTH_SHORT).show();
 
                         }
@@ -729,12 +726,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
         });
 
 
-
     }
-
-
-
-
 
 
     @Override
@@ -780,7 +772,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
     @Override
     public void addCoinMultipleAccount(int type) {
-        addCoin(0, 1,apiInterface);
+        addCoin(0, 1, apiInterface);
 
     }
 
@@ -827,7 +819,7 @@ public class MainActivity extends AppCompatActivity implements PurchaseInterface
 
             @Override
             public void run() {
-                doubleBackToExitPressedOnce=false;
+                doubleBackToExitPressedOnce = false;
             }
         }, 4000);
     }

@@ -2,6 +2,7 @@ package com.follow.irani.Dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +22,8 @@ import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -107,12 +110,14 @@ public class AuthenticationDialog extends DialogFragment {
         loginWebView.getSettings().setSaveFormData(false);
         clearCookies(App.currentActivity);
 
-        newLoginWebClient.setListener(new OnCodeReceived() {
-            @Override
-            public void onResult(String code) {
-                binding.prg.setVisibility(View.VISIBLE);
-                OnCredentialsEntered(code);
-            }
+
+        newLoginWebClient.setListener(code -> {
+            binding.prg.setVisibility(View.VISIBLE);
+            ProgressDialog progressDialog = new ProgressDialog(getContext());
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("درحال دریافت اطلاعات...");
+            progressDialog.show();
+            OnCredentialsEntered(code);
         });
 
 
@@ -128,7 +133,7 @@ public class AuthenticationDialog extends DialogFragment {
     }
 
     private void OnCredentialsEntered(String code) {
-        binding.prg.setVisibility(View.VISIBLE);
+//        binding.prg.setVisibility(View.VISIBLE);
         api = InstagramApi.getInstance();
         api.Login(code, new InstagramApi.ResponseHandler() {
             @Override
@@ -238,7 +243,10 @@ public class AuthenticationDialog extends DialogFragment {
                         url.length() - 2);
                 Log.i(TAG, "onPageFinished: " + code);
                 onTokenReceived.onResult(code);
+
             }
+
+
         }
 
         @Override
@@ -252,6 +260,7 @@ public class AuthenticationDialog extends DialogFragment {
             return onTokenReceived;
         }
     }
+
 
     private class LoginWebClient extends WebViewClient {
         @Override
